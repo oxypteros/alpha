@@ -1,7 +1,7 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/screenshots/alpha-header-dark.webp">
-  <source media="(prefers-color-scheme: light)" srcset=".github/screenshots/alpha-header.webp">
-  <img alt="Alpha header demo screenshot" src=".github/screenshots/alpha-header.webp">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/oxypteros/alpha/refs/heads/main/.github/screenshots/alpha-header-dark.webp">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/oxypteros/alpha/refs/heads/main/.github/screenshots/alpha-header.webp">
+  <img alt="Alpha header demo screenshot" src="https://raw.githubusercontent.com/oxypteros/alpha/refs/heads/main/.github/screenshots/alpha-header.webp">
 </picture>
 
 # Alpha — Hugo Theme
