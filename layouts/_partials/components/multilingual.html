@@ -1,0 +1,76 @@
+{{- /*
+  multilingual.html (partial): Displays a language switcher if the site is configured for multiple languages.
+
+  Features:
+  - If the site is multilingual:
+    - If the current page has translations, displays an accessible
+      language switch listing links to available translated versions.
+    - If the current page does not have translations, displays an
+      icon indicating that no translation is available for this page.
+  - If the site has only a single language configured, nothing is displayed.
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+{{- if gt (len .Site.Languages) 1 }}
+  {{- $hasTranslations := false }}
+  {{- range .Translations }}
+    {{- if .File }}
+      {{- $hasTranslations = true }}
+    {{- end }}
+  {{- end }}
+
+  {{- if not $hasTranslations }}
+    <div class="flex items-center">
+      <svg
+        class="fill-on-menu-var size-5"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        width="16"
+        height="16"
+        aria-label="{{ i18n "NoTranslation" . | default "Not translated" }}"
+      >
+        <use href="#icon-no-language"></use>
+      </svg>
+    </div>
+  {{- else }}
+    <details class="relative">
+      <summary
+        class="group flex cursor-pointer items-center gap-2 text-sm"
+        aria-label="{{ i18n "ChangeLanguage" . | default "Change the language" }}"
+      >
+        <svg
+          class="fill-on-menu-var size-5"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          width="16"
+          height="16"
+          aria-hidden="true"
+        >
+          <use href="#icon-language"></use>
+        </svg>
+        {{- range .Site.Languages }}
+          {{- if eq . $.Site.Language }}
+            <span class="group-hover:text-on-menu">{{ .LanguageName }}</span>
+          {{- end }}
+        {{- end }}
+      </summary>
+      <div class="absolute top-6 left-0 z-30 w-70">
+        <div
+          class="border-out-var dark:border-out-var-d dark:bg-sur-var-d dark:text-on-sur-d bg-sur text-on-sur flex flex-col gap-2 rounded-md border px-4 py-3 text-sm shadow-lg"
+        >
+          {{- range .Translations }}
+            <a
+              class="hover:text-on-sur-var dark:hover:text-on-sur-var-d decoration-on-sur-var dark:decoration-on-sur-var-d decoration-2 underline-offset-2 hover:underline"
+              href="{{ .Permalink }}"
+              hreflang="{{ .Lang }}"
+            >
+              {{ .Language.LanguageName }}
+            </a>
+          {{- end }}
+        </div>
+      </div>
+    </details>
+  {{- end }}
+{{- end -}}

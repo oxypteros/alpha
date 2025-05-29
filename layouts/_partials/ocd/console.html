@@ -1,0 +1,60 @@
+<div
+  class="ocd ocd-console-container ocd-hidden"
+  aria-expanded="false"
+  data-alpha="ocd-console-container"
+  inert
+>
+  <div class="ocd-console ocd-shadow" data-alpha="ocd-console">
+    <header>
+      <div class="ocd-console-title">
+        <svg aria-hidden="true" width="32" height="32">
+          <use href="#ocd-logo"></use>
+        </svg>
+        <h2>Console</h2>
+      </div>
+      <button
+        class="ocd-close-button"
+        aria-label="Close settings modal"
+        data-alpha="ocd-close-console"
+      >
+        <svg aria-hidden="true" width="22" heigh="22">
+          <use href="#icon-close"></use>
+        </svg>
+      </button>
+    </header>
+    <div class="ocd-utility-bar">
+      <button
+        title="OCD help"
+        aria-label="Get OCD help"
+        data-alpha="ocd-console-help-button"
+      >
+        <svg aria-hidden="true" width="22" heigh="22">
+          <use href="#ocd-icon-support"></use>
+        </svg>
+      </button>
+      <a
+        href="https://github.com/oxypteros/alpha/issue"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Report an alpha issue"
+        aria-label="Report an issue with alpha at github (will open a new tab)"
+      >
+        <svg aria-hidden="true" width="22" heigh="22">
+          <use href="#icon-error"></use></svg
+      ></a>
+      <button
+      title="OCD reset errors"
+      aria-label="Reset the current error list"
+      data-alpha="ocd-console-reset-button"
+    >
+      <svg aria-hidden="true" width="22" heigh="22">
+        <use href="#ocd-icon-reset"></use>
+      </svg>
+    </button>
+    </div>
+    <div class="ocd-console-content" data-alpha="ocd-console-content"></div>
+    <footer>
+      {{- partial "ocd/components/local-versions.html" }}
+    </footer>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+{{- /*
+  twitter-cards.html (partial): Generates Twitter Card metadata for social sharing, embedding it in the page `<head>`.
+
+  Features:
+    - Card Type (`twitter:card`): Dynamically set to `summary_large_image` if a suitable
+    image is found, otherwise defaults to `summary`.
+    - Image (`twitter:image` and `twitter:image:alt`):
+    - Prioritizes page resources matching "*-social.*".
+    - Falls back to the first page resource matching common image extensions.
+    - Alt text is sourced from corresponding page parameters (`socialImgDesc` or `imgDesc`).
+    - Title (`twitter:title`): From the page's `.Title`.
+    - Description (`twitter:description`): From `page.Params.socialDesc` or `.Description`.
+    - Twitter Handles (`twitter:site`, `twitter:creator`): From `site.Params. 
+    twitterSite` and `page.Params.twitterUsername`.
+
+  Note:
+  - Image paths are resolved to permalinks.
+  - Text content is plainified for compatibility.
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+{{- $seo_img := .Resources.GetMatch "*-social.*" }}{{- /*1200 x 675*/}}
+{{- $img := .Resources.GetMatch "*.{png,jpg,jpeg,webp,gif}" }}
+{{- if $seo_img }}
+{{- with $seo_img }}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="{{ .Permalink }}">
+{{- end }}
+{{- with .Page.Params.socialImgDesc }}
+    <meta name="twitter:image:alt" content="{{- . -}}" />
+{{- end }}
+{{- else if $img }}
+{{- with $img }}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="{{ .Permalink }}">
+{{- end }}
+{{- with .Page.Params.imgDesc }}
+    <meta name="twitter:image:alt" content="{{- . -}}" />
+{{- end }}
+{{- else }}
+    <meta name="twitter:card" content="summary">
+{{- end }}
+{{- with .Title }}
+    <meta name="twitter:title" content="{{ . | plainify }}" />
+{{- end }}
+{{- with or .Page.Params.socialDesc .Description | plainify | htmlUnescape}}
+    <meta name="twitter:description" content='{{ trim . "\n\r\t " }}'/>
+{{- end }}
+{{- $site := .Site.Params.twitterSite -}}
+{{- $creator := .Page.Params.twitterUsername -}}
+{{- if and $site $creator }}
+    <meta name="twitter:site" content="{{- $site -}}" />
+    <meta name="twitter:creator" content="{{- $creator -}}" />
+{{- else if $site }}
+    <meta name="twitter:site" content="{{- $site -}}" />
+    <meta name="twitter:creator" content="{{- $site -}}" />
+{{- else if $creator }}
+    <meta name="twitter:creator" content="{{- $creator -}}" />
+{{- end }}

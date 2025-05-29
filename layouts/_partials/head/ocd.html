@@ -1,0 +1,22 @@
+{{- /*
+  ocd.html (partial): — Loads the necessary CSS and JS for OCD.
+
+  Features:
+    - These assets are strictly used only during development.
+    - This ensures that these OCD related assets are never included in production builds, maintaining a clean and optimized output.
+
+  Dependencies:
+  - `/assets/alpha/css/ocd.css`
+  - `/assets/alpha/js/ocd.js`
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+{{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Site.Params.ocd_enabled true) }}
+  {{- $ocdCss := resources.Get "alpha/css/ocd.css" | resources.ExecuteAsTemplate "ocd.css" . -}}
+  <link rel="stylesheet" href="{{ $ocdCss.RelPermalink }}" />
+  {{- with resources.Get "alpha/js/ocd.js" | resources.ExecuteAsTemplate "ocd.js" . -}}
+    {{- with . | js.Build }}
+      <script type="module" src="{{ .RelPermalink }}"></script>
+    {{- end }}
+  {{- end }}
+{{- end }}

@@ -1,0 +1,53 @@
+{{- /*
+  breadcrumbs.html (partial): Renders breadcrumbs links, intended for display inside the hamburger menu. 
+
+  Features:
+  - Home link represented by an icon.
+  - The full breadcrumb trail, from ancestors to the current page.
+  - Responsive visibility: Hidden on small screens (below 640px - Tailwind 'sm' breakpoint).
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+<div class="hidden sm:block">
+  {{ if eq .IsHome false }}
+    <nav class="text-sm">
+      <ol class="flex items-center gap-2">
+        {{ range .Ancestors.Reverse }}
+          {{- if .IsHome }}
+            <li class="flex shrink-0 items-center">
+              <a
+                class="group"
+                href="{{ .RelPermalink }}"
+                aria-label="{{ i18n "Homepage" . | default "Homepage" }}"
+              >
+                <svg
+                  class="fill-on-menu-var group-hover:fill-on-menu dark:group-hover:fill-on-menu-d size-5"
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-home"></use>
+                </svg>
+              </a>
+            </li>
+          {{- else }}
+            <li class="flex items-center gap-1">
+              <span class="text-on-menu text-xl">/</span>
+              <a
+                class="hover:decoration-on-menu hover:text-on-menu hover:underline hover:decoration-2 hover:underline-offset-2"
+                href="{{ .RelPermalink }}"
+                >{{ .LinkTitle }}</a
+              >
+            </li>
+          {{- end }}
+        {{- end }}
+        <li class="active text-on-menu flex items-center gap-1 truncate">
+          <span class="text-xl">/</span>
+          <a class="" aria-current="page" href="{{ .RelPermalink }}"
+            >{{ .LinkTitle }}</a
+          >
+        </li>
+      </ol>
+    </nav>
+  {{- end }}
+</div>

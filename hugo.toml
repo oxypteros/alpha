@@ -1,0 +1,38 @@
+# Root Hugo Configuration
+# Place this file in the root of your Hugo site to define global settings.
+#
+# For theme-specific settings, see: `config/_default/`
+# Documentation: https://alpha.oxypteros.com/docs/config/hugo-toml
+
+baseURL = "http://localhost:1313" # Replace with production URL
+title = "Alpha Theme"
+#theme = "alpha"
+#timeZone = "Europe/Rome"
+
+
+# Tailwind Integration (Build Options) 
+# Note: Enable the following only if you are using Tailwind CSS with this 
+# project.
+# For setup instructions, see:
+# https://alpha.oxypteros.com/docs/developing-alpha/tailwind
+
+#[build]
+#  [build.buildStats]
+#    enable = true
+#  [[build.cachebusters]]
+#    source = 'assets/notwatching/hugo_stats\.json'
+#    target = 'css'
+#  [[build.cachebusters]]
+#    source = '(postcss|tailwind)\.config\.js'
+#    target = 'css'
+[module]
+  [module.hugoVersion]
+    min = "0.146.1"
+    max = "0.147.5"
+#  [[module.mounts]]
+#    source = 'assets'
+#    target = 'assets'
+#  [[module.mounts]]
+#    disableWatch = true
+#    source = 'hugo_stats.json'
+#    target = 'assets/notwatching/hugo_stats.json'

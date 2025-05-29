@@ -1,0 +1,33 @@
+{{- /*
+  metadata-date.html (partial): Displays `date` and `Lastmod` metadata on pages that utilize the `story` layout.
+
+  Features:
+  - Format dates as `DD/MM, YYYY`
+  - Populates `<time>` elements with machine-readable 
+    dates for SEO.
+  - Show the `date` and `Lastmod`(conditional)
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+{{- $date := or .Date (now) -}}
+{{- $modDate := or .Lastmod $date -}}
+{{- $dateMachine := $date | time.Format "2006-01-02T15:04:05-07:00" -}}
+{{- $modDateMachine := $modDate | time.Format "2006-01-02T15:04:05-07:00" -}}
+{{- $publishDate := $date | time.Format "02/01, 2006" -}}
+{{- $modDate := $modDate | time.Format "02/01, 2006" -}}
+
+<div class="space-y-1 text-sm">
+  <div>
+    {{- i18n "Published" . | default "Published:" }}
+    <time datetime="{{ $dateMachine }}"> {{- $publishDate }} </time>
+  </div>
+
+  {{- /* Conditional for Lastmod () */}}
+  {{- $isUpdated := ne $modDateMachine $dateMachine -}}
+  {{- if $isUpdated }}
+    <div>
+      {{ i18n "LastEdition" . | default "Last Edition:" }}
+      <time datetime="{{ $modDateMachine }}"> {{- $modDate }} </time>
+    </div>
+  {{- end }}
+</div>

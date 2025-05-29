@@ -1,0 +1,48 @@
+{{- /*
+  metadata-icon-date.html (partial): Displays the latest modification date for pages using the `page` or `utility` layouts, with an icon indicating if the content has been updated.
+
+  Features:
+  - Displays the latest modification date (Lastmod or Date) formatted as DD/MM, YYYY.
+  - Uses a specific icon to differentiate between originally published and subsequently updated content.
+  - Populates a `<time>` element with a machine-readable datetime (Lastmod or Date) for SEO.
+  - The `<time>` element's `title` attribute provides detailed "Published on" and "Updated on" (if applicable) information, formatted as "Month DD, YYYY".
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+{{- $date := or .Date (now) -}}
+{{- $modDate := or .Lastmod $date -}}
+
+{{- $dateMachine := $date | time.Format "2006-01-02T15:04:05-07:00" -}}
+{{- $modDateMachine := $modDate | time.Format "2006-01-02T15:04:05-07:00" -}}
+{{- $dateTitle := $date | time.Format "January  02, 2006" -}}
+{{- $modDateTitle := $modDate | time.Format "January 02, 2006" -}}
+{{- $displayDate := $modDate | time.Format "02/01, 2006" -}}
+
+{{- /* Conditional logic for `lastmod` date and icon */}}
+{{- $isUpdated := ne $modDateMachine $dateMachine -}}
+{{- $icon := cond $isUpdated "#icon-date-edition" "#icon-date-published" -}}
+
+
+<div class="flex items-center gap-1 sm:gap-2">
+  <svg
+    class="fill-on-sur-var dark:fill-on-sur-var-d size-4 shrink-0 sm:size-5"
+    aria-hidden="true"
+    width="20"
+    height="20"
+  >
+    <use href="{{ $icon }}"></use>
+  </svg>
+  <time
+    class="text-sm"
+    datetime="{{ $modDateMachine }}"
+    title="{{- if $isUpdated -}}
+      {{ i18n "PublishedOn" . | default "Published on" }} {{ $dateTitle }}.
+      {{ i18n "UpdatedOn" . | default "Updated on"}}
+      {{ $modDateTitle }}.
+    {{- else -}}
+      {{ i18n "PublishedOn" . | default "Published on" }} {{ $dateTitle }}.
+    {{- end -}}"
+  >
+    {{ $displayDate }}
+  </time>
+</div>

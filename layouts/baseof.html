@@ -1,0 +1,59 @@
+{{- /*
+  baseof.html (template): Defines the foundational HTML structure (`<html>`, `<head>`, `<body>`) for all pages within the Alpha theme. 
+
+  Dependencies:
+  - `partial "head.html"` 
+  - `partial "header.html"`
+  - `partial "footer.html"`
+  - `partial "tail/js.html"`
+  - `partial "tail/custom-js.html"`
+  - `partial "tail/icons.html"`
+  - `partial "tail/template.html"`
+  - `partial "ocd/main.html"`
+
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+
+<!doctype html>
+<html
+  lang="{{ site.Language.LanguageCode }}"
+  dir="{{ or site.Language.LanguageDirection `ltr` }}"
+  data-theme="light"
+>
+  {{ partial "head.html" . }}
+  <body
+    class="bg-sur dark:bg-sur-d text-on-sur dark:text-on-sur-d flex min-h-dvh flex-col items-center justify-between font-sans"
+  >
+    {{ partial "header.html" . }}
+    <main class="pt-header dark:bg-sur-d z-10 w-full grow">
+      {{- block "main" . }}{{ end }}
+    </main>
+    {{ partial "footer.html" . }}
+     {{- /* Conditional snackbar for cookie notice */}}
+    {{- if eq .Site.Params.noCookies_snackbar true }}
+      <div
+        class="fixed bottom-14 z-40 w-full px-4"
+        data-alpha="snackbar-container"
+      ></div>
+    {{- end }}
+    {{- /* Conditional container for visitor settings/preferences */}}
+    {{- if eq .Site.Params.visitor_settings true }}
+      <div
+        class="fixed top-1/3 z-50 w-full px-4"
+        data-alpha="settings-container"
+      ></div>
+    {{- end }}
+    {{- /* Live region for screen reader announcements */}}
+    <div class="sr-only" aria-live="polite" data-alpha="announcer"></div>
+     {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
+    {{- partial "tail/js.html" . }}
+    {{- partial "tail/custom-js.html" . }}
+    {{- partial "tail/icons.html" . }}
+    {{- partial "tail/template.html" . }}
+     {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
+    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true ) }}
+      {{ partial "ocd/main.html" . }}
+    {{- end }}
+  </body>
+</html>

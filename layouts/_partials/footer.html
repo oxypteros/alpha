@@ -1,0 +1,110 @@
+{{- /*
+  footer.html (partial): Defines the footer HTML structure for Alpha.
+
+  Features:
+    - Site copyright with year
+    - Footer menu and social footer menu
+    - Site params defined motto
+    - Site params enabled visitor settings
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+
+{{- /* Conditional calculation of year range */}}
+{{- $currentYear := dateFormat "2006" now }}
+{{- $estYear := default $currentYear .Site.Params.established_year }}
+{{- $shortYear := dateFormat "06" now }}
+{{- $yearDisplay := cond (eq $estYear $currentYear) (string $currentYear) (printf "%v-%v" $estYear $shortYear) }}
+<footer class="bg-sur dark:bg-sur-d z-15 w-full">
+  <div
+    class="h-footer mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center"
+  >
+    {{- /* Footer and footer social menu*/}}
+    {{- $footerMenu := .Site.Menus.footer }}
+    {{- $socialFooter := .Site.Menus.footer_social }}
+
+    {{- if or $footerMenu $socialFooter }}
+      <nav
+        class="text-on-sur-var dark:text-on-sur-var-d flex w-full max-w-7xl flex-wrap items-center justify-end gap-3 pr-1 pl-4 text-sm"
+      >
+        {{- if $footerMenu }}
+          {{- range $footerMenu }}
+            <a
+              class="font-500 hover:text-pri dark:hover:text-pri-d"
+              href="{{ .URL | absLangURL }}"
+            >
+              {{ .Name }}</a
+            >
+          {{- end }}
+        {{- end }}
+        {{- if and $footerMenu $socialFooter }}
+          <span class="pl-1">—</span>
+        {{- end }}
+        {{- if $socialFooter }}
+          {{- range $socialFooter }}
+            <a
+              class="group hover:text-pri dark:hover:text-pri-d rounded-full p-2"
+              href="{{ .URL }}"
+              aria-label="{{ .Name }}"
+            >
+              {{ with .Pre }}
+                <svg
+                  class="stroke-on-sur dark:stroke-on-sur-d dark:group-hover:stroke-pri-d group-hover:stroke-pri size-5"
+                  aria-hidden="true"
+                  width="20"
+                  height="20"
+                >
+                  <use href="{{ . }}"></use>
+                </svg>
+              {{- else }}
+                {{ .Name }}
+              {{- end }}
+            </a>
+          {{- end }}
+        {{- end }}
+      </nav>
+    {{- end }}
+  </div>
+  <div
+    class="h-bar bg-menu text-on-menu-var flex w-full flex-wrap items-center justify-between gap-3 pr-1 pl-4 text-sm"
+  >
+  {{- /* Site Motto conditional rendering by length*/}}
+    {{- $motto := .Site.Params.motto }}
+    {{- if $motto }}
+      {{- $hideMotto := "" }}
+      {{- if gt (len $motto) 20 }}{{- $hideMotto = "hidden" }}{{- end }}
+      <div class="{{ $hideMotto }} italic sm:flex sm:items-center">
+        {{ $motto }}
+      </div>
+    {{- else }}
+      <div></div>
+    {{- end }}
+    <div class="flex items-center gap-1">
+      <div class="flex shrink-0 flex-wrap items-center">
+        &copy; {{ $yearDisplay }}&nbsp;
+        {{ .Site.Title }}
+      </div>
+      {{- /* Visitor settings */}}
+      {{- if eq .Site.Params.visitor_settings true }}
+        <button
+          class="group hover:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
+          aria-label="{{ i18n "SettingsBtn" }}"
+          aria-pressed="false"
+          data-alpha="settings-button"
+        >
+          <svg
+            class="fill-on-menu-var dark:fill-on-menu-var-d group-hover:fill-on-menu size-5 transition-colors duration-400"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          >
+            <use href="#icon-settings"></use>
+          </svg>
+        </button>
+      {{- end }}
+    </div>
+  </div>
+</footer>

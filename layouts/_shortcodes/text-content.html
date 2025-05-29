@@ -1,0 +1,16 @@
+{{- /*
+  text-content.html (shortcode): Mimics how layout page style text content for pages with diverse design and layout.
+
+  Target: _index.md
+
+  Example:
+  {{< text-content >}}
+    /... Markdown.../
+  {{< /text-content >}}
+
+  Docs: https://alpha.oxypteros.com/shortcodes/text-content 
+  Repo: https://github.com/oxypteros/alpha-theme 
+*/ -}}
+<div class="article-content max-w-article mx-auto w-full text-lg leading-normal mb-32">
+    {{ .Inner | markdownify }}
+</div>

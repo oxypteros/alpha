@@ -1,0 +1,16 @@
+name = 'alpha'
+license = 'MIT'
+licenselink = 'https://github.com/oxypteros/alpha/LICENSE'
+min_version = '0.146.1'
+description = 'Alpha is an accessible Hugo theme built for content driven websites like blogs, and creative-writing type of sites. Designed with readability in mind, Alpha offers a distraction free experience, helping you to showcase your writing with style and clarity to everyone.'
+
+homepage = 'https://github.com/oxypteros/alpha'
+
+demosite = 'https://alpha.oxypteros.com'
+
+tags = ['blog', 'stories', 'book', 'tailwind']
+features = ['responsive', 'multilingual', 'accessible', 'documentation', 'tailwind']
+
+[author]
+  name = 'oxypteros'
+  homepage = 'https://alpha.oxypteros.com'

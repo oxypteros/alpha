@@ -1,0 +1,5 @@
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+  <style>@media (prefers-color-scheme: dark){#alpha{stroke:#d2e4ff;fill:none}}@media (prefers-color-scheme: light){#alpha{stroke:#334863;fill:none}}</style>
+ <path d="M0 0h24v24H0z" fill="none" stroke="none"/>
+ <path id="alpha" d="m18.6 6c-1.1 2.913-1.9 4.913-2.4 6-1.879 4.088-3.713 6-6 6-2.4 0-4.8-2.4-4.8-6s2.4-6 4.8-6c2.267 0 4.135 1.986 6 6 0.512 1.102 1.312 3.102 2.4 6"/>
+</svg>

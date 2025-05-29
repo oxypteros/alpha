@@ -1,0 +1,57 @@
+{{- /* Alpha config diagnostics */}}
+{{- $ocdErrors := slice }}
+
+{{- if .Site.Params.established_year }}
+  {{- $paramYear := .Site.Params.established_year }}
+  {{- $currentYear := dateFormat "2006" now }}
+  {{ $validYear := findRE "^[0-9]{4}$" $paramYear }}
+  {{- if not $validYear }}
+    {{- $ocdErrors = $ocdErrors | append "ocd-params-100" }}
+  {{- else if gt $paramYear $currentYear }}
+    {{- $ocdErrors = $ocdErrors | append "ocd-params-101" }}
+  {{- end }}
+{{- end }}
+
+{{- if eq .Site.Title "" }}
+{{- $ocdErrors = $ocdErrors | append "ocd-config-100" }}
+  {{- /* Warnf for error: ocd-config-100 */}}
+  {{ $page := .Page.RelPermalink }}
+  {{- $errorCode := "ocd-config-100" }}
+  {{- $errorMessage := printf "Empty title at hugo.toml" }}
+  {{- $logMessage := printf "OcdError [%s]  %s" $errorCode $errorMessage }}
+  {{- warnf "%s" $logMessage }}
+{{- end }}
+{{- if gt (len .Site.Languages) 1 }}
+{{- range .Site.Languages }}
+  {{- if eq .LanguageName ""}}
+    {{- $ocdErrors = $ocdErrors | append "ocd-lang-100" }}
+    {{- /* Warnf for error: ocd-lang-100 */}}
+    {{- $errorCode := "ocd-lang-100" }}
+    {{- $errorMessage := printf "languageName for language [%s] in languages.toml is missing." .Lang }}
+    {{- $logMessage := printf "OcdError [%s]  %s" $errorCode $errorMessage }}
+    {{- warnf "%s" $logMessage }}
+  {{- end }}
+{{- end }}
+{{- end }}  
+{{- if eq .Page.Title "" }}
+  {{- $ocdErrors = $ocdErrors | append "ocd-fm-100" }}
+  {{- /* Warnf for error: ocd-fm-100 */}}
+  {{ $page := .Page.RelPermalink }}
+  {{- $errorCode := "ocd-fm-100" }}
+  {{- $errorMessage := printf "Empty frontmatter title: %s" .Permalink }}
+  {{- $logMessage := printf "OcdError [%s] Page: %s |  %s" $errorCode $page $errorMessage }}
+  {{- warnf "%s" $logMessage }}
+{{- end }}
+
+{{- if eq .Page.Params.description "" }}
+  {{- $ocdErrors = $ocdErrors | append "ocd-fm-110" }}
+  {{- /* Warnf for error: ocd-fm-110 */}}
+  {{ $page := .Page.RelPermalink }}
+  {{- $errorCode := "ocd-fm-110" }}
+  {{- $errorMessage := printf "Empty frontmatter description: %s" .Permalink }}
+  {{- $logMessage := printf "OcdError [%s] Page: %s |  %s" $errorCode $page $errorMessage }}
+  {{- warnf "%s" $logMessage }}
+{{- end }}
+{{- range $ocdErrors }}
+  <div data-error="{{ . }}"></div>
+{{- end }}

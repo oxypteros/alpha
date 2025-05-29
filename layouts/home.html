@@ -1,0 +1,16 @@
+{{- /*
+  home.html (layout): Defines the main HTML structure  for the Alpha Homepage.
+
+  Primarily includes the main content block.
+  The template itself is intentionally minimal. 
+  All elements and visual appearance must be set by 
+  the use of shortcodes and markdown.
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+
+{{ define "main" }}
+  <div class="flex flex-col items-center pt-32">
+    {{ .Content }}
+  </div>
+{{- end }}

@@ -1,0 +1,24 @@
+{{- /*
+  render-link.html (markup)
+  
+  Features:
+  - Absolute links opens in new tab with security enhancements.
+  - Relative links maintain default behavior
+  - Add visual indicator for the link behavior
+  - Mark the link as download if title is `alpha-download`
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+
+<a class="link-icon"
+  href="{{ .Destination }}"
+  {{- if eq .Title "alpha-download" }}
+  download
+{{- else if .Title }}
+  title="{{ .Title }}"
+{{- end }}
+  {{- if strings.HasPrefix .Destination "http" }}
+    target="_blank" rel="noopener noreferrer"
+  {{- end }}
+  >{{ .Text }}</a
+>

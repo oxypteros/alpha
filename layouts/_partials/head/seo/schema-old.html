@@ -1,0 +1,478 @@
+{{- /*
+  Schema.org JSON-LD Partial — Alpha Hugo Theme
+  Generates Schema.org structured data in JSON-LD 
+  format, embedded in the page <head>.
+
+  Supported Schema Types:
+  1. Website:
+     - Generated for the homepage (`.IsHome`).
+     - Includes properties: `url`, `name`, `description` (from `page.Params.socialDesc`),
+       `inLanguage`, `author` (from `page.Params.author` - consider `publisher`),
+       `dateCreated`, `dateModified`.
+  2. TechArticle:
+     - Generated for regular pages (`.IsSection false`) of type "docs" (`.Page.Type "docs"`).
+     - Includes properties: `headline`, `description`, `author`, `datePublished`,
+       `dateModified`, `wordCount`, `timeRequired`, `inLanguage`,
+       `isAccessibleForFree`, `keywords`, `isPartOf`, `mainEntityOfPage`.
+
+  Dependencies (General):
+  - `.Date`, `.Lastmod` for timestamps.
+  - `.Permalink` for URLs.
+  - `.Lang` for language.
+  - `.Site.Title` for site name.
+
+  Dependencies (Page Parameters):
+  - Homepage (`Website`):
+    - `socialDesc` (string): Description for the homepage.
+    - `author` (string): Author of the homepage content (consider if `publisher` is more appropriate for Website schema).
+  - Docs Pages (`TechArticle`):
+    - `.Description` (string): Article description.
+    - `author` (string): Article author.
+    - `.WordCount`, `.ReadingTime`.
+    - `keywords` (array of strings).
+    - `.Parent` for `isPartOf` relationship.
+
+  Note:
+  - Dates are formatted in ISO 8601.
+  - Text is plainified where appropriate.
+  - CRITICAL: Current implementation has JSON syntax issues (missing/misplaced commas)
+    that need to be addressed.
+
+  Theme Repo: https://github.com/oxypteros/alpha-theme
+  */
+-}}
+{{- $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+{{- $modDateMachine := .Lastmod | time.Format "2006-01-02T15:04:05-07:00" }}
+{{- if .IsHome }}
+    <script type="application/ld+json">
+      {
+        "@context":"https://schema.org",
+        "@type":"Website",
+        "url": {{ .Permalink }},
+        "name":"{{ .Site.Title}}",
+        {{- with .Page.Params.socialDesc}}
+        "description":"{{ . | plainify | htmlUnescape }}",
+        {{- end }}
+        "inLanguage": "{{- .Lang -}}",
+        {{- with .Page.Params.author }}
+        "author": {
+          "@type": "Person",
+          "name": "{{ . }}",  
+        },
+      {{- end }}
+        "dateCreated": {{- $dateMachine -}}
+    {{- if ne $dateMachine $modDateMachine }}
+        ,"dateModified": {{- $modDateMachine -}}
+    {{- end }}
+      }
+    </script>
+{{- end }}
+{{- if and (eq .IsSection false) (eq .Page.Type "docs")}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "{{ .Title }}",
+    {{- with .Description }}
+      "description": "{{ . }}",
+    {{- end }}
+    {{- with .Page.Params.author }}
+      "author": {
+        "@type": "Person",
+        "name": "{{ . }}",  
+      },
+    {{- end }}
+      "datePublished": "{{- $dateMachine -}}",
+{{- if ne $dateMachine $modDateMachine }}
+      "dateModified": "{{- $modDateMachine -}}",
+{{- end }}
+    {{- with .WordCount }}
+      "wordCount": "{{- . -}}",
+    {{- end }}
+    {{- if gt .ReadingTime 0 }}
+      "timeRequired": "PT{{- .ReadingTime -}}M",
+    {{- end }}
+      "inLanguage": "{{- .Lang -}}",
+      "isAccessibleForFree": true, 
+    {{- with .Params.keywords }}
+      "keywords": [
+        {{- range . -}}
+          "{{- . -}}"
+          {{- if ne . (index $.Params.keywords (sub (len $.Params.keywords) 1)) -}},{{- end }}
+        {{- end -}}
+      ],
+    {{- end }}
+    {{- with .Parent }}
+      "isPartOf": {
+        "@type": "WebPage",
+        "@id": {{ .Permalink }}
+      },
+      {{- end }}
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": {{ .Permalink }}
+      }
+    }
+    </script>
+{{- end }}
+{{/*
+  This template generates "Structured Data" (specifically JSON-LD schema) for your website.
+  Structured data helps search engines like Google understand the content of your pages better,
+  which can improve how your site appears in search results (e.g., with rich snippets).
+  Think of it as providing a clear, machine-readable summary of your page's content.
+
+  The `{{- ... -}}` syntax is used throughout. The hyphens `-` tell Hugo to remove
+  any extra blank lines or spaces around these instructions, keeping the final HTML clean.
+*/}}
+
+{{/* == DATE SETUP == */}}
+{{/* Get the publication date of the current page. */}}
+{{- $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" -}}
+{{/*
+  Get the last modification date of the current page.
+  The `time.Format "..."` part formats these dates into a specific machine-readable string
+  (ISO 8601 format), which search engines understand.
+*/}}
+{{- $modDateMachine := .Lastmod | time.Format "2006-01-02T15:04:05-07:00" -}}
+
+{{/*
+  Initialize a base piece of schema information.
+  `dict` creates a structured piece of data (like a mini-form with labels and values).
+  Here, it sets the "@context", which tells search engines we're using schema.org vocabulary.
+*/}}
+{{- $schemaBase := dict "@context" "https://schema.org" -}}
+{{/* Initialize an empty container to hold the schema specific to the current page. */}}
+{{- $specificSchema := dict -}}
+
+{{/* == PUBLISHER SETUP == */}}
+{{/* Initialize an empty container for publisher (your organization/site owner) information. */}}
+{{- $publisherData := dict -}}
+{{/*
+  `with .Site.Params.orgName` checks if an "orgName" (organization name) is defined
+  in your site's configuration file (e.g., hugo.toml or config.toml).
+  If it is, the code inside `with`...`end` runs.
+  `.Site.Params` refers to custom parameters you set in your site configuration.
+*/}}
+{{- with .Site.Params.orgName -}}
+  {{/*
+    Create a structured piece of data for the organization.
+    `"@type": "Organization"` tells search engines this is about an organization.
+    `"name": .` uses the `orgName` found above as the organization's name.
+    The `.` (dot) here refers to `orgName` from the `with` statement.
+  */}}
+  {{- $orgData := dict "@type" "Organization" "name" . -}}
+  {{/* Check if an "orgLogo" (organization logo file path) is defined in your site's configuration. */}}
+  {{- with $.Site.Params.orgLogo -}}
+    {{/*
+      `resources.Get .` tries to find the logo image file.
+      The `$.Site.Params.orgLogo` uses `$` to access the global site parameters,
+      as we are inside another `with` block. The `.` here refers to `orgLogo`.
+    */}}
+    {{- with resources.Get . -}}
+      {{/*
+        If the logo is found, `merge` adds more details to the `$orgData`.
+        It adds a "logo" section, specifying it's an "ImageObject" with its URL, width, and height.
+        `.Permalink` gives the web address of the logo. `.Width` and `.Height` get its dimensions.
+      */}}
+      {{- $orgData = merge $orgData (dict "logo" (dict "@type" "ImageObject" "url" .Permalink "width" .Width "height" .Height)) -}}
+    {{- end -}} {{/* End of: if logo image file is found */}}
+  {{- end -}} {{/* End of: if orgLogo is defined */}}
+  {{/* Check if the site's base URL (`.Site.BaseURL`) is available. */}}
+  {{- with $.Site.BaseURL -}}
+    {{/* If yes, add the site's URL to the organization data. */}}
+    {{- $orgData = merge $orgData (dict "url" .) -}}
+  {{- end -}} {{/* End of: if BaseURL is available */}}
+  {{/* Store the completed organization data as the publisher data. */}}
+  {{- $publisherData = $orgData -}}
+{{- end -}} {{/* End of: if orgName is defined */}}
+
+{{/* == WEBSITE SCHEMA (for the Homepage) == */}}
+{{/* `if .IsHome` checks if the current page is the homepage of the site. */}}
+{{- if .IsHome -}}
+  {{/*
+    If it's the homepage, create a structured piece of data describing the website itself.
+    `"@type": "WebSite"` tells search engines this is about a website.
+    `"@id": .Permalink` gives a unique identifier for the website (its URL).
+    `.Permalink` is the URL of the current page (the homepage).
+    `.Site.Title` is the main title of your website from the configuration.
+    `.Lang` is the language of the page (e.g., "en" for English).
+    `$dateMachine` is the creation date we prepared earlier.
+  */}}
+  {{- $websiteSchema := dict
+    "@type" "WebSite"
+    "@id" .Permalink
+    "url" .Permalink
+    "name" .Site.Title
+    "inLanguage" .Lang
+    "dateCreated" $dateMachine
+  -}}
+
+  {{/*
+    Try to get a social description from the page's front matter (`.Page.Params.socialDesc`).
+    If not found, fall back to the site's default description (`.Site.Params.description`).
+    `| default ...` provides this fallback.
+  */}}
+  {{- with .Page.Params.socialDesc | default .Site.Params.description -}}
+    {{/*
+      Clean up the description:
+      `plainify` removes any HTML tags.
+      `strings.TrimSpace` removes any leading or trailing spaces.
+    */}}
+    {{- $desc := . | plainify | strings.TrimSpace -}}
+    {{/* If the description is not empty after cleaning... */}}
+    {{- if $desc }}
+      {{/* ...add it to the website schema. */}}
+      {{ $websiteSchema = merge $websiteSchema (dict "description" $desc) }}
+    {{ end -}}
+  {{- end -}} {{/* End of: getting and adding description */}}
+
+  {{/* If publisher data was prepared earlier (i.e., it's not empty)... */}}
+  {{- if gt (len $publisherData) 0 }}
+    {{/* ...add the publisher information to the website schema. */}}
+    {{- $websiteSchema = merge $websiteSchema (dict "publisher" $publisherData) -}}
+  {{- end -}}
+
+  {{/* If the creation date and modification date are different... */}}
+  {{- if ne $dateMachine $modDateMachine -}}
+    {{/* ...add the modification date to the website schema. */}}
+    {{- $websiteSchema = merge $websiteSchema (dict "dateModified" $modDateMachine) -}}
+  {{- end -}}
+
+  {{/* Store this completed website schema as the specific schema for this (homepage) page. */}}
+  {{- $specificSchema = $websiteSchema -}}
+
+{{/* == CONTENT PAGE SCHEMA (for Articles, Docs, Posts, etc.) == */}}
+{{/*
+  This `else if` block runs if the page is NOT the homepage AND meets other criteria:
+  `and (not .IsSection)`: Checks if the page is NOT a section listing page (like a blog index).
+  `(in (slice "docs" "post" "article" "page" "story") .Page.Type)`: Checks if the page's "type"
+    (usually based on its folder or front matter) is one of "docs", "post", "article", "page", or "story".
+  So, this targets individual content pages of these types.
+*/}}
+{{- else if and (not .IsSection) (in (slice "docs" "post" "article" "page" "story") .Page.Type) -}}
+  {{/* Default schema type to "Article". */}}
+  {{- $type := "Article" -}}
+  {{/* If the page uses the "story" layout, change the schema type to "CreativeWork". */}}
+  {{- if eq .Layout "story" }}{{ $type = "CreativeWork" }}{{ end }}
+
+  {{/*
+    Create a structured piece of data for an article/creative work.
+    `"@type": $type` uses the type we just determined ("Article" or "CreativeWork").
+    `"headline": .Title` uses the page's title as the headline.
+    `"datePublished": $dateMachine` uses the publication date.
+    `"isAccessibleForFree": true` indicates the content is free.
+    `"mainEntityOfPage"` links this schema to the web page itself.
+  */}}
+  {{- $articleSchema := dict
+    "@type" $type
+    "@id" .Permalink
+    "headline" .Title
+    "url" .Permalink
+    "datePublished" $dateMachine
+    "inLanguage" .Lang
+    "isAccessibleForFree" true
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+  -}}
+
+  {{/*
+    Try to get the page's description from its front matter (`.Description`).
+    If not found, fall back to its summary (`.Summary`).
+  */}}
+  {{- with .Description | default .Summary -}}
+    {{/* Clean up the description/summary. */}}
+    {{- $desc := . | plainify | strings.TrimSpace -}}
+    {{/* If it's not empty... */}}
+    {{- if $desc }}
+      {{/* ...add it to the article schema. */}}
+      {{ $articleSchema = merge $articleSchema (dict "description" $desc) }}
+    {{ end -}}
+  {{- end -}} {{/* End of: getting and adding description */}}
+
+  {{/*
+    Try to find an image for the page:
+    First, look for an image named something like "my-image-social.jpg" (`*-social.*`).
+    If not found, look for any PNG, JPG, JPEG, or WEBP image (`*.{png,jpg,jpeg,webp}`).
+    `.Resources.GetMatch` finds a page resource matching the pattern.
+  */}}
+  {{- $pageImage := .Resources.GetMatch "*-social.*" | default (.Resources.GetMatch "*.{png,jpg,jpeg,webp}") -}}
+  {{/* If an image is found... */}}
+  {{- with $pageImage -}}
+    {{/* Create a structured piece of data for the image object. */}}
+    {{- $imgObj := dict "@type" "ImageObject" "url" .Permalink "width" .Width "height" .Height -}}
+    {{/*
+      Add the image object to the article schema.
+      `slice $imgObj` creates a list containing just this one image object,
+      as schema.org expects the "image" property to be a list, even if there's only one.
+    */}}
+    {{- $articleSchema = merge $articleSchema (dict "image" (slice $imgObj)) -}}
+  {{- end -}} {{/* End of: if an image is found */}}
+
+  {{/*
+    Try to get the author's name from the page's front matter (`.Page.Params.author`).
+    If not found, fall back to a site-wide author name (`.Site.Params.authorName`).
+  */}}
+  {{- $author := .Page.Params.author | default .Site.Params.authorName -}}
+  {{/* If an author name is found... */}}
+  {{- with $author -}}
+    {{/* ...add author information (as a "Person") to the article schema. */}}
+    {{- $articleSchema = merge $articleSchema (dict "author" (dict "@type" "Person" "name" .)) -}}
+  {{- end -}} {{/* End of: if an author is found */}}
+
+  {{/* If publisher data was prepared... */}}
+  {{- if gt (len $publisherData) 0 }}
+    {{/* ...add it to the article schema. */}}
+    {{- $articleSchema = merge $articleSchema (dict "publisher" $publisherData) -}}
+  {{- end -}}
+
+  {{/* If the creation and modification dates are different... */}}
+  {{- if ne $dateMachine $modDateMachine -}}
+    {{/* ...add the modification date. */}}
+    {{- $articleSchema = merge $articleSchema (dict "dateModified" $modDateMachine) -}}
+  {{- end -}}
+
+  {{/* `gt .WordCount 0` checks if the page's word count is greater than 0. */}}
+  {{- if gt .WordCount 0 }}
+    {{/* If so, add the word count to the article schema. */}}
+    {{- $articleSchema = merge $articleSchema (dict "wordCount" .WordCount) -}}
+  {{- end -}}
+
+  {{/* `gt .ReadingTime 0` checks if the page's estimated reading time (in minutes) is greater than 0. */}}
+  {{- if gt .ReadingTime 0 }}
+    {{/*
+      If so, add the reading time.
+      `printf "PT%dM"` formats it as "PT<minutes>M" (e.g., "PT5M" for 5 minutes),
+      which is the ISO 8601 duration format expected by schema.org.
+    */}}
+    {{- $articleSchema = merge $articleSchema (dict "timeRequired" (printf "PT%dM" .ReadingTime)) -}}
+  {{- end -}}
+
+  {{/* Check if keywords are defined in the page's front matter (`.Params.keywords`). */}}
+  {{- with .Params.keywords -}}
+    {{/* If there's at least one keyword... */}}
+    {{- if gt (len .) 0 -}}
+      {{/* Create an empty list to hold cleaned keywords. */}}
+      {{- $clean := slice -}}
+      {{/* `range .` loops through each keyword provided. The `.` here refers to the list of keywords. */}}
+      {{- range . }}
+        {{/*
+          For each keyword, clean it (remove HTML, trim spaces) and add it to the `$clean` list.
+          The `.` inside this range refers to the individual keyword string.
+        */}}
+        {{ $clean = $clean | append (. | plainify | strings.TrimSpace) }}
+      {{ end -}} {{/* End of: looping through keywords */}}
+      {{/* Add the list of cleaned keywords to the article schema. */}}
+      {{- $articleSchema = merge $articleSchema (dict "keywords" $clean) -}}
+    {{- end -}}
+  {{- end -}} {{/* End of: if keywords are defined */}}
+
+  {{/*
+    `.Parent` refers to the parent section of the current page (e.g., if this is a blog post,
+    the parent might be the main "blog" section).
+  */}}
+  {{- with .Parent -}}
+    {{/*
+      If the parent section is not the homepage (`ne .Kind "home"`)
+      AND its URL is different from the site's base URL (to avoid self-referencing for top-level sections)...
+    */}}
+    {{- if and (ne .Kind "home") (.Permalink | ne $.Site.BaseURL) -}}
+      {{/*
+        ...add information about this parent section to the article schema,
+        indicating that this article is "isPartOf" that parent web page.
+      */}}
+      {{- $articleSchema = merge $articleSchema (dict "isPartOf" (dict "@type" "WebPage" "@id" .Permalink)) -}}
+    {{- end -}}
+  {{- end -}} {{/* End of: if there's a relevant parent section */}}
+
+  {{/* Store this completed article schema as the specific schema for this page. */}}
+  {{- $specificSchema = $articleSchema -}}
+{{- end -}} {{/* End of: if it's a content page (article, doc, etc.) */}}
+
+{{/* == OUTPUT MAIN SCHEMA == */}}
+{{/* If specific schema data was actually prepared for this page (i.e., it's not empty)... */}}
+{{- if gt (len $specificSchema) 0 }}
+  {{/*
+    Combine the `$schemaBase` (which has "@context": "https://schema.org")
+    with the `$specificSchema` (which has the details for this page type).
+  */}}
+  {{- $schema := merge $schemaBase $specificSchema }}
+{{/*
+  This `<script>` tag is where the JSON-LD structured data will be placed in the HTML.
+  `type="application/ld+json"` tells browsers and search engines that the content is JSON-LD.
+*/}}
+<script type="application/ld+json">
+{{/*
+  This line outputs the combined schema data.
+  IMPORTANT NOTE: Standard Hugo requires `{{- $schema | jsonify | safeHTML }}` here.
+  `jsonify` converts the Hugo data structure (`$schema`) into a proper JSON string.
+  `safeHTML` ensures it's printed correctly without being HTML-escaped.
+  If `{{- $schema }}` alone works for you, your Hugo environment might have
+  a non-standard behavior or customization where it automatically converts maps to JSON
+  when outputted directly. This is unusual and might not be portable.
+*/}}
+{{- $schema  }}
+</script>
+{{- end -}} {{/* End of: if specific schema data exists */}}
+
+{{/* == BREADCRUMB SCHEMA == */}}
+{{/*
+  This generates schema for breadcrumbs (e.g., Home > Blog > My Article).
+  It runs if:
+  `(not .IsHome)`: The page is NOT the homepage.
+  `(gt (len .CurrentSection.Sections) 0)`: The current page's section has parent sections
+    (meaning it's not a top-level section itself, so breadcrumbs make sense).
+  `.CurrentSection.Sections` gives a list of parent sections.
+*/}}
+{{- if and (not .IsHome) (gt (len .CurrentSection.Sections) 0) -}}
+  {{/* Initialize a counter for the breadcrumb item position, starting at 1. */}}
+  {{- $position := 1 -}}
+  {{/* Create an empty list to hold all the breadcrumb items. */}}
+  {{- $breadcrumbs := slice -}}
+
+  {{/*
+    Loop through the parent sections of the current page's section, in reverse order.
+    `.CurrentSection.Sections.Reverse` gives us the path from the top-level section down.
+    `$index` is the item number in the loop (0, 1, 2...), `$section` is the actual section data.
+  */}}
+  {{- range $index, $section := .CurrentSection.Sections.Reverse -}}
+    {{/*
+      For each parent section, create a breadcrumb list item.
+      `"@type": "ListItem"` defines it as a breadcrumb item.
+      `"position": $position` sets its order.
+      `"name": $section.Title` uses the section's title as the breadcrumb text.
+      `"item": $section.Permalink` uses the section's URL as the link.
+      Then, add this item to our `$breadcrumbs` list.
+    */}}
+    {{- $breadcrumbs = $breadcrumbs | append (dict "@type" "ListItem" "position" $position "name" $section.Title "item" $section.Permalink) -}}
+    {{/* Increment the position counter for the next item. */}}
+    {{- $position = add $position 1 -}}
+  {{- end -}} {{/* End of: looping through parent sections */}}
+
+  {{/*
+    Finally, add the current page itself as the last item in the breadcrumbs.
+    `.Title` is the current page's title.
+    `.Permalink` is the current page's URL.
+  */}}
+  {{- $breadcrumbs = $breadcrumbs | append (dict "@type" "ListItem" "position" $position "name" .Title "item" .Permalink) -}}
+
+  {{/*
+    Create the main structured data for the breadcrumb list.
+    `"@type": "BreadcrumbList"` tells search engines this is a list of breadcrumbs.
+    `"itemListElement": $breadcrumbs` includes all the breadcrumb items we just created.
+  */}}
+  {{- $breadcrumbSchema := dict
+    "@context" "https://schema.org"
+    "@type" "BreadcrumbList"
+    "itemListElement" $breadcrumbs
+  -}}
+
+{{/* Output the breadcrumb schema in its own script tag. */}}
+<script type="application/ld+json">
+{{/*
+  Similar to the main schema output, this prints the breadcrumb schema.
+  Again, standard Hugo would typically use `{{- $breadcrumbSchema | jsonify (dict "indent" "  ") | safeHTML }}`.
+  The `(dict "indent" "  ")` part for `jsonify` would make the JSON output nicely formatted with spaces,
+  which is good for readability if you inspect the source code but not strictly necessary for machines.
+*/}}
+{{- $breadcrumbSchema }}
+</script>
+{{- end -}} {{/* End of: if breadcrumbs should be generated */}}

@@ -1,0 +1,193 @@
+{{- /*
+  Schema.org JSON-LD Partial — Alpha Hugo Theme
+  Generates Schema.org structured data in JSON-LD format, embedded in the page <head>.
+
+  This partial uses Hugo dictionaries and the `jsonify` function for robust JSON generation.
+
+  Supported Schema Types:
+  1. Website:
+  - Generated for the homepage (`.IsHome`).
+  - Key properties: `url`, `name`, `description`, `inLanguage`, `publisher`,
+  `dateCreated`, `dateModified`.
+  2. TechArticle:
+  - Generated for regular pages (`.IsSection false`) of type "docs" (`.Page.Type "docs"`).
+  - Key properties: `headline`, `description`, `image`, `author`, `publisher`,
+  `datePublished`, `dateModified`, `wordCount`, `timeRequired`, `inLanguage`,
+  `isAccessibleForFree`, `keywords`, `isPartOf`, `mainEntityOfPage`.
+
+  Dependencies (General):
+  - `.Date`, `.Lastmod` for timestamps.
+  - `.Permalink` for URLs.
+  - `.Lang` for language.
+  - `.Site.Title` for site name.
+
+  Dependencies (Site Parameters - examples, adjust to your theme's actual params):
+  - `description` (string): General site description (used if homepage `seo_description` is missing).
+  - `orgName` (string): Organization name for publisher.
+  - `orgLogo` (string): Path to organization logo (e.g., "images/logo.png").
+  - `authorName` (string): Default author name for articles if not set on page.
+
+  Dependencies (Page Parameters - examples):
+  - Homepage (`Website`):
+  - `seo_description` (string): Description for the homepage.
+  - Docs Pages (`TechArticle`):
+  - `.Description` (string): Article description.
+  - `author` (string): Article author's name.
+  - `keywords` (array of strings).
+  - Page Resources for images (e.g., "*-social.*", "*.jpg").
+  - `.Parent` for `isPartOf` relationship.
+
+  Theme Repo: https://github.com/oxypteros/alpha-theme
+  */
+-}}
+
+{{- /* Format dates to ISO-8601 */}}
+{{- $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" -}}
+{{- $modDateMachine := .Lastmod | time.Format "2006-01-02T15:04:05-07:00" -}}
+
+{{- /* Initialize base of schema information*/}}
+{{- $schemaBase := dict "@context" "https://schema.org" -}}
+{{- $specificSchema := dict -}}
+
+{{/* Publisher (Person/site owner) */}}
+{{- $publisherData := dict -}}
+{{- with or .Page.Params.author .Site.Params.author -}}
+  {{- $orgData := dict "@type" "Person" "name" . -}}
+  {{- with $.Site.Params.logo_path -}}
+    {{- with resources.Get . -}}
+      {{- $orgData = merge $orgData (dict "logo" (dict "@type" "ImageObject" "url" .Permalink "width" .Width "height" .Height)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $.Site.BaseURL -}}
+    {{- $orgData = merge $orgData (dict "url" .) -}}
+  {{- end -}}
+  {{- $publisherData = $orgData -}}
+{{- end -}}
+
+{{/* == WEBSITE SCHEMA == */}}
+{{- if .IsHome -}}
+  {{- $websiteSchema := dict
+    "@type" "WebSite"
+    "@id" .Permalink
+    "url" .Permalink
+    "name" .Site.Title
+    "inLanguage" .Lang
+    "dateCreated" $dateMachine
+  -}}
+  {{- /* For advanced SEO use different but content aligned description from frontmatter key seo_description*/}}
+  {{- with .Page.Params.seo_description | default .Site.Params.description -}}
+    {{- $desc := . | plainify | strings.TrimSpace -}}
+    {{- if $desc }}
+      {{ $websiteSchema = merge $websiteSchema (dict "description" $desc) }}
+    {{ end -}}
+  {{- end -}}
+
+  {{- if gt (len $publisherData) 0 }}
+    {{- $websiteSchema = merge $websiteSchema (dict "publisher" $publisherData) -}}
+  {{- end -}}
+
+  {{- if ne $dateMachine $modDateMachine -}}
+    {{- $websiteSchema = merge $websiteSchema (dict "dateModified" $modDateMachine) -}}
+  {{- end -}}
+
+  {{- $specificSchema = $websiteSchema -}}
+
+  {{/* == CONTENT PAGE SCHEMA == */}}
+{{- else if and (not .IsSection) (in (slice "docs" "post" "article" "page" "story") .Page.Type) -}}
+  {{- $type := "Article" -}}
+  {{- if eq .Layout "story" }}{{ $type = "CreativeWork" }}{{ end }}
+
+  {{- $articleSchema := dict
+    "@type" $type
+    "@id" .Permalink
+    "headline" .Title
+    "url" .Permalink
+    "datePublished" $dateMachine
+    "inLanguage" .Lang
+    "isAccessibleForFree" true
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+  -}}
+
+  {{- with .Description | default .Summary -}}
+    {{- $desc := . | plainify | strings.TrimSpace -}}
+    {{- if $desc }}
+      {{ $articleSchema = merge $articleSchema (dict "description" $desc) }}
+    {{ end -}}
+  {{- end -}}
+
+  {{- $pageImage := .Resources.GetMatch "*-social.*" | default (.Resources.GetMatch "*.{png,jpg,jpeg,webp}") -}}
+  {{- with $pageImage -}}
+    {{- $imgObj := dict "@type" "ImageObject" "url" .Permalink "width" .Width "height" .Height -}}
+    {{- $articleSchema = merge $articleSchema (dict "image" (slice $imgObj)) -}}
+  {{- end -}}
+
+  {{- $author := .Page.Params.author | default .Site.Params.authorName -}}
+  {{- with $author -}}
+    {{- $articleSchema = merge $articleSchema (dict "author" (dict "@type" "Person" "name" .)) -}}
+  {{- end -}}
+
+  {{- if gt (len $publisherData) 0 }}
+    {{- $articleSchema = merge $articleSchema (dict "publisher" $publisherData) -}}
+  {{- end -}}
+
+  {{- if ne $dateMachine $modDateMachine -}}
+    {{- $articleSchema = merge $articleSchema (dict "dateModified" $modDateMachine) -}}
+  {{- end -}}
+
+  {{- if gt .WordCount 0 }}
+    {{- $articleSchema = merge $articleSchema (dict "wordCount" .WordCount) -}}
+  {{- end -}}
+
+  {{- if gt .ReadingTime 0 }}
+    {{- $articleSchema = merge $articleSchema (dict "timeRequired" (printf "PT%dM" .ReadingTime)) -}}
+  {{- end -}}
+
+  {{- with .Params.keywords -}}
+    {{- if gt (len .) 0 -}}
+      {{- $clean := slice -}}
+      {{- range . }}
+        {{ $clean = $clean | append (. | plainify | strings.TrimSpace) }}
+      {{ end -}}
+      {{- $articleSchema = merge $articleSchema (dict "keywords" $clean) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- with .Parent -}}
+    {{- if and (ne .Kind "home") (.Permalink | ne $.Site.BaseURL) -}}
+      {{- $articleSchema = merge $articleSchema (dict "isPartOf" (dict "@type" "WebPage" "@id" .Permalink)) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $specificSchema = $articleSchema -}}
+{{- end -}}
+
+{{/* == OUTPUT MAIN SCHEMA == */}}
+{{- if gt (len $specificSchema) 0 }}
+  {{- $schema := merge $schemaBase $specificSchema }}
+<script type="application/ld+json">
+{{- $schema  }}
+</script>
+{{- end -}}
+
+{{/* == BREADCRUMB SCHEMA == */}}
+{{- if and (not .IsHome) (gt (len .CurrentSection.Sections) 0) -}}
+  {{- $position := 1 -}}
+  {{- $breadcrumbs := slice -}}
+
+  {{- range $index, $section := .CurrentSection.Sections.Reverse -}}
+    {{- $breadcrumbs = $breadcrumbs | append (dict "@type" "ListItem" "position" $position "name" $section.Title "item" $section.Permalink) -}}
+    {{- $position = add $position 1 -}}
+  {{- end -}}
+
+  {{- $breadcrumbs = $breadcrumbs | append (dict "@type" "ListItem" "position" $position "name" .Title "item" .Permalink) -}}
+
+  {{- $breadcrumbSchema := dict
+    "@context" "https://schema.org"
+    "@type" "BreadcrumbList"
+    "itemListElement" $breadcrumbs
+  -}}
+
+  <script type="application/ld+json">
+{{- $breadcrumbSchema }}
+</script>
+{{- end -}}

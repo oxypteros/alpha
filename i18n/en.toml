@@ -1,0 +1,239 @@
+# English translations for the Alpha theme
+[Homepage]
+other = "Homepage"
+
+
+[ToggleMenu]
+other = "Open, close main menu"
+
+[ColorScheme]
+other = "Change color scheme"
+
+[PreRecentLinkText]
+other = "See our latest thoughts turned into words, in the"
+
+[PreFeatLinkText]
+other = "Revisit a selected piece that still echoes through time,"
+
+[PostFeatLinkText]
+other = ""
+
+[WrittenBy]
+other = "Written by"
+
+[AllRights]
+other = "All rights reserved."
+
+[SomeRights]
+other = "Some rights reserved."
+
+[NoRights]
+other ="No rights reserved."
+
+[LicensedUnder]
+other = "Licensed under"
+
+[Copyright]
+other = "Copyright"
+
+[Published]
+other = "Published:"
+
+[LastEdition]
+other = "Last Edition:"
+
+[PreviousPart]
+other = "Previous Part"
+
+[NextPart]
+other = "Next Part"
+
+[RecommendedPosts]
+other = "Recommended"
+
+[New]
+other = "new"
+
+[NoCookiesSnackBar]
+other = "does not use cookies and only collects anonymous usage statistics."
+
+[MoreInformation]
+other = "More Information"
+
+[PublishedOn]
+other = "Published on"
+
+[UpdatedOn]
+other = "Updated on"
+
+[Category]
+other = "Category:"
+
+[TaggedAs]
+other = "Tagged as:"
+
+[SettingsBtn]
+other = "Settings button"
+
+[EditOnGithub]
+other = "Edit this page on Github"
+
+[AnomymousStats]
+other = "Anomymous statistics"
+
+[CollectedStats]
+other = "We collect anonymous stats to refine functionality."
+
+[PrefetchContent]
+other = "Prefetch Content"
+
+[PrefetchLinks]
+other = "Some links are prefetched for smoother browsing."
+
+[Copy]
+other = "Copy"
+
+# Shortcodes
+[AvatarOf]
+other = "Avatar of"
+
+# aria-labels
+[SearchBtn]
+other = "Activate search"
+
+[ColorSchemeBtn]
+other = "Toggle color scheme"
+
+[NoTranslation]
+other = "Not translated"
+
+[ChangeLanguage]
+other = "Change the language"
+
+[ReadThePost]
+other = "Read the post"
+
+[PoweredByPagefind]
+other = "Powered by Pagefind"
+
+[Close]
+other = "Close"
+
+[CopyToClipboard]
+other = "Copy to clipboard"
+
+[SettingsOpened]
+other = "Settings modal is open"
+
+[SettingsClosed]
+other = "Settings modal is closed"
+
+[TrackingDisabled]
+other = "Anomymous tracking is disabled"
+
+[TrackingEnabled]
+other = "Anomymous tracking is enabled"
+
+[PrefetchDisabled]
+other = "Prefetch function is disabled"
+
+[PrefetchEnabled]
+other = "Prefetch function is enabled"
+# Ocd
+[OcdOn]
+other = "on:"
+[OcdImageError]
+other = "Image Error"
+[OcdImageNotFound]
+other = "Image not found on page"
+[OcdImageMissingSolution]
+other = "Confirm the image exists and the name in the markdown image instruction matches perfectly."
+[OcdImageAltMissing]
+other = "Image Alt Missing"
+[OcdImageAltText]
+other = "Alternative text is missing from image"
+[OcdImageAltMissingSolution]
+other = "Enter an image description in the markdown image instruction."
+[OcdScInputError]
+other = "Shortcode Input Error"
+[OcdScNumList100]
+other = "Invalid style value in the numbered list shortcode, on:"
+[OcdScSpecifiedStyle]
+other = "The specified style,"
+[OcdScNotRecognized]
+other = "is not recognized."
+[OcdScAvailableStyles]
+other = "Available Styles:"
+[OcdScParamError]
+other = "Shortcode Parameter Error"
+[OcdScNumList101]
+one = "Invalid parameter detected in the numbered list shortcode, on:"
+other = "Invalid parameters detected in the numbered list shortcode, on:"
+[OcdScParameter]
+one = "The parameter"
+other = "The parameters"
+[OcdScAcceptedParameters]
+other = "Accepted parameters: "
+[OcdScTextSnippet111]
+one = "Invalid parameter in the text snippet shortcode on this page:"
+other = "Invalid parameters in the text snippet shortcode on this page:"
+[OcdScHero121]
+one = "Invalid parameter detected in the hero shortcode, on:"
+other = "Invalid parameters detected in the hero shortcode, on:"
+[OcdScContentError]
+other = "Shortcode Content Error"
+[OcdScHero122-3]
+other = "Missing link text in the hero shortcode on page:"
+[OcdScLinkNotRendered]
+other = "is missing, so the link will not be rendered."
+[OcdScFillParameter]
+other = "Provide a value for the parameter"
+[OcdScOrDeleteParameter]
+other = "or remove"
+[OcdScStatusCard130]
+other = "Invalid type value in the status card shortcode, on:"
+[OcdScSpecifiedType]
+other = "The specified type,"
+[OcdScStatusCard131]
+one = "Invalid parameter detected in the status card shortcode, on:"
+other = "Invalid parameters detected in the status card shortcode, on:"
+[OcdScCta141]
+one = "Invalid parameter detected in the cta shortcode, on:"
+other = "Invalid parameters detected in the cta shortcode, on:"
+[OcdScCta142]
+other = "Missing link text in the cta shortcode on:"
+[OcdScFaq151]
+one = "Invalid parameter detected in the faq shortcode, on:"
+other = "Invalid parameters detected in the faq shortcode, on:"
+[OcdScAbout161]
+one = "Invalid parameter detected in the about shortcode, on:"
+other = "Invalid parameters detected in the about shortcode, on:"
+[OcdScAbout162]
+other = "Missing image for shortcode about on:"
+[OcdScIsSetButTheFile]
+other = "is set, but the file"
+[OcdScWasNotFound]
+other = "was not found."
+[OcdScValidValue]
+other = "Provide a valid value for the parameter"
+[OcdScOrEnsureThat]
+other = "or ensure that"
+[OcdScExistsAt]
+other = "exists at" 
+[OcdScSocial171]
+one = "Invalid parameter detected in the social shortcode, on:"
+other = "Invalid parameters detected in the social shortcode, on:"
+[OcdScSocial172]
+other = "Missing menu for the social shortcode on page:"
+[OcdScCreatePopulate]
+other = "Create or populate a"
+[OcdScMenuOn]
+other = "menu on"
+[OcdScSocial173]
+other = "Invalid parameter value for the social shortcode on:"
+[OcdScThe]
+other = "The"
+[OcdScParameterValue]
+other = "parameter value"
+[OcdScIsInvalid]
+other = "is invalid."

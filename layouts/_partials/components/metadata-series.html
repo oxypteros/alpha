@@ -1,0 +1,46 @@
+{{- /*
+  metadata-series.html (partial): Displays series and part information if defined in the page's frontmatter (`series` and/or `parts`).
+
+  Features:
+  - Displays the series name (from `series` frontmatter) as a link to its parent directory (`../`).
+  - Displays the part name (from `parts` frontmatter).
+
+  Purpose:
+  - Helps visitors understand if the content belongs to a series and which part they are currently reading. This creates a hierarchy similar to Book-Chapter for navigation and context.
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+{{- $series := .Page.Params.series }}
+{{- $parts := .Page.Params.parts }}
+{{- if or $series $parts }}
+  <div class="max-w-article flex w-full items-center justify-between text-lg">
+    <div class="flex w-1/2 shrink-0 items-center gap-1 text-base sm:gap-2">
+      {{- with $series }}
+        <svg
+          class="fill-on-sur-var dark:fill-on-sur-var-d size-4 shrink-0 sm:size-5"
+          aria-hidden="true"
+          width="20px"
+          height="20px"
+        >
+          <use href="#icon-series"></use>
+        </svg>
+        <a class="truncate text-right" href="../">{{ . }}</a>
+      {{- end }}
+    </div>
+    <div
+      class="flex w-1/2 shrink-0 items-center justify-end gap-1 text-base sm:gap-2"
+    >
+      {{- with $parts }}
+        <svg
+          class="fill-on-sur-var dark:fill-on-sur-var-d size-4 shrink-0 sm:size-5"
+          aria-hidden="true"
+          width="20px"
+          height="20px"
+        >
+          <use href="#icon-parts"></use>
+        </svg>
+        <span class="truncate text-right">{{ . }}</span>
+      {{- end }}
+    </div>
+  </div>
+{{- end }}

@@ -1,0 +1,82 @@
+{{- /*
+  css.html (partial): — Adds all necessary CSS files into the `<head>`.
+
+  Features:
+    - Conditionally loads Tailwind CSS or a standard pre-built CSS.
+    - Includes Pagefind UI CSS if Pagefind is enabled.
+    - Minifies and fingerprints CSS assets in production for optimal performance.
+    - Allows user overrides via a dedicated `override.css` file when not using Tailwind.
+
+  Dependencies:
+  - Theme-specific CSS files (`main.css`, `alpha.css`, `pagefind-ui.css`) are expected in `/assets/alpha/css/`.
+  - `/assets/css/override.css`.
+
+  More info about Hugo's Tailwind CSS processing:
+  https://gohugo.io/functions/css/tailwindcss/
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+{{- /* Conditional loading Tailwind css or pre-build */}}
+{{- if eq .Site.Params.tailwind_enabled true }}
+  {{- with (templates.Defer (dict "key" "global")) }}
+    {{- /* Tailwind css loader block */}}
+    {{- with resources.Get "alpha/css/main.css" }}
+      {{- $opts := dict
+        "minify" hugo.IsProduction
+        "inlineImports" true
+      }}
+      {{- with . | css.TailwindCSS $opts }}
+        {{- if hugo.IsProduction }}
+          {{- with . | fingerprint }}
+            <link
+              rel="stylesheet"
+              href="{{ .RelPermalink }}"
+              integrity="{{ .Data.Integrity }}"
+              crossorigin="anonymous"
+            />
+          {{- end }}
+        {{- else }}
+          <link rel="stylesheet" href="{{ .RelPermalink }}" />
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- else }}
+
+  {{- /* Pre-build css loader block */}}
+  {{- $main := resources.Get "alpha/css/alpha.css" -}}
+  {{- /* Get and concatenate the `override.css` to the end of `alpha.css` */}}
+  {{- $override := resources.Get "css/override.css" -}}
+  {{- $finalCss := slice $main $override | resources.Concat "alpha/css/styles.css" -}}
+  {{- with $finalCss -}}
+    {{- if eq hugo.Environment "development" }}
+      <link rel="stylesheet" href="{{ $finalCss.RelPermalink }}" />
+    {{- else }}
+      {{- $productionCss := $finalCss | minify | fingerprint }}
+      <link
+        rel="stylesheet"
+        href="{{ $productionCss.RelPermalink }}"
+        integrity="{{ .Data.Integrity }}"
+        crossorigin="anonymous"
+      />
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* Pagefind css loader block */}}
+{{- if eq .Site.Params.pagefind_enabled true }}
+  {{- with resources.Get "alpha/css/pagefind-ui.css" -}}
+    {{- if eq hugo.Environment "development" }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" />
+    {{- else }}
+      {{- with . | minify | fingerprint }}
+        <link
+          rel="stylesheet"
+          href="{{ .RelPermalink }}"
+          integrity="{{ .Data.Integrity }}"
+          crossorigin="anonymous"
+        />
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}

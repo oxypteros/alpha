@@ -1,0 +1,684 @@
+.ocd {
+  font-family: var(--ocd-sans);
+  --ocd-mono: "JetBrains Mono", monospace;
+  --ocd-sans: "Noto Sans", sans-serif;
+  --ocd-error: #ba1a1a;
+  --ocd-on-error: #fff;
+  --ocd-error-sur: #ffdad6;
+  --ocd-on-error-sur: #93000a;
+  --ocd-warning: #845400;
+  --ocd-on-warning: #fff;
+  --ocd-warning-sur: #ffdcb3;
+  --ocd-on-warning-sur: #8a3a00;
+  --ocd-solution: #2E4708;
+  --ocd-on-solution: #fff;
+  --ocd-solution-sur: #cceea1;
+  --ocd-on-solution-sur: #516d2f;
+  --ocd-dark: #000;
+  --ocd-light: #fff;
+  --ocd-pri: #3e4759;
+  --ocd-on-pri: #dae2f9;
+  --ocd-pri-sur: #bec6dc;
+  --ocd-on-pri-sur: #283141;
+  --ocd-pri-out: #8e9099;
+  --ocd-pri-out-var: #44474e;
+  /** Console */
+  --ocd-con-sur: #fff;
+  --ocd-on-con-sur: #171d1e;
+  --ocd-con-sur-var: #faf9f9;
+  --ocd-on-con-sur-var: #3e4759;
+  --ocd-con-out: #6f797a;
+  --ocd-con-out-var: #bfc8ca;
+  --ocd-update: orange;
+  --ocd-no-update: #319400;
+  --ocd-con-error:#7D1212;
+  --ocd-con-solution: #216201;
+ 
+}
+.dark .ocd {
+  --ocd-con-sur: #0e1415;
+  --ocd-on-con-sur: #dee3e5;
+  --ocd-con-sur-var: #252b2c;
+  --ocd-on-con-sur-var: #bec6dc;
+  --ocd-con-out: #899294;
+  --ocd-con-out-var: #3f484a;
+  --ocd-update: yellow;
+  --ocd-con-error: #F0A0A0;
+  --ocd-con-solution:#4CD00A;
+}
+/** Cards **/
+.ocd-card {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 70ch;
+  margin: 1rem auto;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    svg {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+    .ocd-title {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }
+  .ocd-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    padding-top: 1.5rem;
+    font-size: 1rem;
+    overflow-x: auto;
+  }
+  footer {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 1rem;
+    a {
+      font-size: 0.85rem;
+    }
+  }
+  p {
+    margin-bottom: 0.5rem;
+    padding: 0 0.5rem;
+  }
+  a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  a:after {
+    content: none;
+  }
+}
+.ocd-card-error {
+  background-color: var(--ocd-error-sur);
+  border: 1px solid var(--ocd-error);
+  color: var(--ocd-dark);
+
+  .ocd-title {
+    color: var(--ocd-on-error-sur);
+  }
+  svg {
+    fill: var(--ocd-on-error-sur);
+  }
+  a {
+    color: var(--ocd-on-error-sur);
+    transition:
+      color 0.4s ease-in-out,
+      text-decoration-color 0.4s ease-in-out,
+      text-decoration-thickness 0.4s ease-in-out;
+  }
+  a:hover {
+    text-decoration-color: var(--ocd-error);
+    text-decoration-thickness: 2px;
+    color: var(--ocd-error);
+  }
+  hr {
+    border-top: 1px solid var(--ocd-on-error-sur);
+    height: 1px;
+    background-color: var(--ocd-on-error-sur);
+    margin: 0;
+  }
+}
+
+.ocd-mono {
+  font-family: var(--ocd-mono);
+  font-weight: 300;
+}
+
+.ocd-mono-error {
+  color: var(--ocd-on-error-sur);
+}
+.ocd-card-solution {
+  font-size: 0.9rem;
+}
+.ocd-mono-solution {
+  color: var(--ocd-solution);
+}
+/** Containers */
+.ocd-container {
+  position: fixed;
+  bottom: 3.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0 1rem;
+  pointer-events: none;
+  z-index: 9999;
+}
+.ocd-console-container {
+  position: fixed;
+  top: 20%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+  z-index: 9999;
+}
+
+/** FAB */
+.ocd-bottom-right {
+  align-items: flex-end;
+}
+.ocd-bottom-left {
+  align-items: flex-start;
+}
+
+.ocd-fab {
+  --opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: rgba(190, 198, 220, 0.5);
+  border-radius: 1rem;
+  color: var(--ocd-on-pri-sur);
+  pointer-events: auto;
+  transition:
+    background-color 0.4s ease-in-out,
+    box-shadow 0.4s ease-in-out,
+    border-color 0.4s ease-in-out,
+    color 0.4s ease-in-out;
+  z-index: 99999;
+  svg {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    stroke: var(--ocd-on-pri-sur);
+    transition: stroke 0.4s ease-in-out;
+  }
+}
+.ocd-fab:hover {
+  background-color: rgba(62, 71, 89, 0.9);
+  color: var(--ocd-on-pri);
+  border-color: var(--ocd-pri);
+  box-shadow:
+    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12),
+    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  svg {
+    stroke: var(--ocd-on-pri);
+  }
+}
+.dark .ocd-fab:hover {
+  box-shadow:
+    0 2px 2px 0 rgba(255, 255, 255, 0.08),
+    0 3px 1px -2px rgba(255, 255, 255, 0.06),
+    0 1px 5px 0 rgba(255, 255, 255, 0.12);
+}
+.ocd-fab-error {
+  background-color: var(--ocd-error);
+  svg {
+    stroke: var(--ocd-on-error);
+  }
+}
+.ocd-fab-error:hover {
+  background-color: var(--ocd-error-sur);
+  svg {
+    stroke: var(--ocd-on-error-sur);
+  }
+}
+
+/** OCD Settings modal */
+.ocd-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+  background-color: var(--ocd-pri);
+  border: 1px solid var(--ocd-pri-out);
+  border-radius: 0.375rem;
+  color: var(--ocd-on-pri);
+  pointer-events: auto;
+  z-index: 99999;
+}
+.ocd-settings {
+  header,
+  .ocd-settings-position,
+  .ocd-settings-console,
+  .ocd-settings-updates,
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+  header {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+    button {
+      svg {
+        fill: var(--ocd-pri-sur);
+      }
+    }
+    button:hover {
+      background-color: var(--ocd-pri-sur);
+      svg {
+        fill: var(--ocd-on-pri-sur);
+      }
+    }
+  }
+  .ocd-settings-position {
+    select {
+      flex-shrink: 0;
+      width: 7.8125rem;
+      height: 2.5rem;
+      padding: 0 0.3rem;
+      background-color: var(--ocd-pri-sur);
+      border: 1px solid var(--ocd-pri-out);
+      border-radius: 0.375rem;
+      color: var(--ocd-on-pri-sur);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition:
+        background-color 0.4s ease-in-out,
+        color 0.4s ease-in-out;
+    }
+    select:hover {
+      background-color: var(--ocd-on-pri);
+      color: var(--ocd-pri);
+    }
+  }
+  footer {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.4s ease-in-out;
+    }
+    a:hover {
+      color: var(--ocd-light);
+    }
+    .ocd-version {
+      display:flex;
+      align-items: center;
+      gap: .5rem;
+      svg{
+        width: 1.3rem;
+        height: 1.3rem;
+        stroke: var(--ocd-on-pri);
+      }
+    }
+  }
+  h2 {
+    color: var(--ocd-light);
+    font-weight: 500;
+  }
+  p {
+    font-size: 0.9rem;
+  }
+  .ocd-settings-console button,
+  .ocd-settings-updates button {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 7.8125rem;
+    height: 2.5rem;
+    padding: 0 1rem;
+    background-color: var(--ocd-pri-sur);
+    border: 1px solid var(--ocd-pri-out);
+    border-radius: 999999px;
+    color: var(--ocd-on-pri-sur);
+    font-weight: 500;
+    transition:
+      background-color 0.4s ease-in-out,
+      color 0.4s ease-in-out;
+  }
+  .ocd-settings-console button:hover,
+  .ocd-settings-updates button:hover {
+    background-color: var(--ocd-on-pri);
+    color: var(--ocd-pri);
+  }
+}
+
+/** OCD Console */
+.ocd-console {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  min-height: 500px;
+  max-height: 600px;
+  padding: 1rem;
+  background-color: var(--ocd-con-sur);
+  border: 1px solid var(--ocd-con-out-var);
+  border-radius: 0.375rem;
+  color: var(--ocd-on-con-sur-var);
+}
+.ocd-console {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: 500;
+    .ocd-console-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      svg {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 1.5rem;
+        stroke: var(--ocd-on-con-sur-var);
+      }
+    }
+    button {
+      svg {
+        fill: var(--ocd-on-con-sur);
+      }
+    }
+    button:hover {
+      background-color: var(--ocd-pri);
+      svg {
+        fill: var(--ocd-on-pri);
+      }
+    }
+    
+  }
+  .ocd-utility-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.1rem;
+    margin: 0.5rem 0;
+    svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--ocd-on-con-sur-var);
+      transition: fill 0.4s ease-in-out;
+    }
+    button,
+    a {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 32px;
+      width: 32px;
+      border-radius: 99999px;
+      transition: background-color 0.4s ease-in-out;
+    }
+    button:hover,
+    a:hover {
+      background-color: var(--ocd-pri);
+      svg {
+        fill: var(--ocd-on-pri);
+      }
+    }
+
+  }
+  .ocd-console-content {
+    flex-grow: 1;
+    overflow: auto;
+    padding: 0.5rem 0.8rem;
+    background-color: var(--ocd-con-sur-var);
+    border: 1px solid var(--ocd-con-out-var);
+    border-radius: 0.375rem;
+  }
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+  }
+  footer{
+    padding: 0rem .5rem;
+  }
+}
+.ocd-console-entry {
+  font-family: var(--ocd-mono);
+}
+.ocd-console-code,
+.ocd-mono-con-error {
+  font-weight: 500;
+  color: var(--ocd-con-error);
+}
+.ocd-console-error-link {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-family: var(--ocd-sans);
+  color: var(--ocd-on-con-sur);
+}
+.ocd-console-error-link:hover {
+  
+  text-decoration-color: var(--ocd-on-con-sur-var);
+  color: var(--ocd-on-con-sur-var);
+}
+.ocd-console-explanation{
+  margin: 1rem 0 1rem 1.1rem;
+  font-family: var(--ocd-mono);
+  p {
+    font-size: .9rem;
+    margin: .2rem 0;
+  }
+  ul {
+    margin: .5rem 1rem;
+    font-size: .9rem;
+  }
+  li{
+    margin: 0.1rem;
+    padding-left: 0.5rem;
+  }
+  li::marker{
+    content: '*';
+    margin-right: .5rem;
+    color: var(--ocd-con-error);
+  }
+  a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    color: var(--ocd-on-con-sur);
+  }
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+.ocd-mono-con-error {
+  color: var(--ocd-con-error);
+}
+.ocd-mono-con-solution {
+  color: var(--ocd-con-solution);
+}
+.ocd-console-doc {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 1rem 0 2rem;
+  .hr {
+    border-top: 2px dashed var(--ocd-on-con-sur-var);
+  }
+  .hr-right{
+    flex-grow:1;
+  }
+  .hr-left {
+    width: 1.1rem;
+  }
+  a {
+
+    font-size: .9rem;
+  }
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    color: var(--ocd-on-con-sur);
+  }
+}
+.ocd-console-error {
+  border: 1px solid var(--ocd-error);
+}
+.ocd-con-no-updates {
+  display: flex;
+  align-items: center;
+  gap:.5rem;
+}
+.ocd-alpha-version,
+.ocd-hugo-version{
+  svg {
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+    margin-right: 0.2rem;
+  }
+}
+.ocd-version {
+  position: relative;
+  a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+    font-weight: 500;
+    color: var(--ocd-on-con-sur);
+  }
+  a:hover {
+    color: var(--ocd-on-con-sur-var);
+  }
+}
+.ocd-update {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin-left: 3px;
+  background-color: var(--ocd-update);
+  border-radius: 9999px;
+  box-shadow: 0 0 4px var(--ocd-update);
+}
+
+.ocd-update::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--ocd-update);
+  border-radius: 50%;
+  opacity: 0.6;
+  transform: translate(-50%, -50%);
+  animation: pulse 1.5s infinite ease-out;
+}
+
+.ocd-no-update {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin-left: 3px;
+  background-color: var(--ocd-no-update);
+  border-radius: 9999px;
+  box-shadow: 0 0 4px var(--ocd-no-update);
+}
+.ocd-check-error {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin-left: 3px;
+  background-color: var(--ocd-error);
+  border-radius: 9999px;
+  box-shadow: 0 0 4px var(--ocd-error);
+}
+.ocd-check-error::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--ocd-error);
+  border-radius: 50%;
+  opacity: 0.6;
+  transform: translate(-50%, -50%);
+  animation: pulse 1.5s infinite ease-out;
+}
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+button.ocd-close-button {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  width: 32px;
+  border-radius: 99999px;
+  transition: background-color 0.4s ease-in-out;
+  svg {
+    height: 20px;
+    width: 20px;
+    transition: fill 0.4s ease-in-out;
+  }
+}
+
+.ocd-update-shadow {
+  box-shadow:
+    0 3px 5px -1px rgba(255, 0, 0, 0.2),
+    0 6px 10px 0 rgba(255, 0, 0, 0.14),
+    0 1px 18px 0 rgba(158, 0, 0, 0.12);
+}
+/** OCD Utility rules */
+.ocd-shadow {
+  box-shadow:
+    0 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.14),
+    0 1px 18px 0 rgba(0, 0, 0, 0.12);
+}
+.dark .ocd-shadow {
+  box-shadow:
+    0 3px 5px -1px rgba(255, 255, 255, 0.01),
+    0 6px 10px 0 rgba(255, 255, 255, 0.03),
+    0 1px 18px 0 rgba(255, 255, 255, 0.01);
+}
+.ocd-no-select {
+  user-select: none;
+}
+.ocd-logo-alpha{
+  width: 1rem;
+  height: 1rem;
+  stroke: #3a494c;
+}
+.dark .ocd-logo-alpha {
+  stroke:#dcf5f9;
+}
+.ocd-hidden {
+  display: none;
+}

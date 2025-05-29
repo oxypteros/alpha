@@ -1,0 +1,32 @@
+# Params Configuration for the Alpha Theme
+# This file defines custom parameters specific to the Alpha theme.
+#
+# Documentation: https://alpha.oxypteros.com/docs/config/params-toml/
+
+
+# Header Settings
+pseudologo_enabled = true
+
+
+# Footer Settings
+established_year = "2025"
+motto = "\"Unleash your words\""
+
+
+# Performance Settings
+prefetch_enabled = true
+
+
+# Integrations
+pagefind_enabled = false
+goatcounter_prefix = ""
+
+
+# Visitor Settings
+noCookies_snackbar = true
+visitor_settings = true
+
+
+#Development Settings
+tailwind_enabled = false
+ocd_enabled = true

@@ -1,0 +1,296 @@
+{{- /*
+  hero.html (shortcode): Renders a hero element with 2 links
+
+  Target: _index.md
+  
+  Example:
+  {{< hero 
+    TITLE="" 
+    SUBTITLE="" 
+    BTN-TEXT="" 
+    BTN-LINK="" 
+    BTN-LABEL="" 
+    LINK-TEXT="" 
+    LINK="" 
+    LINK-LABEL="" 
+  >}}
+   
+  Params: 
+    - TITLE (string, optional): `h2` heading. Falls back to `.Page.Title` 
+    - SUBTITLE (string, optional): `h3` heading 
+    - BTN-TEXT (string, optional): link text for link 1 (button styled) 
+    - BTN-LINK (string, optional): `href` attribute for link 1 
+    - BTN-LABEL (string, optional): `aria-label` attribute for link 1 
+    - LINK-TEXT (string, optional): link text for link 2 
+    - LINK (string, optional): `href` attribute for link 2 
+    - LINK-LABEL (string, optional): `aria-label` attribute for link 2 
+   
+  Error handler: 
+    - warnf 
+    - OCD 
+   
+  Docs: https://alpha.oxypteros.com/docs/shortcodes/hero 
+  Repo: https://github.com/oxypteros/alpha-theme 
+*/}}
+
+{{- /* Case-insensitive parameter retrieval (default chaining) */}}
+{{- $fullTitle := .Get "TITLE" | default (.Get "Title") | default (.Get "title") | default .Page.Title }}
+{{- $fullSubtitle := .Get "SUBTITLE" | default (.Get "Subtitle") | default (.Get "subtitle") }}
+{{- $btnLink := .Get "BTN-LINK" | default (.Get "Btn-Link") | default (.Get "btn-link") }}
+{{- $btnTxt := .Get "BTN-TEXT" | default (.Get "Btn-Text") | default (.Get "btn-text")}}
+{{- $btnAria := .Get "BTN-LABEL" | default (.Get "Btn-Label") | default (.Get "btn-label") }}
+{{- $link := .Get "LINK" | default (.Get "Link") | default (.Get "link") }}
+{{- $linkTxt := .Get "LINK-TEXT" | default (.Get "Link-Text") | default (.Get "link-text") }}
+{{- $linkAria := .Get "LINK-LABEL" | default (.Get "Link-Label") | default (.Get "link-label") }}
+
+{{- /* Extract the main text and trailing punctuation for styling */ -}}
+{{- $title := substr $fullTitle 0 -1 }}
+{{- $titlePunctuation := substr $fullTitle -1 1 }}
+
+{{- $subtitle := substr $fullSubtitle 0 -1 }}
+{{- $subtitlePunctuation := substr $fullSubtitle -1 1 }}
+
+{{- /* Responsive title font size based on string length */ -}}
+{{- $titleLen := len $fullTitle }}
+{{- $titleFontSize := cond (ge $titleLen 30) "lg:text-7xl" "lg:text-8xl" }}
+
+{{- /* Context for error reporting (warnf, OCD)*/}}
+{{ $page := .Page.RelPermalink }}
+
+{{- /* warnf, OCD: Validate params manually against an allowlist. */}}
+{{- $allowedKeys := slice "title" "subtitle" "btn-link" "btn-text" "btn-label" "link" "link-text" "link-label" }}
+{{- $invalidKeys := slice }}
+
+
+{{- /* Invalid Parameter Error Handling (warnf, OCD) */}}
+
+{{- range $key, $value := .Params }}
+  {{- if not (in $allowedKeys (lower $key)) }}
+    {{- $invalidKeys = $invalidKeys | append $key }}
+  {{- end }}
+{{- end }}
+
+{{- if gt (len $invalidKeys) 0 }}
+  {{- /* Warnf for error: ocd-sc-121 */}}
+  {{- $errorCode := "ocd-sc-121" }}
+  {{- $invalidKeysString := delimit $invalidKeys ", " }}
+  {{- $errorMessage := printf "Invalid parameters: %s" $invalidKeysString }}
+  {{- $logMessage := printf "OcdError [%s] Page: %s |  %s" $errorCode $page $errorMessage }}
+  {{- warnf "%s" $logMessage }}
+
+  {{- /* OCD error card for: odc-sc-121 */}}
+  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+    <div
+      class="ocd ocd-card ocd-card-error ocd-shadow"
+      data-error="{{ $errorCode }}"
+    >
+      <header class="ocd-card-header">
+        <div class="ocd-title">
+          {{- i18n "OcdScParamError" . | default "Shortcode Parameter Error" }}
+        </div>
+        <svg aria-hidden="true" focusable="false">
+          <use href="#icon-error"></use>
+        </svg>
+      </header>
+      <div class="ocd-card-content">
+        <div>
+          <p>
+            {{- $count := len $invalidKeys }}
+            {{- i18n "OcdScNumList121" $count | default "Invalid parameter in the hero shortcode on this page:" }}
+            <a href="{{ $page }}">{{ .Page.Title }}</a>
+          </p>
+          <p>
+            {{- i18n "OcdScParameter" $count  | default "The parameters," }}&nbsp;
+            <span class="ocd-mono ocd-mono-error">{{ $invalidKeysString }}</span
+            >&nbsp;
+            {{ i18n "OcdScNotRecognized"  $count  | default "are not recognized." }}
+          </p>
+        </div>
+        <hr />
+        <p>
+          {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
+          <span class="ocd-mono-solution">TITLE</span>,
+          <span class="ocd-mono-solution">SUBTITLE</span>,
+          <span class="ocd-mono-solution">BTN-TEXT</span>,
+          <span class="ocd-mono-solution">BTN-LINK</span>,
+          <span class="ocd-mono-solution">BTN-LABEL</span>,
+          <span class="ocd-mono-solution">LINK-TEXT</span>,
+          <span class="ocd-mono-solution">LINK</span>,
+          <span class="ocd-mono-solution">LINK-LABEL</span>
+        </p>
+      </div>
+      <footer class="ocd-card-footer">
+        <a href="https://alpha.oxypteros.com/ocd/error-codes"
+          >{{ $errorCode }}</a
+        >
+      </footer>
+    </div>
+  {{- end }}
+{{- end }}
+
+{{- /* Missing Link Text Error Handling (warnf, OCD) */}}
+
+{{- if and (or $btnLink $link) (or (eq $btnTxt "") (eq $linkTxt "")) }}
+  {{- if and $btnLink (eq $btnTxt "") }}
+    {{- /* Warnf for error: ocd-sc-122 */}}
+    {{- $errorCode := "ocd-sc-122" }}
+    {{- $errorMessage := printf "Missing text for BTN-LINK with href: %s" $btnLink }}
+    {{- $logMessage := printf "OcdError [%s] - Page: %s |  %s" $errorCode $page $errorMessage }}
+    {{- warnf "%s" $logMessage }}
+
+    {{- /* OCD error card for: odc-sc-122 */}}
+    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+      <div
+        class="ocd ocd-card ocd-card-error ocd-shadow"
+        data-error="{{ $errorCode }}"
+      >
+        <header class="ocd-card-header">
+          <div class="ocd-title">
+            {{- i18n "OcdScContentError" . | default "Shortcode Content Error" }}
+          </div>
+          <svg aria-hidden="true" focusable="false">
+            <use href="#icon-error"></use>
+          </svg>
+        </header>
+        <div class="ocd-card-content">
+          <div>
+            <p>
+              {{- i18n "OcdScHero122-3" . | default "Missing link text in the hero shortcode on page:" }}
+              <a href="{{ $page }}">{{ .Page.Title }}</a>
+            </p>
+            <p>
+              {{- i18n "OcdScTheParameter" . | default "The parameter" }}&nbsp;
+              <span class="ocd-mono ocd-mono-error">BTN-TEXT</span>&nbsp;
+              {{ i18n "OcdScLinkNotRendered" . | default "is missing, so the link will not be rendered." }}
+            </p>
+          </div>
+          <hr />
+          <p>
+            {{- i18n "OcdScFillParameter" . | default "Provide a value for the parameter" }}
+            <span class="ocd-mono-solution">BTN-TEXT="Your Button Text"</span>
+            {{ i18n "OcdScOrDeleteParameter" . | default "or delete the" }}
+            <span class="ocd-mono ocd-mono-error"
+              >BTN-LINK="{{ $btnLink }}"</span
+            >
+          </p>
+        </div>
+        <footer class="ocd-card-footer">
+          <a href="https://alpha.oxypteros.com/ocd/error-codes"
+            >{{ $errorCode }}</a
+          >
+        </footer>
+      </div>
+    {{- end }}
+  {{- end }}
+  {{- if and $link (eq $linkTxt "") }}
+    {{- /* Warnf for error: ocd-sc-123 */}}
+    {{- $errorCode := "ocd-sc-123" }}
+    {{- $errorMessage := printf "Missing text for LINK with href: %s" $link }}
+    {{- $logMessage := printf "OcdError [%s] Page: %s | %s" $errorCode $page $errorMessage }}
+    {{- warnf "%s" $logMessage }}
+
+    {{- /* OCD error card for: odc-sc-123 */}}
+    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+      <div
+        class="ocd ocd-card ocd-card-error ocd-shadow"
+        data-error="{{ $errorCode }}"
+      >
+        <header class="ocd-card-header">
+          <div class="ocd-title">
+            {{- i18n "OcdScContentError" . | default "Shortcode Content Error" }}
+          </div>
+          <svg aria-hidden="true" focusable="false">
+            <use href="#icon-error"></use>
+          </svg>
+        </header>
+        <div class="ocd-card-content">
+          <div>
+            <p>
+              {{- i18n "OcdScHero122-3" . | default "Missing link text in the hero shortcode on page:" }}
+              <a href="{{ $page }}">{{ .Page.Title }}</a>
+            </p>
+            <p>
+              {{- i18n "OcdScTheParameter" . | default "The parameter" }}&nbsp;
+              <span class="ocd-mono ocd-mono-error">LINK-TEXT</span>&nbsp;
+              {{ i18n "OcdScLinkNotRendered" . | default "is missing, so the link will not be rendered." }}
+            </p>
+          </div>
+          <hr />
+          <p>
+            {{- i18n "OcdScFillParameter" . | default "Provide a value for the parameter" }}
+            <span class="ocd-mono-solution">LINK-TEXT="Your link text"</span>
+            {{ i18n "OcdScOrDeleteParameter" . | default "or remove" }}
+            <span class="ocd-mono ocd-mono-error">LINK="{{ $link }}"</span>
+          </p>
+        </div>
+        <footer class="ocd-card-footer">
+          <a href="https://alpha.oxypteros.com/ocd/error-codes"
+            >{{ $errorCode }}</a
+          >
+        </footer>
+      </div>
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* Shortcode Rendering */}}
+
+{{- if or $fullTitle $fullSubtitle }}
+  <div
+    class="text-on-sur-var dark:text-on-sur-var-d mb-32 mt-8 flex w-full max-w-7xl flex-col items-center px-4"
+  >
+    <div>
+      {{- /* ACCESSIBILITY: Provide full title/subtitle for screen readers.
+        Hide the visually styled versions from assistive tech because the content is duplicated. */}}
+      <h2 class="sr-only">{{- $fullTitle -}}</h2>
+      <h3 class="sr-only">{{- $fullSubtitle -}}</h3>
+      <h2
+        class="font-300 {{ $titleFontSize }}/25 text-center font-serif text-5xl/16 italic sm:text-7xl/23"
+        aria-hidden="true"
+      >
+        {{- $title -}}
+        <span class="text-pri dark:text-pri-d fade-in" aria-hidden="true"
+          >{{ $titlePunctuation -}}</span
+        >
+      </h2>
+      <h3
+        class="font-300 mt-15 mb-18 text-center text-2xl sm:text-3xl lg:text-4xl"
+        aria-hidden="true"
+      >
+        {{- $subtitle -}}
+        <span class="text-pri dark:text-pri-d" aria-hidden="true"
+          >{{- $subtitlePunctuation }}</span
+        >
+      </h3>
+    </div>
+    {{- if or (and $btnLink $btnTxt) (and $link $linkTxt) }}
+      <nav
+        class="my-8 flex w-full max-w-5xl flex-wrap items-center justify-center gap-12"
+      >
+        {{- if and $btnLink $btnTxt }}
+          <a
+            class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur rounded-full border px-5 py-3 text-center font-sans shadow-lg transition-all duration-400 ease-in-out hover:shadow-md"
+            href="{{- $btnLink -}}"
+            {{- with $btnAria }}
+              aria-label="{{ . }}"
+            {{- end }}
+            
+            >{{- $btnTxt -}}</a
+          >
+        {{- end }}
+        {{- if and $link $linkTxt }}
+          <a
+            class="text-on-sur-var hover:text-on-sur dark:text-on-sur-var-d dark:hover:text-on-sur-d after:bg-on-sur dark:after:bg-on-sur-d relative transition-colors duration-400 ease-in-out after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:transition-transform after:duration-400 after:content-[''] hover:after:scale-x-100"
+            href="{{- $link -}}"
+            {{- with $linkAria }}
+              aria-label="{{ . }}"
+            {{- end }}
+            data-prefetch="true" {{- /*JS Hook: prefetch.js*/}}
+          >
+            {{- $linkTxt -}}
+          </a>
+        {{- end }}
+      </nav>
+    {{- end }}
+  </div>
+{{- end }}

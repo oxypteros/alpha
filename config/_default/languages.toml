@@ -1,0 +1,21 @@
+# Languages Configuration for the Alpha Theme
+# This file defines the primary language and optional multilingual settings for 
+# the site.
+#
+# For multilingual sites, add additional language blocks as shown in the 
+# commented example below.
+#
+# Documentation:
+# - Language Settings: https://alpha.oxypteros.com/docs/config/languages-toml/
+# - Multilingual Setup: https://alpha.oxypteros.com/docs/multilingual
+
+
+[en]
+  weight = 1 # Lowest number set's the default language
+  languageName = "English"
+  languageCode = "en"
+
+#[fr]
+#  weight = 2
+#  languageName = "Français"
+#  languageCode = "fr"

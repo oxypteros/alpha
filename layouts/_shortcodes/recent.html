@@ -1,0 +1,125 @@
+{{- /*
+  recent.html (shortcode): Renders a list of the latest posts.
+
+  Target: _index.md
+
+  Example:
+  {{< recent TITLE="" LIMIT=""
+>}}
+
+Params: - TITLE (string, optional): H2 heading. - LIMIT (integer, optional):
+Number of items to show (Default: 4). Error handler: - warnf (To-Do) - OCD
+(To-Do) To-do: 1. Docs: https://alpha.oxypteros.com/docs/shortcodes/recent 2.
+Enable OCD Repo: https://github.com/oxypteros/alpha-theme */ -}}
+{{- /* Case-insensitive parameter retrieval (default chaining) */}}
+{{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
+{{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}
+
+{{- /* Validate limit value */}}
+{{- $isNumber := (printf "%v" $limit | findRE "^[1-9][0-9]*$") }}
+
+{{- $intNumber := 4 }}
+{{- $warnNumber := false }}
+
+{{- if $isNumber }}
+  {{- $intNumber = (index $isNumber 0 | int) }}
+{{- else if $limit }}
+  {{- $warnNumber = true }}
+{{- end }}
+
+{{- /* Shortcode Rendering */}}
+<div class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4">
+    {{- /* Optional title rendering. */}}
+    {{- with $title }}
+      <div
+        class="flex w-full items-center justify-center gap-4 sm:justify-normal"
+      >
+        <div
+          class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
+        ></div>
+        <h2 class="font-300 text-on-sur-var dark:text-on-sur-var-d text-3xl">
+          {{ $title }}
+        </h2>
+        <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
+      </div>
+    {{- end }}
+  <div class="mt-24 flex w-full flex-wrap items-center justify-center gap-25">
+    {{- range first $intNumber .Site.RegularPages.ByDate.Reverse }}
+      {{- /* Find the first letter of the title */}}
+      {{- $titleAccent := substr .Title 0 1 }}
+
+      {{- /* Display only the first category term of the taxonomy */}}
+      {{- $category := "" -}}
+      {{- with .GetTerms "categories" -}}
+        {{- if ge (len .) 1 -}}
+          {{- $category = (index . 0).LinkTitle -}}
+        {{- end -}}
+      {{- end -}}
+
+      {{- /* Display 'new' badge only if `date` < 7 days from last build */}}
+      {{- $new := gt .Date (now.AddDate 0 0 -7) }}
+      <a
+        class="group transition-drop-shadow relative mt-20 flex w-full max-w-sm justify-center rounded-md drop-shadow-md duration-300 ease-out hover:drop-shadow-xl"
+        href="{{ .Permalink }}"
+        aria-label="{{ i18n "ReadThePost" . | default "Read the post" }}"
+      >
+        <article
+          class="bg-sur/95 dark:bg-sur-var-d/95 border-out-var dark:border-out-var-d relative z-20 flex min-h-50 w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-md border p-4"
+        >
+          {{- if $new }}
+            {{- $date := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+            <div
+              class="text-on-sur-var dark:text-on-sur-var-d font-400 font-inter border-out-var dark:border-out-var-d bg-sur dark:bg-out-var-d absolute top-2 -left-5 z-30 flex h-6 w-20 -rotate-45 transform items-center justify-center border text-center text-xs"
+            >
+              <time datetime="{{ $date }}"
+                >{{ i18n "New" . | default "new" }}</time
+              >
+            </div>
+          {{- end }}
+          <h2
+            class="dark:text-on-sur-var-d font-300 text-on-sur-var group-hover:text-on-sur dark:group-hover:text-on-sur-d flex max-h-full w-full grow items-center justify-center overflow-y-hidden text-center font-serif text-2xl"
+          >
+            {{ .Title }}
+          </h2>
+          {{- if or .Page.Params.series $category }}
+            <footer
+              class="text-on-sur-var dark:text-on-sur-var-d flex w-full items-center justify-between text-xs"
+            >
+              <div class="flex w-1/2 shrink-0 items-center gap-1">
+                {{ with .Page.Params.series }}
+                  <svg
+                    class="fill-on-sur-var dark:fill-on-sur-var-d size-4 shrink-0"
+                    aria-hidden="true"
+                  >
+                    <use href="#icon-series"></use>
+                  </svg>
+                  <span class="truncate text-right">{{ . }}</span>
+                {{- end }}
+              </div>
+              <div class="flex w-1/2 shrink-0 items-center justify-end gap-1">
+                {{- with $category }}
+                  <svg
+                    class="fill-on-sur-var dark:fill-on-sur-var-d size-4 shrink-0"
+                    aria-hidden="true"
+                  >
+                    <use href="#icon-category"></use>
+                  </svg>
+                  <span class="truncate text-right">{{ . }}</span>
+                {{- end }}
+              </div>
+            </footer>
+          {{- else }}
+            {{- /* Maintain the card layout if no series/category */}}
+            <div class="h-4 w-full"></div>
+          {{- end }}
+        </article>
+        <div
+          class="text-shadow font-500 text-on-sur-var transition-top absolute top-0 z-10 font-serif text-[10rem]/1 duration-300 ease-out group-hover:-top-10 group-focus:-top-10"
+          aria-hidden="true"
+        >
+          {{ $titleAccent }}
+        </div>
+      </a>
+    {{- end }}
+  </div>
+</div>

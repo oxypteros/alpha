@@ -1,0 +1,40 @@
+{{- /*
+  utility.html (layout): Defines the main HTML structure for Alpha's utility layout.
+
+  Includes:
+  - Page `<h1>`
+  - Content block
+
+  Dependencies:
+  - `partial "components/metadata-icon-date.html"`
+  - `partial "components/recommended-posts.html"`
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/}}
+  
+{{- define "main" }}
+  <div class="flex flex-col items-center">
+    <article class="mb-64 flex w-full max-w-7xl flex-col items-center px-4">
+      <header class="mt-16 mb-8 flex w-full flex-col items-center">
+        <div class="max-w-story w-full text-lg">
+          {{- if eq .Page.Params.show_date true }}
+            {{ partial "components/metadata-icon-date.html" . }}
+          {{- end }}
+        </div>
+        <h1
+          class="dark:text-on-sur-var-d font-300 text-on-sur-var mt-32 mb-16 w-full px-4 text-center text-6xl leading-normal"
+        >
+          {{ .Title }}
+        </h1>
+      </header>
+      <div
+        class="page-content max-w-story mx-auto w-full text-lg leading-normal"
+      >
+        {{ .Content }}
+      </div>
+    </article>
+    <div class="mb-header w-full max-w-7xl px-4">
+      {{ partial "components/recommended-posts.html" . }}
+    </div>
+  </div>
+{{- end }}

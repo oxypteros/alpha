@@ -1,0 +1,93 @@
+{{- /*
+  navigation-series.html (partial): Displays navigational links to the next and previous parts of a series, based on `series` and `weight` frontmatter parameters.
+
+  Features:
+  - Filters pages belonging to the same series as the current page.
+  - Sorts these series pages based on their `weight` frontmatter parameter.
+  - Displays button-styled links to the next page (higher weight) and the previous page (lower weight) in the series.
+  - Renders nothing if the current page is not part of a series or if series pages cannot be determined.
+
+  Client-Side Navigation Optimization:
+  - If `prefetch_enabled = true` is set in `config/_default/params.toml`: The "Previous Part" link is prefetched and the "Next Part" link is prerendered to improve perceived navigation speed.
+
+  Repo: https://github.com/oxypteros/alpha-theme
+  */ -}}
+{{- $currentPage := . }}
+{{- $currentSeries := .Page.Params.series }}
+{{- $currentWeight := .Page.Params.weight | int }}
+{{ if not $currentSeries }}
+  {{/* If there's no current series, don't show navigation */}}
+{{ else }}
+  {{- $seriesPages:= where site.Pages "Params.series" $currentSeries }}
+  {{- $sortedPages := sort $seriesPages "Params.weight" "asc" }}
+  {{- if gt (len $sortedPages) 0 }}
+    {{- $nextPost := "" }}
+    {{- $prevPost := "" }}
+    {{- $pageIndex := -1 }}
+    {{- range $index, $page := $sortedPages }}
+      {{- if eq $page.Permalink $currentPage.Permalink }}
+        {{- $pageIndex = $index }}
+      {{- end }}
+    {{- end }}
+    {{- if ne $pageIndex -1 }}
+      {{- if lt $pageIndex (sub (len $sortedPages) 1) }}
+        {{- $nextPost = index $sortedPages (add $pageIndex 1) }}
+      {{- end }}
+      {{- if gt $pageIndex 0 }}
+        {{- $prevPost = index $sortedPages (sub $pageIndex 1) }}
+      {{- end }}
+    {{- end }}
+    <div class="mt-24 mb-32 w-full">
+      <nav
+        class="flex flex-wrap-reverse items-center justify-center gap-5 sm:justify-between"
+      >
+        <div>
+          {{- if $prevPost }}
+            <a
+              class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex h-11 w-48 items-center justify-center rounded-full border px-4 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
+              href="{{ $prevPost.Permalink }}"
+              title="{{ $prevPost.Title }}"
+              data-prefetch="true"
+            >
+              <div class="flex w-40 items-center justify-center gap-3">
+                <svg
+                  class="fill-on-sur-var dark:group-hover:fill-on-sur-d group-hover:fill-on-sur dark:fill-on-sur-var-d size-6 shrink-0 transition-all duration-400 ease-in-out group-hover:-translate-x-1"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-back"></use>
+                </svg>
+
+                <div class="w-32 truncate text-center">
+                  {{ i18n "PreviousPart" . | default "Previous Part"}}
+                </div>
+              </div>
+            </a>
+          {{- end }}
+        </div>
+        <div>
+          {{- if $nextPost }}
+            <a
+              class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex h-11 w-48 items-center justify-center rounded-full border px-4 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
+              href="{{ $nextPost.Permalink }}"
+              title="{{ $nextPost.Title }}"
+              data-prerender="true"
+            >
+              <div class="flex w-40 items-center justify-center gap-3">
+                <div class="w-32 truncate text-center">
+                  {{ i18n "NextPart" . | default "Next Part" }}
+                </div>
+
+                <svg
+                  class="fill-on-sur-var dark:group-hover:fill-on-sur-d group-hover:fill-on-sur dark:fill-on-sur-var-d size-6 shrink-0 transition-all duration-400 ease-in-out group-hover:translate-x-1"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-forward"></use>
+                </svg>
+              </div>
+            </a>
+          {{- end }}
+        </div>
+      </nav>
+    </div>
+  {{- end }}
+{{- end }}

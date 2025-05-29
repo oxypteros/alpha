@@ -1,0 +1,95 @@
+{{- /*
+  header.html (partial): — Defines the header HTML structure for Alpha.
+
+  Features:
+    - Pseudologo with site title
+    - Hamburger menu button
+
+  Dependency: `partial "components/utility-bar.html"`
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+
+<header
+  class="menu-collapsed bg-menu text-on-menu-var relative w-full transition-all duration-300 ease-in-out"
+  data-alpha="header"
+>
+  <div
+    class="h-bar mx-auto flex max-w-7xl items-center justify-between py-1 pr-1 pl-3"
+  >
+    {{ partial "components/utility-bar.html" . }}
+  </div>
+  <div
+    class="title-bar h-header top-bar absolute inset-x-0 z-20 transition-colors duration-300 ease-in-out"
+    data-alpha="title-bar"
+  >
+    <div
+      class="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-4 pr-1 pl-4"
+    >
+      <div class="flex items-center gap-3">
+
+        {{- /* Pseudo logo */}}
+        {{- if eq .Site.Params.pseudologo_enabled true }}
+          {{- $logo := substr .Site.Title 0 1 }}
+          <div
+            class="logo font-700 flex size-11 shrink-0 items-center justify-center rounded-full text-xl leading-none select-none"
+            aria-hidden="true"
+          >
+            {{ $logo }}
+          </div>
+        {{- end }}
+        <div class="font-500 text-center text-lg items-center flex gap-1">
+
+          {{- /* Conditional rendering of site title */}}
+          {{- if .IsHome }}
+            <h1 class="">{{ .Site.Title }}</h1>
+          {{- else }}
+            <a class="" href="/">{{ .Site.Title }}</a>
+            {{- /* Breadcrumbs (pre-release)*/}}
+            {{- if eq .Site.Params.breadcrumbs true }}
+              <div class="hidden md:flex items-center">
+                {{ range .Ancestors.Reverse }}
+                  {{ if not .IsHome }}
+                    <span class="font-500 text-pri text-xl pl-1 pr-0.5">/</span>
+                    <a
+                      class="font-400 text-base"
+                      aria-current="page"
+                      href="{{ .RelPermalink }}"
+                      >{{ .LinkTitle }}</a
+                    >
+                  {{- end }}
+                {{- end }}
+              </div>
+            {{- end }}
+          {{- end }}
+        </div>
+      </div>
+      {{- /* Menu button */}}
+      <button
+        class="group flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
+        aria-label="{{ i18n "ToggleMenu" }}"
+        aria-pressed="false"
+        aria-expanded="false"
+        data-alpha="menu-button"
+      >
+        <svg
+          class="size-5 transition-colors duration-400"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          width="16"
+          height="16"
+          aria-hidden="true"
+        >
+          <use href="#icon-menu"></use>
+        </svg>
+      </button>
+    </div>
+  </div>
+  {{- /* Containers for templates */}}
+  <div
+    class="pt-header h-menu absolute flex w-full"
+    data-alpha="menu-template-container"
+  ></div>
+</header>
+<div data-alpha="search-template-container"></div>

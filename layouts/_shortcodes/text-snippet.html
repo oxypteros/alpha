@@ -1,0 +1,108 @@
+{{- /*
+  text-snippet.html (shortcode): Renders centered text content provided within the shortcode. Best used for short text blocks like introductions or as a text separator between sections.
+  
+  Target: Global.
+  
+  Example:
+    {{< text-snippet TITLE="" >}}
+      /... Markdown .../
+    {{< /text-snippet >}}
+   
+  Params: 
+    TITLE (string, optional): <h2> heading. 
+   
+  Error handler:
+    - warnf
+    - OCD
+  
+  Docs: https://alpha.oxypteros.com/shortcodes/text-snippet 
+  Repo: https://github.com/oxypteros/alpha-theme 
+*/ -}}
+
+{{- /* Case-insensitive parameter retrieval (default chaining) */}}
+{{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
+
+{{- $content := .Inner | markdownify }}
+{{- /* Context for error reporting (warnf, OCD)*/}}
+{{ $page := .Page.RelPermalink }}
+
+
+{{- /* OCD: Validate params manually against an allowlist. */}}
+{{- $allowedKeys := slice "title" }}
+{{- $invalidKeys := slice }}
+
+
+{{- /* Invalid Parameter Error Handling (OCD) */}}
+
+
+{{- /* NOTE: Not closed shortcode error is handled by Hugo */}}
+{{- range $key, $value := .Params }}
+  {{- if not (in $allowedKeys (lower $key)) }}
+    {{- $invalidKeys = $invalidKeys | append $key }}
+  {{- end }}
+{{- end }}
+
+{{- if gt (len $invalidKeys) 0 }}
+  {{- /* Warnf for error: ocd-sc-111 */}}
+  {{- $errorCode := "ocd-sc-111" }}
+  {{- $invalidKeysString := delimit $invalidKeys ", " }}
+  {{- $errorMessage := printf "Invalid parameters: %s" $invalidKeysString }}
+  {{- $logMessage := printf "OcdError [%s] Page: %s | %s" $errorCode $page $errorMessage }}
+  {{- warnf "%s" $logMessage }}
+
+  {{- /* OCD error card for: ocd-sc-111 */}}
+  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+    <div
+      class="ocd ocd-card ocd-card-error ocd-shadow"
+      data-error="{{ $errorCode }}"
+    >
+      <header class="ocd-card-header">
+        <div class="ocd-title">
+          {{- i18n "OcdScParamError" . | default "Shortcode Parameter Error" }}
+        </div>
+        <svg aria-hidden="true" focusable="false">
+          <use href="#icon-error"></use>
+        </svg>
+      </header>
+      <div class="ocd-card-content">
+        <div>
+          <p>
+            {{- $count := len $invalidKeys }}
+            {{- i18n "OcdScTextSnippet111" $count | default "Invalid parameter in the text snippet shortcode on this page:" }}
+            <a href="{{ $page }}">{{ .Page.Title }}</a>
+          </p>
+          <p>
+            {{- i18n "OcdScParameter" $count  | default "The parameters," }}&nbsp;
+            <span class="ocd-mono ocd-mono-error">{{ $invalidKeysString }}</span
+            >&nbsp;
+            {{ i18n "OcdScNotRecognized"  $count  | default "are not recognized." }}
+          </p>
+        </div>
+        <hr />
+        <p>
+          {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
+          <span class="ocd-mono-solution">TITLE</span>
+        </p>
+      </div>
+      <footer class="ocd-card-footer">
+        <a href="https://alpha.oxypteros.com/ocd/error-codes"
+          >{{ $errorCode }}</a
+        >
+      </footer>
+    </div>
+  {{- end }}
+{{- end }}
+
+
+{{- /* Shortcode Rendering */}}
+
+<div class="mb-32 mt-8 flex w-full max-w-7xl flex-col items-center px-4">
+  {{- with $title }}
+    <h2 class="font-200 text-on-sur-var dark:text-on-sur-var-d mb-16 text-4xl">
+      {{ $title }}
+    </h2>
+  {{- end }}
+  <div class="font-300 max-w-story text-center text-xl leading-relaxed">
+    {{ $content }}
+  </div>
+</div>

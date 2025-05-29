@@ -1,0 +1,24 @@
+{{- /*
+  list.html (layout): Defines the main HTML structure  for the Alpha list layout.
+
+  Includes:
+  - Page `<h1>`
+  - The Content block
+  - the paginator partial
+
+  All elements and visual appearance apart must be set by the use of shortcodes, markdown and frontmatter.
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+
+{{- define "main" }}
+  <div class="flex flex-col items-center">
+    <h1
+      class="dark:text-on-sur-var-d font-300 text-on-sur-var my-32 flex w-full max-w-7xl flex-col px-4 text-center text-6xl leading-normal"
+    >
+      {{- .Title -}}
+    </h1>
+    {{ .Content }}
+    {{- partial "components/paginator.html" . }}
+  </div>
+{{- end }}

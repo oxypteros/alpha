@@ -1,0 +1,45 @@
+{{- /*
+  render-table.html (markup): Table tailwind styled for Alpha
+
+  Repo: https://github.com/oxypteros/alpha-theme
+*/ -}}
+
+<div class="w-full overflow-x-auto">
+  <table
+    class=" "
+    {{- range $k, $v := .Attributes }}
+      {{- if $v }}
+        {{- printf " %s=%q" $k $v | safeHTMLAttr }}
+      {{- end }}
+    {{- end }}
+  >
+    <thead
+      class="bg-out-var/70 dark:bg-sur-var-d font-500 text-black dark:text-white"
+    >
+      {{- range .THead }}
+        <tr>
+          {{- range . }}
+            <th
+              class="border-out-var dark:border-out-var-d border px-2 py-1.5 text-sm"
+            >
+              {{- .Text -}}
+            </th>
+          {{- end }}
+        </tr>
+      {{- end }}
+    </thead>
+    <tbody>
+      {{- range .TBody }}
+        <tr>
+          {{- range . }}
+            <td
+              class="border-out-var dark:border-out-var-d border px-2 py-1.5 text-sm"
+            >
+              {{- .Text -}}
+            </td>
+          {{- end }}
+        </tr>
+      {{- end }}
+    </tbody>
+  </table>
+</div>
