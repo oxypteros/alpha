@@ -20,7 +20,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Demo](#demo)
-<!--- [Need help?](#need-help)-->
+- [Need help?](#need-help)
 - [Feedback or Questions](#feedback-or-questions)
 - [Versioning & Changelog](#versioning--changelog)
 - [License](#license)
@@ -43,8 +43,8 @@ Alpha is a **shortcode based theme** that lets you customize content and layout 
 - Complete documentation
 
 ## Installation
-<!--**New to Hugo?** Start with, ["From zero with zero"](https://alpha.oxypteros.com/get-started)
-For complete instructions and configuration, see the [documentation](https://alpha.oxypteros.com/docs).-->
+**New to Hugo?** Start with, ["From Zero with Zero"](https://alpha.oxypteros.com/get-started)
+For complete instructions and configuration, see the [documentation](https://alpha.oxypteros.com/docs).
 
 ### Quick Install
 
@@ -54,26 +54,26 @@ For complete instructions and configuration, see the [documentation](https://alp
 - Node.js (*optional, for Tailwind CSS*)
 - Go (*only if using Hugo Module method*)
 
-<!--#### For a new site or testing 
+#### For a new site or testing 
 
- *Option 1* — **Manual Setup** 
-1. [Download the Alpha Starter Site](https://github.com/oxypteros/alpha-starter-site.zip).
+**Manual Setup —  Option 1** 
+1. [Download the Alpha Starter](https://github.com/oxypteros/alpha-starter.zip).
 2. Unzip and navigate into the folder:
 ```bash
-cd alpha-starter-site
+cd alpha-starter
 hugo server
 
 ```
-*Option 2* — **Use GitHub template**
-1. Go to the [Alpha Starter Site](https://github.com/oxypteros/alpha-starter-site).
+ **Use GitHub template — Option 2**
+1. Go to the [Alpha Starter](https://github.com/oxypteros/alpha-starter).
 2. Click the **“Use this template”** button to create a new repository.
 3. Clone your new repo locally a navigate into the repo folder and run:
 ```bash
-cd alpha-starter-site
+cd YOUR-PROJECT-NAME
 hugo server
 ```
 
-#### For a existing Hugo site-->
+#### For a existing Hugo site
 **Git Submodule — Option 1**
 ``` bash
 git submodule add https://github.com/oxypteros/alpha.git themes/alpha
@@ -95,14 +95,14 @@ hugo mod get github.com/oxypteros/alpha
 ```toml
 theme = ["github.com/oxypteros/alpha"]
 ```
-> Copy or [download](/.github/config.zip) the `themes/alpha/config/_default/` to your root `config/` folder and merge carefully to avoid overwriting your existing setup.
+> Copy or [download](https://alpha.oxypteros.com/downloads/config.zip) the `themes/alpha/config/_default/` to your root `config/` folder and merge carefully to avoid overwriting your existing setup.
 
-<!--## Demo
+## Demo
 [Alpha in action](https://alpha.oxypteros.com)
 
 ## Need help?
 - [Documentation](https://alpha.oxypteros.com/docs)
-- [Developing Alpha (Tailwind setup)](https://alpha.oxypteros.com/docs/developing-alpha)-->
+- [Developing Alpha (Tailwind setup)](https://alpha.oxypteros.com/docs/developing-alpha)
 
 ## Feedback or Questions?
 - [Open an issue](https://github.com/oxypteros/alpha/issues) 
