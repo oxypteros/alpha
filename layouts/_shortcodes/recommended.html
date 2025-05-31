@@ -4,13 +4,18 @@
   Target: _index.md
 
   Example:
-  {{< recommended TITLE="" LIMIT=""
->}}
+  {{< recommended TITLE="" LIMIT="" >}}
 
-Params: - TITLE (string, optional): H2 heading. - LIMIT (integer, optional):
-Number of items to show (Default: 4). Error handler: - warnf - OCD To-do: 1.
-Docs: https://alpha.oxypteros.com/docs/shortcodes/recommended Repo:
-https://github.com/oxypteros/alpha-theme */ -}}
+  Params: 
+  - TITLE (string, optional): H2 heading. 
+  - LIMIT (integer, optional): Number of items to show (Default: 4). 
+  
+  Error handler: 
+  - warnf 
+  - OCD 
+  
+  Repo: https://github.com/oxypteros/alpha 
+*/ -}}
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
 {{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}

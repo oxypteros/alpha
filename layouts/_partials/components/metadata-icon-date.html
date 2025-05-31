@@ -7,7 +7,7 @@
   - Populates a `<time>` element with a machine-readable datetime (Lastmod or Date) for SEO.
   - The `<time>` element's `title` attribute provides detailed "Published on" and "Updated on" (if applicable) information, formatted as "Month DD, YYYY".
 
-  Repo: https://github.com/oxypteros/alpha-theme
+  Repo: https://github.com/oxypteros/alpha
 */ -}}
 {{- $date := or .Date (now) -}}
 {{- $modDate := or .Lastmod $date -}}

@@ -9,7 +9,7 @@
   - `/assets/alpha/css/ocd.css`
   - `/assets/alpha/js/ocd.js`
 
-  Repo: https://github.com/oxypteros/alpha-theme
+  Repo: https://github.com/oxypteros/alpha
 */ -}}
 {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Site.Params.ocd_enabled true) }}
   {{- $ocdCss := resources.Get "alpha/css/ocd.css" | resources.ExecuteAsTemplate "ocd.css" . -}}
