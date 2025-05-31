@@ -57,7 +57,7 @@ For complete instructions and configuration, see the [documentation](https://alp
 #### For a new site or testing 
 
 **Manual Setup —  Option 1** 
-1. [Download the Alpha Starter](https://github.com/oxypteros/alpha-starter.zip).
+1. [Download the Alpha Starter](https://alpha.oxypteros.com/downloads/alpha-starter.zip).
 2. Unzip and navigate into the folder:
 ```bash
 cd alpha-starter
