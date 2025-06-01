@@ -100,7 +100,7 @@
   {{- $articleSchema := dict
     "@type" $type
     "@id" .Permalink
-    "headline" .Title
+    "headline" (.Title | htmlUnescape)
     "url" .Permalink
     "datePublished" $dateMachine
     "inLanguage" .Lang
