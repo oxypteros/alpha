@@ -11,7 +11,7 @@
 {{- with or site.Title site.Params.title | plainify }}
     <meta property="og:site_name" content="{{ . }}"/>
 {{- end }}
-{{- with or .Title site.Title site.Params.title | plainify }}
+{{- with or .Title site.Title site.Params.title | htmlUnescape | plainify }}
     <meta property="og:title" content="{{ . }}"/>
 {{- end }}
 {{- with or .Page.Params.seoDesc .Description }}
