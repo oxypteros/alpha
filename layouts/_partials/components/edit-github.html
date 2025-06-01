@@ -1,0 +1,63 @@
+{{/* Get configuration values */}}
+{{- $githubUser := site.Params.github_username }}
+{{- $contentRepo := site.Params.github_repository }}
+{{- $contentRepoBranch := site.Params.github_repository_branch | default "main" }}
+{{- $contentRepoFolder := site.Params.github_submodule_folder }}
+
+{{- if and ($githubUser) ($contentRepo)}}
+  {{- if .File.Path }}
+  {{ $hugoFilePath := .File.Path }}
+  {{ $pathInRepo := $hugoFilePath }} 
+    {{- if $contentRepoFolder }}
+    {{ $pathInRepo = strings.TrimPrefix $contentRepoFolder $hugoFilePath }}
+    {{- end }}
+    {{- $editURL := printf "https://github.com/%s/%s/edit/%s/%s" $githubUser $contentRepo $contentRepoBranch $pathInRepo}}
+    <div class="flex justify-end items-center gap-2 w-full mt-8 text-lg max-w-article">
+      <svg class="size-4 fill-on-sur-var dark:fill-on-sur-var-d" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" aria-hidden="true"><path d="M160 0q-33 0-56.5-23.5T80-80q0-33 23.5-56.5T160-160h640q33 0 56.5 23.5T880-80q0 33-23.5 56.5T800 0H160Zm80-320h56l312-311-29-29-28-28-311 312v56Zm-80 40v-113q0-8 3-15.5t9-13.5l436-435q11-11 25.5-17t30.5-6q16 0 31 6t27 18l55 56q12 11 17.5 26t5.5 31q0 15-5.5 29.5T777-687L342-252q-6 6-13.5 9t-15.5 3H200q-17 0-28.5-11.5T160-280Zm560-464-56-56 56 56ZM608-631l-29-29-28-28 57 57Z"/></svg>
+      <a class="text-sm underline underline-offset-2 hover:text-on-sur-var hover:decoration-2 dark:hover:text-on-sur-var-d" href="{{ $editURL}}" target="_blank" rel="noopener noreferrer">{{- i18n "EditOnGithub" . | default "Edit this page on Github" }}</a>
+    </div>
+  {{- end }}
+  {{- else }}
+  {{ $page := .Page.RelPermalink }}
+  {{- $errorCode := "ocd-fm-100" }}
+  {{- $errorMessage := printf "Incomplete frontmatter param - github_edit = true" }}
+  {{- $logMessage := printf "OcdError [%s] Page: %s | %s)" $errorCode $page $errorMessage }}
+
+  {{- warnf "%s" $logMessage }}
+  
+  {{- /* OCD error card for: odc-fm-100 */}}
+  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+    <div
+      class="ocd ocd-card ocd-card-error ocd-shadow"
+      data-error="{{ $errorCode }}"
+    >
+      <header class="ocd-card-header">
+        <div class="ocd-title">
+          {{- i18n "OcdFmInputError" . |default "Frontmatter Incomplete Param" }}
+        </div>
+        <svg aria-hidden="true" focusable="false">
+          <use href="#icon-error"></use>
+        </svg>
+      </header>
+      <div class="ocd-card-content">
+        <div>
+          <p>
+            {{- i18n "OcdScNumist100" . | default "The Edit on Github function is enabled, on:" }}
+            <a href="{{ $page }}">{{ .Page.Title }}</a>
+            but there are missing values in params.toml
+          </p>
+          <p>
+            {{ i18n "OcdScAvailableStyle" .  | default "Missing values:" }}
+            <span class="ocd-mono-error">github_username</span>,
+            <span class="ocd-mono-error">github_repository</span>
+          </p>
+        </div>
+      </div>
+      <footer class="ocd-card-footer">
+        <a href="https://alpha.oxypteros.com/ocd/error-codes"
+          >{{ $errorCode }}</a
+        >
+      </footer>
+    </div>
+  {{- end }}
+{{- end }}

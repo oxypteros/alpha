@@ -17,8 +17,8 @@
   
   To-do: Hugo build error negative or non-numeric values - Add `$limit` checks and pass errors to OCD. (low priority)
 
-  Docs: https://alpha.oxypteros.com/shortcodes/NumberedList
-  Repo: https://github.com/oxypteros/alpha-theme 
+  Docs: https://alpha.oxypteros.com/shortcodes/num-list
+  Repo: https://github.com/oxypteros/alpha 
 */ -}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
@@ -29,11 +29,9 @@
 {{- /* Context for error reporting (warnf, OCD)*/}}
 {{ $page := .Page.RelPermalink }}
 
-
 {{- /* OCD: Validate params manually against an allowlist. */}}
 {{- $allowedKeys := slice "style" "title" "limit" }}
 {{- $invalidKeys := slice }}
-
 
 {{- /* Invalid Parameter Error Handling (OCD) */}}
 
@@ -96,30 +94,31 @@
   {{- end }}
 {{- end }}
 
-
 {{- /* Shortcode Rendering */}}
-
 {{- $pages := .Page.Pages.ByWeight }}
 {{- /* Apply limit if specified (integer conversion)*/}}
 {{- if $limit }}
   {{- $pages = first (int $limit) $pages }}
 {{- end }}
 
-<div class="mb-32 flex w-full max-w-7xl flex-col items-center px-4">
+<div class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4">
   {{- /* Optional title rendering. */}}
   {{- with $title }}
+  <div
+    class="flex w-full items-center justify-center gap-4 sm:justify-normal min-w-0"
+  >
     <div
-      class="flex w-full items-center justify-center gap-4 sm:justify-normal"
+      class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
+    ></div>
+    <h2
+      class="text-on-sur-var dark:text-on-sur-var-d font-300 text-3xl min-w-0 break-words hyphens-manual"
     >
-      <div
-        class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
-      ></div>
-      <h2 class="font-300 text-on-sur-var dark:text-on-sur-var-d text-3xl">
-        {{ $title }}
-      </h2>
-      <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
-    </div>
+      {{- $title }}
+    </h2>
+    <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
+  </div>
   {{- end }}
+  
   {{- /* Style-based rendering. */}}
   {{- if eq $style "card" }}
     <nav class="sc-num-list my-16 flex w-full flex-wrap justify-center gap-10">

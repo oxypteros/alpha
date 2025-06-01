@@ -7,9 +7,8 @@
     - Site params defined motto
     - Site params enabled visitor settings
 
-  Repo: https://github.com/oxypteros/alpha-theme
+  Repo: https://github.com/oxypteros/alpha
 */ -}}
-
 {{- /* Conditional calculation of year range */}}
 {{- $currentYear := dateFormat "2006" now }}
 {{- $estYear := default $currentYear .Site.Params.established_year }}
@@ -19,7 +18,7 @@
   <div
     class="h-footer mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center"
   >
-    {{- /* Footer and footer social menu*/}}
+    {{- /* Footer and footer social menu */}}
     {{- $footerMenu := .Site.Menus.footer }}
     {{- $socialFooter := .Site.Menus.footer_social }}
 
@@ -66,29 +65,29 @@
     {{- end }}
   </div>
   <div
-    class="h-bar bg-menu text-on-menu-var flex w-full flex-wrap items-center justify-between gap-3 pr-1 pl-4 text-sm"
+    class="min-h-bar bg-menu text-on-menu-var flex w-full flex-wrap items-center justify-center pr-1 pl-4 pt-2 sm:pt-0 text-sm sm:justify-between"
   >
-  {{- /* Site Motto conditional rendering by length*/}}
     {{- $motto := .Site.Params.motto }}
     {{- if $motto }}
-      {{- $hideMotto := "" }}
-      {{- if gt (len $motto) 20 }}{{- $hideMotto = "hidden" }}{{- end }}
-      <div class="{{ $hideMotto }} italic sm:flex sm:items-center">
-        {{ $motto }}
+      <div
+        class="flex min-h-11 w-full items-center justify-center  sm:w-1/2 sm:justify-start sm:text-base"
+      >
+        {{- $motto | safeHTML -}}
       </div>
     {{- else }}
       <div></div>
     {{- end }}
-    <div class="flex items-center gap-1">
-      <div class="flex shrink-0 flex-wrap items-center">
-        &copy; {{ $yearDisplay }}&nbsp;
-        {{ .Site.Title }}
+    <div
+      class="flex w-full flex-wrap items-center justify-between gap-1 sm:w-1/2 sm:justify-end"
+    >
+      <div class="flex shrink-0 items-center">
+        &copy; {{ $yearDisplay }}&nbsp; {{ .Site.Title }}
       </div>
       {{- /* Visitor settings */}}
       {{- if eq .Site.Params.visitor_settings true }}
         <button
           class="group hover:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
-          aria-label="{{ i18n "SettingsBtn" }}"
+          aria-label="{{ i18n "SettingsBtn" | default "Settings Button"}}"
           aria-pressed="false"
           data-alpha="settings-button"
         >

@@ -16,7 +16,7 @@
     - OCD
   
   Docs: https://alpha.oxypteros.com/shortcodes/text-snippet 
-  Repo: https://github.com/oxypteros/alpha-theme 
+  Repo: https://github.com/oxypteros/alpha 
 */ -}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
@@ -93,13 +93,11 @@
   {{- end }}
 {{- end }}
 
-
 {{- /* Shortcode Rendering */}}
-
 <div class="mb-32 mt-8 flex w-full max-w-7xl flex-col items-center px-4">
   {{- with $title }}
-    <h2 class="font-200 text-on-sur-var dark:text-on-sur-var-d mb-16 text-4xl">
-      {{ $title }}
+    <h2 class="font-200 text-on-sur-var dark:text-on-sur-var-d mb-16 w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual">
+      {{- $title -}}
     </h2>
   {{- end }}
   <div class="font-300 max-w-story text-center text-xl leading-relaxed">

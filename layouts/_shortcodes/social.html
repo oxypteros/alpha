@@ -4,36 +4,37 @@
   Target: Global
 
   Example:
-    {{< social NUMBER="" >}}
+    {{< social LIMIT="" >}}
 
   Params: 
-    - NUMBER (integral, optional): Number of menu item to show
+    - LIMIT (integral, optional): Number of menu item to show
   
   Error handler: 
     - warnf 
     - OCD
-  Docs: https://alpha.oxypteros.com/shortcodes/social Repo: https://github.com/oxypteros/alpha-theme 
+  Docs: https://alpha.oxypteros.com/shortcodes/social 
+  Repo: https://github.com/oxypteros/alpha 
 */ -}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $number := .Get "NUMBER" | default (.Get "Number") | default (.Get "number") }}
+{{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}
 
 {{- /* Parameter and menu initial validation */}}
-{{- $isNumber := (printf "%v" $number | findRE "^[1-9][0-9]*$") }}
+{{- $isNumber := (printf "%v" $limit | findRE "^[1-9][0-9]*$") }}
 {{- $menu := .Site.Menus.sc_social }}
 {{- $firstN := $menu }}
 {{- $intNumber := 0 }} {{- $warnNumber := false }}
 {{- if $isNumber }}
   {{- $intNumber = (index $isNumber 0 | int) }}
   {{- $firstN = first $intNumber $menu }}
-{{- else if $number }}
+{{- else if $limit }}
   {{- $warnNumber = true }}
 {{- end }}
 {{- /* Context for error reporting (warnf, OCD) */}}
 {{ $page := .Page.RelPermalink }}
 
 {{- /* warnf, OCD: Validate params manually against an allowlist. */}}
-{{- $allowedKeys := slice "number" }}
+{{- $allowedKeys := slice "limit" }}
 {{- $invalidKeys := slice }}
 
 {{- /* Invalid Parameter Error Handling (warnf, OCD) */}}
@@ -83,7 +84,7 @@
         <hr />
         <p>
           {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
-          <span class="ocd-mono-solution">NUMBER</span>
+          <span class="ocd-mono-solution">LIMIT</span>
         </p>
       </div>
       <footer class="ocd-card-footer">
@@ -136,7 +137,7 @@
           <span class="ocd-mono-solution">[[sc_social]]</span>
           {{ i18n "OcdScMenuOn" . | default "menu on " }}
           <span class="ocd-mono ocd-mono-solution"
-            >/config/_defaults/menus.en.toml</span
+            >/config/_defaults/menus.toml</span
           >
         </p>
       </div>
@@ -155,7 +156,7 @@
 {{- if and hugo.IsServer $warnNumber }}
   {{- /* Warnf for error: ocd-sc-173 */}}
   {{- $errorCode := "ocd-sc-173" }}
-  {{- $errorMessage := printf "The value of the NUMBER parameter is not an integer: %s." $number }}
+  {{- $errorMessage := printf "The value of the LIMIT parameter is not an integer: %s." $limit }}
   {{- $logMessage := printf "OcdError [%s] - Page: %s |  %s" $errorCode $page $errorMessage }}
   {{- warnf "%s" $logMessage }}
 
@@ -181,16 +182,16 @@
           </p>
           <p>
             {{- i18n "OcdScThe" . | default "The" }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">NUMBER</span>&nbsp;
+            <span class="ocd-mono ocd-mono-error">LIMIT</span>&nbsp;
             {{- i18n "OcdScParameterValue" . | default "parameter value" }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $number }}</span>&nbsp;
+            <span class="ocd-mono ocd-mono-error">{{ $limit }}</span>&nbsp;
             {{ i18n "OcdScIsInvalid" . | default "is invalid." }}
           </p>
         </div>
         <hr />
         <p>
           {{- i18n "OcdSc" . | default "" }}
-          <span class="ocd-mono-solution">NUMBER</span>
+          <span class="ocd-mono-solution">LIMIT</span>
           {{ i18n "OcdSc" . | default "must be an integer." }}
         </p>
       </div>

@@ -4,19 +4,24 @@
   Target: _index.md
 
   Example:
-  {{< recommended TITLE="" LIMIT=""
->}}
+  {{< recommended TITLE="" LIMIT="" >}}
 
-Params: - TITLE (string, optional): H2 heading. - LIMIT (integer, optional):
-Number of items to show (Default: 4). Error handler: - warnf - OCD To-do: 1.
-Docs: https://alpha.oxypteros.com/docs/shortcodes/recommended Repo:
-https://github.com/oxypteros/alpha-theme */ -}}
+  Params: 
+  - TITLE (string, optional): H2 heading. 
+  - LIMIT (integer, optional): Number of items to show (Default: 4). 
+  
+  Error handler: 
+  - warnf 
+  - OCD 
+  
+  Repo: https://github.com/oxypteros/alpha 
+*/ -}}
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
 {{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}
 
 {{- /* Context for error reporting (warnf, OCD) */}}
-{{ $page := .Page.RelPermalink }}
+{{- $page := .Page.RelPermalink }}
 
 {{- /* OCD: Validate params manually against an allowlist. */}}
 {{- $allowedKeys := slice "title" "limit" }}
@@ -161,9 +166,11 @@ https://github.com/oxypteros/alpha-theme */ -}}
 
     {{- /* Optional title rendering. */}}
   {{- with $title }}
-    <h2 class="font-200 text-on-sur-var dark:text-on-sur-var-d mb-8 text-5xl">
-      {{ $title }}
-    </h2>
+<h2
+  class="font-200 text-on-sur-var dark:text-on-sur-var-d w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
+>
+  {{- $title -}}
+</h2>
   {{- end }}
     <div class="mt-24 flex w-full flex-wrap items-center justify-center gap-25">
       {{- range $actualPages }}

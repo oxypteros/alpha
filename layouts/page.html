@@ -14,7 +14,7 @@
   - `partial "components/navigation-series.html"`
   - `partial "components/recommended-posts.html"`
 
-  Repo: https://github.com/oxypteros/alpha-theme
+  Repo: https://github.com/oxypteros/alpha
 */ -}}
    
 {{- define "main" }}
@@ -23,9 +23,9 @@
       <header class="mt-16 flex w-full flex-col items-center">
         {{ partial "components/metadata-series.html" . }}
         <h1
-          class="dark:text-on-sur-var-d font-300 text-on-sur-var my-32 w-full max-w-7xl text-center text-6xl leading-normal"
+          class="dark:text-on-sur-var-d font-300 text-on-sur-var my-32 w-full max-w-7xl text-center text-4xl leading-normal wrap-break-word hyphens-manual sm:text-6xl"
         >
-          {{- .Title -}}
+          {{- .Title | safeHTML -}}
         </h1>
         <div
           class="max-w-article my-16 flex w-full items-center justify-between text-lg"

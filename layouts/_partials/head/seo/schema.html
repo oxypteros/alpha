@@ -37,7 +37,7 @@
   - Page Resources for images (e.g., "*-social.*", "*.jpg").
   - `.Parent` for `isPartOf` relationship.
 
-  Theme Repo: https://github.com/oxypteros/alpha-theme
+  Theme Repo: https://github.com/oxypteros/alpha
   */
 -}}
 
@@ -100,7 +100,7 @@
   {{- $articleSchema := dict
     "@type" $type
     "@id" .Permalink
-    "headline" .Title
+    "headline" (.Title | htmlUnescape)
     "url" .Permalink
     "datePublished" $dateMachine
     "inLanguage" .Lang

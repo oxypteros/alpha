@@ -17,7 +17,7 @@
   - Image paths are resolved to permalinks.
   - Text content is plainified for compatibility.
 
-  Repo: https://github.com/oxypteros/alpha-theme
+  Repo: https://github.com/oxypteros/alpha
 */ -}}
 {{- $seo_img := .Resources.GetMatch "*-social.*" }}{{- /*1200 x 675*/}}
 {{- $img := .Resources.GetMatch "*.{png,jpg,jpeg,webp,gif}" }}
@@ -41,7 +41,7 @@
     <meta name="twitter:card" content="summary">
 {{- end }}
 {{- with .Title }}
-    <meta name="twitter:title" content="{{ . | plainify }}" />
+    <meta name="twitter:title" content="{{ . | htmlUnescape | plainify }}" />
 {{- end }}
 {{- with or .Page.Params.socialDesc .Description | plainify | htmlUnescape}}
     <meta name="twitter:description" content='{{ trim . "\n\r\t " }}'/>

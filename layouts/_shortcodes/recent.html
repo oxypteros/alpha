@@ -4,13 +4,19 @@
   Target: _index.md
 
   Example:
-  {{< recent TITLE="" LIMIT=""
->}}
+  {{< recent TITLE="" LIMIT="">}}
 
-Params: - TITLE (string, optional): H2 heading. - LIMIT (integer, optional):
-Number of items to show (Default: 4). Error handler: - warnf (To-Do) - OCD
-(To-Do) To-do: 1. Docs: https://alpha.oxypteros.com/docs/shortcodes/recent 2.
-Enable OCD Repo: https://github.com/oxypteros/alpha-theme */ -}}
+  Params: 
+  - TITLE (string, optional): H2 heading. 
+  - LIMIT (integer, optional): Number of items to show (Default: 4). 
+  
+  Error handler: 
+  - warnf (To-Do) 
+  - OCD (To-Do) 
+  To-do: 1. Enable OCD 
+  
+  Repo: https://github.com/oxypteros/alpha 
+*/ -}}
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
 {{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}
@@ -29,20 +35,24 @@ Enable OCD Repo: https://github.com/oxypteros/alpha-theme */ -}}
 
 {{- /* Shortcode Rendering */}}
 <div class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4">
-    {{- /* Optional title rendering. */}}
-    {{- with $title }}
-      <div
-        class="flex w-full items-center justify-center gap-4 sm:justify-normal"
-      >
-        <div
-          class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
-        ></div>
-        <h2 class="font-300 text-on-sur-var dark:text-on-sur-var-d text-3xl">
-          {{ $title }}
-        </h2>
-        <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
-      </div>
-    {{- end }}
+  {{- /* Optional title rendering. */}}
+  {{- with $title }}
+  <div
+    class="flex w-full items-center justify-center gap-4 sm:justify-normal min-w-0"
+  >
+    <div
+      class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
+    ></div>
+
+    <h2
+      class="text-on-sur-var dark:text-on-sur-var-d font-300 text-3xl min-w-0 break-words hyphens-manual"
+    >
+      {{ $title }}
+    </h2>
+
+    <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
+  </div>
+  {{- end }}
   <div class="mt-24 flex w-full flex-wrap items-center justify-center gap-25">
     {{- range first $intNumber .Site.RegularPages.ByDate.Reverse }}
       {{- /* Find the first letter of the title */}}

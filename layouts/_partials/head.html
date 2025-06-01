@@ -14,7 +14,7 @@
     - `partial "head/seo/open-graph.html"`
     - `partialCached "head/ocd.html"`
 
-  Repo: https://github.com/oxypteros/alpha-theme
+  Repo: https://github.com/oxypteros/alpha
 */ -}}
   
 <head>
@@ -36,7 +36,7 @@
       {{ if .IsHome }}
         {{- .Title | default site.Title }}
       {{- else }}
-        {{- printf "%s | %s" .Title site.Title }}
+        {{- printf "%s | %s" .Title site.Title | htmlUnescape }}
       {{- end }}
     </title>
     <link rel="canonical" href="{{ .Page.Permalink }}" />

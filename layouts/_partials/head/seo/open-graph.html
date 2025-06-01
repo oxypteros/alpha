@@ -2,7 +2,7 @@
   Open Graph Partial — Alpha Hugo Theme
 
 
-  Theme Repo: https://github.com/oxypteros/alpha-theme
+  Theme Repo: https://github.com/oxypteros/alpha
   */
 -}}
 {{- $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
@@ -11,7 +11,7 @@
 {{- with or site.Title site.Params.title | plainify }}
     <meta property="og:site_name" content="{{ . }}"/>
 {{- end }}
-{{- with or .Title site.Title site.Params.title | plainify }}
+{{- with or .Title site.Title site.Params.title | htmlUnescape | plainify }}
     <meta property="og:title" content="{{ . }}"/>
 {{- end }}
 {{- with or .Page.Params.seoDesc .Description }}

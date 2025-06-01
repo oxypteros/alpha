@@ -18,7 +18,7 @@
     - OCD
 
   Docs: https://alpha.oxypteros.com/docs/shortcodes/faq 
-  Repo: https://github.com/oxypteros/alpha-theme 
+  Repo: https://github.com/oxypteros/alpha
 */ -}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
@@ -101,7 +101,7 @@
 <div class="sc-faq mb-32 flex w-full max-w-7xl flex-col items-center px-4">
   <div class="flex w-full flex-wrap justify-center gap-16">
     {{- if or $title $subtitle }}
-    <div class="w-fit text-center lg:text-left">
+    <div class="w-full md:w-fit text-center break-words hyphens-manual lg:text-left">
       {{- with $title }}
       <h2>
         {{ . | safeHTML | markdownify }}

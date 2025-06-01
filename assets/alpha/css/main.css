@@ -36,7 +36,7 @@
   --color-sur: #fff;
   --color-on-sur: #020b15;
   --color-on-sur-var: #3d5a7c;
-  --color-sur-var:#f5f9fd;
+  --color-sur-var: #f5f9fd;
   --color-out: #e1dfdd;
   --color-out-var: #edefef;
   --color-menu: #303a3c;
@@ -175,12 +175,11 @@ span.ripple {
     @apply fill-on-menu group-hover:fill-on-menu-var;
   }
 }
-  strong,
-  b {
-    @apply font-500;
-  }
+strong,
+b {
+  @apply font-500;
+}
 
- 
 /* Story, Page, Article content common tailwind styles */
 .story-content,
 .page-content,
@@ -200,34 +199,34 @@ span.ripple {
     @apply text-on-sur-var dark:text-on-sur-var-d leading-relaxed;
   }
   h2 {
-    @apply font-200 mt-9 mb-6 text-4xl;
+    @apply font-200 mt-9 mb-6 text-3xl sm:text-4xl;
   }
   h3 {
-    @apply font-300 mt-7 mb-4 text-3xl;
+    @apply font-300 mt-7 mb-4 text-2xl sm:text-3xl;
   }
   h4 {
-    @apply font-400 mt-5 mb-2 text-2xl;
+    @apply font-400 mt-5 mb-2 text-xl sm:text-2xl;
   }
   h5 {
-    @apply font-500 mt-3 mb-1 text-xl;
+    @apply font-500 mt-3 mb-1 text-lg sm:text-xl;
   }
   h6 {
-    @apply font-600 my-2 text-lg;
+    @apply font-600 my-2 text-base sm:text-lg;
   }
   ul,
   ol {
     @apply marker:text-pri dark:marker:text-pri-d mb-8 ml-7 marker:text-base;
   }
   ul ul,
-ul ol,
-ol ul,
-ol ol {
-  @apply mb-0;
-}
-ul ol,
-ol ol {
-  list-style-type:lower-latin;
-}
+  ul ol,
+  ol ul,
+  ol ol {
+    @apply mb-0;
+  }
+  ul ol,
+  ol ol {
+    list-style-type: lower-latin;
+  }
   ul {
     @apply list-disc;
   }
@@ -235,11 +234,11 @@ ol ol {
     @apply list-decimal;
   }
   ul:has(input[type="checkbox"]) {
-    @apply list-none ;
+    @apply list-none;
     li {
       @apply pl-0;
-      }  
     }
+  }
   li {
     @apply mb-1 pl-1;
   }
@@ -274,7 +273,7 @@ ol ol {
   }
   .footnotes {
     @apply text-base;
-    p{
+    p {
       @apply mb-4;
     }
   }
@@ -305,9 +304,9 @@ ol ol {
     @apply border-out-var bg-sur-var dark:border-out-var-d dark:bg-sur-var-d mx-0.5 rounded-sm border px-1 pb-0.5 font-mono text-base leading-relaxed break-words whitespace-pre-wrap text-black dark:text-white;
   }
   kbd > kbd {
-    @apply font-mono border border-out px-0.5 pb-0.5 dark:border-out-d bg-sur-var dark:bg-sur-var-d rounded-sm text-base;
+    @apply border-out dark:border-out-d bg-sur-var dark:bg-sur-var-d rounded-sm border px-0.5 pb-0.5 font-mono text-base;
   }
-  dd code:not(.highlight *){
+  dd code:not(.highlight *) {
     @apply text-sm;
   }
 }
@@ -321,7 +320,7 @@ ol ol {
     @apply text-on-sur dark:text-on-sur-d;
   }
   h2 {
-    @apply font-300 text-3xl;
+    @apply font-200 text-3xl;
   }
   h3 {
     @apply font-300 text-2xl;
@@ -365,7 +364,7 @@ ol ol {
   }
   dd code:not(.highlight *) {
     @apply text-sm;
-    }
+  }
 }
 
 /** Dropcap css styles */
@@ -391,7 +390,7 @@ ol ol {
 .dropcap > h5 + p:first-of-type::first-letter,
 .dropcap > h6 + p:first-of-type::first-letter {
   font-size: inherit;
-  font-weight:inherit;
+  font-weight: inherit;
   float: none;
   margin-right: 0;
   line-height: normal;
@@ -414,7 +413,7 @@ ol ol {
 */
 .sc-cta-text {
   a {
-    @apply text-on-sur-var hover:text-on-sur dark:text-on-sur-var-d dark:hover:text-on-sur-d transition-colors duration-400 ease-in-out hover:underline hover:underline-offset-2
+    @apply text-on-sur-var hover:text-on-sur dark:text-on-sur-var-d dark:hover:text-on-sur-d transition-colors duration-400 ease-in-out hover:underline hover:underline-offset-2;
   }
 }
 .sc-num-list {
@@ -422,35 +421,35 @@ ol ol {
     @apply border-pri dark:border-pri-d bg-pri-sur dark:bg-pri-sur-d text-on-pri-sur dark:text-on-pri-sur-d hover:bg-sur-var dark:hover:bg-sur-var-d hover:border-out dark:hover:border-out-d hover:text-on-sur dark:hover:text-on-sur-d;
   }
   .rest {
-    @apply border-out-var dark:border-out-var-d bg-sur dark:bg-sur-var-d text-on-sur-var dark:text-on-sur-var-d hover:bg-sur-var 
-    dark:hover:bg-sur-d hover:text-on-sur dark:hover:text-on-sur-d;
+    @apply border-out-var dark:border-out-var-d bg-sur dark:bg-sur-var-d text-on-sur-var dark:text-on-sur-var-d hover:bg-sur-var dark:hover:bg-sur-d hover:text-on-sur dark:hover:text-on-sur-d;
   }
 }
-.sc-status-card{
-    h2 {
-    @apply text-xl leading-normal m-0 font-500 ;
+.sc-status-card {
+  h2 {
+    @apply font-500 m-0 text-xl leading-normal;
   }
   a {
-    @apply underline underline-offset-2 decoration-2 hover:text-on-sur-var dark:hover:text-on-sur-var-d after:content-none;
+    @apply hover:text-on-sur-var dark:hover:text-on-sur-var-d underline decoration-2 underline-offset-2 after:content-none;
   }
 }
 .sc-faq {
-  h2{
-    @apply my-0 font-200 text-on-sur-var dark:text-on-sur-var-d text-4xl;
+  h2 {
+    @apply font-200 text-on-sur-var dark:text-on-sur-var-d my-0 text-4xl;
   }
   h3 {
-    @apply font-400 text-lg  mb-0 mt-2 text-on-sur-var dark:text-on-sur-var-d italic;
+    @apply font-400 text-on-sur-var dark:text-on-sur-var-d mt-2 mb-0 text-lg italic;
   }
- summary > h2 {
-    @apply text-on-sur-var dark:text-on-sur-var-d text-xl font-400 leading-normal my-0;
+  summary > h2 {
+    @apply text-on-sur-var dark:text-on-sur-var-d font-400 my-0 text-xl leading-normal;
   }
-  summary > h2 > em, summary > h2 > strong {
+  summary > h2 > em,
+  summary > h2 > strong {
     @apply text-on-sur-var dark:text-on-sur-var-d;
   }
 }
 .sc-faq-p {
-  p{
-    @apply text-base my-2 leading-normal;
+  p {
+    @apply my-2 text-base leading-normal;
   }
   a {
     @apply hover:text-pri dark:hover:text-pri-d hover:decoration-pri dark:hover:decoration-pri-d underline decoration-2 underline-offset-2 after:content-none;
@@ -458,8 +457,8 @@ ol ol {
 }
 .sc-about {
   @apply text-lg;
-  p{
-    @apply text-lg mb-2 leading-normal mt-0;
+  p {
+    @apply mt-0 mb-2 text-lg leading-normal;
   }
   a {
     @apply hover:text-pri dark:hover:text-pri-d hover:decoration-pri dark:hover:decoration-pri-d underline decoration-2 underline-offset-2 after:content-none;
@@ -471,13 +470,15 @@ ol ol {
   }
 }
 
-#sc-features-II, #sc-text-II{
-  ul, ol{
-    @apply  marker:text-pri dark:marker:text-pri-d mb-8 ml-7 marker:text-base;
+#sc-features-II,
+#sc-text-II {
+  ul,
+  ol {
+    @apply marker:text-pri dark:marker:text-pri-d mb-8 ml-7 marker:text-base;
   }
-ul{
-  @apply list-disc;
-}
+  ul {
+    @apply list-disc;
+  }
   ol {
     @apply list-decimal;
   }
