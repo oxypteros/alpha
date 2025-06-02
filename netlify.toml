@@ -1,0 +1,10 @@
+# Netlify Build Settings for Alpha Hugo theme (demo)
+#
+# Find a complete example at `/static/netlify.toml`
+#
+# Documentation: https://docs.netlify.com/configure-builds/file-based-configuration/
+#
+[build]
+  command = 'hugo --buildDrafts --gc --minify'
+[build.environment]
+  HUGO_VERSION = "0.147.7"  
