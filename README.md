@@ -14,8 +14,13 @@
 
 [![Live Demo](https://img.shields.io/badge/Demo-alpha.oxypteros.com-2196f3)](https://alpha.oxypteros.com)
 [![Docs](https://img.shields.io/badge/Docs-Available-2196f3)](https://alpha.oxypteros.com/docs)
+
+
+![Netlify](https://img.shields.io/netlify/865e5cb8-b588-4738-a1ea-169c89f3d3c5?label=Netlify&style=flat&logo=netlify&logoColor=ffffff)
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/alpha-build?color=4cc61e&logoColor=ffffff)
+![Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-live-4cc61e?style=flat&logo=cloudflarepages&logoColor=ffffff)
+
 ---
-![Netlify](https://img.shields.io/netlify/:865e5cb8-b588-4738-a1ea-169c89f3d3c5?label=Netlify&style=flat&color=5f5f5f&logo=netlify&logoColor=ffffff)
 
 ## Table of Contents
 - [Introduction](#built-for-writers-from-a-readers-perspective)
