@@ -5,7 +5,7 @@
 </picture>
 
 # Alpha — Hugo Theme
-[![Latest Release](https://img.shields.io/github/v/release/oxypteros/alpha?label=Release&style=flat&color=5f5f5f)](https://github.com/oxypteros/alpha/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/oxypteros/alpha?label=Alpha&style=flat&color=5f5f5f)](https://github.com/oxypteros/alpha/releases/latest)
 [![Hugo Version](https://img.shields.io/badge/Hugo-%5E0.146.1-5f5f5f?&style=flat&logoColor=white)](https://github.com/gohugoio/hugo/releases)
 [![License](https://img.shields.io/github/license/oxypteros/alpha?label=License&style=flat&color=5f5f5f)](https://github.com/oxypteros/alpha/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/oxypteros/alpha?label=Last%20Commit&style=flat&color=5f5f5f)](https://github.com/oxypteros/alpha/commits/main)
