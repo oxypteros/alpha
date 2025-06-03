@@ -19,7 +19,7 @@
 
   Docs: https://alpha.oxypteros.com/docs/shortcodes/faq 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
@@ -98,13 +98,27 @@
 {{- end }}
 
 {{- /* Shortcode Rendering */}}
-<div class="sc-faq mb-32 flex w-full max-w-7xl flex-col items-center px-4">
+{{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+{{- $base := .Page.File.BaseFileName | urlize }}
+{{- $ordinal := .Ordinal | default (now.UnixNano) }}
+{{- $uid := printf "%s-%v" $base $ordinal }}
+<section 
+  class="sc-faq mb-32 flex w-full max-w-7xl flex-col items-center px-4"
+  aria-labelledby="faq-heading-{{- $uid -}}"
+>
   <div class="flex w-full flex-wrap justify-center gap-16">
     {{- if or $title $subtitle }}
     <div class="w-full md:w-fit text-center break-words hyphens-manual lg:text-left">
       {{- with $title }}
-      <h2>
+      <h2 id="faq-heading-{{- $uid -}}">
         {{ . | safeHTML | markdownify }}
+      </h2>
+      {{- else }}
+      <h2
+        id="faq-heading-{{- $uid -}}"
+        class="sr-only"
+      >
+      {{- i18n "Faq" . | default " Frequently Asked Questions"}}
       </h2>
       {{- end }} 
       {{- with $subtitle }}
@@ -134,7 +148,7 @@
       {{- end }}
     </div>
   </div>
-</div>
+</section>
 <svg width="0" height="0" class="hidden">
   <symbol id="unfold_more" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
     <path d="m480-236 93-93q12-12 29-12t29 12q12 12 12 29t-12 29L508-148q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L329-271q-12-12-12-29t12-29q12-12 29-12t29 12l93 93Zm0-484-93 93q-12 12-29 12t-29-12q-12-12-12-29t12-29l123-123q6-6 13-8.5t15-2.5q8 0 15 2.5t13 8.5l123 123q12 12 12 29t-12 29q-12 12-29 12t-29-12l-93-93Z"></path>
