@@ -1,0 +1,28 @@
+{{- /*
+  404.html (layout): Defines the 404 HTML structure  for the Alpha theme (Page Not Found).
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{ define "main" }}
+  <div
+    class="text-on-sur-var dark:text-on-sur-var-d mt-24 mb-32 flex flex-col items-center px-4 text-center"
+  >
+    <h1 class="font-100 font-serif text-8xl/25 wrap-break-word hyphens-manual">
+      404
+    </h1>
+    <p class="font-300 mt-8 font-serif text-2xl italic">
+      {{ i18n "404FirstLine" . | default "\"Here lies a page that never made it.\"" }}
+    </p>
+    <p class="mt-4 mb-16 text-lg">
+      {{ i18n "404SecondLine" . | default "But don't fret, there's plenty more that did." }}
+
+    </p>
+
+    <a
+      class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur rounded-full border px-5 py-3 text-center font-sans shadow-lg transition-all duration-400 ease-in-out hover:shadow-md"
+      href="{{ .Site.Home.RelPermalink }}"
+    >
+      {{ i18n "KeepReading" . | default "Keep Reading" }}
+    </a>
+  </div>
+{{ end }}
