@@ -50,9 +50,6 @@
 {{- $subtitle := substr $fullSubtitle 0 -1 }}
 {{- $subtitlePunctuation := substr $fullSubtitle -1 1 }}
 
-{{- /* Responsive title font size based on string length */ -}}
-{{- $titleLen := len $fullTitle }}
-{{- $titleFontSize := cond (ge $titleLen 30) "lg:text-7xl" "lg:text-8xl" }}
 
 {{- /* Context for error reporting (warnf, OCD)*/}}
 {{ $page := .Page.RelPermalink }}
@@ -129,7 +126,6 @@
 {{- end }}
 
 {{- /* Missing Link Text Error Handling (warnf, OCD) */}}
-
 {{- if and (or $btnLink $link) (or (eq $btnTxt "") (eq $linkTxt "")) }}
   {{- if and $btnLink (eq $btnTxt "") }}
     {{- /* Warnf for error: ocd-sc-122 */}}
@@ -234,7 +230,6 @@
 {{- end }}
 
 {{- /* Shortcode Rendering */}}
-
 {{- if or $fullTitle $fullSubtitle }}
   <div
     class="text-on-sur-var dark:text-on-sur-var-d mb-32 mt-8 flex w-full max-w-7xl flex-col items-center px-4 "
@@ -245,7 +240,7 @@
       <h2 class="sr-only">{{- $fullTitle -}}</h2>
       <h3 class="sr-only">{{- $fullSubtitle -}}</h3>
       <h2
-        class="font-300 {{ $titleFontSize }}/25 text-center font-serif text-5xl/16 wrap-break-word hyphens-manual italic sm:text-7xl/23"
+        class="font-300 text-center font-serif text-5xl/16 wrap-break-word hyphens-manual italic sm:text-7xl/23"
         aria-hidden="true"
       >
         {{- $title -}}
