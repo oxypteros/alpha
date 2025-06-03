@@ -147,6 +147,42 @@ other = "Prefetch function is disabled"
 
 [PrefetchEnabled]
 other = "Prefetch function is enabled"
+
+[FeaturedArticle]
+other = "Featured Article"
+
+[RecommendedArticles]
+other= "Recommended Articles"
+
+[RecentArticles]
+other= "Latest Articles"
+
+[CtaHeading]
+other = "What's Next?"
+
+[NumListHeading]
+other = "Ordered Article List"
+
+[Faq]
+other = "Frequently Asked Questions"
+
+[AboutHeading]
+other = "About Me"
+
+[ErrorHeading]
+other = "Error"
+
+[WarningHeading]
+other = "Warning"
+
+[SuccessHeading]
+other = "Success"
+
+[InfoHeading]
+other = "Info"
+
+[SocialHeading]
+other = "Social media links"
 # Ocd
 [OcdOn]
 other = "on:"
