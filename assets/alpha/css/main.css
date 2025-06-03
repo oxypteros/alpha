@@ -466,7 +466,13 @@ b {
 }
 .sc-social {
   a {
-    @apply after:content-none;
+    @apply after:content-none no-underline;
+  }
+  ul, li {
+    @apply p-0 m-0;
+  }
+  li {
+    @apply list-none;
   }
 }
 
