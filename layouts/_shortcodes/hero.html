@@ -34,7 +34,7 @@
 */}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $fullTitle := .Get "TITLE" | default (.Get "Title") | default (.Get "title") | default .Page.Title }}
+{{- $fullTitle := .Get "TITLE" | default (.Get "Title") | default (.Get "title")  }}
 {{- $fullSubtitle := .Get "SUBTITLE" | default (.Get "Subtitle") | default (.Get "subtitle") }}
 {{- $btnLink := .Get "BTN-LINK" | default (.Get "Btn-Link") | default (.Get "btn-link") }}
 {{- $btnTxt := .Get "BTN-TEXT" | default (.Get "Btn-Text") | default (.Get "btn-text")}}
@@ -231,14 +231,20 @@
 
 {{- /* Shortcode Rendering */}}
 {{- if or $fullTitle $fullSubtitle }}
-  <div
+  <section
     class="text-on-sur-var dark:text-on-sur-var-d mb-32 mt-8 flex w-full max-w-7xl flex-col items-center px-4 "
+    aria-labelledby="hero-heading"
   >
     <div class="w-full">
       {{- /* ACCESSIBILITY: Provide full title/subtitle for screen readers.
         Hide the visually styled versions from assistive tech because the content is duplicated. */}}
-      <h2 class="sr-only">{{- $fullTitle -}}</h2>
-      <h3 class="sr-only">{{- $fullSubtitle -}}</h3>
+      {{- with $fullTitle | default .Page.Title }}
+      <h2 id="hero-heading" class="sr-only">{{- . -}}</h2>
+      {{- end }}
+      {{- with $fullSubtitle }}
+      <h3 class="sr-only">{{- . -}}</h3>
+      {{- end }}
+      {{- if and $title $titlePunctuation }}
       <h2
         class="font-300 text-center font-serif text-5xl/16 wrap-break-word hyphens-manual italic sm:text-7xl/23"
         aria-hidden="true"
@@ -248,6 +254,8 @@
         >{{ $titlePunctuation -}}</span
         >
       </h2>
+      {{- end }}
+      {{- if and $subtitle $subtitlePunctuation }}
       <h3
         class="font-300 mt-15 mb-18 text-center text-2xl wrap-break-word hyphens-manual sm:text-3xl lg:text-4xl"
         aria-hidden="true"
@@ -257,6 +265,9 @@
           >{{- $subtitlePunctuation }}</span
         >
       </h3>
+      {{- else }}
+      <div class="mt-15"></div>
+      {{- end }}
     </div>
     {{- if or (and $btnLink $btnTxt) (and $link $linkTxt) }}
       <nav
@@ -287,5 +298,5 @@
         {{- end }}
       </nav>
     {{- end }}
-  </div>
+    </section>
 {{- end }}
