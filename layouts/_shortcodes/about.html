@@ -16,7 +16,7 @@
   
   Docs: https://alpha.oxypteros.com/docs/shortcodes/about
   Repo: https://github.com/oxypteros/alpha 
-*/ -}}
+*/}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $author := .Get "AUTHOR" | default (.Get "Author") | default (.Get "author") | default .Page.Params.author }}
@@ -157,17 +157,18 @@
 {{- end }}
 
 {{- /* Shortcode Rendering */}}
-
-
-<div
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
+<aside
   class="sc-about mb-32 flex w-full max-w-7xl flex-wrap justify-center gap-10 px-4"
+  aria-labelledby="about-heading-{{- $uid -}}"
 >
   <div class="flex w-fit flex-col items-center gap-5">
     {{- if and $avatar $image }}
       {{- $webp := $image.Resize "100x100 webp" }}
       {{- $webp2x := $image.Resize "200x200 webp" }}
-
-
       <img
         class="border-out dark:border-out-d h-25 w-25 rounded-full border shadow-lg"
         src="{{ $webp.RelPermalink }}"
@@ -179,11 +180,21 @@
         alt="{{ i18n "AvatarOf" . | default "Avatar of" }} {{ $author }}"
       />
     {{- end }}
-    <div
+    {{- with $author }}
+    <h2
+      id="about-heading-{{- $uid -}}"
       class="text-on-sur-var dark:text-on-sur-var-d w-fit text-center text-2xl"
     >
-      {{ $author }}
-    </div>
+      {{- . -}}
+    </h2>
+    {{- else }}
+    <h2
+    id="about-heading-{{- $uid -}}"
+    class="sr-only"
+    >
+      {{- i18n "AboutHeading" . | default "About Me" -}}
+    </h2>
+    {{- end }}
   </div>
-  <div class="w-full max-w-xl">{{ $content }}</div>
-</div>
+  <article class="w-full max-w-xl">{{ $content }}</article>
+</aside>
