@@ -34,9 +34,13 @@
 {{- end }}
 
 {{- /* Shortcode Rendering */}}
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
 <section 
   class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4"
-  aria-labelledby="recent-heading"  
+  aria-labelledby="recent-heading-{{- $uid -}}"  
 >
   {{- /* Optional title rendering. */}}
   {{- with $title }}
@@ -47,7 +51,7 @@
       class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
     ></div>
     <h2
-      id="recent-heading"
+      id="recent-heading-{{- $uid -}}"
       class="text-on-sur-var dark:text-on-sur-var-d font-300 text-3xl min-w-0 break-words hyphens-manual"
     >
       {{- . -}}
@@ -56,7 +60,7 @@
   </div>
   {{- else }}
   <h2 
-    id="recent-heading" 
+    id="recent-heading-{{- $uid -}}" 
     class="sr-only"
   >
   {{- i18n "RecentArticles" | default "Latest Articles" -}}

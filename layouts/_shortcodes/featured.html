@@ -48,13 +48,17 @@ banner, simple, plain. Default: plain
 {{- end }} 
 
 {{- /* Shortcode Rendering */}} 
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
 {{- if eq $type "banner" }}
 <section
   class="sc-featured bg-menu dark:bg-menu-d mt-8 mb-32 flex w-full flex-col items-center justify-center px-4"
-  aria-labelledby="featured-heading"
+  aria-labelledby="featured-heading-{{- $uid -}}"
   >
   <h2 
-    id="featured-heading"
+    id="featured-heading-{{- $uid -}}"
     class="sr-only"
   >
     {{- i18n "FeaturedArticle" | default "Featured Article" -}}
@@ -96,10 +100,10 @@ banner, simple, plain. Default: plain
 {{- else if eq $type "simple" }}
 <section
   class="sc-featured mt-8 mb-32 flex w-full flex-col items-center justify-center"
-  aria-labelledby="featured-heading"
+  aria-labelledby="featured-heading-{{- $uid -}}"
   >
   <h2 
-    id="featured-heading"
+    id="featured-heading-{{- $uid -}}"
     class="sr-only"
   >
     {{- i18n "FeaturedArticle" | default "Featured Article" -}}
@@ -151,10 +155,10 @@ banner, simple, plain. Default: plain
 {{- else if eq $type "plain" }}
 <section
   class="sc-featured mt-8 mb-32 flex w-full flex-col items-center justify-center px-4 pt-8 pb-20"
-  aria-labelledby="featured-heading"
+  aria-labelledby="featured-heading-{{- $uid -}}"
   >
   <h2 
-    id="featured-heading"
+    id="featured-heading-{{- $uid -}}"
     class="sr-only"
   >
     {{- i18n "FeaturedArticle" | default "Featured Article" -}}

@@ -162,22 +162,25 @@
 {{- $actualPages := first $sampleSize ($recommendedPages) }}
 
 {{- if gt (len $actualPages) 0 }}
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
   <section 
     class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4"
-    aria-labelledby="recommended-heading"
+    aria-labelledby="recommended-heading-{{- $uid -}}"
   >
-
-    {{- /* Optional title rendering. */}}
+  {{- /* Optional title rendering. */}}
   {{- with $title }}
-<h2
-  id="recommended-heading"
-  class="font-200 text-on-sur-var dark:text-on-sur-var-d w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
->
-  {{- . -}}
-</h2>
+  <h2
+    id="recommended-heading-{{- $uid -}}"
+    class="font-200 text-on-sur-var dark:text-on-sur-var-d w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
+  >
+    {{- . -}}
+  </h2>
   {{- else }}
   <h2 
-    id="recommended-heading" 
+    id="recommended-heading-{{- $uid -}}" 
     class="sr-only"
   >
   {{- i18n "RecommendedArticles" | default "Recommended Articles" -}}

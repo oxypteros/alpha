@@ -231,15 +231,19 @@
 
 {{- /* Shortcode Rendering */}}
 {{- if or $fullTitle $fullSubtitle }}
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
   <section
     class="text-on-sur-var dark:text-on-sur-var-d mb-32 mt-8 flex w-full max-w-7xl flex-col items-center px-4 "
-    aria-labelledby="hero-heading"
+    aria-labelledby="hero-heading-{{- $uid -}}"
   >
     <div class="w-full">
       {{- /* ACCESSIBILITY: Provide full title/subtitle for screen readers.
         Hide the visually styled versions from assistive tech because the content is duplicated. */}}
       {{- with $fullTitle | default .Page.Title }}
-      <h2 id="hero-heading" class="sr-only">{{- . -}}</h2>
+      <h2 id="hero-heading-{{- $uid -}}" class="sr-only">{{- . -}}</h2>
       {{- end }}
       {{- with $fullSubtitle }}
       <h3 class="sr-only">{{- . -}}</h3>
