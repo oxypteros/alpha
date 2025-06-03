@@ -4,18 +4,18 @@
   Target: Global
 
   Example:
-    {{< social LIMIT="" >}}
+  {{< social LIMIT="" >}}
 
   Params: 
-    - LIMIT (integral, optional): Number of menu item to show
+  - LIMIT (integral, optional): Number of menu item to show 
   
-  Error handler: 
-    - warnf 
-    - OCD
+  Error handler:
+  - warnf 
+  - OCD 
+  
   Docs: https://alpha.oxypteros.com/shortcodes/social 
   Repo: https://github.com/oxypteros/alpha 
-*/ -}}
-
+*/}}
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}
 
@@ -23,13 +23,16 @@
 {{- $isNumber := (printf "%v" $limit | findRE "^[1-9][0-9]*$") }}
 {{- $menu := .Site.Menus.sc_social }}
 {{- $firstN := $menu }}
-{{- $intNumber := 0 }} {{- $warnNumber := false }}
-{{- if $isNumber }}
+{{- $intNumber := 0 }}
+{{- $warnNumber := false }}
+
+{{- if and $isNumber $menu }}
   {{- $intNumber = (index $isNumber 0 | int) }}
   {{- $firstN = first $intNumber $menu }}
 {{- else if $limit }}
   {{- $warnNumber = true }}
 {{- end }}
+
 {{- /* Context for error reporting (warnf, OCD) */}}
 {{ $page := .Page.RelPermalink }}
 
@@ -204,28 +207,42 @@
   {{- end }}
 {{- end }}
 {{- if $menu }}
-  <div class="mb-32 flex w-full max-w-7xl justify-center px-4">
-    <div class="flex max-w-xl flex-wrap items-center justify-center gap-3">
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes */}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
+  <aside
+    class="sc-social mt-8 mb-32 flex w-full max-w-7xl items-center justify-center px-4"
+    aria-labelledby="social-heading-{{- $uid -}}"
+  >
+    <h2 id="social-heading-{{- $uid -}}" class="sr-only">
+      {{- i18n "SocialHeading" . | default "Social media links" }}
+    </h2>
+    <ul
+      class="flex w-full max-w-xl flex-wrap items-center justify-center gap-3"
+    >
       {{- range $firstN }}
-        <a
-          class="group hover:text-pri dark:hover:text-pri-d rounded-full p-2"
-          href="{{ .URL }}"
-          aria-label="{{ .Name }}"
-        >
-          {{ with .Pre }}
-            <svg
-              class="stroke-on-sur dark:stroke-on-sur-d dark:group-hover:stroke-pri-d group-hover:stroke-pri size-6"
-              aria-hidden="true"
-              width="20"
-              height="20"
-            >
-              <use href="{{ . }}"></use>
-            </svg>
-          {{- else }}
-            {{ .Name }}
-          {{- end }}
-        </a>
+        <li>
+          <a
+            class="group hover:text-pri dark:hover:text-pri-d flex rounded-full p-2"
+            href="{{ .URL }}"
+            aria-label="{{ .Name }}"
+          >
+            {{ with .Pre }}
+              <svg
+                class="stroke-on-sur dark:stroke-on-sur-d dark:group-hover:stroke-pri-d group-hover:stroke-pri size-6"
+                aria-hidden="true"
+                width="20"
+                height="20"
+              >
+                <use href="{{ . }}"></use>
+              </svg>
+            {{- else }}
+              {{ .Name }}
+            {{- end }}
+          </a>
+        </li>
       {{- end }}
-    </div>
-  </div>
+    </ul>
+  </aside>
 {{- end }}
