@@ -19,7 +19,7 @@ banner, simple, plain. Default: plain
   2. Add OCD error checks (Issue #1)
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}} 
 {{- $type := .Get "TYPE" | default (.Get "Type") | default (.Get "type") | default "plain" }}
