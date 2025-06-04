@@ -19,7 +19,7 @@ banner, simple, plain. Default: plain
   2. Add OCD error checks (Issue #1)
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}} 
 {{- $type := .Get "TYPE" | default (.Get "Type") | default (.Get "type") | default "plain" }}
@@ -48,10 +48,21 @@ banner, simple, plain. Default: plain
 {{- end }} 
 
 {{- /* Shortcode Rendering */}} 
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
 {{- if eq $type "banner" }}
-<div
+<section
   class="sc-featured bg-menu dark:bg-menu-d mt-8 mb-32 flex w-full flex-col items-center justify-center px-4"
->
+  aria-labelledby="featured-heading-{{- $uid -}}"
+  >
+  <h2 
+    id="featured-heading-{{- $uid -}}"
+    class="sr-only"
+  >
+    {{- i18n "FeaturedArticle" | default "Featured Article" -}}
+  </h2>
   <article class="text-on-menu dark:text-on-menu-d my-20 w-full max-w-3xl">
     <header>
       <h2
@@ -85,11 +96,18 @@ banner, simple, plain. Default: plain
       </a>
     </footer>
   </article>
-</div>
+</section>
 {{- else if eq $type "simple" }}
-<div
+<section
   class="sc-featured mt-8 mb-32 flex w-full flex-col items-center justify-center"
->
+  aria-labelledby="featured-heading-{{- $uid -}}"
+  >
+  <h2 
+    id="featured-heading-{{- $uid -}}"
+    class="sr-only"
+  >
+    {{- i18n "FeaturedArticle" | default "Featured Article" -}}
+  </h2>
   <article class="flex w-full flex-col items-center">
     <header
       class="bg-menu dark:bg-menu-d text-on-menu-var dark:text-on-menu-var-d flex w-full items-center justify-center gap-10 py-8"
@@ -133,11 +151,18 @@ banner, simple, plain. Default: plain
       </div>
     </footer>
   </article>
-</div>
+</section>
 {{- else if eq $type "plain" }}
-<div
+<section
   class="sc-featured mt-8 mb-32 flex w-full flex-col items-center justify-center px-4 pt-8 pb-20"
->
+  aria-labelledby="featured-heading-{{- $uid -}}"
+  >
+  <h2 
+    id="featured-heading-{{- $uid -}}"
+    class="sr-only"
+  >
+    {{- i18n "FeaturedArticle" | default "Featured Article" -}}
+  </h2>
   <article class="w-full max-w-3xl">
     <header>
       <h2
@@ -171,5 +196,5 @@ banner, simple, plain. Default: plain
       </a>
     </footer>
   </article>
-</div>
+</section>
 {{- end }}

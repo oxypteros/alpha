@@ -2,7 +2,6 @@
 [Homepage]
 other = "Homepage"
 
-
 [ToggleMenu]
 other = "Open, close main menu"
 
@@ -72,8 +71,6 @@ other = "Category:"
 [TaggedAs]
 other = "Tagged as:"
 
-
-
 [EditOnGithub]
 other = "Edit this page on Github"
 
@@ -96,6 +93,15 @@ other = "Copy"
 [AvatarOf]
 other = "Avatar of"
 
+# 404
+[404FirstLine]
+other = "\"Here lies a page that never made it.\""
+
+[404SecondLine]
+other = "But don't fret, there's plenty more that did."
+
+[KeepReading]
+other = "Keep Reading"
 # aria-labels
 [SearchBtn]
 other = "Activate search"
@@ -141,6 +147,42 @@ other = "Prefetch function is disabled"
 
 [PrefetchEnabled]
 other = "Prefetch function is enabled"
+
+[FeaturedArticle]
+other = "Featured Article"
+
+[RecommendedArticles]
+other= "Recommended Articles"
+
+[RecentArticles]
+other= "Latest Articles"
+
+[CtaHeading]
+other = "What's Next?"
+
+[NumListHeading]
+other = "Ordered Article List"
+
+[Faq]
+other = "Frequently Asked Questions"
+
+[AboutHeading]
+other = "About Me"
+
+[ErrorHeading]
+other = "Error"
+
+[WarningHeading]
+other = "Warning"
+
+[SuccessHeading]
+other = "Success"
+
+[InfoHeading]
+other = "Info"
+
+[SocialHeading]
+other = "Social media links"
 # Ocd
 [OcdOn]
 other = "on:"

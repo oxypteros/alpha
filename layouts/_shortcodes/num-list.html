@@ -19,7 +19,7 @@
 
   Docs: https://alpha.oxypteros.com/shortcodes/num-list
   Repo: https://github.com/oxypteros/alpha 
-*/ -}}
+*/}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $style := .Get "STYLE" | default (.Get "Style") | default (.Get "style") | default "card" }}
@@ -100,8 +100,14 @@
 {{- if $limit }}
   {{- $pages = first (int $limit) $pages }}
 {{- end }}
-
-<div class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4">
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
+<section 
+  class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4"
+  aria-labelledby="list-heading-{{- $uid -}}"
+>
   {{- /* Optional title rendering. */}}
   {{- with $title }}
   <div
@@ -111,12 +117,20 @@
       class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
     ></div>
     <h2
+      id="list-heading-{{- $uid -}}"
       class="text-on-sur-var dark:text-on-sur-var-d font-300 text-3xl min-w-0 break-words hyphens-manual"
     >
-      {{- $title }}
+      {{- . -}}
     </h2>
     <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
   </div>
+  {{- else }}
+  <h2  
+    id="list-heading-{{- $uid -}}" 
+    class="sr-only"
+  >
+  {{- i18n "NumListHeading" | default "Ordered Article List" -}}
+  </h2>
   {{- end }}
   
   {{- /* Style-based rendering. */}}
@@ -250,4 +264,4 @@
       </div>
     {{- end }} 
   {{- end }} 
-</div>
+</section>

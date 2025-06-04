@@ -18,7 +18,7 @@
   
   Docs: https://alpha.oxypteros.com/shortcodes/status-card 
   Repo: https://github.com/oxypteros/alpha 
-*/ -}}
+*/}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
@@ -96,10 +96,15 @@
 {{- end }}
 
 {{- /* Shortcode Rendering */}}
-
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
 {{- if eq $type "error" }}
-  <div
+  <section
     class="sc-status-card dark:bg-sur-var-d mx-auto my-8 flex w-full max-w-prose flex-col items-center rounded-md border-2 border-red-700 shadow-md"
+    role="alert"
+    aria-labelledby="status-heading-{{- $uid -}}"
   >
     <header class="flex w-full items-center gap-2 px-4 pt-4">
       <svg
@@ -115,18 +120,29 @@
         />
       </svg>
       {{- with $title }}
-        <h2 class="text-red-900 dark:text-red-300">
-          {{ $title }}
+        <h2 
+          id="status-heading-{{- $uid -}}"
+          class="text-red-900 dark:text-red-300">
+          {{- . -}}
         </h2>
+      {{- else }}
+      <h2
+        id="status-heading-{{- $uid -}}"
+        class="sr-only"
+      >
+      {{- i18n "ErrorHeading" . | default "Error" -}}
+      </h2>
       {{- end }}
     </header>
     <div class="w-full px-6 py-4 text-base">
       {{ $content }}
     </div>
-  </div>
+  </section>
 {{- else if eq $type "warning" }}
-  <div
+  <section
     class="sc-status-card dark:bg-sur-var-d mx-auto my-8 flex w-full max-w-prose flex-col items-center rounded-md border-2 border-orange-600 shadow-md"
+    role="alert"
+    aria-labelledby="status-heading-{{- $uid -}}"
   >
     <header class="flex w-full items-center gap-2 px-4 pt-4">
       <svg
@@ -142,18 +158,29 @@
         />
       </svg>
       {{- with $title }}
-        <h2 class="text-orange-900 dark:text-orange-300">
-          {{ $title }}
+        <h2 
+          id="status-heading-{{- $uid -}}"
+          class="text-orange-900 dark:text-orange-300">
+          {{- . -}}
+        </h2>
+      {{- else }}
+        <h2
+          id="status-heading-{{- $uid -}}"
+          class="sr-only"
+        >
+          {{- i18n "WarningHeading" . | default "Warning" -}}
         </h2>
       {{- end }}
     </header>
     <div class="w-full px-6 py-4 text-base">
       {{ $content }}
     </div>
-  </div>
+  </section>
 {{- else if eq $type "success" }}
-  <div
+  <section
     class="sc-status-card dark:bg-sur-var-d mx-auto my-8 flex w-full max-w-prose flex-col items-center rounded-md border-2 border-green-600 shadow-md"
+    role="status"
+    aria-labelledby="status-heading-{{- $uid -}}"
   >
     <header class="flex w-full items-center gap-2 px-4 pt-4">
       <svg
@@ -169,18 +196,29 @@
         />
       </svg>
       {{- with $title }}
-        <h2 class="text-green-900 dark:text-green-300">
-          {{ $title }}
+        <h2 
+          id="status-heading-{{- $uid -}}"
+          class="text-green-900 dark:text-green-300">
+          {{- . -}}
+        </h2>
+      {{- else }}
+        <h2
+          id="status-heading-{{- $uid -}}"
+          class="sr-only"
+        >
+          {{- i18n "SuccessHeading" . | default "Success" -}}
         </h2>
       {{- end }}
     </header>
     <div class="w-full px-6 py-4 text-base">
       {{ $content }}
     </div>
-  </div>
+  </section>
 {{- else if eq $type "info" }}
-  <div
+  <section
     class="sc-status-card dark:bg-sur-var-d border-out-var dark:border-out-var-d mx-auto my-8 flex w-full max-w-prose flex-col items-center rounded-md border-2 shadow-md"
+    role="note"
+    aria-labelledby="status-heading-{{- $uid -}}"
   >
     <header class="flex w-full items-center gap-2 px-4 pt-4">
       <svg
@@ -196,15 +234,24 @@
         />
       </svg>
       {{- with $title }}
-        <h2 class="text-on-sur-var dark:text-on-sur-var-d">
-          {{ $title }}
+        <h2 
+          id="status-heading-{{- $uid -}}"
+          class="text-on-sur-var dark:text-on-sur-var-d">
+          {{- . -}}
+        </h2>
+      {{- else }}
+        <h2
+          id="status-heading-{{- $uid -}}"
+          class="sr-only"
+        >
+          {{- i18n "InfoHeading" . | default "Info" -}}
         </h2>
       {{- end }}
     </header>
     <div class="w-full px-6 py-4 text-base">
       {{ $content }}
     </div>
-  </div>
+  </section>
 {{- else }}
   {{- /* Warnf for error: ocd-sc-130 */}}
   {{- $errorCode := "ocd-sc-130" }}

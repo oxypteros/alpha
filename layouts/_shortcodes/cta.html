@@ -18,7 +18,7 @@
   
   Docs: https://alpha.oxypteros.com/docs/shortcodes/cta 
   Repo: https://github.com/oxypteros/alpha 
-*/ -}}
+*/}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
 {{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
@@ -153,13 +153,29 @@
 
 
 {{- /* Shortcode Rendering */}}
-<div class="mb-32 flex w-full max-w-7xl flex-col items-center px-4 text-center">
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
+<section 
+  class="mb-32 flex w-full max-w-7xl flex-col items-center px-4 text-center"
+  aria-labelledby="cta-heading-{{- $uid -}}"    
+>
   <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-2xl"></div>
 
   <div class="my-16 flex w-full flex-col items-center justify-center gap-16">
     {{- with $title }}
-      <h2 class="font-200 text-on-sur-var dark:text-on-sur-var-d text-4xl leading-normal wrap-break-word hyphens-manual w-full">
-        {{- $title -}}
+      <h2
+        id="cta-heading-{{- $uid -}}" 
+      class="font-200 text-on-sur-var dark:text-on-sur-var-d text-4xl leading-normal wrap-break-word hyphens-manual w-full">
+        {{- . -}}
+      </h2>
+    {{- else }}
+      <h2
+        id="cta-heading-{{- $uid -}}"
+        class="sr-only"
+      >
+      {{- i18n "CtaHeading" | default "What's Next?" -}}
       </h2>
     {{- end }}
     <div
@@ -180,4 +196,4 @@
     {{- end }}
   </div>
   <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-2xl"></div>
-</div>
+</section>

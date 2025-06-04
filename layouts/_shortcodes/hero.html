@@ -34,7 +34,7 @@
 */}}
 
 {{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $fullTitle := .Get "TITLE" | default (.Get "Title") | default (.Get "title") | default .Page.Title }}
+{{- $fullTitle := .Get "TITLE" | default (.Get "Title") | default (.Get "title")  }}
 {{- $fullSubtitle := .Get "SUBTITLE" | default (.Get "Subtitle") | default (.Get "subtitle") }}
 {{- $btnLink := .Get "BTN-LINK" | default (.Get "Btn-Link") | default (.Get "btn-link") }}
 {{- $btnTxt := .Get "BTN-TEXT" | default (.Get "Btn-Text") | default (.Get "btn-text")}}
@@ -50,9 +50,6 @@
 {{- $subtitle := substr $fullSubtitle 0 -1 }}
 {{- $subtitlePunctuation := substr $fullSubtitle -1 1 }}
 
-{{- /* Responsive title font size based on string length */ -}}
-{{- $titleLen := len $fullTitle }}
-{{- $titleFontSize := cond (ge $titleLen 30) "lg:text-7xl" "lg:text-8xl" }}
 
 {{- /* Context for error reporting (warnf, OCD)*/}}
 {{ $page := .Page.RelPermalink }}
@@ -129,7 +126,6 @@
 {{- end }}
 
 {{- /* Missing Link Text Error Handling (warnf, OCD) */}}
-
 {{- if and (or $btnLink $link) (or (eq $btnTxt "") (eq $linkTxt "")) }}
   {{- if and $btnLink (eq $btnTxt "") }}
     {{- /* Warnf for error: ocd-sc-122 */}}
@@ -234,18 +230,27 @@
 {{- end }}
 
 {{- /* Shortcode Rendering */}}
-
 {{- if or $fullTitle $fullSubtitle }}
-  <div
+  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
+  <section
     class="text-on-sur-var dark:text-on-sur-var-d mb-32 mt-8 flex w-full max-w-7xl flex-col items-center px-4 "
+    aria-labelledby="hero-heading-{{- $uid -}}"
   >
     <div class="w-full">
       {{- /* ACCESSIBILITY: Provide full title/subtitle for screen readers.
         Hide the visually styled versions from assistive tech because the content is duplicated. */}}
-      <h2 class="sr-only">{{- $fullTitle -}}</h2>
-      <h3 class="sr-only">{{- $fullSubtitle -}}</h3>
+      {{- with $fullTitle | default .Page.Title }}
+      <h2 id="hero-heading-{{- $uid -}}" class="sr-only">{{- . -}}</h2>
+      {{- end }}
+      {{- with $fullSubtitle }}
+      <h3 class="sr-only">{{- . -}}</h3>
+      {{- end }}
+      {{- if and $title $titlePunctuation }}
       <h2
-        class="font-300 {{ $titleFontSize }}/25 text-center font-serif text-5xl/16 wrap-break-word hyphens-manual italic sm:text-7xl/23"
+        class="font-300 text-center font-serif text-5xl/16 wrap-break-word hyphens-manual italic sm:text-7xl/23"
         aria-hidden="true"
       >
         {{- $title -}}
@@ -253,6 +258,8 @@
         >{{ $titlePunctuation -}}</span
         >
       </h2>
+      {{- end }}
+      {{- if and $subtitle $subtitlePunctuation }}
       <h3
         class="font-300 mt-15 mb-18 text-center text-2xl wrap-break-word hyphens-manual sm:text-3xl lg:text-4xl"
         aria-hidden="true"
@@ -262,6 +269,9 @@
           >{{- $subtitlePunctuation }}</span
         >
       </h3>
+      {{- else }}
+      <div class="mt-15"></div>
+      {{- end }}
     </div>
     {{- if or (and $btnLink $btnTxt) (and $link $linkTxt) }}
       <nav
@@ -292,5 +302,5 @@
         {{- end }}
       </nav>
     {{- end }}
-  </div>
+    </section>
 {{- end }}
