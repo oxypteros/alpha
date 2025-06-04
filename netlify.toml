@@ -5,6 +5,6 @@
 # Documentation: https://docs.netlify.com/configure-builds/file-based-configuration/
 #
 [build]
-  command = 'hugo --buildDrafts --gc --minify'
+  command = "hugo --buildDrafts --gc --minify"
 [build.environment]
   HUGO_VERSION = "0.147.7"  
