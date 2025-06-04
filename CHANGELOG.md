@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## [Unreleased]
+### Changed
+- Refactored shortcodes to use semantic  elements instead of generic `<div>`.
+- Added default and fallback headings to improve accessibility.
+- Implemented unique `id`/`aria-labelledby` pairs using to prevent duplicate IDs when shortcodes appear multiple times on a page.
+- Added appropriate default heading values to `i18n/en.toml`.
+
+### Added
+- Tailwind and CSS rules for updated semantic wrappers 
+([#9](https://github.com/oxypteros/alpha/pull/9))
 
 ## [0.1.1-beta] — 2024-06-01
 ### Fixed
