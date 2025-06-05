@@ -100,5 +100,5 @@ export const initPagefindAlpha = (i18n) => {
   };
 
   ELEMENTS.searchBtn.addEventListener("click", toggleSearch);
-  console.log("pagefind-alpha.js imported");
+  //console.log("pagefind-alpha.js imported");
 };
