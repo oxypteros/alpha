@@ -37,6 +37,9 @@
  * This script is typically loaded in the `<head>` and conditionally enabled
  * with `enable_prefetch` in `params.toml`).
  *
+ *  CSP - Hash for speculation rules : 
+ * 'sha256-7hU1nhtHxQh8ziW5xcD1HB2QhOc24LKd7TLXNfXSCcc='
+ * 
  * @see {@link https://developer.chrome.com/blog/speculation-rules/} - For Speculation Rules API.
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation} - For Network Information API.
  */
@@ -80,7 +83,7 @@ export const initPrefetch = () => {
           resourceLink.href = link.href;
           document.head.appendChild(resourceLink);
           link.dataset.resourceFetched = "true";
-          console.log(`${rel}ed:`, link.href);
+          //console.log(`${rel}ed:`, link.href);
         }
       });
     });
