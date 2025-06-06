@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 {{- /*
   twitter-cards.html (partial): Generates Twitter Card metadata for social sharing, embedding it in the page `<head>`.
 
@@ -19,41 +20,41 @@
 
   Repo: https://github.com/oxypteros/alpha
 */ -}}
-{{- $seo_img := .Resources.GetMatch "*-social.*" }}{{- /*1200 x 675*/}}
+{{- $seo_img := .Resources.GetMatch "*-social.*" }}{{- /*1200 x 675 */}}
 {{- $img := .Resources.GetMatch "*.{png,jpg,jpeg,webp,gif}" }}
 {{- if $seo_img }}
-{{- with $seo_img }}
+  {{- with $seo_img }}
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="{{ .Permalink }}">
-{{- end }}
-{{- with .Page.Params.socialImgDesc }}
+    <meta name="twitter:image" content="{{ .Permalink }}" />
+  {{- end }}
+  {{- with .Page.Params.socialImgDesc }}
     <meta name="twitter:image:alt" content="{{- . -}}" />
-{{- end }}
+  {{- end }}
 {{- else if $img }}
-{{- with $img }}
+  {{- with $img }}
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="{{ .Permalink }}">
-{{- end }}
-{{- with .Page.Params.imgDesc }}
+    <meta name="twitter:image" content="{{ .Permalink }}" />
+  {{- end }}
+  {{- with .Page.Params.imgDesc }}
     <meta name="twitter:image:alt" content="{{- . -}}" />
-{{- end }}
+  {{- end }}
 {{- else }}
-    <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary" />
 {{- end }}
 {{- with .Title }}
-    <meta name="twitter:title" content="{{ . | htmlUnescape | plainify }}" />
+  <meta name="twitter:title" content="{{ . | htmlUnescape | plainify }}" />
 {{- end }}
-{{- with or .Page.Params.socialDesc .Description | plainify | htmlUnescape}}
-    <meta name="twitter:description" content='{{ trim . "\n\r\t " }}'/>
+{{- with or .Page.Params.socialDesc .Description | plainify | htmlUnescape }}
+  <meta name="twitter:description" content="{{ trim . "\n\r\t " }}" />
 {{- end }}
 {{- $site := .Site.Params.twitterSite -}}
 {{- $creator := .Page.Params.twitterUsername -}}
 {{- if and $site $creator }}
-    <meta name="twitter:site" content="{{- $site -}}" />
-    <meta name="twitter:creator" content="{{- $creator -}}" />
+  <meta name="twitter:site" content="{{- $site -}}" />
+  <meta name="twitter:creator" content="{{- $creator -}}" />
 {{- else if $site }}
-    <meta name="twitter:site" content="{{- $site -}}" />
-    <meta name="twitter:creator" content="{{- $site -}}" />
+  <meta name="twitter:site" content="{{- $site -}}" />
+  <meta name="twitter:creator" content="{{- $site -}}" />
 {{- else if $creator }}
-    <meta name="twitter:creator" content="{{- $creator -}}" />
-{{- end }}
+  <meta name="twitter:creator" content="{{- $creator -}}" />
+{{- end -}}

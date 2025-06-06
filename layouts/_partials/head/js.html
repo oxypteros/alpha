@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 {{- /*
   js.html (partial): Manages the loading of JavaScript assets in the <head>.
 
@@ -8,15 +9,14 @@
   - All scripts are processed for development (unminified) and production (minified, fingerprinted, with SRI) environments.
 
   Repo: https://github.com/oxypteros/alpha
-  */
--}}
-
+  */ -}}
+  
+<!-- prettier-ignore -->
 {{- /*
   `alpha-head.js`:
   - Processed by Hugo templates for i18n string replacement and conditional feature loading.
   - Built using js.Build and loaded as an ES module.
-  */
--}}
+*/}}
 {{- $data := dict "Lang" .Site.Language.Lang "Site" .Site -}}
 {{- with resources.Get "alpha/js/alpha-head.js" | resources.ExecuteAsTemplate (printf "alpha-head-%s.js" .Site.Language.Lang) $data -}}
   {{- if eq hugo.Environment "development" -}}
@@ -32,21 +32,22 @@
         integrity="{{ .Data.Integrity }}"
         crossorigin="anonymous"
       ></script>
-    {{- end }}
-  {{- end }}
-{{- end }}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 
+<!-- prettier-ignore -->
 {{- /*
   `pagefind-ui.js`:
   - Loaded if Pagefind search is enabled in site parameters.
   - Uses `defer` to ensure non-blocking loading.
   - Note: This script is typically provided by the Pagefind installation and is expected to be available at `public/pagefind/pagefind-ui.js`.
-  */
--}}
+*/}}
 {{- if eq .Site.Params.pagefind_enabled true }}
   <script src="/pagefind/pagefind-ui.js" defer></script>
-{{- end }}
+{{- end -}}
 
+<!-- prettier-ignore -->
 {{- /*
   `custom-head.js`:
   - Allows users to inject their own JavaScript into the <head> of every page.
@@ -54,14 +55,13 @@
   - Processed by js.Build for minification and fingerprinting in production.
   - Loaded with `defer` to ensure non-blocking loading.
   - Users should copy the `custom-head.js` in  the root `/assets/js/`.
-  */
--}}
+*/}}
 {{- with resources.Get "js/custom-head.js" }}
   {{- $content := .Content | strings.TrimSpace -}}
   {{- /* Remove pre-defined JSDoc-style comment blocks */}}
-  {{- $content := replaceRE `(?s)/\*\*\*.*?\*/` "" $content | strings.TrimSpace -}}
-  {{- if $content -}}
-    {{- if eq hugo.Environment "development" -}}
+  {{- $content := replaceRE `(?s)/\*\*\*.*?\*/` "" $content | strings.TrimSpace }}
+  {{- if $content }}
+    {{- if eq hugo.Environment "development" }}
       {{- with . | js.Build }}
         <script src="{{ .RelPermalink }}" defer></script>
       {{- end }}
@@ -74,7 +74,7 @@
           crossorigin="anonymous"
           defer
         ></script>
-      {{- end }}
-    {{- end }}
-  {{- end }}
-{{- end }}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
