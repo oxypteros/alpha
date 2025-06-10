@@ -63,6 +63,9 @@ enableEmoji = true
     noHl = false
     tabWidth = 2
 
+
+[outputs]
+  home = ["HTML", "RSS", "webappmanifest"]
 # Tailwind Integration (Build Options) 
 #[build]
 #  [build.buildStats]
