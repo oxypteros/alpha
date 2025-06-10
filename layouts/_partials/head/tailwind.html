@@ -1,0 +1,34 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/tailwind.html
+  Purpose: Builds and appends the Tailwind CSS stylesheet to the `<head>`.
+
+  Behavior:
+  - Uses Hugo Pipes to process `alpha/css/main.css` with Tailwind CSS.
+  - In production, the output is minified, fingerprinted, and includes 
+  `crossorigin` and `integrity`.
+
+  Note:
+  - This partial will be used only if `tailwind_enabled = true` in `params.toml`.
+  - Hugo Tailwind CSS docs: https://gohugo.io/functions/css/tailwindcss/
+
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+ {{- with (templates.Defer (dict "key" "global")) }}
+  {{- with resources.Get "alpha/css/main.css" }}
+    {{- $opts := dict "minify" hugo.IsProduction "inlineImports" true -}}
+    {{- with . | css.TailwindCSS $opts }}
+      {{- $tailwindCss := . -}}
+      {{- if hugo.IsProduction }}
+        {{- $tailwindCss = . | fingerprint -}}
+      {{- end }}
+      <link
+        rel="stylesheet"
+        href="{{ $tailwindCss.RelPermalink }}"
+        {{- if hugo.IsProduction }}
+          integrity="{{ $tailwindCss.Data.Integrity }}" crossorigin="anonymous"
+        {{- end }}
+      />
+    {{- end }}
+  {{- end }}
+{{- end -}} 

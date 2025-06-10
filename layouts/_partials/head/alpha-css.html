@@ -1,0 +1,29 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/alpha-css.html
+  Purpose: Builds and appends the static Alpha stylesheet to the `<head>`.
+
+  Behavior:
+  - In production, the output is minified, fingerprinted, and includes 
+  `crossorigin` and `integrity`.
+
+  Notes: 
+  - This partial is for linking a PRE-COMPILED, static Tailwind CSS file.
+  - For JIT compilation of Tailwind directly within Hugo, set: 
+    `tailwind_enabled = true` in `params.toml`.
+
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+{{- with resources.Get "alpha/css/alpha.css" }}
+  {{- $alphaCss := . -}}
+  {{- if hugo.IsProduction }}
+    {{- $alphaCss = . | minify | fingerprint -}}
+  {{- end -}}
+  <link
+    rel="stylesheet"
+    href="{{ $alphaCss.RelPermalink }}"
+    {{- if hugo.IsProduction }}
+      integrity="{{ $alphaCss.Data.Integrity }}" crossorigin="anonymous"
+    {{- end }}
+  />
+{{- end -}}
