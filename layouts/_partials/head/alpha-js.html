@@ -1,0 +1,28 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/alpha-head.js
+  Purpose: Appends the Alpha theme's critical JavaScript to the `<head>`.
+
+  Behavior:
+  - Uses Hugo Pipes to process `alpha/js/alpha-head.js` for i18n string 
+    replacement and conditional feature loading.
+  - Built using `js.Build` and loaded as a language specific ES module.
+  - In production, the output is minified, fingerprinted, and includes
+    `crossorigin` and `integrity`.
+  
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+
+{{- $alphaJsPath := "alpha/js/alpha-head.js" -}}
+{{- $data := dict "Lang" .Site.Language.Lang "Site" .Site -}}
+{{- $jsTpl := resources.Get $alphaJsPath | resources.ExecuteAsTemplate (printf "alpha-head-%s.js" .Site.Language.Lang) $data -}}
+{{- $opts := dict "minify" hugo.IsProduction -}}
+{{- $alphaJs := $jsTpl | js.Build $opts -}}
+{{- $finalJs := cond hugo.IsProduction ($alphaJs | fingerprint) $alphaJs }}
+<script
+  type="module"
+  src="{{ $finalJs.RelPermalink }}"
+  {{- with $finalJs.Data.Integrity }}
+    integrity="{{- . -}}" crossorigin="anonymous"
+  {{- end }}
+></script>
