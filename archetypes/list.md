@@ -6,7 +6,7 @@ layout = "list"
 paginate = true
 
 title = "{{ replace .File.ContentBaseName `-` ` ` | title }}"
-series = " "
+series = ""
   weight = 1000
 description = ""
 +++
