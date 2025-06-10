@@ -1,0 +1,177 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/seo.html
+  Purpose: Collect and pass initial values for schema.org open-graph and x-cards.
+
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+{{- $page := . -}}
+{{- $site := .Site -}}
+
+
+{{- /* Page Type */}}
+{{- $type := .Params.seo_type | default "" -}}
+
+{{- /* Title Handler*/}}
+{{- $title := "" -}}
+{{- with $page.Title }}
+  {{- $title = . | htmlUnescape -}}
+{{- else }}
+ {{- $title = $site.Title -}}
+{{- end }}
+{{- /* Publish and mod date */}}
+{{- $publishDateObject := .PublishDate | default .Date -}}
+{{- $modDateObject := .Lastmod -}}
+{{- $year := $publishDateObject.Format "2006" -}}
+{{- $estYear := $site.Params.established_year -}}
+
+{{- $dateData := dict "datePublished" ($publishDateObject.Format "2006-01-02T15:04:05-07:00") -}}
+
+{{- if ne $modDateObject $publishDateObject -}}
+  {{- $dateData = merge $dateData (dict "dateModified" ($modDateObject.Format "2006-01-02T15:04:05-07:00")) -}}
+{{- end -}}
+
+{{- /* Author & Author Type Logic */}}
+{{- $author := "" -}}
+{{- $authorType := "" -}}
+{{- with $page.Params.author }}
+  {{- $author = . -}}
+  {{- $authorType = "Person" -}}
+{{- else with $page.Params.seo_author }}
+  {{- $author = . -}}
+  {{- $authorType = "Person" -}}
+{{- else with $site.Params.seo_author }}
+  {{- $author = . -}}
+  {{- $authorType = "Person" -}}
+{{- else with $site.Params.seo_organization }}
+  {{- $author = . -}}
+  {{- $authorType = "Organization" -}}
+{{- else }}
+  {{- $author = $site.Title -}}
+  {{- $authorType = "Organization" -}}
+{{- end }}
+
+{{- /* Description Fallbacks */}}
+{{- $description := "" -}}
+{{- with $page.Params.seo_description -}}
+  {{- $description = . | markdownify | plainify | strings.TrimSpace -}}
+{{- else with $page.Params.description -}}
+  {{- $description = . | markdownify | plainify | strings.TrimSpace -}}
+{{- else with $page.Summary -}}
+  {{- $description = . | plainify | truncate 160 | strings.TrimSpace -}}
+{{- end -}}
+
+{{- /* Publisher & Logo */}}
+{{- $publisherDict := dict
+  "@type"   "Organization"
+  "name"    $site.Title
+  "url"     $site.BaseURL
+-}}
+{{- with $site.Params.seo_logo_path }}
+  {{- $logo := dict "logo" (dict
+    "@type" "ImageObject"
+    "url" ( . | absURL )
+    )
+  -}}
+  {{- $publisherDict = merge $publisherDict $logo -}}
+{{- end }}
+
+{{- /* Language Handler */}}
+{{- $inLanguage := .Language.Lang -}}
+{{- if gt (len .Site.Languages) 1 }}
+  {{- $langs := slice .Language.Lang -}}
+  {{- range .Translations -}}
+    {{- if .File -}}
+      {{- $langs = $langs | append .Language.Lang -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if gt (len $langs) 1 -}}
+    {{- $inLanguage = $langs -}}
+  {{- end -}}
+{{- end }}
+
+{{- /* Reading Time Handler */}}
+{{- $readingTime := "" -}}
+{{- with .ReadingTime -}}
+  {{- $readingTime = printf "PT%dM" . -}}
+{{- end -}}
+{{- /* X (ex. Twitter) */}}
+{{- $xCreator := $page.Params.twitter_username -}}
+{{- $xSite := $site.Params.twitter_username -}}
+
+{{- /* Initial data collection */}}
+{{- $data := dict
+  "type"        ($type | default "CreativeWork" )
+  "title"       $title
+  "description" $description
+  "permalink"   $page.Permalink
+  "author"      $author
+  "authorType"  $authorType
+  "siteTitle"   $site.Title
+  "baseUrl"     $site.BaseURL
+  "year"        $year
+  "inLanguage"  $inLanguage
+  "publisher"   $publisherDict
+  "wordCount"   $page.WordCount
+  "readingTime" $readingTime
+  "xSite"       $xSite
+  "xCreator"    ($xCreator | default $xSite)
+}}
+{{- $data = merge $data $dateData -}}
+
+{{- /* Conditional page types */}}
+{{- if $page.IsHome -}}
+  {{- $data = merge $data (dict
+    "type"       ($type | default "WebSite" )
+    "title"      $data.siteTitle
+    "year"      ( $estYear | default $data.year )
+    )
+  -}}
+{{- else if .IsNode }}
+
+{{- /* Conditional type selector for nodes */}}
+{{- $nodeType := cond (eq $page.Params.paginate false) "WebPage" "CollectionPage" -}}
+
+  {{- $data = merge $data (dict
+    "type"  ($type | default $nodeType )
+    )
+  -}}
+
+{{- else if eq .Layout "utility" }}
+  {{- $data = merge $data (dict
+    "type"  ($type | default "WebPage" )
+    )
+  -}}
+{{- else }}
+
+  {{- $data = merge $data (dict "type" ($type | default "Article")) -}}
+
+  {{- /* Specific data for series pages */}}
+  {{- with $page.Params.series -}}
+    {{- $currentSeriesName := . -}}
+    {{- $pagesInSeries := where site.RegularPages "Params.series" $currentSeriesName -}}
+
+    {{- $parentPage := index (sort $pagesInSeries "Params.weight" "asc") 0 -}}
+
+    {{- with $parentPage -}}
+      {{- $seriesObject := dict
+        "@type" "CreativeWorkSeries"
+        "name"  .Title
+        "url"   .Permalink
+      -}}
+      {{- $data = merge $data (dict "isPartOf" $seriesObject) -}}
+    {{- end -}}
+
+    {{- with $page.Params.weight -}}
+      {{- $data = merge $data (dict "position" .) -}}
+    {{- end -}}
+
+  {{- end -}}
+{{- end }}
+{{- /* Render sub-partials */}}
+{{- partial "head/seo/schema.html" (dict "page" . "data" $data ) }}
+{{- if gt (len .Ancestors) 0 }}
+  {{- partial "head/seo/breadcrumbs.html" $page }}
+{{- end }}
+{{- partial "head/seo/open-graph.html" $data }}
+{{ partial "head/seo/x-cards.html" $data }}

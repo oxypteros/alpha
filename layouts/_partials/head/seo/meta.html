@@ -1,0 +1,68 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/seo/meta.html
+  Purpose: Appends essential semantic HTML and SEO metadata into the `<head>`.
+
+  Includes:
+    - Charset and viewport
+    - Theme color support for light/dark mode
+    - Canonical URL
+    - Dynamic title tag
+    - Hreflang tags
+    - Meta description (from .Description)
+
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{{- /* Theme Colors Meta */}}
+<meta
+  name="theme-color"
+  content="#ffffff"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#121315"
+  media="(prefers-color-scheme: dark)"
+/>
+<meta name="color-scheme" content="light dark" />
+<title>
+  {{- if .IsHome }}
+    {{- .Title | default site.Title -}}
+  {{- else }}
+    {{- printf "%s | %s" .Title site.Title | htmlUnescape -}}
+  {{- end -}}
+</title>
+
+<link rel="canonical" href="{{- .Page.Permalink -}}" />
+
+{{- /* Multilingual SEO: Hreflang Tags */}}
+{{- if .IsTranslated }}
+  {{- /* Default language */}}
+  {{- $defaultLang := index .Site.Languages 0 -}}
+  {{- /* Include translations */}}
+  {{- range .AllTranslations }}
+    {{- if .File }}
+      {{- if eq .Language.Lang $defaultLang.Lang }}
+        <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+      {{- end }}
+      <link
+        rel="alternate"
+        hreflang="{{ .Language.Lang }}"
+        href="{{ .Permalink }}"
+      />
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- $desc := "" -}}
+{{- if .Page.Params.description }}
+  {{- $desc = .Page.Params.description | markdownify | plainify -}}
+{{- else if .Summary }}
+  {{- $desc = .Summary | plainify | truncate 160 -}}
+{{- end }}
+
+{{- with $desc }}
+  <meta name="description" content="{{- . -}}" />
+{{- end -}}

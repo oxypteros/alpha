@@ -1,0 +1,31 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/seo/open-graph.html
+  Purpose: Accept values from `head/seo.html` and appends open-graph.
+
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+{{- $page := .page -}}
+{{- $site := .Site}}
+{{- $data := . -}}
+<meta property="og:title" content="{{ $data.title }}">
+<meta property="og:description" content="{{ $data.description }}">
+<meta property="og:url" content="{{ $data.permalink }}">
+<meta property="og:site_name" content="{{ $data.siteTitle }}">
+<meta property="og:type" content="{{- if .IsHome -}}website{{- else -}}article{{- end -}}">
+{{- /* Multilingual or Single language logic */}}
+{{- if $data.inLanguage }}
+  {{- if reflect.IsSlice $data.inLanguage }}
+    {{- /* Multiple languages */}}
+    {{- range $i, $lang := $data.inLanguage }}
+      {{- if eq $i 0 }}
+        <meta property="og:locale" content="{{ $lang }}" />
+      {{- else }}
+        <meta property="og:locale:alternate" content="{{ $lang }}" />
+      {{- end }}
+    {{- end }}
+  {{- else }}
+    {{- /* Single language */}}
+    <meta property="og:locale" content="{{ $data.inLanguage }}" />
+  {{- end }}
+{{- end -}}

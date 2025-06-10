@@ -1,0 +1,112 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/seo/schema.html
+  Purpose: Accept initial values from `head/seo.html` and conditionally append a 
+  page specific schema JSON-LD.
+
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+{{- $page := .page -}}
+{{- $site := .Site -}}
+{{- $data := .data -}}
+
+{{- /* Base Schema - applies to all page types */}}
+{{- $schema := dict
+  "@context"        "https://schema.org"
+  "@type"           $data.type
+  "url"             $data.permalink
+  "name"            $data.title
+  "description"     $data.description
+  "inLanguage"      $data.inLanguage
+  "copyrightYear"   $data.year
+  "copyrightHolder" $data.author
+  "author" (dict
+  "@type"       $data.authorType
+  "name"        $data.author
+  )
+  "publisher"       $data.publisher
+-}}
+
+{{- /* Specific schema types */}}
+
+{{- if eq $data.type "Article" }}
+  {{- /* MainEntity for Article */}}
+  {{- $articleSchema := dict
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" $data.permalink)
+    "headline"        $data.title
+  -}}
+
+  {{- /* Merge additional info*/}}
+  {{- with $data.datePublished }}
+    {{- $articleSchema = merge $articleSchema (dict "datePublished" .) -}}
+  {{- end }}
+  {{- with $data.dateModified }}
+    {{- $articleSchema = merge $articleSchema (dict "dateModified" .) -}}
+  {{- end }}
+  {{- with $data.wordCount }}
+    {{- $articleSchema = merge $articleSchema (dict "wordCount" .) -}}
+  {{- end }}
+  {{- with $data.readingTime }}
+    {{- $articleSchema = merge $articleSchema (dict "timeRequired" .) -}}
+  {{- end }}
+  {{- with $data.isPartOf }}
+    {{- $articleSchema = merge $articleSchema (dict "isPartOf" .) -}}
+  {{- end }}
+  {{- with $data.position }}
+    {{- $articleSchema = merge $articleSchema (dict "position" .) -}}
+  {{- end }}
+
+  {{- /* Merge to base schema */}}
+  {{- $schema = merge $schema $articleSchema -}}
+{{- else if eq $data.type "CollectionPage" }}
+
+  {{- /* Empty slice for list items */}}
+  {{- $itemList := slice -}}
+
+  {{- /* Loop through the pages on the current section */}}
+  {{- range $index, $item := $page.Paginator.Pages }}
+
+    {{- /* Object for each list item */}}
+    {{- $itemArticle := dict
+      "@type"       "Article"
+      "headline"    $item.Title
+      "url"         $item.Permalink
+      "description" ($item.Summary | plainify | truncate 160)
+      "author" (dict "@type" "Person" "name" ($item.Params.author | default $site.Params.seo_author | default $site.Title))
+      "datePublished" ($item.PublishDate.Format "2006-01-02T15:04:05-07:00")
+    -}}
+
+    {{- /* Conditional dateModified */}}
+    {{- if ne $item.Lastmod $item.PublishDate }}
+      {{- $itemArticle = merge $itemArticle (dict "dateModified" ($item.Lastmod.Format "2006-01-02T15:04:05-07:00")) -}}
+    {{- end }}
+
+    {{- /* ListItem object */}}
+    {{- $listItem := dict
+      "@type"    "ListItem"
+      "position" (add $index 1)
+      "item"     $itemArticle
+    -}}
+
+    {{- /* Complete ListItem for list */}}
+    {{- $itemList = $itemList | append $listItem -}}
+  {{- end }}
+
+  {{- /* Final map for CollectionPage */}}
+  {{- $collectionSchema := dict
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" $data.permalink)
+    "mainEntity" (dict
+    "@type"           "ItemList"
+    "numberOfItems"   (len $page.Paginator.Pages)
+    "itemListElement" $itemList
+    )
+  -}}
+
+  {{- /* Merge to base schema */}}
+  {{- $schema = merge $schema $collectionSchema -}}
+{{- end -}}
+
+{{- /* Append the JSON-LD */}}
+<script type="application/ld+json">
+  {{- $schema | jsonify (dict "indent" "  ") | safeJS -}}
+</script>
