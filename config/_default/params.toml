@@ -30,3 +30,12 @@ visitor_settings = true
 #Development Settings
 tailwind_enabled = false
 ocd_enabled = true
+
+#SEO
+seo_organization = ""
+seo_author = ""
+seo_logo_path = ""
+seo_twitter_username = ""
+seo_manifest_short_name = ""
+seo_manifest_theme_color = ""
+seo_manifest_bg_color = ""

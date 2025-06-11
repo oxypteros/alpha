@@ -55,7 +55,9 @@
           {{ partial "components/metadata-taxonomy.html" . }}
         </div>
         <div class="w-full">
-          {{ partial "components/navigation-series.html" . }}
+        {{- if .Page.Params.series }}
+        {{ partial "components/navigation-series.html" . }}
+        {{- end }}
         </div>
       </footer>
     </article>

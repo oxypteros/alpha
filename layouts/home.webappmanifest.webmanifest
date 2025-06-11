@@ -1,0 +1,35 @@
+{{- $pngSrc := resources.Get "img/favicon-light.png" -}}
+{{- $siteTitle := .Site.Title }}
+{{- $shortName := "" -}}
+{{- with site.Params.seo_manifest_short_name }}
+  {{- $shortName = . }}
+{{- else }}
+  {{- $shortName = .Site.Title | truncate 10 }}
+{{- end }}
+
+{{- $manifest := dict
+  "name" $siteTitle
+  "short_name" ($shortName | default $siteTitle)
+  "start_url" "/"
+  "display" "standalone"
+  "background_color" (site.Params.seo_manifest_bg_color | default "#ffffff")
+  "theme_color" (site.Params.seo_manifest_theme_color | default "#ffffff")
+-}}
+
+{{- with $pngSrc -}}
+  {{- $icon192 := .Resize "192x192" -}}
+  {{- $icon512 := .Resize "512x512" -}}
+  {{- $icons := slice
+    (dict "src" $icon192.Permalink "sizes" "192x192" "type" "image/png" "purpose" "any maskable")
+    (dict "src" $icon512.Permalink "sizes" "512x512" "type" "image/png" "purpose" "any maskable")
+  -}}
+  {{- $manifest = merge $manifest (dict "icons" $icons) -}}
+{{- else }}
+  {{- $icons := slice
+    (dict "src" (absURL "/alpha/img/web-app-manifest-192.png") "sizes" "192x192" "type" "image/png" "purpose" "any maskable")
+    (dict "src" (absURL "/alpha/img/web-app-manifest-512.png") "sizes" "512x512" "type" "image/png" "purpose" "any maskable")
+  -}}
+  {{- $manifest = merge $manifest (dict "icons" $icons) -}}
+{{- end -}}
+
+{{- $manifest | jsonify -}}

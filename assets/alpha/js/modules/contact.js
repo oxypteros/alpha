@@ -59,7 +59,7 @@ export const initContactForm = (endpointURL) => {
   const COOLDOWN_MS = 30000;
   const COOLDOWN_KEY = "contactFormLastSubmission";
   const ENDPOINT = endpointURL;
-  console.log("Make.com Endpoint from module:", ENDPOINT);
+  //console.log("Make.com Endpoint from module:", ENDPOINT);
 
   const SNACKBAR = {
     container: $('[data-alpha="snackbar-container"]'),

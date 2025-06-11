@@ -56,8 +56,8 @@ other = "new"
 [NoCookiesSnackBar]
 other = "does not use cookies and only collects anonymous usage statistics."
 
-[MoreInformation]
-other = "More Information"
+[PrivacyPolicy]
+other = "Privacy Policy"
 
 [PublishedOn]
 other = "Published on"

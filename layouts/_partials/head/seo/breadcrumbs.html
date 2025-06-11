@@ -1,0 +1,39 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/seo/breadcrumbs.html
+  Purpose: Builds and appends the schema.org markup for breadcrumbs.
+
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+{{- $position := 1 -}}
+{{- $breadcrumbs := slice -}}
+
+{{- /* Add Home */}}
+{{- $breadcrumbs = $breadcrumbs | append (dict "name" (site.Title | default "Home") "item" .Site.BaseURL) -}}
+
+{{- /* Add Ancestors (sections, reversed) */}}
+{{- range .Ancestors.Reverse }}
+  {{- if and .IsSection (ne .Kind "home") }}
+    {{- $breadcrumbs = $breadcrumbs | append (dict "name" .Title "item" .Permalink) -}}
+  {{- end }}
+{{- end }}
+
+{{- /* Add Current Page */}}
+{{- $breadcrumbs = $breadcrumbs | append (dict "name" .Title "item" .Permalink) -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {{- range $index, $item := $breadcrumbs -}}
+      {{- if $index }},{{ end -}}
+      {
+        "@type": "ListItem",
+        "position": {{ add $index 1 }},
+        "name": {{ $item.name | htmlUnescape }},
+        "item": {{ $item.item }}
+      }
+    {{- end -}}
+  ]
+}
+</script>

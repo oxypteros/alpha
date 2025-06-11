@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 {{- /*
   head.html (partial): Defines the head HTML structure for Alpha.
 
@@ -12,49 +13,49 @@
     - `partial "head/seo/twitter-cards.html"` 
     - `partial "head/seo/schema.html"` 
     - `partial "head/seo/open-graph.html"`
-    - `partialCached "head/ocd.html"`
+    - `partial "head/ocd.html"`
 
   Repo: https://github.com/oxypteros/alpha
 */ -}}
-  
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {{- /* Theme Colors Meta */}}
-    <meta
-      name="theme-color"
-      content="#ffffff"
-      media="(prefers-color-scheme: light)"
-    />
-    <meta
-      name="theme-color"
-      content="#121315"
-      media="(prefers-color-scheme: dark)"
-    />
-    <meta name="color-scheme" content="light dark" />
-    <title>
-      {{ if .IsHome }}
-        {{- .Title | default site.Title }}
-      {{- else }}
-        {{- printf "%s | %s" .Title site.Title | htmlUnescape }}
-      {{- end }}
-    </title>
-    <link rel="canonical" href="{{ .Page.Permalink }}" />
-    {{- with .Description }}
-      <meta name="description" content="{{ . }}" />
-    {{- end }}
-     
-    {{- /* Head partials: scripts, css and SEO */}}
-    {{ partialCached "head/inline-js.html" . }}
-    {{- partialCached "head/css.html" . }}
-    {{- partialCached "head/js.html" . }}
-    {{- partial "head/seo/twitter-cards.html" . }}
-    {{- partial "head/seo/schema.html" . }}
-    {{- partial "head/seo/open-graph.html" . }}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {{- /* Theme Colors Meta */}}
+  <meta
+    name="theme-color"
+    content="#ffffff"
+    media="(prefers-color-scheme: light)"
+  />
+  <meta
+    name="theme-color"
+    content="#121315"
+    media="(prefers-color-scheme: dark)"
+  />
+  <meta name="color-scheme" content="light dark" />
+  <title>
+    {{- if .IsHome }}
+      {{- .Title | default site.Title -}}
+    {{- else }}
+      {{- printf "%s | %s" .Title site.Title | htmlUnescape -}}
+    {{- end -}}
+  </title>
+  <link rel="canonical" href="{{- .Page.Permalink -}}" />
+  {{- with .Description }}
+    <meta name="description" content="{{- . -}}" />
+  {{- end }}
 
-    {{- /* Favicons */}}
-    <link rel="icon" href="/alpha/img/favicon.svg" type="image/svg" sizes="any">
-     
-    {{- /* OCD partial */}}
-    {{ partialCached "head/ocd.html" . }}
-  </head>
+  {{- /* Head partials: scripts, css and SEO */}}
+  {{ partialCached "head/inline-js.html" . }}
+  {{- partialCached "head/css.html" . }}
+  {{- partialCached "head/js.html" . .Site.Language.Lang hugo.Environment .Site.Params.pagefind_enabled }}  
+  {{- partial "head/seo/schema-wrapper.html" . }}
+  {{- partial "head/seo/open-graph.html" . }}
+  {{- partial "head/seo/twitter-cards.html" . }}
+
+
+  {{- /* Favicons */}}
+  <link rel="icon" href="/alpha/img/favicon.svg" type="image/svg" sizes="any" />
+
+  {{- /* OCD partial */}}
+  {{ partial "head/ocd.html" . }}
+</head>

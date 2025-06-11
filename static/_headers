@@ -1,61 +1,66 @@
+# ----------------------------------------------------------------------
+# SECURITY HEADERS
+#
+# Read comments before changing.
+# Test your site thoroughly after implementing, especially if you embed
+# third-party content or use CDNs.
+#
+# Edit to fit your case.
+# ----------------------------------------------------------------------
+# Apply to all pages
 /*
-  # ----------------------------------------------------------------------
-  # SECURITY HEADERS
-  #
-  # Read comments before changing.
-  # Test your site thoroughly after implementing, especially if you embed
-  # third-party content or use CDNs.
-	#
-	# Uncomment and edit to fit your case
-  # ----------------------------------------------------------------------
+# Enforce HTTPS for 2 year, include subdomains.
+# IMPORTANT: Only enable 'preload' if you understand the implications
+# and are committed to HTTPS for this domain and all subdomains long-term.
+# Before preloading, ensure all subdomains are also HTTPS.
+# To submit for preloading: https://hstspreload.org/:
+# 
+# Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+Strict-Transport-Security: max-age=63072000;
 
-  	# Enforce HTTPS for 1 year, include subdomains.
-  	# IMPORTANT: Only enable 'preload' if you understand the implications
-  	# and are committed to HTTPS for this domain and all subdomains long-term.
-  	# Before preloading, ensure all subdomains are also HTTPS.
-  	# To submit for preloading: https://hstspreload.org/:
-	#Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+# Prevents clickjacking:
+X-Frame-Options: SAMEORIGIN
 
-  	# Prevents clickjacking:
-	#X-Frame-Options: SAMEORIGIN
+# Prevents MIME-sniffing attacks:
+X-Content-Type-Options: nosniff
 
-  	# Prevents MIME-sniffing attacks
-  #X-Content-Type-Options: nosniff
+# Controls information sent in the Referer header:
+Referrer-Policy: strict-origin-when-cross-origin
 
-  	# Controls information sent in the Referer header:
-	#Referrer-Policy: strict-origin-when-cross-origin
+# Controls browser features:
+Permissions-Policy: geolocation=(), microphone=(), camera=(), usb=(), serial=(), hid=(), payment=(), fullscreen=(self), interest-cohort=()
 
-  	# Controls browser features. Disable what you don't need.
-		# Example: Permissions-Policy: geolocation=(), microphone=(), camera=()
-		# This disables geolocation, microphone, and camera access across the site (including iframes).
-  #Permissions-Policy: geolocation=(), microphone=(), camera=(), usb=(), serial=(), hid=(), payment=(), fullscreen=(self), interest-cohort=()
+# Cross-Origin-Opener-Policy (COOP)
+Cross-Origin-Opener-Policy: same-origin-allow-popups
 
-  	# Cross-Origin-Opener-Policy (COOP)
-  #Cross-Origin-Opener-Policy: same-origin-allow-popups
+# Cross-Origin-Resource-Policy (CORS)
+# Allows any site to fetch resources (like fonts, images) from your site.
+#Access-Control-Allow-Origin: *
 
-  	# ----------------------------------------------------------------------
-  	# CROSS-ORIGIN EMBEDDING (COEP, CORP) - POTENTIALLY BREAKING
-  	# ----------------------------------------------------------------------
-		# No default provided due to the potential for breaking site functionality.
-		# Use only if you fully understand the implications.
-		# Example: Cross-Origin-Embedder-Policy: require-corp	
-		# ----------------------------------------------------------------------
+# CROSS-ORIGIN EMBEDDING (COEP, CORP) - POTENTIALLY BREAKING
+# ----------------------------------------------------------------------
+# No default enabled due to the potential for breaking site functionality.
+# Use only if you fully understand the implications.
+# Example: 
+# Cross-Origin-Embedder-Policy: require-corp	
+# Cross-Origin-Resource-Policy: same-origin
 
-
-  	# ----------------------------------------------------------------------
-  	# CORS - For allowing other sites to access your resources
-  	# ----------------------------------------------------------------------
-  	# Allows any site to fetch resources (like fonts, images) from your site.
-
-  #Access-Control-Allow-Origin: *
-
-		# ----------------------------------------------------------------------
-		# CONTENT SECURITY POLICY (CSP) - Advanced
-		# ----------------------------------------------------------------------
-		# CSP is very powerful but also complex and highly site-specific.
-		# A generic CSP is hard to provide. Users should generate one for their
-		# specific site needs if they want this extra layer of security.
-		# Start with a more permissive policy or use a CSP generator.
-		# Example (restrictive, likely needs adjustment):
-		# Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; object-src 'none';
-		# ----------------------------------------------------------------------
+# CONTENT SECURITY POLICY (CSP) - Advanced
+# ----------------------------------------------------------------------
+# CSP is very powerful but also complex and highly site-specific.
+# A generic CSP is hard to provide. Users should generate one for their
+# specific site needs if they want this extra layer of security.
+# Start with a permissive policy or use a CSP generator. 
+# Test with DevTools.
+#
+# Alpha includes the following exceptions:
+# 1. Goatcounter tracking in `connect-src`.
+# 2. make.com webhooks in `connect-src`.
+# 3. 'wasm-unsafe-eval' in script-src for Pagefind
+# 4. Inline JS hash for theme toggler function:
+#		 'sha256-0ZPWGBTswV1da0igpwHs4KlX6B0unumv+9TRdupUToI='
+# 5. Inline JS hash for speculation rules:
+#		 'sha256-7hU1nhtHxQh8ziW5xcD1HB2QhOc24LKd7TLXNfXSCcc='
+#
+# NOTE: You should replace or restrict the `connect-src` domains to your own (avoid wildcards).
+Content-Security-Policy: default-src 'none'; style-src 'self' data:; font-src 'self'; img-src 'self' data:; frame-src 'self'; frame-ancestors 'self'; object-src 'none';  base-uri 'self'; form-action 'self'; script-src 'self' 'wasm-unsafe-eval' 'sha256-0ZPWGBTswV1da0igpwHs4KlX6B0unumv+9TRdupUToI=' 'sha256-7hU1nhtHxQh8ziW5xcD1HB2QhOc24LKd7TLXNfXSCcc='; connect-src 'self' https://*.make.com https://*.goatcounter.com;

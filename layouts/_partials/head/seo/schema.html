@@ -1,193 +1,112 @@
+<!-- prettier-ignore -->
 {{- /*
-  Schema.org JSON-LD Partial — Alpha Hugo Theme
-  Generates Schema.org structured data in JSON-LD format, embedded in the page <head>.
+  Partial: head/seo/schema.html
+  Purpose: Accept initial values from `head/seo.html` and conditionally append a 
+  page specific schema JSON-LD.
 
-  This partial uses Hugo dictionaries and the `jsonify` function for robust JSON generation.
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+{{- $page := .page -}}
+{{- $site := .Site -}}
+{{- $data := .data -}}
 
-  Supported Schema Types:
-  1. Website:
-  - Generated for the homepage (`.IsHome`).
-  - Key properties: `url`, `name`, `description`, `inLanguage`, `publisher`,
-  `dateCreated`, `dateModified`.
-  2. TechArticle:
-  - Generated for regular pages (`.IsSection false`) of type "docs" (`.Page.Type "docs"`).
-  - Key properties: `headline`, `description`, `image`, `author`, `publisher`,
-  `datePublished`, `dateModified`, `wordCount`, `timeRequired`, `inLanguage`,
-  `isAccessibleForFree`, `keywords`, `isPartOf`, `mainEntityOfPage`.
-
-  Dependencies (General):
-  - `.Date`, `.Lastmod` for timestamps.
-  - `.Permalink` for URLs.
-  - `.Lang` for language.
-  - `.Site.Title` for site name.
-
-  Dependencies (Site Parameters - examples, adjust to your theme's actual params):
-  - `description` (string): General site description (used if homepage `seo_description` is missing).
-  - `orgName` (string): Organization name for publisher.
-  - `orgLogo` (string): Path to organization logo (e.g., "images/logo.png").
-  - `authorName` (string): Default author name for articles if not set on page.
-
-  Dependencies (Page Parameters - examples):
-  - Homepage (`Website`):
-  - `seo_description` (string): Description for the homepage.
-  - Docs Pages (`TechArticle`):
-  - `.Description` (string): Article description.
-  - `author` (string): Article author's name.
-  - `keywords` (array of strings).
-  - Page Resources for images (e.g., "*-social.*", "*.jpg").
-  - `.Parent` for `isPartOf` relationship.
-
-  Theme Repo: https://github.com/oxypteros/alpha
-  */
+{{- /* Base Schema - applies to all page types */}}
+{{- $schema := dict
+  "@context"        "https://schema.org"
+  "@type"           $data.type
+  "url"             $data.permalink
+  "name"            $data.title
+  "description"     $data.description
+  "inLanguage"      $data.inLanguage
+  "copyrightYear"   $data.year
+  "copyrightHolder" $data.author
+  "author" (dict
+  "@type"       $data.authorType
+  "name"        $data.author
+  )
+  "publisher"       $data.publisher
 -}}
 
-{{- /* Format dates to ISO-8601 */}}
-{{- $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" -}}
-{{- $modDateMachine := .Lastmod | time.Format "2006-01-02T15:04:05-07:00" -}}
+{{- /* Specific schema types */}}
 
-{{- /* Initialize base of schema information*/}}
-{{- $schemaBase := dict "@context" "https://schema.org" -}}
-{{- $specificSchema := dict -}}
-
-{{/* Publisher (Person/site owner) */}}
-{{- $publisherData := dict -}}
-{{- with or .Page.Params.author .Site.Params.author -}}
-  {{- $orgData := dict "@type" "Person" "name" . -}}
-  {{- with $.Site.Params.logo_path -}}
-    {{- with resources.Get . -}}
-      {{- $orgData = merge $orgData (dict "logo" (dict "@type" "ImageObject" "url" .Permalink "width" .Width "height" .Height)) -}}
-    {{- end -}}
-  {{- end -}}
-  {{- with $.Site.BaseURL -}}
-    {{- $orgData = merge $orgData (dict "url" .) -}}
-  {{- end -}}
-  {{- $publisherData = $orgData -}}
-{{- end -}}
-
-{{/* == WEBSITE SCHEMA == */}}
-{{- if .IsHome -}}
-  {{- $websiteSchema := dict
-    "@type" "WebSite"
-    "@id" .Permalink
-    "url" .Permalink
-    "name" .Site.Title
-    "inLanguage" .Lang
-    "dateCreated" $dateMachine
-  -}}
-  {{- /* For advanced SEO use different but content aligned description from frontmatter key seo_description*/}}
-  {{- with .Page.Params.seo_description | default .Site.Params.description -}}
-    {{- $desc := . | plainify | strings.TrimSpace -}}
-    {{- if $desc }}
-      {{ $websiteSchema = merge $websiteSchema (dict "description" $desc) }}
-    {{ end -}}
-  {{- end -}}
-
-  {{- if gt (len $publisherData) 0 }}
-    {{- $websiteSchema = merge $websiteSchema (dict "publisher" $publisherData) -}}
-  {{- end -}}
-
-  {{- if ne $dateMachine $modDateMachine -}}
-    {{- $websiteSchema = merge $websiteSchema (dict "dateModified" $modDateMachine) -}}
-  {{- end -}}
-
-  {{- $specificSchema = $websiteSchema -}}
-
-  {{/* == CONTENT PAGE SCHEMA == */}}
-{{- else if and (not .IsSection) (in (slice "docs" "post" "article" "page" "story") .Page.Type) -}}
-  {{- $type := "Article" -}}
-  {{- if eq .Layout "story" }}{{ $type = "CreativeWork" }}{{ end }}
-
+{{- if eq $data.type "Article" }}
+  {{- /* MainEntity for Article */}}
   {{- $articleSchema := dict
-    "@type" $type
-    "@id" .Permalink
-    "headline" (.Title | htmlUnescape)
-    "url" .Permalink
-    "datePublished" $dateMachine
-    "inLanguage" .Lang
-    "isAccessibleForFree" true
-    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" $data.permalink)
+    "headline"        $data.title
   -}}
 
-  {{- with .Description | default .Summary -}}
-    {{- $desc := . | plainify | strings.TrimSpace -}}
-    {{- if $desc }}
-      {{ $articleSchema = merge $articleSchema (dict "description" $desc) }}
-    {{ end -}}
-  {{- end -}}
+  {{- /* Merge additional info*/}}
+  {{- with $data.datePublished }}
+    {{- $articleSchema = merge $articleSchema (dict "datePublished" .) -}}
+  {{- end }}
+  {{- with $data.dateModified }}
+    {{- $articleSchema = merge $articleSchema (dict "dateModified" .) -}}
+  {{- end }}
+  {{- with $data.wordCount }}
+    {{- $articleSchema = merge $articleSchema (dict "wordCount" .) -}}
+  {{- end }}
+  {{- with $data.readingTime }}
+    {{- $articleSchema = merge $articleSchema (dict "timeRequired" .) -}}
+  {{- end }}
+  {{- with $data.isPartOf }}
+    {{- $articleSchema = merge $articleSchema (dict "isPartOf" .) -}}
+  {{- end }}
+  {{- with $data.position }}
+    {{- $articleSchema = merge $articleSchema (dict "position" .) -}}
+  {{- end }}
 
-  {{- $pageImage := .Resources.GetMatch "*-social.*" | default (.Resources.GetMatch "*.{png,jpg,jpeg,webp}") -}}
-  {{- with $pageImage -}}
-    {{- $imgObj := dict "@type" "ImageObject" "url" .Permalink "width" .Width "height" .Height -}}
-    {{- $articleSchema = merge $articleSchema (dict "image" (slice $imgObj)) -}}
-  {{- end -}}
+  {{- /* Merge to base schema */}}
+  {{- $schema = merge $schema $articleSchema -}}
+{{- else if eq $data.type "CollectionPage" }}
 
-  {{- $author := .Page.Params.author | default .Site.Params.authorName -}}
-  {{- with $author -}}
-    {{- $articleSchema = merge $articleSchema (dict "author" (dict "@type" "Person" "name" .)) -}}
-  {{- end -}}
+  {{- /* Empty slice for list items */}}
+  {{- $itemList := slice -}}
 
-  {{- if gt (len $publisherData) 0 }}
-    {{- $articleSchema = merge $articleSchema (dict "publisher" $publisherData) -}}
-  {{- end -}}
+  {{- /* Loop through the pages on the current section */}}
+  {{- range $index, $item := $page.Paginator.Pages }}
 
-  {{- if ne $dateMachine $modDateMachine -}}
-    {{- $articleSchema = merge $articleSchema (dict "dateModified" $modDateMachine) -}}
-  {{- end -}}
+    {{- /* Object for each list item */}}
+    {{- $itemArticle := dict
+      "@type"       "Article"
+      "headline"    $item.Title
+      "url"         $item.Permalink
+      "description" ($item.Summary | plainify | truncate 160)
+      "author" (dict "@type" "Person" "name" ($item.Params.author | default $site.Params.seo_author | default $site.Title))
+      "datePublished" ($item.PublishDate.Format "2006-01-02T15:04:05-07:00")
+    -}}
 
-  {{- if gt .WordCount 0 }}
-    {{- $articleSchema = merge $articleSchema (dict "wordCount" .WordCount) -}}
-  {{- end -}}
+    {{- /* Conditional dateModified */}}
+    {{- if ne $item.Lastmod $item.PublishDate }}
+      {{- $itemArticle = merge $itemArticle (dict "dateModified" ($item.Lastmod.Format "2006-01-02T15:04:05-07:00")) -}}
+    {{- end }}
 
-  {{- if gt .ReadingTime 0 }}
-    {{- $articleSchema = merge $articleSchema (dict "timeRequired" (printf "PT%dM" .ReadingTime)) -}}
-  {{- end -}}
+    {{- /* ListItem object */}}
+    {{- $listItem := dict
+      "@type"    "ListItem"
+      "position" (add $index 1)
+      "item"     $itemArticle
+    -}}
 
-  {{- with .Params.keywords -}}
-    {{- if gt (len .) 0 -}}
-      {{- $clean := slice -}}
-      {{- range . }}
-        {{ $clean = $clean | append (. | plainify | strings.TrimSpace) }}
-      {{ end -}}
-      {{- $articleSchema = merge $articleSchema (dict "keywords" $clean) -}}
-    {{- end -}}
-  {{- end -}}
+    {{- /* Complete ListItem for list */}}
+    {{- $itemList = $itemList | append $listItem -}}
+  {{- end }}
 
-  {{- with .Parent -}}
-    {{- if and (ne .Kind "home") (.Permalink | ne $.Site.BaseURL) -}}
-      {{- $articleSchema = merge $articleSchema (dict "isPartOf" (dict "@type" "WebPage" "@id" .Permalink)) -}}
-    {{- end -}}
-  {{- end -}}
+  {{- /* Final map for CollectionPage */}}
+  {{- $collectionSchema := dict
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" $data.permalink)
+    "mainEntity" (dict
+    "@type"           "ItemList"
+    "numberOfItems"   (len $page.Paginator.Pages)
+    "itemListElement" $itemList
+    )
+  -}}
 
-  {{- $specificSchema = $articleSchema -}}
+  {{- /* Merge to base schema */}}
+  {{- $schema = merge $schema $collectionSchema -}}
 {{- end -}}
 
-{{/* == OUTPUT MAIN SCHEMA == */}}
-{{- if gt (len $specificSchema) 0 }}
-  {{- $schema := merge $schemaBase $specificSchema }}
+{{- /* Append the JSON-LD */}}
 <script type="application/ld+json">
-{{- $schema  }}
+  {{- $schema | jsonify (dict "indent" "  ") | safeJS -}}
 </script>
-{{- end -}}
-
-{{/* == BREADCRUMB SCHEMA == */}}
-{{- if and (not .IsHome) (gt (len .CurrentSection.Sections) 0) -}}
-  {{- $position := 1 -}}
-  {{- $breadcrumbs := slice -}}
-
-  {{- range $index, $section := .CurrentSection.Sections.Reverse -}}
-    {{- $breadcrumbs = $breadcrumbs | append (dict "@type" "ListItem" "position" $position "name" $section.Title "item" $section.Permalink) -}}
-    {{- $position = add $position 1 -}}
-  {{- end -}}
-
-  {{- $breadcrumbs = $breadcrumbs | append (dict "@type" "ListItem" "position" $position "name" .Title "item" .Permalink) -}}
-
-  {{- $breadcrumbSchema := dict
-    "@context" "https://schema.org"
-    "@type" "BreadcrumbList"
-    "itemListElement" $breadcrumbs
-  -}}
-
-  <script type="application/ld+json">
-{{- $breadcrumbSchema }}
-</script>
-{{- end -}}

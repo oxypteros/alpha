@@ -135,7 +135,11 @@
           class="flex items-center justify-between gap-2 cursor-pointer group hover:text-on-sur dark:hover:text-on-sur-d text-lg"
         >
           {{ $heading | safeHTML }} 
-          <svg class="size-5 transition-colors duration-400 group-hover:fill-on-sur dark:group-hover:fill-on-sur-d fill-on-sur-var dark:fill-on-sur-var-d shrink-0">
+          <svg class="size-5 transition-colors duration-400 group-hover:fill-on-sur dark:group-hover:fill-on-sur-d fill-on-sur-var dark:fill-on-sur-var-d shrink-0"
+          width="20"
+          height="20"
+          aria-hidden="true"
+          >
             <use href="#unfold_more"></use>
           </svg>
         </summary>

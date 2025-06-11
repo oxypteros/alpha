@@ -1,10 +1,7 @@
-# Netlify Build Settings for Alpha Hugo theme (demo)
-#
-# Find a complete example at `/static/netlify.toml`
-#
+# Netlify File Settings for Alpha Hugo theme
 # Documentation: https://docs.netlify.com/configure-builds/file-based-configuration/
+# 
+# Security headers are set by the file `static/_headers`
 #
-[build]
-  command = "hugo --buildDrafts --gc --minify"
 [build.environment]
-  HUGO_VERSION = "0.147.7"  
+    HUGO_VERSION = "0.147.7" 

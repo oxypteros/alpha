@@ -1,36 +1,62 @@
+<!-- prettier-ignore -->
 {{- /*
-  baseof.html (template): Defines the foundational HTML structure (`<html>`, `<head>`, `<body>`) for all pages within the Alpha theme. 
-
-  Dependencies:
-  - `partial "head.html"` 
-  - `partial "header.html"`
-  - `partial "footer.html"`
-  - `partial "tail/js.html"`
-  - `partial "tail/custom-js.html"`
-  - `partial "tail/icons.html"`
-  - `partial "tail/template.html"`
-  - `partial "ocd/main.html"`
-
+  Template: baseof.html 
+  Purpose: Defines the foundational HTML structure (`<html>`, `<head>`,`<body>`) 
+  for all pages within the Alpha theme.
 
   Repo: https://github.com/oxypteros/alpha
 */ -}}
-
 <!doctype html>
 <html
   lang="{{ site.Language.LanguageCode }}"
   dir="{{ or site.Language.LanguageDirection `ltr` }}"
   data-theme="light"
 >
-  {{ partial "head.html" . }}
+  <head>
+    {{- /* Main meta tags partial */}}
+    {{ partial "head/seo/meta.html" . }}
+
+    {{- /* Anti-flicker inline script */}}
+    {{ partialCached "head/anti-flicker.html" . }}
+
+    {{- /* Conditionally append pre-compiled or JIT Tailwind Css */}}
+    {{- if eq .Site.Params.tailwind_enabled false }}
+      {{ partialCached "head/alpha-css.html" . }}
+    {{- else }}
+      {{- partial "head/tailwind.html" . }}
+    {{- end }}
+
+    {{- /* Append the alpha-head.js */}}
+    {{- partial "head/alpha-js.html" . }}
+    {{- /* Append scheme.org open-graph x-cards */}}
+    {{ partial "head/seo.html" . }}
+ 
+    {{- /* Conditionally append the Pagefind stylesheet and JS */}}
+    {{- if eq .Site.Params.pagefind_enabled true }}
+      {{ partialCached "head/pagefind-css.html" . }}
+      <script src="/pagefind/pagefind-ui.js" defer></script>
+    {{- end }}
+
+    {{- /* Conditionally append user-defined stylesheet */}}
+    {{- partial "head/override-css.html" . }}
+
+    {{- /* Create Favicons */}}
+    {{- partial "head/favicons.html" . }}
+
+    {{- /* Conditionally append OCD assets */}}
+    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Site.Params.ocd_enabled true) }}
+    {{- partialCached "head/ocd.html" . }}
+    {{- end }}
+  </head>
   <body
     class="bg-sur dark:bg-sur-d text-on-sur dark:text-on-sur-d flex min-h-dvh flex-col items-center justify-between font-sans"
   >
     {{ partial "header.html" . }}
-    <main class="pt-header dark:bg-sur-d z-10 w-full grow">
+    <main class="pt-header dark:bg-sur-d z-10 w-full grow"> 
       {{- block "main" . }}{{ end }}
     </main>
     {{ partial "footer.html" . }}
-     {{- /* Conditional snackbar for cookie notice */}}
+    {{- /* Conditional snackbar container for cookie notice */}}
     {{- if eq .Site.Params.noCookies_snackbar true }}
       <div
         class="fixed bottom-14 z-40 w-full px-4"
@@ -46,14 +72,14 @@
     {{- end }}
     {{- /* Live region for screen reader announcements */}}
     <div class="sr-only" aria-live="polite" data-alpha="announcer"></div>
-     {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
+    {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
     {{- partial "tail/js.html" . }}
     {{- partial "tail/custom-js.html" . }}
     {{- partial "tail/icons.html" . }}
     {{- partial "tail/template.html" . }}
-     {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
+    {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
     {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true ) }}
-      {{ partial "ocd/main.html" . }}
-    {{- end }}
+      {{- partial "ocd/main.html" . -}}
+    {{- end -}}
   </body>
 </html>

@@ -1,0 +1,36 @@
+<!-- prettier-ignore -->
+{{- /*
+  Partial: head/override-css.html
+  Purpose: Builds and appends a custom override stylesheet to the `<head>`.
+
+  Behavior:
+  - Appends `assets/css/override.css` only if it contains actual content.
+  - In production, the output is minified, fingerprinted, and includes 
+    `crossorigin` and `integrity`.
+
+  Note: 
+  - To use this file, add custom CSS rules to `assets/css/override.css`.
+  - The partial does NOT validate CSS syntax! (Only checks for non-empty content
+    excluding the default comment block).
+
+  Repo: https://github.com/oxypteros/alpha
+*/ -}}
+{{- with resources.Get "css/override.css" }}
+  {{- $overrideCss := . -}}
+  {{- /* Check for custom content */}}
+  {{- $content := .Content | strings.TrimSpace -}}
+  {{- /* Remove pre-defined comment blocks */}}
+  {{- $content := replaceRE `(?s)/\*\*\*.*?\*/` "" $content | strings.TrimSpace -}}
+  {{- if $content }}
+    {{- if hugo.IsProduction }}
+      {{- $overrideCss = . | minify | fingerprint -}}
+    {{- end }}
+    <link
+      rel="stylesheet"
+      href="{{ $overrideCss.RelPermalink }}"
+      {{- if hugo.IsProduction }}
+        integrity="{{ $overrideCss.Data.Integrity }}" crossorigin="anonymous"
+      {{- end }}
+    />
+  {{- end }}
+{{- end -}}

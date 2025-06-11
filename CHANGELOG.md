@@ -7,25 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+<!--## [Unreleased]-->
+
+## [0.2.0-beta] — 2025-06-11
 ### Changed
-- Refactored shortcodes to use semantic  elements instead of generic `<div>`.
-- Added default and fallback headings to improve accessibility.
-- Implemented unique `id`/`aria-labelledby` pairs using to prevent duplicate IDs when shortcodes appear multiple times on a page.
-- Added appropriate default heading values to `i18n/en.toml`.
+- **Optimized series navigation performance** by refactoring the logic to use Hugo's fast taxonomy system. This significantly reduces build times on sites with large series.
+- **Restructured head partials** to be more modular and efficient, improving overall site performance and SEO scores.
+- **Refactored all content shortcodes** for improved accessibility and SEO by:  
+    - Using semantic HTML elements instead of generic `<div>`s.
+    - Added default and fallback headings to improve accessibility.
+    - Ensuring unique element `id`s on pages where a shortcode is used multiple times.
+    - Adding CSS and Tailwind utility classes to support the new semantic structure.
 
 ### Added
-- Tailwind and CSS rules for updated semantic wrappers 
+- **SEO features**, including dedicated partials for:
+    - JSON-LD Schema.
+    - Open Graph metadata for social sharing (Facebook, LinkedIn).
+    - Twitter Cards for sharing on X
+- **Favicon support**, allowing for user-defined light and dark mode favicons, as well as `apple-touch-icon` and `android-chrome` icons.
+- **Default security headers and a Content Security Policy (CSP)** for out-of-the-box support on Cloudflare Pages, Netlify, and Vercel.
+- **Default i18n heading values** in `i18n/en.toml` to improve accessibility and provide sensible fallbacks for shortcodes.
+
+([#10](https://github.com/oxypteros/alpha/pull/10))
 ([#9](https://github.com/oxypteros/alpha/pull/9))
 
-## [0.1.1-beta] — 2024-06-01
+## [0.1.1-beta] — 2025-06-01
 ### Fixed
 - Resolved an issue where heading elements could overflow their containers on narrow viewports, causing horizontal scrolling. Long words within headings now correctly wrap. ([#8>](https://github.com/oxypteros/alpha/pull/8))
 
 ### Added
 - Enabled manual hyphenation support (`hyphens: manual;` with `&shy;­`) for frontmatter `title` and shortcode parameters `TITLE` to allow manual word breaks.
 
-## [0.1.0-beta] — 2024-05-29
+## [0.1.0-beta] — 2025-05-29
 
 ### Added
 -   Foundation of the Alpha theme, establishing:

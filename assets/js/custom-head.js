@@ -1,4 +1,4 @@
-/**
+/***
  * Add your custom JavaScript below.
  * This script will be loaded right before </head>.
  * 

@@ -80,7 +80,7 @@ banner, simple, plain. Default: plain
         class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-sur-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex items-center justify-center rounded-full border px-4 py-3 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
         href="{{- $link -}}"
         aria-label='{{- i18n "ReadTheRest" . |default "Read the rest of the post titled as:" }} {{ $title }}'
-        data-prerender="true"
+        data-prefetch="true"
       >
         <div class="flex items-center justify-center">
           <div class="px-4 text-center">
