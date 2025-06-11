@@ -15,8 +15,9 @@
   - `partial "components/recommended-posts.html"`
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
-   
+  */
+-}}
+
 {{- define "main" }}
   <div class="flex flex-col items-center">
     <article class="flex w-full max-w-7xl flex-col items-center px-4">
@@ -30,12 +31,7 @@
         <div
           class="max-w-article my-16 flex w-full items-center justify-between text-lg"
         >
-          <div
-            class="flex items-center gap-1 text-sm sm:gap-2"
-            {{- with .Page.Params.author }}
-              aria-label='{{ i18n "WrittenBy" . | default "Written by"}}'
-            {{- end }}
-          >
+          <div class="flex items-center gap-1 text-sm sm:gap-2">
             {{- with .Page.Params.author }}
               <svg
                 class="fill-on-sur-var dark:fill-on-sur-var-d size-4 shrink-0 sm:size-5"
@@ -45,6 +41,9 @@
               >
                 <use href="#icon-author"></use>
               </svg>
+              <span class="sr-only">
+                {{ i18n "WrittenBy" . | default "Written by" }}
+              </span>
               {{ . }}
             {{- end }}
           </div>
@@ -75,11 +74,11 @@
             ></div>
           {{- end }}
         {{- end }}
-        <div class="flex w-full flex-4 flex-wrap justify-between gap-4 px-2 ">
+        <div class="flex w-full flex-4 flex-wrap justify-between gap-4 px-2">
           {{ partial "components/metadata-taxonomy.html" . }}
         </div>
         {{- if .Page.Params.series }}
-        {{ partial "components/navigation-series.html" . }}
+          {{ partial "components/navigation-series.html" . }}
         {{- end }}
       </footer>
     </article>
