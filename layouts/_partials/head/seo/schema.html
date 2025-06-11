@@ -5,7 +5,7 @@
   page specific schema JSON-LD.
 
   Repo: https://github.com/oxypteros/alpha
-*/}}
+*/ -}}
 {{- $page := .page -}}
 {{- $site := .Site -}}
 {{- $data := .data -}}
@@ -19,7 +19,7 @@
   "description"     $data.description
   "inLanguage"      $data.inLanguage
   "copyrightYear"   $data.year
-  "copyrightHolder" $data.author
+  "copyrightHolder" $data.copyrightHolder
   "author" (dict
   "@type"       $data.authorType
   "name"        $data.author
@@ -28,10 +28,8 @@
 -}}
 
 {{- /* Specific schema types */}}
-
 {{- /* List of  schema types that should be treated as articles. */}}
 {{ $articleTypes := slice "Article" "BlogPosting" "TechArticle" "NewsArticle" "Report" }}
-
 {{- if in $articleTypes $data.type }}
   {{- /* MainEntity for Article */}}
   {{- $articleSchema := dict
@@ -39,7 +37,7 @@
     "headline"        $data.title
   -}}
 
-  {{- /* Merge additional info */}}
+  {{- /* Merge additional info*/}}
   {{- with $data.datePublished }}
     {{- $articleSchema = merge $articleSchema (dict "datePublished" .) -}}
   {{- end }}
@@ -107,7 +105,7 @@
 
   {{- /* Merge to base schema */}}
   {{- $schema = merge $schema $collectionSchema -}}
-{{- end -}}
+{{- end }}
 
 {{- /* Append the JSON-LD */}}
 <script type="application/ld+json">
