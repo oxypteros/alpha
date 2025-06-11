@@ -17,9 +17,6 @@ other = "Revisit a selected piece that still echoes through time,"
 [PostFeatLinkText]
 other = ""
 
-[WrittenBy]
-other = "Written by"
-
 [AllRights]
 other = "All rights reserved."
 
@@ -120,6 +117,9 @@ other = "Read the post"
 
 [PoweredByPagefind]
 other = "Powered by Pagefind"
+
+[WrittenBy]
+other = "Written by"
 
 [Close]
 other = "Close"
