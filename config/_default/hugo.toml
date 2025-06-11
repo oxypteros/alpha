@@ -63,6 +63,10 @@ enableEmoji = true
     noHl = false
     tabWidth = 2
 
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  series = "series"
 
 [outputs]
   home = ["HTML", "RSS", "webappmanifest"]
