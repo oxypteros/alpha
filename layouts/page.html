@@ -78,7 +78,9 @@
         <div class="flex w-full flex-4 flex-wrap justify-between gap-4 px-2 ">
           {{ partial "components/metadata-taxonomy.html" . }}
         </div>
+        {{- if .Page.Params.series }}
         {{ partial "components/navigation-series.html" . }}
+        {{- end }}
       </footer>
     </article>
     <div class="mb-16 w-full max-w-7xl px-4">
