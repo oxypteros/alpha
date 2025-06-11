@@ -51,6 +51,9 @@
   {{- $authorType = "Organization" -}}
 {{- end }}
 
+{{- /* Copyright Holder Logic */}}
+{{- $copyrightHolderDict := dict "@type" $authorType "name" $author -}}
+
 {{- /* Description Fallbacks */}}
 {{- $description := "" -}}
 {{- with $page.Params.seo_description -}}
@@ -95,28 +98,28 @@
 {{- with .ReadingTime -}}
   {{- $readingTime = printf "PT%dM" . -}}
 {{- end -}}
-
 {{- /* X (ex. Twitter) */}}
 {{- $xCreator := $page.Params.twitter_username -}}
 {{- $xSite := $site.Params.twitter_username -}}
 
 {{- /* Initial data collection */}}
 {{- $data := dict
-  "type"        ($type | default "CreativeWork" )
-  "title"       $title
-  "description" $description
-  "permalink"   $page.Permalink
-  "author"      $author
-  "authorType"  $authorType
-  "siteTitle"   $site.Title
-  "baseUrl"     $site.BaseURL
-  "year"        $year
-  "inLanguage"  $inLanguage
-  "publisher"   $publisherDict
-  "wordCount"   $page.WordCount
-  "readingTime" $readingTime
-  "xSite"       $xSite
-  "xCreator"    ($xCreator | default $xSite)
+  "type"            ($type | default "CreativeWork" )
+  "title"           $title
+  "description"     $description
+  "permalink"       $page.Permalink
+  "author"          $author
+  "authorType"      $authorType
+  "copyrightHolder" $copyrightHolderDict
+  "siteTitle"       $site.Title
+  "baseUrl"         $site.BaseURL
+  "year"            $year
+  "inLanguage"      $inLanguage
+  "publisher"       $publisherDict
+  "wordCount"       $page.WordCount
+  "readingTime"     $readingTime
+  "xSite"           $xSite
+  "xCreator"        ($xCreator | default $xSite)
 }}
 {{- $data = merge $data $dateData -}}
 
@@ -136,7 +139,6 @@
     "type"  ($type | default $nodeType )
     )
   -}}
-
 {{- else if eq .Layout "utility" }}
   {{- $data = merge $data (dict
     "type"  ($type | default "WebPage" )
@@ -151,20 +153,25 @@
     {{- $seriesTerm := index ($page.GetTerms "series") 0 -}}
 
     {{- if $seriesTerm -}}
-
       {{- $seriesObject := dict
         "@type" "CreativeWorkSeries"
         "name"  $seriesTerm.Page.Title
         "url"   $seriesTerm.Page.Permalink
       -}}
       {{- $data = merge $data (dict "isPartOf" $seriesObject) -}}
-    {{- end -}}
 
-    {{- with $page.Params.weight -}}
-      {{- $data = merge $data (dict "position" .) -}}
+      {{- /* Get all pages in the series and sort them by weight to find the correct position */}}
+      {{- $sortedPages := sort $seriesTerm.Pages "Params.weight" "asc" -}}
+
+      {{- range $index, $p := $sortedPages -}}
+        {{- if eq $p.Permalink $page.Permalink -}}
+          {{- $actualPosition := add $index 1 -}}
+          {{- $data = merge $data (dict "position" $actualPosition) -}}
+        {{- end -}}
+      {{- end -}}
     {{- end -}}
-  {{- end -}}
-{{- end -}}
+  {{- end }}
+{{- end }}
 
 {{- /* Render sub-partials */}}
 {{- partial "head/seo/schema.html" (dict "page" . "data" $data ) }}
