@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Default security headers and a Content Security Policy (CSP)** for out-of-the-box support on Cloudflare Pages, Netlify, and Vercel.
 - **Default i18n heading values** in `i18n/en.toml` to improve accessibility and provide sensible fallbacks for shortcodes.
 
-([#10](https://github.com/oxypteros/alpha/pull/10))
+([#11](https://github.com/oxypteros/alpha/pull/11))
 ([#9](https://github.com/oxypteros/alpha/pull/9))
 
 ## [0.1.1-beta] — 2025-06-01
