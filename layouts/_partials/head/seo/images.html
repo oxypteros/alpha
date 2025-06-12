@@ -28,21 +28,32 @@
 {{- end }}
 
 {{- /* Image Processing */}}
-{{- if $seoImage -}}
-  {{- $minWidth := 1000 -}}
+{{- if $seoImage }}
+  {{- /* Define Quality Parameters */ -}}
+  {{- $targetWidth := 1200 -}}
+  {{- $targetHeight := 630 -}}
   {{- $targetRatio := 1.91 -}}
   {{- $tolerance := 0.1 -}}
-  {{- $currentRatio := div (float $seoImage.Width) $seoImage.Height -}}
-  {{- $ratioDiff := sub $currentRatio $targetRatio -}}
-  {{- $absRatioDiff := cond (lt $ratioDiff 0) (mul $ratioDiff -1) $ratioDiff -}}
 
-  {{- if and (ge $seoImage.Width $minWidth) (le $absRatioDiff $tolerance) }}
-    {{- /* Good image */}}
-    {{- $processedImage = $seoImage.Fill "1200x630" -}}
-  {{- else }}
-    {{- /* Bad image. Use original and flag OCD. */}}
+  {{- /* Image quality check */}}
+
+  {{- /* Promoted */}}
+  {{- if and (eq $seoImage.Width $targetWidth) (eq $seoImage.Height $targetHeight) }}
     {{- $processedImage = $seoImage -}}
-    {{- $imageQualityError = true -}}
+
+  {{- else }}
+  {{- /* Good enough fix it */}}
+    {{- $currentRatio := div (float $seoImage.Width) $seoImage.Height -}}
+    {{- $ratioDiff := sub $currentRatio $targetRatio -}}
+    {{- $absRatioDiff := cond (lt $ratioDiff 0) (mul $ratioDiff -1) $ratioDiff -}}
+
+    {{- if and (ge $seoImage.Width $targetWidth) (le $absRatioDiff $tolerance) }}
+      {{- $processedImage = $seoImage.Fill "1200x630" -}}
+    {{- else -}}
+      {{- /* Failed. bad image flag it and use original */}}
+      {{- $processedImage = $seoImage -}}
+      {{- $imageQualityError = true -}}
+    {{- end }}
   {{- end }}
 {{- end }}
 
@@ -61,22 +72,22 @@
 {{- /* OCD Error Reporting */}}
 {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
   {{- $ocdHeadErrors := .Page.Scratch.Get "ocdHeadErrors" | default (slice) -}}
-  {{- $ocdErrorCode := "" }}
+  {{- $ocdErrorCode := ""}}
 
   {{- if $imageNotFoundError -}}
-    {{- $ocdErrorCode = "ocd-seo-200" }}
+    {{- $ocdErrorCode = "ocd-seo-200"}}
     {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
     {{- warnf "OCD Error [%s] Page: %s | SEO image path in front matter not found: '%s'" $ocdErrorCode .Page.RelPermalink $imageNotFoundError -}}
   {{- end -}}
 
   {{- if $globalImageNotFoundError -}}
-    {{- $ocdErrorCode = "ocd-seo-300" }}
+     {{- $ocdErrorCode = "ocd-seo-300"}}
     {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
     {{- warnf "OCD Error [%s] Page: %s | Global SEO image in params.toml not found: '%s'" $ocdErrorCode .Page.RelPermalink $globalImageNotFoundError -}}
   {{- end -}}
 
   {{- if $imageQualityError -}}
-    {{- $ocdErrorCode = "ocd-seo-100" }}
+    {{- $ocdErrorCode = "ocd-seo-100"}}
     {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
     {{- warnf "OCD Error [%s] Page: %s | SEO image does not meet quality standards (min-width: 1000px, aspect-ratio: ~1.91)." $ocdErrorCode .Page.RelPermalink -}}
   {{- end -}}
