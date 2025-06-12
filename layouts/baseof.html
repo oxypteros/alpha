@@ -44,7 +44,7 @@
     {{- partial "head/favicons.html" . }}
 
     {{- /* Conditionally append OCD assets */}}
-    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Site.Params.ocd_enabled true) }}
+    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
     {{- partialCached "head/ocd.html" . }}
     {{- end }}
   </head>
@@ -78,7 +78,7 @@
     {{- partial "tail/icons.html" . }}
     {{- partial "tail/template.html" . }}
     {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
-    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true ) }}
+    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
       {{- partial "ocd/main.html" . -}}
     {{- end -}}
   </body>
