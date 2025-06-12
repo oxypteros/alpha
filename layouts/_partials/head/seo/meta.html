@@ -59,6 +59,8 @@
 {{- $desc := "" -}}
 {{- if .Page.Params.description }}
   {{- $desc = .Page.Params.description | markdownify | plainify -}}
+{{- else if .Page.Params.seo_description }}
+{{- $desc = .Page.Params.seo_description | markdownify | plainify -}}
 {{- else if .Summary }}
   {{- $desc = .Summary | plainify | truncate 160 -}}
 {{- end }}
