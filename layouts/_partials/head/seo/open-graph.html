@@ -6,13 +6,17 @@
   Repo: https://github.com/oxypteros/alpha
 */ -}}
 {{- $page := .page -}}
-{{- $site := .Site}}
+{{- $site := .Site }}
 {{- $data := . -}}
-<meta property="og:title" content="{{ $data.title }}">
-<meta property="og:description" content="{{ $data.description }}">
-<meta property="og:url" content="{{ $data.permalink }}">
-<meta property="og:site_name" content="{{ $data.siteTitle }}">
-<meta property="og:type" content="{{- if .IsHome -}}website{{- else -}}article{{- end -}}">
+
+<meta property="og:title" content="{{ $data.title }}" />
+<meta property="og:description" content="{{ $data.description }}" />
+<meta property="og:url" content="{{ $data.permalink }}" />
+<meta property="og:site_name" content="{{ $data.siteTitle }}" />
+<meta
+  property="og:type"
+  content="{{- if .IsHome -}}website{{- else -}}article{{- end -}}"
+/>
 {{- /* Multilingual or Single language logic */}}
 {{- if $data.inLanguage }}
   {{- if reflect.IsSlice $data.inLanguage }}
@@ -28,4 +32,9 @@
     {{- /* Single language */}}
     <meta property="og:locale" content="{{ $data.inLanguage }}" />
   {{- end }}
+{{- end }}
+{{- with $data.image }}
+  <meta property="og:image" content="{{- . -}}" />
+  <meta property="og:image:width" content="{{- $.imageWidth -}}" />
+  <meta property="og:image:height" content="{{- $.imageHeight -}}" />
 {{- end -}}

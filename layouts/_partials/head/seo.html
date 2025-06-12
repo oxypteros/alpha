@@ -98,6 +98,7 @@
 {{- with .ReadingTime -}}
   {{- $readingTime = printf "PT%dM" . -}}
 {{- end -}}
+
 {{- /* X (ex. Twitter) */}}
 {{- $xCreator := $page.Params.twitter_username -}}
 {{- $xSite := $site.Params.twitter_username -}}
@@ -122,6 +123,10 @@
   "xCreator"        ($xCreator | default $xSite)
 }}
 {{- $data = merge $data $dateData -}}
+
+{{- /* Conditional SEO image */}}
+{{- $imageData := partial "head/seo/images.html" . -}}
+{{- $data = merge $data $imageData -}}
 
 {{- /* Conditional page types */}}
 {{- if $page.IsHome -}}

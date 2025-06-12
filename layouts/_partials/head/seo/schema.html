@@ -27,6 +27,18 @@
   "publisher"       $data.publisher
 -}}
 
+{{- /* Add images to base scheme */}}
+{{- with $data.image }}
+  {{- $imageObject := dict "image" (dict
+      "@type"  "ImageObject"
+      "url"    .
+      "width"  $data.imageWidth
+      "height" $data.imageHeight
+    )
+  -}}
+  {{- $schema = merge $schema $imageObject -}}
+{{- end }}
+
 {{- /* Specific schema types */}}
 {{- /* List of  schema types that should be treated as articles. */}}
 {{ $articleTypes := slice "Article" "BlogPosting" "TechArticle" "NewsArticle" "Report" }}
