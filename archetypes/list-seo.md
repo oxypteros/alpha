@@ -13,5 +13,6 @@ description = ""
 seo_author = ""
 seo_type = ""
 seo_description = ""
+seo_image = ""
 twitter_username = ""
 +++
