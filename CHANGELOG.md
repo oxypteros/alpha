@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-<!--## [Unreleased]-->
+## [Unreleased]
+### Added
+- **SEO Image Support:** 
+    - Automatically control and optimizes social sharing images (Open Graph, Twitter Cards, Schema.org) for all page types.
+    - Intelligently sources images from page bundles or a global `assets/img` directory.
+    - OCD warnings for missing or improperly sized images for best practices.
+
+### Changed
+- **Refactored Schema.org metadata** to include images on all page types and minor changes to JSON-LD structure to meet current Google and Schema.org best practices.
 
 ## [0.2.0-beta] — 2025-06-11
 ### Changed
