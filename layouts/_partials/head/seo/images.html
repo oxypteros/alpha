@@ -14,7 +14,7 @@
 {{- /* Image Discovery */}}
 {{- /* Frontmatter SEO image ( mainly for _index.md) */}}
 {{- with .Page.Params.seo_image }}
-  {{- $path := . -}}
+  {{- $path := printf "img/%s" . -}}
   {{- with resources.Get $path }}
     {{- $seoImage = . -}}
   {{- else }}
