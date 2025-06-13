@@ -55,14 +55,14 @@
 {{- $copyrightHolderDict := dict "@type" $authorType "name" $author -}}
 
 {{- /* Description Fallbacks */}}
-{{- $description := "" -}}
-{{- with $page.Params.seo_description -}}
-  {{- $description = . | markdownify | plainify | strings.TrimSpace -}}
-{{- else with $page.Params.description -}}
-  {{- $description = . | markdownify | plainify | strings.TrimSpace -}}
+{{- $rawDescription := "" -}}
+{{- with $page.Params.description -}}
+  {{- $rawDescription = . -}}
 {{- else with $page.Summary -}}
-  {{- $description = . | plainify | truncate 160 | strings.TrimSpace -}}
+  {{- $rawDescription = . | truncate 160 -}}
 {{- end -}}
+
+{{- $description := $rawDescription | plainify  | strings.TrimSpace -}}
 
 {{- /* Publisher & Logo */}}
 {{- $publisherDict := dict
@@ -178,10 +178,40 @@
   {{- end }}
 {{- end }}
 
-{{- /* Render sub-partials */}}
+{{- /* Append meta and Render sub-partials */}}
+{{- /* Canonical URL */}}
+<link rel="canonical" href="{{- $data.permalink -}}" />
+
+{{- /* Multilingual SEO: Hreflang Tags */}}
+{{- if .IsTranslated }}
+  {{- /* Default language */}}
+  {{- $defaultLang := index .Site.Languages 0 -}}
+  {{- /* Include translations */}}
+  {{- range .AllTranslations }}
+    {{- if .File }}
+      {{- if eq .Language.Lang $defaultLang.Lang }}
+        <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+      {{- end }}
+      <link
+        rel="alternate"
+        hreflang="{{ .Language.Lang }}"
+        href="{{ .Permalink }}"
+      />
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* Description */}}
+{{- with $data.description }}
+  <meta name="description" content="{{ . }}" />
+{{- end }}
+
 {{- partial "head/seo/schema.html" (dict "page" . "data" $data ) }}
+
 {{- if gt (len .Ancestors) 0 }}
   {{- partial "head/seo/breadcrumbs.html" $page }}
 {{- end }}
+
 {{- partial "head/seo/open-graph.html" $data }}
-{{ partial "head/seo/x-cards.html" $data }}
+
+{{- partial "head/seo/x-cards.html" $data }}
