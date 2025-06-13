@@ -14,7 +14,7 @@
 >
   <head>
     {{- /* Main meta tags partial */}}
-    {{ partial "head/seo/meta.html" . }}
+    {{ partial "head/base.html" . }}
 
     {{- /* Anti-flicker inline script */}}
     {{ partialCached "head/anti-flicker.html" . }}
@@ -26,22 +26,23 @@
       {{- partial "head/tailwind.html" . }}
     {{- end }}
 
+    {{- /* Conditionally append user-defined stylesheet */}}
+    {{- partial "head/override-css.html" . }}
+
     {{- /* Append the alpha-head.js */}}
     {{- partial "head/alpha-js.html" . }}
-    {{- /* Append scheme.org open-graph x-cards */}}
+
+    {{- /* Append meta tags schema.org open-graph x-cards */}}
     {{ partial "head/seo.html" . }}
  
+    {{- /* Create and append favicons */}}
+    {{- partial "head/favicons.html" . }}
+
     {{- /* Conditionally append the Pagefind stylesheet and JS */}}
     {{- if eq .Site.Params.pagefind_enabled true }}
       {{ partialCached "head/pagefind-css.html" . }}
       <script src="/pagefind/pagefind-ui.js" defer></script>
     {{- end }}
-
-    {{- /* Conditionally append user-defined stylesheet */}}
-    {{- partial "head/override-css.html" . }}
-
-    {{- /* Create Favicons */}}
-    {{- partial "head/favicons.html" . }}
 
     {{- /* Conditionally append OCD assets */}}
     {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
