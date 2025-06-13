@@ -5,11 +5,12 @@
 
   Repo: https://github.com/oxypteros/alpha
 */ -}}
-{{- $page := .page -}}
+{{- $page := .page }}
 {{- $site := .Site }}
 {{- $data := . -}}
+
 <meta property="og:title" content="{{ $data.title }}" />
-<meta property="og:description" content="{{ $data.description }}" />
+<meta property="og:description" content="{{ $data.description | safeHTMLAttr }}" />
 {{- if or ($page.Params.seo_author_url) ($site.Params.seo_author_url) -}}
 <meta property="article:author" content="{{ . }}">
 {{- end -}}
