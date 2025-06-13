@@ -18,8 +18,6 @@
   "name"            $data.title
   "description"     $data.description
   "inLanguage"      $data.inLanguage
-  "copyrightYear"   $data.year
-  "copyrightHolder" $data.copyrightHolder
   "author" (dict
   "@type"       $data.authorType
   "name"        $data.author
@@ -38,6 +36,20 @@
   -}}
   {{- $schema = merge $schema $imageObject -}}
 {{- end }}
+
+{{- /* Conditional for copyright */ -}}
+{{- if ne $data.licenseID "CC0" -}}
+  {{- $copyrightStuff := dict
+      "copyrightYear"   $data.year
+      "copyrightHolder" $data.authorType
+    -}}
+  {{- $schema = merge $schema $copyrightStuff -}}
+{{- end -}}
+
+{{- /* Conditional for license URL */ -}}
+{{- with $data.licenseURL -}}
+  {{- $schema = merge $schema (dict "license" .) -}}
+{{- end -}}
 
 {{- /* Specific schema types */}}
 {{- /* List of  schema types that should be treated as articles. */}}
@@ -117,7 +129,7 @@
 
   {{- /* Merge to base schema */}}
   {{- $schema = merge $schema $collectionSchema -}}
-{{- end }}
+{{- end -}}
 
 {{- /* Append the JSON-LD */}}
 <script type="application/ld+json">
