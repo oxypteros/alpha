@@ -37,9 +37,6 @@
 {{- with $page.Params.author }}
   {{- $author = . -}}
   {{- $authorType = "Person" -}}
-{{- else with $page.Params.seo_author }}
-  {{- $author = . -}}
-  {{- $authorType = "Person" -}}
 {{- else with $site.Params.seo_author }}
   {{- $author = . -}}
   {{- $authorType = "Person" -}}
@@ -51,8 +48,31 @@
   {{- $authorType = "Organization" -}}
 {{- end }}
 
-{{- /* Copyright Holder Logic */}}
-{{- $copyrightHolderDict := dict "@type" $authorType "name" $author -}}
+{{- /* License Handler*/}}
+{{- $licenseID := "copyright" -}}
+{{- if $page.Params.license }}
+  {{- $licenseID = $page.Params.license -}}
+{{- else if $site.Params.seo_license }}
+  {{- $licenseID = $site.Params.seo_license -}}
+{{- end }}
+
+{{- $licenseURL := "" -}}
+
+{{- if eq $licenseID "CC0" }}
+  {{- $licenseURL = "https://creativecommons.org/publicdomain/zero/1.0/" -}}
+{{- else if eq $licenseID "CC-BY" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by/4.0/" -}}
+{{- else if eq $licenseID "CC-BY-SA" -}}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-sa/4.0/" -}}
+{{- else if eq $licenseID "CC-BY-ND" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-nd/4.0" -}}
+{{- else if eq $licenseID "CC-BY-NC" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-nc/4.0/" -}}
+{{- else if eq $licenseID "CC-BY-NC-SA" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-nc-sa/4.0/" -}}
+{{- else if eq $licenseID "CC-BY-NC-ND" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-nc-nd/4.0/" -}}
+{{- end }}
 
 {{- /* Description Fallbacks */}}
 {{- $rawDescription := "" -}}
@@ -111,7 +131,6 @@
   "permalink"       $page.Permalink
   "author"          $author
   "authorType"      $authorType
-  "copyrightHolder" $copyrightHolderDict
   "siteTitle"       $site.Title
   "baseUrl"         $site.BaseURL
   "year"            $year
@@ -119,6 +138,8 @@
   "publisher"       $publisherDict
   "wordCount"       $page.WordCount
   "readingTime"     $readingTime
+  "licenseID"       $licenseID
+  "licenseURL"      $licenseURL
   "xSite"           $xSite
   "xCreator"        ($xCreator | default $xSite)
 }}
