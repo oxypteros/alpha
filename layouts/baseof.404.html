@@ -1,0 +1,106 @@
+{{- /*
+  Template: baseof.404.html
+  Purpose: Defines the foundational HTML structure (`<html>`, `<head>`,`<body>`)
+  for 404 pages.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+<!doctype html>
+<html
+  lang="{{ site.Language.LanguageCode }}"
+  dir="{{ or site.Language.LanguageDirection `ltr` }}"
+  data-theme="light"
+>
+  <head>
+    {{- /* No need for index */}}
+    <meta name="robots" content="noindex, nofollow" />
+    {{- /* Main meta tags partial */}}
+    {{ partial "head/base.html" . }}
+
+    {{- /* Anti-flicker inline script */}}
+    {{ partialCached "head/anti-flicker.html" . }}
+
+    {{- /* Conditionally append pre-compiled or JIT Tailwind Css */}}
+    {{- if eq .Site.Params.tailwind_enabled false }}
+      {{ partialCached "head/alpha-css.html" . }}
+    {{- else }}
+      {{- partial "head/tailwind.html" . }}
+    {{- end }}
+
+    {{- /* Conditionally append user-defined stylesheet */}}
+    {{- partial "head/override-css.html" . }}
+
+    {{- /* Append the alpha-head.js */}}
+    {{- partial "head/alpha-js.html" . }}
+
+    {{- /* Create and append favicons */}}
+    {{- partial "head/favicons.html" . }}
+
+    {{- /* Conditionally append the Pagefind stylesheet and JS */}}
+    {{- if eq .Site.Params.pagefind_enabled true }}
+      {{ partialCached "head/pagefind-css.html" . }}
+      <script src="/pagefind/pagefind-ui.js" defer></script>
+    {{- end }}
+
+    {{- /* Conditionally append OCD assets */}}
+    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
+      {{- partialCached "head/ocd.html" . }}
+    {{- end }}
+  </head>
+  <body
+    class="bg-sur dark:bg-sur-d text-on-sur dark:text-on-sur-d flex min-h-dvh flex-col items-center justify-between font-sans"
+  >
+    {{ partialCached "header.html" . .Site.Language.Lang}}
+    <main class="pt-header dark:bg-sur-d z-10 w-full grow">
+      {{- block "main" . }}{{ end }}
+    </main>
+     {{- partialCached "footer.html" . .Site.Language.Lang -}}
+    
+    {{- /* Conditional snackbar container for cookie notice */}}
+    {{- if eq .Site.Params.noCookies_snackbar true }}
+      <div
+        class="fixed bottom-14 z-40 w-full px-4"
+        data-alpha="snackbar-container"
+      ></div>
+    {{- end }}
+    
+    {{- /* Conditional container for visitor settings/preferences */}}
+    {{- if eq .Site.Params.visitor_settings true }}
+      <div
+        class="fixed top-1/3 z-50 w-full px-4"
+        data-alpha="settings-container"
+      ></div>
+    {{- end }}
+    {{- /* Live region for screen reader announcements */}}
+    <div class="sr-only" aria-live="polite" data-alpha="announcer"></div>
+    
+    {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
+    {{- partial "tail/js.html" . }}
+    {{- partial "tail/custom-js.html" . }}
+    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang -}}
+    
+    {{- /* Templates */}}
+    {{- /* Search Modal */}}
+    {{- if eq .Site.Params.pagefind_enabled true }}
+      {{ partialCached "tail/search-template.html" . .Site.Language.Lang }}
+    {{- end }}
+
+    {{- /* Main menu */}}
+    {{- partial "tail/menu-template.html" . -}}
+
+    {{- /* Cookies snackbar */}}
+    {{- if eq .Site.Params.noCookies_snackbar true -}}
+      {{- partialCached "tail/snackbar-template.html" . .Site.Language.Lang -}}
+    {{- end -}}
+
+    {{- /* Visitors Settings */}}
+    {{- if eq .Site.Params.visitor_settings true }}
+      {{- partialCached "tail/settings-template.html" . .Site.Language.Lang -}}
+    {{- end }}
+
+    {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
+    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
+      {{- partial "ocd/main.html" . -}}
+    {{- end -}}
+  </body>
+</html>
