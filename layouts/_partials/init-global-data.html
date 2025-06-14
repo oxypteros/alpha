@@ -1,11 +1,11 @@
 {{- /*
   Partial: init-global-data.html
-  Purpose: Collect and cache post data for reuse across templates (recommended, 
+  Purpose: Collect and store post data for reuse across templates (recommended, 
   latest, featured)
 
    Behavior:
   - Avoids repeated expensive `.Site.RegularPages` + `where` calls
-  - Caches the result in `.Scratch` using language specific keys for 
+  - Store the result in `hugo.Store` using language specific keys for 
   multilingual support
   - Makes post lists accessible globally with `.Scratch.Get`
 
@@ -14,28 +14,22 @@
 
 {{- $lang := .Site.Language.Lang -}}
 
-{{- /* Recommended Posts */}}
+{{- /* Store Recommended Posts */}}
 {{- $recKey := printf "recommended_%s" $lang -}}
-{{- if not (.Scratch.Get $recKey) }}
-  {{- .Scratch.Set $recKey (where .Site.RegularPages "Params.recommended" true) -}}
+{{- hugo.Store.Set $recKey (where .Site.RegularPages "Params.recommended" true) -}}
+
+{{- /* Store Latest Post */}}
+{{- $latestKey := printf "latest_%s" $lang -}}
+{{- with where .Site.RegularPages "Params.featured" "!=" true }}
+  {{- hugo.Store.Set $latestKey (first 1 .ByDate.Reverse) }}
+{{- else }}
+  {{- hugo.Store.Set $latestKey "" -}}
 {{- end }}
 
-{{- /* Latest Post */}}
-{{- $latestKey := printf "latest_%s" $lang }}
-{{- if not (.Scratch.Get $latestKey) }}
-  {{- $latestPage := slice  -}}
-  {{- with where .Site.RegularPages "Params.featured" "!=" true }}
-    {{- $latestPage = first 1 .ByDate.Reverse -}}
-  {{- end }}
-  {{- .Scratch.Set $latestKey $latestPage -}}
-{{- end }}
-
-{{- /* Featured Post */}}
+{{- /* Store Featured Post */}}
 {{- $featuredKey := printf "featured_%s" $lang -}}
-{{- if not (.Scratch.Get $featuredKey) }}
-  {{- $featuredPage := slice  -}}
-  {{- with where .Site.RegularPages "Params.featured" true }}
-    {{- $featuredPage = first 1 . -}}
-  {{- end }}
-  {{- .Scratch.Set $featuredKey $featuredPage -}}
+{{- with where .Site.RegularPages "Params.featured" true }}
+  {{- hugo.Store.Set $featuredKey (first 1 .) -}}
+{{- else }}
+  {{- hugo.Store.Set $featuredKey "" -}}
 {{- end }}

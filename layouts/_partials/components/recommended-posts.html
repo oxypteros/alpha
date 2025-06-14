@@ -31,7 +31,7 @@
 {{- $cacheKey := printf "recommended_%s" $lang -}}
 
 {{- /* Get the recommended post from init-data-global partial. */}}
-{{- $allRecommended := .Scratch.Get $cacheKey -}}
+{{- $allRecommended := hugo.Store.Get $cacheKey -}}
 
 {{- if $allRecommended }}
   {{- /* Exclude the current page. */}}
