@@ -1,10 +1,11 @@
 {{- /*
-  Template: baseof.html 
-  Purpose: Defines the foundational HTML structure (`<html>`, `<head>`,`<body>`) 
+  Template: baseof.html
+  Purpose: Defines the foundational HTML structure (`<html>`, `<head>`,`<body>`)
   for all pages within the Alpha theme.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
+{{- partialCached "init-global-data.html" . .Site.Language.Lang }}
 <!doctype html>
 <html
   lang="{{ site.Language.LanguageCode }}"
@@ -33,7 +34,7 @@
 
     {{- /* Append meta tags schema.org open-graph x-cards */}}
     {{ partial "head/seo.html" . }}
- 
+
     {{- /* Create and append favicons */}}
     {{- partial "head/favicons.html" . }}
 
@@ -45,17 +46,17 @@
 
     {{- /* Conditionally append OCD assets */}}
     {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-    {{- partialCached "head/ocd.html" . }}
+      {{- partialCached "head/ocd.html" . }}
     {{- end }}
   </head>
   <body
     class="bg-sur dark:bg-sur-d text-on-sur dark:text-on-sur-d flex min-h-dvh flex-col items-center justify-between font-sans"
   >
-    {{ partial "header.html" . }}
-    <main class="pt-header dark:bg-sur-d z-10 w-full grow"> 
+    {{ partialCached "header.html" . .Site.Language.Lang }}
+    <main class="pt-header dark:bg-sur-d z-10 w-full grow">
       {{- block "main" . }}{{ end }}
     </main>
-    {{ partial "footer.html" . }}
+    {{ partialCached "footer.html" . .Site.Language.Lang }}
     {{- /* Conditional snackbar container for cookie notice */}}
     {{- if eq .Site.Params.noCookies_snackbar true }}
       <div
@@ -73,10 +74,31 @@
     {{- /* Live region for screen reader announcements */}}
     <div class="sr-only" aria-live="polite" data-alpha="announcer"></div>
     {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
+    {{- /* Scripts */}}
     {{- partial "tail/js.html" . }}
     {{- partial "tail/custom-js.html" . }}
-    {{- partial "tail/icons.html" . }}
-    {{- partial "tail/template.html" . }}
+    {{- /* Icons */}}
+    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang -}}
+
+    {{- /* Templates */}}
+    {{- /* Search Modal */}}
+    {{- if eq .Site.Params.pagefind_enabled true }}
+      {{ partialCached "tail/search-template.html" . .Site.Language.Lang }}
+    {{- end }}
+
+    {{- /* Main menu */}}
+    {{- partial "tail/menu-template.html" . -}}
+
+    {{- /* Cookies snackbar */}}
+    {{- if eq .Site.Params.noCookies_snackbar true -}}
+      {{- partialCached "tail/snackbar-template.html" . .Site.Language.Lang -}}
+    {{- end -}}
+
+    {{- /* Visitors Settings */}}
+    {{- if eq .Site.Params.visitor_settings true }}
+      {{- partialCached "tail/settings-template.html" . .Site.Language.Lang -}}
+    {{- end }}
+
     {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
     {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
       {{- partial "ocd/main.html" . -}}
