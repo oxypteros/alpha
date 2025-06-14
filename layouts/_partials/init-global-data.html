@@ -1,0 +1,41 @@
+{{- /*
+  Partial: _partials/init-global-data.html
+  Purpose: Collect and cache post data for reuse across templates (recommended, 
+  latest, featured)
+
+   Behavior:
+  - Avoids repeated expensive `.Site.RegularPages` + `where` calls
+  - Caches the result in `.Scratch` using language specific keys for 
+  multilingual support
+  - Makes post lists accessible globally with `.Scratch.Get`
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $lang := .Site.Language.Lang -}}
+
+{{- /* Recommended Posts */}}
+{{- $recKey := printf "recommended_%s" $lang -}}
+{{- if not (.Scratch.Get $recKey) }}
+  {{- .Scratch.Set $recKey (where .Site.RegularPages "Params.recommended" true) -}}
+{{- end }}
+
+{{- /* Latest Post */}}
+{{- $latestKey := printf "latest_%s" $lang }}
+{{- if not (.Scratch.Get $latestKey) }}
+  {{- $latestPage := slice  -}}
+  {{- with where .Site.RegularPages "Params.featured" "!=" true }}
+    {{- $latestPage = first 1 .ByDate.Reverse -}}
+  {{- end }}
+  {{- .Scratch.Set $latestKey $latestPage -}}
+{{- end }}
+
+{{- /* Featured Post */}}
+{{- $featuredKey := printf "featured_%s" $lang -}}
+{{- if not (.Scratch.Get $featuredKey) }}
+  {{- $featuredPage := slice  -}}
+  {{- with where .Site.RegularPages "Params.featured" true }}
+    {{- $featuredPage = first 1 . -}}
+  {{- end }}
+  {{- .Scratch.Set $featuredKey $featuredPage -}}
+{{- end }}
