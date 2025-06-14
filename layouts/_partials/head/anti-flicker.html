@@ -1,4 +1,3 @@
-<!-- prettier-ignore -->
 {{- /*
   Partial: head/anti-flicker.html 
   Purpose: Injects critical inline JavaScript to initialize the theme color 
@@ -17,5 +16,5 @@
   HASH ABOVE MUST BE RECALCULATED AND UPDATED.
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 <script>!function(){let e="theme"in localStorage,t=window.matchMedia("(prefers-color-scheme: dark)").matches;e||localStorage.setItem("theme",t?"dark":"light"),"dark"===localStorage.theme&&document.documentElement.classList.add("dark")}();</script>
