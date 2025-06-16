@@ -78,7 +78,7 @@
     {{- partial "tail/js.html" . }}
     {{- partial "tail/custom-js.html" . }}
     {{- /* Icons */}}
-    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang -}}
+    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang .Page.Params.layout .Page.Params.author }}
 
     {{- /* Templates */}}
     {{- /* Search Modal */}}
