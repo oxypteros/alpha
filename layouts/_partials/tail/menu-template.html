@@ -3,7 +3,7 @@
   Purpose: HTML template for Alpha's hamburger menu.
 
   Behavior:
-  - HTML element that is inert for the DOM and is loaded dynamically (JS) to
+  - HTML element that is inert for the DOM and is loaded dynamically (by JS) to
   improve page performance.
 
   Repo: https://github.com/oxypteros/alpha
@@ -19,7 +19,7 @@
       {{- $lang := .Site.Language.Lang -}}
 
       {{- /* Get the latest post from init-global-data partial */}}
-     {{- with hugo.Store.Get (printf "latest_%s" $lang) }}
+      {{- with hugo.Store.Get (printf "latest_%s" $lang) }}
         {{- with index . 0 }}
           {{- if ne .Permalink $currentPage.Permalink }}
             <p>
