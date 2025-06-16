@@ -23,13 +23,16 @@
 {{- with where .Site.RegularPages "Params.featured" "!=" true }}
   {{- hugo.Store.Set $latestKey (first 1 .ByDate.Reverse) }}
 {{- else }}
-  {{- hugo.Store.Set $latestKey "" -}}
+  {{- hugo.Store.Set $latestKey slice -}}
 {{- end }}
 
 {{- /* Store Featured Post */}}
+{{- $lang := .Site.Language.Lang -}}
 {{- $featuredKey := printf "featured_%s" $lang -}}
-{{- with where .Site.RegularPages "Params.featured" true }}
-  {{- hugo.Store.Set $featuredKey (first 1 .) -}}
-{{- else }}
-  {{- hugo.Store.Set $featuredKey "" -}}
-{{- end -}}
+{{- $latestFeatured := slice -}}
+
+{{- with first 1 (where .Site.RegularPages.ByDate.Reverse "Params.featured" true) }}
+  {{- $latestFeatured = . -}}
+{{- end }}
+
+{{- hugo.Store.Set $featuredKey $latestFeatured -}}
