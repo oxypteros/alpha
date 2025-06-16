@@ -1,0 +1,195 @@
+{{- if .Site.Params.make_hook }}
+<div class="mx-auto max-w-96">
+  <form id="contactForm" class="space-y-8" data-alpha="contact-form">
+    <div class="space-y-2">
+      <label for="name" class="font-500 block text-sm"
+        >Name <span aria-hidden="true" class="text-error">*</span> </label
+      ><input
+        type="text"
+        id="name"
+        name="name"
+        required=""
+        aria-required="true"
+        aria-describedby="nameError"
+        class="border-out-var focus:ring-out focus:border-out w-full rounded-md border px-3 py-2 focus:ring-1 focus:outline-none"
+        placeholder="John Doe"
+      />
+      <div id="nameError" class="text-error hidden text-sm" role="alert" data-alpha="name-error"></div>
+    </div>
+    <div class="hidden" aria-hidden="true">
+      <label for="surname"
+        >Surname <span aria-hidden="true" class="text-error">*</span> </label
+      ><input
+        type="text"
+        id="surname"
+        name="surname"
+        tabindex="-1"
+        autocomplete="off"
+        placeholder="Doe"
+        data-alpha="surname"
+      />
+      <div id="surnameError" class="text-error hidden text-sm" role="alert"></div>
+    </div>
+    <div class="space-y-2">
+      <label for="email" class="font-500 block text-sm"
+        >Email Address
+        <span aria-hidden="true" class="text-error">*</span> </label
+      ><input
+        type="email"
+        id="email"
+        name="email"
+        required=""
+        aria-required="true"
+        aria-describedby="emailError"
+        class="border-out-var focus:ring-out focus:border-out w-full rounded-md border px-3 py-2 focus:ring-1 focus:outline-none"
+        placeholder="john@example.com"
+      />
+      <div id="emailError" class="text-error hidden text-sm" role="alert" data-alpha="email-error"></div>
+    </div>
+    <div class="space-y-2">
+      <label for="subject" class="block text-sm font-500"
+        >Subject <span aria-hidden="true" class="text-error">*</span> </label
+      ><input
+        type="text"
+        id="subject"
+        name="subject"
+        required=""
+        aria-required="true"
+        aria-describedby="subjectError"
+        class="border-out-var focus:ring-out focus:border-out w-full rounded-md border px-3 py-2 focus:ring-1 focus:outline-none"
+        placeholder="Your message subject"
+      />
+      <div
+        id="subjectError"
+        class="text-error hidden text-sm"
+        role="alert"
+        data-alpha="subject-error"
+      ></div>
+    </div>
+    <div class="space-y-2">
+      <label for="message" class="block text-sm font-500"
+        >Message <span aria-hidden="true" class="text-error">*</span> </label
+      ><textarea
+        id="message"
+        name="message"
+        required=""
+        aria-required="true"
+        aria-describedby="messageError"
+        rows="5"
+        class="border-out-var focus:ring-out focus:border-out w-full rounded-md border px-3 py-2 focus:ring-1 focus:outline-none"
+        placeholder="Your message here..."
+      ></textarea>
+      <div
+        id="messageError"
+        class="text-error hidden text-sm"
+        role="alert"
+        data-alpha="message-error"
+      ></div>
+    </div>
+    <div class="flex justify-center">
+      <button
+        id="formSubmitBtn"
+        type="submit"
+        class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur rounded-full border px-5 py-3 text-center font-sans shadow-lg transition-all duration-400 ease-in-out hover:shadow-md min-w-48"
+        aria-label="Submit contact form"
+        data-alpha="submitBtn"
+      >
+        Send Message
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Snackbar Templates -->
+<template data-alpha="template-form-success">
+ <div
+      class="border-on-sur dark:border-out-var-d bg-menu dark:bg-menu-d text-on-menu mx-auto flex min-h-12 w-full max-w-xl justify-between rounded-md border"
+      role="alert"
+    >
+      <div class="p-4">
+        <p class="mb-1">Thank you! Your message has been sent successfully.</p>
+        <p>You can send another message in 30 seconds.</p>
+      </div>
+      <div class="flex flex-col items-center gap-2 py-1 pr-1">
+        <button
+          class="closeSnackbarBtn group hover:bg-sur/20 focus:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
+          aria-label="{{ i18n "Close" . }}"
+        >
+          <svg
+            class="fill-on-menu-var dark:fill-on-menu-var-d group-hover:fill-on-menu dark:group-hover:fill-on-menu-d size-5 transition-colors duration-400"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          >
+            <use href="#icon-close"></use>
+          </svg>
+        </button>
+      </div>
+    </div>
+</template>
+
+<template data-alpha="template-form-fail">
+    <div
+      class="border-on-sur dark:border-out-var-d bg-menu dark:bg-menu-d text-on-menu mx-auto flex min-h-12 w-full max-w-xl justify-between rounded-md border"
+    >
+      <div class="p-4">
+        <p>Uh-oh! Something went wrong. Mind trying again?</p>
+      </div>
+      <div class="flex flex-col items-center gap-2 py-1 pr-1">
+        <button
+          class="closeSnackbarBtn group hover:bg-sur/20 focus:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
+          aria-label="{{ i18n "Close" . }}"
+        >
+          <svg
+            class="fill-on-menu-var dark:fill-on-menu-var-d group-hover:fill-on-menu dark:group-hover:fill-on-menu-d size-5 transition-colors duration-400"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          >
+            <use href="#icon-close"></use>
+          </svg>
+        </button>
+      </div>
+    </div>
+</template>
+
+<!-- Alternative Contact Info Container (if submission fails badly) -->
+<div class="mt-16" data-alpha="fail-container">   
+  
+</div>
+
+<template id="alternativeContactMethodsTemplate" data-alpha="alternative-contact-template">
+<div
+      class="sc-status-card dark:bg-sur-var-d mx-auto my-8 flex w-full max-w-prose flex-col items-center rounded-md border-2 border-orange-600 shadow-md"
+    >
+      <header class="flex w-full items-canter gap-2 px-4 pt-4">
+        <svg
+          class="size-7 fill-orange-900 dark:fill-orange-300"
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          aria-hidden="true"
+        >
+          <path
+            d="M109-120q-11 0-20-5.5T75-140q-5-9-5.5-19.5T75-180l370-640q6-10 15.5-15t19.5-5q10 0 19.5 5t15.5 15l370 640q6 10 5.5 20.5T885-140q-5 9-14 14.5t-20 5.5H109Zm69-80h604L480-720 178-200Zm302-40q17 0 28.5-11.5T520-280q0-17-11.5-28.5T480-320q-17 0-28.5 11.5T440-280q0 17 11.5 28.5T480-240Zm0-120q17 0 28.5-11.5T520-400v-120q0-17-11.5-28.5T480-560q-17 0-28.5 11.5T440-520v120q0 17 11.5 28.5T480-360Zm0-100Z"
+          />
+        </svg>
+        
+        <h2 class="text-orange-900 dark:text-orange-300">
+           Terribly Sorry!
+          </h2>
+       
+      </header>
+      <div class="w-full px-6 py-4 text-base">
+        Something went awfully wrong. Please excuse the inconvenience and try contacting me directly at: <span id="contactEmailDisplay"></span>.
+      </div>
+    </div>
+</template>
+{{- end }}
