@@ -46,13 +46,13 @@
 
     {{- /* Conditionally append OCD assets */}}
     {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-      {{- partialCached "head/ocd.html" . }}
+      {{- partial "head/ocd.html" . }}
     {{- end }}
   </head>
   <body
     class="bg-sur dark:bg-sur-d text-on-sur dark:text-on-sur-d flex min-h-dvh flex-col items-center justify-between font-sans"
   >
-    {{ partialCached "header.html" . .Site.Language.Lang }}
+    {{ partial "header.html" . }}
     <main class="pt-header dark:bg-sur-d z-10 w-full grow">
       {{- block "main" . }}{{ end }}
     </main>
