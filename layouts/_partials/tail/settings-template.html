@@ -1,0 +1,76 @@
+{{- /*
+  Partial: tail/settings-template.html
+  Purpose: HTML template for Alpha's user settings modal.
+
+  Behavior:
+  - HTML element that is inert for the DOM and is loaded dynamically (JS) to
+  improve page performance.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+<template data-alpha="settings-template">
+  <div
+    class="border-on-sur dark:border-out-var-d bg-menu dark:bg-menu-d text-on-menu mx-auto flex min-h-12 w-full max-w-3xl flex-col rounded-md border"
+  >
+    <div class="flex items-center justify-between py-1 pr-1 pl-4">
+      <h2 class="text-lg">{{- i18n "Settings" . | default "Settings" -}}</h2>
+      <button
+        class="group hover:bg-sur/20 focus:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
+        aria-label="{{ i18n "Close" . | default "Close" }}"
+        data-alpha="settings-close-button"
+      >
+        <svg
+          class="fill-on-menu-var dark:fill-on-menu-var-d group-hover:fill-on-menu dark:group-hover:fill-on-menu-d size-5 transition-colors duration-400"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          width="16"
+          height="16"
+          aria-hidden="true"
+        >
+          <use href="#icon-close"></use>
+        </svg>
+      </button>
+    </div>
+    <div class="flex justify-between gap-4 py-2 pr-1 pl-4">
+      <div>
+        <h3 class="mt-2 text-base">
+          {{- i18n "AnomymousStats" . | default "Anomymous statistics" }}
+        </h3>
+        <p class="text-on-menu-var mt-2 text-sm">
+          {{- i18n "CollectedStats" . | default " We collect anonymous stats to refine functionality." }}
+
+        </p>
+      </div>
+      <button
+        class="flex size-11 shrink-0 items-center justify-center transition-colors duration-400"
+        aria-pressed="false"
+        data-alpha="tracking-button"
+      >
+        <svg class="fill-on-menu-var size-8">
+          <use href="#icon-on"></use>
+        </svg>
+      </button>
+    </div>
+    <hr class="bg-sur-var-d mx-4 mt-2 h-0.5 rounded-full border-none" />
+    <div class="flex justify-between gap-4 py-2 pr-1 pl-4">
+      <div class="mb-2">
+        <h3 class="mt-2 text-base">
+          {{ i18n "PrefetchContent" . | default "Prefetch Content" }}
+        </h3>
+        <p class="text-on-menu-var mt-2 text-sm">
+          {{- i18n "PrefetchLinks" . | default "Some links are prefetched for smoother browsing." }}
+        </p>
+      </div>
+      <button
+        class="flex size-11 shrink-0 items-center justify-center transition-colors duration-400"
+        aria-pressed="false"
+        data-alpha="prefetch-button"
+      >
+        <svg class="fill-on-menu-var size-8">
+          <use href="#icon-on"></use>
+        </svg>
+      </button>
+    </div>
+  </div>
+</template>

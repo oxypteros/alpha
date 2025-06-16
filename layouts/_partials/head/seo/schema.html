@@ -1,11 +1,10 @@
-<!-- prettier-ignore -->
 {{- /*
   Partial: head/seo/schema.html
   Purpose: Accept initial values from `head/seo.html` and conditionally append a 
   page specific schema JSON-LD.
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 {{- $page := .page -}}
 {{- $site := .Site -}}
 {{- $data := .data -}}
@@ -18,8 +17,6 @@
   "name"            $data.title
   "description"     $data.description
   "inLanguage"      $data.inLanguage
-  "copyrightYear"   $data.year
-  "copyrightHolder" $data.author
   "author" (dict
   "@type"       $data.authorType
   "name"        $data.author
@@ -27,9 +24,36 @@
   "publisher"       $data.publisher
 -}}
 
-{{- /* Specific schema types */}}
+{{- /* Add images to base scheme */}}
+{{- with $data.image }}
+  {{- $imageObject := dict "image" (dict
+      "@type"  "ImageObject"
+      "url"    .
+      "width"  $data.imageWidth
+      "height" $data.imageHeight
+    )
+  -}}
+  {{- $schema = merge $schema $imageObject -}}
+{{- end }}
 
-{{- if eq $data.type "Article" }}
+{{- /* Conditional for copyright */ -}}
+{{- if ne $data.licenseID "CC0" -}}
+  {{- $copyrightStuff := dict
+      "copyrightYear"   $data.year
+      "copyrightHolder" $schema.author 
+    -}}
+  {{- $schema = merge $schema $copyrightStuff -}}
+{{- end -}}
+
+{{- /* Conditional for license URL */ -}}
+{{- with $data.licenseURL -}}
+  {{- $schema = merge $schema (dict "license" .) -}}
+{{- end -}}
+
+{{- /* Specific schema types */}}
+{{- /* List of  schema types that should be treated as articles. */}}
+{{ $articleTypes := slice "Article" "BlogPosting" "TechArticle" "NewsArticle" "Report" }}
+{{- if in $articleTypes $data.type }}
   {{- /* MainEntity for Article */}}
   {{- $articleSchema := dict
     "mainEntityOfPage" (dict "@type" "WebPage" "@id" $data.permalink)

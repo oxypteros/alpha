@@ -2,13 +2,13 @@
   footer.html (partial): Defines the footer HTML structure for Alpha.
 
   Features:
-    - Site copyright with year
-    - Footer menu and social footer menu
-    - Site params defined motto
-    - Site params enabled visitor settings
+  - Site copyright with year
+  - Footer menu and social footer menu
+  - Site params defined motto
+  - Site params enabled visitor settings
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 {{- /* Conditional calculation of year range */}}
 {{- $currentYear := dateFormat "2006" now }}
 {{- $estYear := default $currentYear .Site.Params.established_year }}
@@ -65,12 +65,12 @@
     {{- end }}
   </div>
   <div
-    class="min-h-bar bg-menu text-on-menu-var flex w-full flex-wrap items-center justify-center pr-1 pl-4 pt-2 sm:pt-0 text-sm sm:justify-between"
+    class="min-h-bar bg-menu text-on-menu-var flex w-full flex-wrap items-center justify-center pt-2 pr-1 pl-4 text-sm sm:justify-between sm:pt-0"
   >
     {{- $motto := .Site.Params.motto }}
     {{- if $motto }}
       <div
-        class="flex min-h-11 w-full items-center justify-center  sm:w-1/2 sm:justify-start sm:text-base"
+        class="flex min-h-11 w-full items-center justify-center sm:w-1/2 sm:justify-start sm:text-base"
       >
         {{- $motto | safeHTML -}}
       </div>
@@ -81,13 +81,14 @@
       class="flex w-full flex-wrap items-center justify-between gap-1 sm:w-1/2 sm:justify-end"
     >
       <div class="flex shrink-0 items-center">
-        &copy; {{ $yearDisplay }}&nbsp; {{ .Site.Title }}
+        &copy; {{ $yearDisplay }}&nbsp;
+        {{ .Site.Title }}
       </div>
       {{- /* Visitor settings */}}
       {{- if eq .Site.Params.visitor_settings true }}
         <button
           class="group hover:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
-          aria-label="{{ i18n "SettingsBtn" | default "Settings Button"}}"
+          aria-label="{{ i18n "SettingsBtn" | default "Settings Button" }}"
           aria-pressed="false"
           data-alpha="settings-button"
         >

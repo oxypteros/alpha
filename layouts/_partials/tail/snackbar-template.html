@@ -1,0 +1,46 @@
+{{- /*
+  Partial: tail/snackbar-privacy-template.html
+  Purpose: HTML template for Alpha's cookies/privacy modal.
+
+  Behavior:
+  - HTML element that is inert for the DOM and is loaded dynamically (JS) to
+  improve page performance.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+<template data-alpha="snackbar-privacy-template">
+  <div
+    class="border-on-sur dark:border-out-var-d bg-menu dark:bg-menu-d text-on-menu mx-auto flex min-h-12 w-full max-w-3xl justify-between rounded-md border"
+  >
+    <div class="p-4">
+      <p class="mb-2">
+        {{ .Site.Title }}
+        {{ i18n "NoCookiesSnackBar" . | default "does not use cookies and only collects anonymous usage statistics." }}
+      </p>
+      <a
+        class="decoration-on-menu dark:decoration-on-menu-d hover:decoration-on-menu-var dark:hover:decoration-on-menu-var-d hover:text-on-menu-var dark:hover:text-on-menu-var-d underline decoration-1"
+        href="/policy"
+        >{{ i18n "PrivacyPolicy" . | default "Privacy Policy" }}</a
+      >
+    </div>
+    <div class="flex flex-col items-center gap-2 py-1 pr-1">
+      <button
+        class="group hover:bg-sur/20 focus:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
+        aria-label="{{ i18n "Close" . | default "Close" }}"
+        data-alpha="snackbar-close-button"
+      >
+        <svg
+          class="fill-on-menu-var dark:fill-on-menu-var-d group-hover:fill-on-menu dark:group-hover:fill-on-menu-d size-5 transition-colors duration-400"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          width="16"
+          height="16"
+          aria-hidden="true"
+        >
+          <use href="#icon-close"></use>
+        </svg>
+      </button>
+    </div>
+  </div>
+</template>

@@ -13,27 +13,27 @@
   - If `prefetch_enabled = true` is set in `config/_default/params.toml` the prefetch module will prefetch the Next/Previous pages.
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 {{- $seriesKey := .Page.Params.series | lower -}}
 {{- $seriesPageGroup := index site.Taxonomies.series $seriesKey -}}
 
-  {{- if $seriesPageGroup -}}
+  {{- if $seriesPageGroup }}
   {{- /* Lighter page first */}}
   {{- $sortedPages := $seriesPageGroup.Pages.ByWeight.Reverse -}}
 
-  {{- if gt (len $sortedPages) 1 -}}
+  {{- if gt (len $sortedPages) 1 }}
 
     {{- /* Hugo's  .Next and .Prev functions */}}
     {{- $nextPost := $sortedPages.Next . -}}
     {{- $prevPost := $sortedPages.Prev . -}}
 
     {{- /* Render the nav */}}
-    <div class="mt-24 mb-32 w-full">
+    <div class="mt-24 w-full">
       <nav
         class="flex flex-wrap-reverse items-center justify-center gap-5 sm:justify-between"
       >
         <div>
-          {{- if $prevPost -}}
+          {{- if $prevPost }}
             <a
               class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex h-11 w-48 items-center justify-center rounded-full border px-4 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
               href="{{ $prevPost.Permalink }}"
@@ -55,10 +55,10 @@
                 </div>
               </div>
             </a>
-          {{- end -}}
+          {{- end }}
         </div>
         <div>
-          {{- if $nextPost -}}
+          {{- if $nextPost }}
             <a
               class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex h-11 w-48 items-center justify-center rounded-full border px-4 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
               href="{{ $nextPost.Permalink }}"
@@ -80,9 +80,9 @@
                 </svg>
               </div>
             </a>
-          {{- end -}}
+          {{- end }}
         </div>
       </nav>
     </div>
-  {{- end -}}
+  {{- end }}
 {{- end -}}

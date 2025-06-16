@@ -1,44 +1,26 @@
-<!-- prettier-ignore -->
 {{- /*
   Partial: head/seo/x-cards.html
   Purpose: Accept values from `head/seo.html` and appends x-cards.
 
-  To-Do: 
-  - Re-examine the image logic and feed it from seo partial
-  
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 {{- $page := .page -}}
 {{- $site := .Site }}
 {{- $data := . -}}
-{{- $seo_img := .Resources.GetMatch "*-social.*" }}{{- /*1200 x 675 */}}
-{{- $img := .Resources.GetMatch "*.{png,jpg,jpeg,webp,gif}" }}
-{{- if $seo_img }}
-  {{- with $seo_img }}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="{{ .Permalink }}" />
-  {{- end }}
-  {{- with .Page.Params.socialImgDesc }}
-    <meta name="twitter:image:alt" content="{{- . -}}" />
-  {{- end }}
-{{- else if $img }}
-  {{- with $img }}
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="{{ .Permalink }}" />
-  {{- end }}
-  {{- with .Page.Params.imgDesc }}
-    <meta name="twitter:image:alt" content="{{- . -}}" />
-  {{- end }}
+
+{{- with $data.image }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ . }}">
 {{- else }}
-  <meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary">
 {{- end }}
 <meta name="twitter:url" content="{{- $data.permalink -}}" />
 <meta name="twitter:title" content="{{- $data.title -}}" />
-<meta name="twitter:description" content="{{- $data.description -}}" />
+<meta name="twitter:description" content="{{- $data.description | safeHTMLAttr -}}" />
 
 {{- with $data.xSite }}
   <meta name="twitter:site" content="@{{- . -}}" />
 {{- end }}
 {{- with $data.xCreator }}
   <meta name="twitter:creator" content="@{{- . -}}" />
-{{- end }}
+{{- end -}}

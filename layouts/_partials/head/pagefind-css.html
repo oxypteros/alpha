@@ -1,4 +1,3 @@
-<!-- prettier-ignore -->
 {{- /*
   Partial: head/pagefind-css.html
   Purpose: Builds and appends the Pagefind stylesheet to the `<head>`.
@@ -11,7 +10,7 @@
   - This partial will be used only if `pagefind_enabled = true` in `params.toml`.
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 {{- with resources.Get "alpha/css/pagefind-ui.css" }}
   {{- $pageFindCss := . -}}
   {{- if hugo.IsProduction }}

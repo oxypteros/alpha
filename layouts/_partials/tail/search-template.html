@@ -1,0 +1,90 @@
+{{- /*
+  Partial: tail/search-template.html
+  Purpose: HTML template for Alpha's search modal.
+
+  Behavior:
+  - HTML element that is inert for the DOM and is loaded dynamically (JS) to
+  improve page performance.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+<template data-alpha="search-template">
+  <div
+    class="blured bg-sur/90 dark:bg-sur-d/85 fixed top-0 right-0 left-0 z-50 flex min-h-full flex-col items-center"
+  >
+    <div class="mt-14 flex w-full grow flex-col items-center">
+      <div
+        class="pointer-events-auto relative flex w-full max-w-prose flex-col items-center px-3 pb-5"
+      >
+        <div class="flex w-full items-center justify-end py-1">
+          <button
+            class="group hover:bg-pri/10 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
+            aria-label="{{ i18n "CloseSearchBtn" . }}"
+            aria-controls="searchContainer"
+            aria-expanded="true"
+            data-alpha="close-search-button"
+          >
+            <svg
+              class="fill-on-sur-var group-hover:fill-on-sur dark:fill-on-sur-var-d dark:group-hover:fill-on-sur-d size-5 transition-colors duration-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              width="16"
+              height="16"
+              aria-hidden="true"
+            >
+              <use href="#icon-close"></use>
+            </svg>
+          </button>
+        </div>
+
+        <div
+          id="search"
+          class="border-out dark:border-out-d w-full max-w-prose rounded-md border-2"
+        ></div>
+        <div
+          class="absolute bottom-0 flex w-full items-center justify-end px-3"
+        >
+          <a
+            class="pagefind-link flex w-fit items-center justify-end"
+            href="https://pagefind.app/"
+            target="_blank"
+            rel="noopener"
+            aria-label="{{ i18n "PoweredByPagefind" . | default "Powered by Pagefind" }}"
+          >
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg width="0" height="0" class="hidden">
+    <symbol
+      id="pagefind"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 594 112"
+    >
+      <path
+        class="fill-on-bg dark:fill-on-bg-d"
+        d="M147.8 111.2H164V77.6h.6s6 9.6 18.6 9.6c13.8 0 26.4-12.6 26.4-30.6S197 26 183.2 26c-12.6 0-18.6 9.6-18.6 9.6h-.6v-8.4h-16.2v84Zm30.6-39c-8.4 0-15-6.6-15-15.6S170 41 178.4 41s15 6.6 15 15.6-6.6 15.6-15 15.6ZM230.628 87.2c11.4 0 17.4-8.4 17.4-8.4h.6V86h16.2V49.4c0-13.2-10.2-23.4-25.2-23.4-15.6 0-24 11.4-24 11.4l9.6 9.6s4.8-6.6 13.2-6.6c6 0 9.6 3.6 10.2 7.8l-18.6 3.36c-10.8 1.92-17.4 9.24-17.4 18.84s7.2 16.8 18 16.8Zm5.4-13.2c-4.8 0-7.2-2.4-7.2-6 0-3 2.4-5.28 6.6-6l13.2-2.4v1.2c0 7.8-5.4 13.2-12.6 13.2ZM299.033 111.2c18.6 0 31.8-13.2 31.8-31.2V27.2h-16.2v8.4h-.6s-5.4-9.6-18-9.6c-13.2 0-25.2 12-25.2 29.4s12 29.4 25.2 29.4c12.6 0 18-9.6 18-9.6h.6V80c0 9.6-6.6 16.2-15.6 16.2-9.6 0-15.6-7.2-15.6-7.2l-10.2 10.2s8.4 12 25.8 12Zm1.8-41.4c-7.8 0-13.8-6-13.8-14.4s6-14.4 13.8-14.4c7.8 0 13.8 6 13.8 14.4s-6 14.4-13.8 14.4ZM367.986 87.2c16.2 0 25.2-9.6 25.2-9.6l-8.4-11.4s-5.4 6.6-15.6 6.6c-9 0-13.8-4.8-15.6-10.2h42.6s.6-3 .6-7.2c0-16.2-13.2-29.4-29.4-29.4-16.8 0-30.6 13.8-30.6 30.6s13.8 30.6 31.2 30.6Zm-14.4-36.6c1.8-5.4 6.6-10.2 13.2-10.2s11.4 4.8 13.2 10.2h-26.4ZM406.423 86h16.201V43.4h21.6V86h16.199V28.4h-37.799v-3.6c0-5.4 3-8.4 7.799-8.4 3 0 5.4 1.2 5.4 1.2v-15S431.624.8 426.224.8c-12 0-19.801 7.8-19.801 21.6v6h-9v15h9V86Zm45.84-66.6c5.16 0 9.361-4.2 9.361-9s-4.2-9-9.24-9c-5.16 0-9.361 4.2-9.361 9s4.2 9 9.24 9ZM470.652 86h16.2V54.8c0-7.8 5.4-13.2 12.6-13.2 6.6 0 10.8 4.2 10.8 11.4v33h16.2V50.6c0-15-9.6-24.6-21.6-24.6-11.4 0-17.4 9.6-17.4 9.6h-.6v-8.4h-16.2V86ZM557.819 87.2c12.6 0 18.6-9.6 18.6-9.6h.6V86h16.2V2h-16.2v33.6h-.6s-6-9.6-18.6-9.6c-13.8 0-26.4 12.6-26.4 30.6s12.6 30.6 26.4 30.6Zm4.8-15c-8.4 0-15-6.6-15-15.6s6.6-15.6 15-15.6 15 6.6 15 15.6-6.6 15.6-15 15.6Z"
+      ></path>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M60 97c33.137 0 60-15.158 60-33.857V50.83h-4.09C107.182 38.22 85.44 29.286 60 29.286c-25.44 0-47.182 8.934-55.91 21.545H0v12.312C0 81.842 26.863 97 60 97Z"
+        fill="#000"
+      ></path>
+      <path
+        d="M116 52c0 7.317-5.273 14.74-15.546 20.561C90.301 78.316 76.007 82 60 82s-30.301-3.685-40.454-9.439C9.273 66.742 4 59.317 4 52s5.273-14.74 15.546-20.561C29.699 25.684 43.993 22 60 22s30.301 3.685 40.454 9.439C110.727 37.258 116 44.683 116 52Z"
+        fill="#fff"
+        stroke="#000"
+        stroke-width="8"
+      ></path>
+      <path
+        d="m57.886 72.06 29.396-30.223c1.343-1.381.148-3.677-1.754-3.369l-59.446 9.64c-2.096.34-2.288 3.28-.255 3.89l20.888 6.267a2 2 0 0 1 1.179.953l6.805 12.41a2 2 0 0 0 3.187.433Z"
+        fill="#000"
+      ></path>
+      <ellipse cx="58" cy="53.5" rx="7" ry="4.5" fill="#fff"></ellipse>
+    </symbol>
+  </svg>
+</template>

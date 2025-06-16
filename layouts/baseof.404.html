@@ -1,11 +1,10 @@
 {{- /*
-  Template: baseof.html
+  Template: baseof.404.html
   Purpose: Defines the foundational HTML structure (`<html>`, `<head>`,`<body>`)
-  for all pages within the Alpha theme.
+  for 404 pages.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- partialCached "init-global-data.html" . .Site.Language.Lang }}
 <!doctype html>
 <html
   lang="{{ site.Language.LanguageCode }}"
@@ -13,6 +12,8 @@
   data-theme="light"
 >
   <head>
+    {{- /* No need for index */}}
+    <meta name="robots" content="noindex, nofollow" />
     {{- /* Main meta tags partial */}}
     {{ partial "head/base.html" . }}
 
@@ -32,9 +33,6 @@
     {{- /* Append the alpha-head.js */}}
     {{- partial "head/alpha-js.html" . }}
 
-    {{- /* Append meta tags schema.org open-graph x-cards */}}
-    {{ partial "head/seo.html" . }}
-
     {{- /* Create and append favicons */}}
     {{- partial "head/favicons.html" . }}
 
@@ -46,17 +44,18 @@
 
     {{- /* Conditionally append OCD assets */}}
     {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-      {{- partial "head/ocd.html" . }}
+      {{- partialCached "head/ocd.html" . }}
     {{- end }}
   </head>
   <body
     class="bg-sur dark:bg-sur-d text-on-sur dark:text-on-sur-d flex min-h-dvh flex-col items-center justify-between font-sans"
   >
-    {{ partial "header.html" . }}
+    {{ partialCached "header.html" . .Site.Language.Lang}}
     <main class="pt-header dark:bg-sur-d z-10 w-full grow">
       {{- block "main" . }}{{ end }}
     </main>
-    {{ partialCached "footer.html" . .Site.Language.Lang }}
+     {{- partialCached "footer.html" . .Site.Language.Lang -}}
+    
     {{- /* Conditional snackbar container for cookie notice */}}
     {{- if eq .Site.Params.noCookies_snackbar true }}
       <div
@@ -64,6 +63,7 @@
         data-alpha="snackbar-container"
       ></div>
     {{- end }}
+    
     {{- /* Conditional container for visitor settings/preferences */}}
     {{- if eq .Site.Params.visitor_settings true }}
       <div
@@ -73,13 +73,12 @@
     {{- end }}
     {{- /* Live region for screen reader announcements */}}
     <div class="sr-only" aria-live="polite" data-alpha="announcer"></div>
+    
     {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
-    {{- /* Scripts */}}
     {{- partial "tail/js.html" . }}
     {{- partial "tail/custom-js.html" . }}
-    {{- /* Icons */}}
-    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang .Page.Params.layout .Page.Params.author }}
-
+    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang -}}
+    
     {{- /* Templates */}}
     {{- /* Search Modal */}}
     {{- if eq .Site.Params.pagefind_enabled true }}

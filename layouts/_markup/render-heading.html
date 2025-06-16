@@ -6,7 +6,7 @@
   - Add anchors for the headings
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 
 {{- if or (eq .Level 1) (eq .Level 2) }}
   <h2 id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }}</h2>

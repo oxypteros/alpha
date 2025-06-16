@@ -43,7 +43,7 @@
   {{- warnf "%s" $logMessage }}
 {{- end }}
 
-{{- if eq .Page.Params.description "" }}
+{{- if and (eq .Page.Params.description "") (eq .Page.Params.seo_description "") }}
   {{- $ocdErrors = $ocdErrors | append "ocd-fm-110" }}
   {{- /* Warnf for error: ocd-fm-110 */}}
   {{ $page := .Page.RelPermalink }}
@@ -52,6 +52,17 @@
   {{- $logMessage := printf "OcdError [%s] Page: %s |  %s" $errorCode $page $errorMessage }}
   {{- warnf "%s" $logMessage }}
 {{- end }}
-{{- range $ocdErrors }}
-  <div data-error="{{ . }}"></div>
-{{- end }}
+
+{{- /* Head Errors */}}
+{{- $ocdHeadErrors := .Page.Scratch.Get "ocdHeadErrors" | default (slice) }}
+
+{{- $allErrors := union $ocdErrors $ocdHeadErrors }}
+
+{{- /* Render all collected errors */}}
+{{- with $allErrors -}}
+  <div id="ocd-error-container">
+    {{- range . -}}
+      <div data-error="{{ . }}"></div>
+    {{- end -}}
+  </div>
+{{- end -}}

@@ -1,24 +1,23 @@
-<!-- prettier-ignore -->
 {{- /*
   Partial: head/seo.html
   Purpose: Collect and pass initial values for schema.org open-graph and x-cards.
 
   Repo: https://github.com/oxypteros/alpha
-*/ -}}
+*/}}
 {{- $page := . -}}
 {{- $site := .Site -}}
-
 
 {{- /* Page Type */}}
 {{- $type := .Params.seo_type | default "" -}}
 
-{{- /* Title Handler*/}}
+{{- /* Title Handler */}}
 {{- $title := "" -}}
 {{- with $page.Title }}
   {{- $title = . | htmlUnescape -}}
 {{- else }}
- {{- $title = $site.Title -}}
+  {{- $title = $site.Title -}}
 {{- end }}
+
 {{- /* Publish and mod date */}}
 {{- $publishDateObject := .PublishDate | default .Date -}}
 {{- $modDateObject := .Lastmod -}}
@@ -37,9 +36,6 @@
 {{- with $page.Params.author }}
   {{- $author = . -}}
   {{- $authorType = "Person" -}}
-{{- else with $page.Params.seo_author }}
-  {{- $author = . -}}
-  {{- $authorType = "Person" -}}
 {{- else with $site.Params.seo_author }}
   {{- $author = . -}}
   {{- $authorType = "Person" -}}
@@ -51,15 +47,41 @@
   {{- $authorType = "Organization" -}}
 {{- end }}
 
+{{- /* License Handler*/}}
+{{- $licenseID := "copyright" -}}
+{{- if $page.Params.license }}
+  {{- $licenseID = $page.Params.license -}}
+{{- else if $site.Params.seo_license }}
+  {{- $licenseID = $site.Params.seo_license -}}
+{{- end }}
+
+{{- $licenseURL := "" -}}
+
+{{- if eq $licenseID "CC0" }}
+  {{- $licenseURL = "https://creativecommons.org/publicdomain/zero/1.0/" -}}
+{{- else if eq $licenseID "CC-BY" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by/4.0/" -}}
+{{- else if eq $licenseID "CC-BY-SA" -}}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-sa/4.0/" -}}
+{{- else if eq $licenseID "CC-BY-ND" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-nd/4.0" -}}
+{{- else if eq $licenseID "CC-BY-NC" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-nc/4.0/" -}}
+{{- else if eq $licenseID "CC-BY-NC-SA" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-nc-sa/4.0/" -}}
+{{- else if eq $licenseID "CC-BY-NC-ND" }}
+  {{- $licenseURL = "https://creativecommons.org/licenses/by-nc-nd/4.0/" -}}
+{{- end }}
+
 {{- /* Description Fallbacks */}}
-{{- $description := "" -}}
-{{- with $page.Params.seo_description -}}
-  {{- $description = . | markdownify | plainify | strings.TrimSpace -}}
-{{- else with $page.Params.description -}}
-  {{- $description = . | markdownify | plainify | strings.TrimSpace -}}
+{{- $rawDescription := "" -}}
+{{- with $page.Params.description -}}
+  {{- $rawDescription = . -}}
 {{- else with $page.Summary -}}
-  {{- $description = . | plainify | truncate 160 | strings.TrimSpace -}}
+  {{- $rawDescription = . | truncate 160 -}}
 {{- end -}}
+
+{{- $description := $rawDescription | plainify  | strings.TrimSpace -}}
 
 {{- /* Publisher & Logo */}}
 {{- $publisherDict := dict
@@ -95,29 +117,36 @@
 {{- with .ReadingTime -}}
   {{- $readingTime = printf "PT%dM" . -}}
 {{- end -}}
+
 {{- /* X (ex. Twitter) */}}
 {{- $xCreator := $page.Params.twitter_username -}}
 {{- $xSite := $site.Params.twitter_username -}}
 
 {{- /* Initial data collection */}}
 {{- $data := dict
-  "type"        ($type | default "CreativeWork" )
-  "title"       $title
-  "description" $description
-  "permalink"   $page.Permalink
-  "author"      $author
-  "authorType"  $authorType
-  "siteTitle"   $site.Title
-  "baseUrl"     $site.BaseURL
-  "year"        $year
-  "inLanguage"  $inLanguage
-  "publisher"   $publisherDict
-  "wordCount"   $page.WordCount
-  "readingTime" $readingTime
-  "xSite"       $xSite
-  "xCreator"    ($xCreator | default $xSite)
+  "type"            ($type | default "CreativeWork" )
+  "title"           $title
+  "description"     $description
+  "permalink"       $page.Permalink
+  "author"          $author
+  "authorType"      $authorType
+  "siteTitle"       $site.Title
+  "baseUrl"         $site.BaseURL
+  "year"            $year
+  "inLanguage"      $inLanguage
+  "publisher"       $publisherDict
+  "wordCount"       $page.WordCount
+  "readingTime"     $readingTime
+  "licenseID"       $licenseID
+  "licenseURL"      $licenseURL
+  "xSite"           $xSite
+  "xCreator"        ($xCreator | default $xSite)
 }}
 {{- $data = merge $data $dateData -}}
+
+{{- /* Conditional SEO image */}}
+{{- $imageData := partial "head/seo/images.html" . -}}
+{{- $data = merge $data $imageData -}}
 
 {{- /* Conditional page types */}}
 {{- if $page.IsHome -}}
@@ -128,50 +157,81 @@
     )
   -}}
 {{- else if .IsNode }}
-
-{{- /* Conditional type selector for nodes */}}
-{{- $nodeType := cond (eq $page.Params.paginate false) "WebPage" "CollectionPage" -}}
+  {{- /* Conditional type selector for nodes */}}
+  {{- $nodeType := cond (eq $page.Params.paginate false) "WebPage" "CollectionPage" -}}
 
   {{- $data = merge $data (dict
     "type"  ($type | default $nodeType )
     )
   -}}
-
 {{- else if eq .Layout "utility" }}
   {{- $data = merge $data (dict
     "type"  ($type | default "WebPage" )
     )
   -}}
 {{- else }}
-
   {{- $data = merge $data (dict "type" ($type | default "Article")) -}}
 
-  {{- /* Specific data for series pages */}}
+  {{- /* Specific data for pages in a series (taxonomy) */}}
   {{- with $page.Params.series -}}
-    {{- $currentSeriesName := . -}}
-    {{- $pagesInSeries := where site.RegularPages "Params.series" $currentSeriesName -}}
 
-    {{- $parentPage := index (sort $pagesInSeries "Params.weight" "asc") 0 -}}
+    {{- $seriesTerm := index ($page.GetTerms "series") 0 -}}
 
-    {{- with $parentPage -}}
+    {{- if $seriesTerm -}}
       {{- $seriesObject := dict
         "@type" "CreativeWorkSeries"
-        "name"  .Title
-        "url"   .Permalink
+        "name"  $seriesTerm.Page.Title
+        "url"   $seriesTerm.Page.Permalink
       -}}
       {{- $data = merge $data (dict "isPartOf" $seriesObject) -}}
-    {{- end -}}
 
-    {{- with $page.Params.weight -}}
-      {{- $data = merge $data (dict "position" .) -}}
-    {{- end -}}
+      {{- /* Get all pages in the series and sort them by weight to find the correct position */}}
+      {{- $sortedPages := sort $seriesTerm.Pages "Params.weight" "asc" -}}
 
-  {{- end -}}
+      {{- range $index, $p := $sortedPages -}}
+        {{- if eq $p.Permalink $page.Permalink -}}
+          {{- $actualPosition := add $index 1 -}}
+          {{- $data = merge $data (dict "position" $actualPosition) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end }}
 {{- end }}
-{{- /* Render sub-partials */}}
+
+{{- /* Append meta and Render sub-partials */}}
+{{- /* Canonical URL */}}
+<link rel="canonical" href="{{- $data.permalink -}}" />
+
+{{- /* Multilingual SEO: Hreflang Tags */}}
+{{- if .IsTranslated }}
+  {{- /* Default language */}}
+  {{- $defaultLang := index .Site.Languages 0 -}}
+  {{- /* Include translations */}}
+  {{- range .AllTranslations }}
+    {{- if .File }}
+      {{- if eq .Language.Lang $defaultLang.Lang }}
+        <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
+      {{- end }}
+      <link
+        rel="alternate"
+        hreflang="{{ .Language.Lang }}"
+        href="{{ .Permalink }}"
+      />
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* Description */}}
+{{- with $data.description }}
+  <meta name="description" content="{{ . }}" />
+{{- end }}
+
 {{- partial "head/seo/schema.html" (dict "page" . "data" $data ) }}
+
 {{- if gt (len .Ancestors) 0 }}
   {{- partial "head/seo/breadcrumbs.html" $page }}
 {{- end }}
+
 {{- partial "head/seo/open-graph.html" $data }}
-{{ partial "head/seo/x-cards.html" $data }}
+
+{{- partial "head/seo/x-cards.html" $data }}

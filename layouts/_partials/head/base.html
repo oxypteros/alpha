@@ -1,0 +1,27 @@
+{{- /*
+  Partial: head/base.html
+  Purpose: Appends essential semantic HTML and `<title>` into the `<head>`.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{{- /* Theme Colors Meta */}}
+<meta
+  name="theme-color"
+  content="#ffffff"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#121315"
+  media="(prefers-color-scheme: dark)"
+/>
+<meta name="color-scheme" content="light dark" />
+<title>
+  {{- if .IsHome }}
+    {{- .Title | default site.Title -}}
+  {{- else }}
+    {{- printf "%s | %s" .Title site.Title | htmlUnescape -}}
+  {{- end -}}
+</title>

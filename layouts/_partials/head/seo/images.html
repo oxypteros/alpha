@@ -1,0 +1,104 @@
+{{- /*
+  Partial: head/seo/images.html
+  Purpose: Handles discovery, processing, and error reporting for SEO images.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- $seoImage := "" -}}
+{{- $processedImage := "" -}}
+{{- $imageQualityError := false -}}
+{{- $imageNotFoundError := false -}}
+{{- $globalImageNotFoundError := false -}}
+
+{{- /* Image Discovery */}}
+{{- /* Frontmatter SEO image ( mainly for _index.md) */}}
+{{- with .Page.Params.seo_image }}
+  {{- $path := printf "img/%s" . -}}
+  {{- with resources.Get $path }}
+    {{- $seoImage = . -}}
+  {{- else }}
+    {{- $imageNotFoundError = $path -}}
+  {{- end }}
+{{- end }}
+
+{{- /* Page Bundle SEO image (should be used as Default) */}}
+{{- if not $seoImage }}
+  {{- $seoImage = .Page.Resources.GetMatch "*-seo.{jpg,jpeg,png,webp}" -}}
+{{- end }}
+
+{{- /* Image Processing */}}
+{{- if $seoImage }}
+  {{- /* Define Quality Parameters */ -}}
+  {{- $targetWidth := 1200 -}}
+  {{- $targetHeight := 630 -}}
+  {{- $targetRatio := 1.91 -}}
+  {{- $tolerance := 0.1 -}}
+
+  {{- /* Image quality check */}}
+
+  {{- /* Promoted */}}
+  {{- if and (eq $seoImage.Width $targetWidth) (eq $seoImage.Height $targetHeight) }}
+    {{- $processedImage = $seoImage -}}
+
+  {{- else }}
+  {{- /* Good enough fix it */}}
+    {{- $currentRatio := div (float $seoImage.Width) $seoImage.Height -}}
+    {{- $ratioDiff := sub $currentRatio $targetRatio -}}
+    {{- $absRatioDiff := cond (lt $ratioDiff 0) (mul $ratioDiff -1) $ratioDiff -}}
+
+    {{- if and (ge $seoImage.Width $targetWidth) (le $absRatioDiff $tolerance) }}
+      {{- $processedImage = $seoImage.Fill "1200x630" -}}
+    {{- else -}}
+      {{- /* Failed. bad image flag it and use original */}}
+      {{- $processedImage = $seoImage -}}
+      {{- $imageQualityError = true -}}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* Global Param Fallback */}}
+{{- if not $processedImage }}
+  {{- with .Site.Params.seo_default_image }}
+    {{- $path := printf "img/%s" . -}}
+    {{- with resources.Get $path }}
+      {{- $processedImage = .Fill "1200x630" -}}
+    {{- else }}
+      {{- $globalImageNotFoundError = $path -}}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- /* OCD Error Reporting */}}
+{{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+  {{- $ocdHeadErrors := .Page.Scratch.Get "ocdHeadErrors" | default (slice) -}}
+  {{- $ocdErrorCode := ""}}
+
+  {{- if $imageNotFoundError -}}
+    {{- $ocdErrorCode = "ocd-seo-200"}}
+    {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
+    {{- warnf "OCD Error [%s] Page: %s | SEO image path in front matter not found: '%s'" $ocdErrorCode .Page.RelPermalink $imageNotFoundError -}}
+  {{- end -}}
+
+  {{- if $globalImageNotFoundError -}}
+     {{- $ocdErrorCode = "ocd-seo-300"}}
+    {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
+    {{- warnf "OCD Error [%s] Page: %s | Global SEO image in params.toml not found: '%s'" $ocdErrorCode .Page.RelPermalink $globalImageNotFoundError -}}
+  {{- end -}}
+
+  {{- if $imageQualityError -}}
+    {{- $ocdErrorCode = "ocd-seo-100"}}
+    {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
+    {{- warnf "OCD Error [%s] Page: %s | SEO image does not meet quality standards (min-width: 1000px, aspect-ratio: ~1.91)." $ocdErrorCode .Page.RelPermalink -}}
+  {{- end -}}
+
+  {{- .Page.Scratch.Set "ocdHeadErrors" $ocdHeadErrors -}}
+{{- end -}}
+
+{{- /* Data Population */}}
+{{- $imageData := dict -}}
+
+{{- if $processedImage }}
+  {{- $imageData = dict "image" $processedImage.Permalink "imageWidth" $processedImage.Width "imageHeight" $processedImage.Height -}}
+{{- end }}
+
+{{- return $imageData -}}

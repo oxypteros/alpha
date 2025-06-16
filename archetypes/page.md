@@ -15,5 +15,10 @@ tags = []
 
 recommended = false
 featured = false
+
+# SEO
 description = ""
+seo_type = ""
+seo_image = ""
+twitter_username = ""
 +++

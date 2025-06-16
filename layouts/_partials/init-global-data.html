@@ -1,0 +1,38 @@
+{{- /*
+  Partial: init-global-data.html
+  Purpose: Collect and store post data for reuse across templates (recommended, 
+  latest, featured)
+
+   Behavior:
+  - Avoids repeated expensive `.Site.RegularPages` + `where` calls
+  - Store the result in `hugo.Store` using language specific keys for 
+  multilingual support
+  - Makes post lists accessible globally with `.hugo.Store`
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $lang := .Site.Language.Lang -}}
+
+{{- /* Store Recommended Posts */}}
+{{- $recKey := printf "recommended_%s" $lang -}}
+{{- hugo.Store.Set $recKey (where .Site.RegularPages "Params.recommended" true) -}}
+
+{{- /* Store Latest Post */}}
+{{- $latestKey := printf "latest_%s" $lang -}}
+{{- with where .Site.RegularPages "Params.featured" "!=" true }}
+  {{- hugo.Store.Set $latestKey (first 1 .ByDate.Reverse) }}
+{{- else }}
+  {{- hugo.Store.Set $latestKey slice -}}
+{{- end }}
+
+{{- /* Store Featured Post */}}
+{{- $lang := .Site.Language.Lang -}}
+{{- $featuredKey := printf "featured_%s" $lang -}}
+{{- $latestFeatured := slice -}}
+
+{{- with first 1 (where .Site.RegularPages.ByDate.Reverse "Params.featured" true) }}
+  {{- $latestFeatured = . -}}
+{{- end }}
+
+{{- hugo.Store.Set $featuredKey $latestFeatured -}}

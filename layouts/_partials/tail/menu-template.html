@@ -1,0 +1,117 @@
+{{- /*
+  Partial: tail/menu-template.html
+  Purpose: HTML template for Alpha's hamburger menu.
+
+  Behavior:
+  - HTML element that is inert for the DOM and is loaded dynamically (by JS) to
+  improve page performance.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+<template data-alpha="menu-template">
+  <div
+    class="text-on-menu-var mx-auto grid h-full w-full max-w-7xl grid-cols-1 gap-4 overflow-y-auto sm:grid-cols-2"
+  >
+    <div
+      class="hidden p-4 text-center text-xl sm:flex sm:flex-col sm:items-center sm:justify-center md:text-2xl"
+    >
+      {{- $currentPage := . }}
+      {{- $lang := .Site.Language.Lang -}}
+
+      {{- /* Get the latest post from init-global-data partial */}}
+      {{- with hugo.Store.Get (printf "latest_%s" $lang) }}
+        {{- with index . 0 }}
+          {{- if ne .Permalink $currentPage.Permalink }}
+            <p>
+              {{- i18n "PreRecentLinkText" . | default "See our latest thoughts turned into words, in the" }}<br />
+              <a
+                class="text-on-menu dark:text-on-menu-d hover:text-on-menu-var dark:hover:text-on-menu-var-d transition-colors duration-400"
+                href="{{ .Permalink }}"
+                >"{{ .Title }}"</a
+              >.
+            </p>
+          {{- end }}
+        {{- end }}
+      {{- end }}
+
+      {{- /* Get the featured post from init-global-data partial */}}
+      {{- with hugo.Store.Get (printf "featured_%s" $lang) }}
+        {{- with index . 0 }}
+          <p class="mt-3">
+            {{ i18n "PreFeatLinkText" . | default "Revisit a selected piece that still echoes through time," }}<br />
+            {{- if ne .Permalink $currentPage.Permalink }}
+              <a
+                class="text-on-menu dark:text-on-menu-d hover:text-on-menu-var dark:hover:text-on-menu-var-d transition-colors duration-400"
+                href="{{ .Permalink }}"
+                >"{{ .Title }}"</a
+              >.
+            {{- end }}
+          </p>
+          <p class="mt-3">
+            {{ i18n "PostFeatLinkText" . }}
+          </p>
+        {{- end }}
+      {{- end }}
+    </div>
+    {{- if .Site.Menus.main }}
+      <nav
+        class="text-on-menu flex flex-col items-center justify-center gap-2 text-center text-xl"
+      >
+        {{- range .Site.Menus.main }}
+          <a
+            class="hover:text-on-menu-var dark:hover:text-on-menu-var-d transition-colors duration-400"
+            href="{{ .URL | absLangURL }}"
+          >
+            {{ .Name }}</a
+          >
+        {{- end }}
+        {{- if .Site.Menus.main_secondary }}
+          <div
+            class="mt-5 flex flex-col items-center gap-2 text-center text-lg"
+          >
+            {{- range .Site.Menus.main_secondary }}
+              <a
+                class="hover:text-on-menu-var dark:hover:text-on-menu-var-d transition-colors duration-400"
+                href="{{ .URL | absLangURL }}"
+              >
+                {{ .Name }}</a
+              >
+            {{- end }}
+          </div>
+        {{- end }}
+      </nav>
+    {{- end }}
+    <div class="flex justify-between sm:col-span-2">
+      <div
+        data-alpha="breadcrumbs"
+        class="justify-end py-4 pr-1 pl-4 sm:col-span-1 sm:flex sm:flex-col sm:items-center"
+      >
+        {{ partial "components/breadcrumbs.html" . }}
+      </div>
+      <div
+        class="flex flex-col items-center justify-end py-2 pr-1 sm:col-span-1"
+      >
+        {{- if .Site.Menus.main_social }}
+          {{- range .Site.Menus.main_social }}
+            <a
+              class="group hover:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full"
+              href="{{ .URL }}"
+              aria-label="{{ .Name }}"
+            >
+              {{ with .Pre }}
+                <svg
+                  class="stroke-on-menu-var dark:stroke-on-menu-var-d dark:group-hover:stroke-on-menu-d group-hover:stroke-on-menu size-5 transition-colors duration-400"
+                  aria-hidden="true"
+                >
+                  <use href="{{ . }}"></use>
+                </svg>
+              {{- else }}
+                {{ .Name }}
+              {{- end }}
+            </a>
+          {{- end }}
+        {{- end }}
+      </div>
+    </div>
+  </div>
+</template>

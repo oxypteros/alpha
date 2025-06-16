@@ -8,15 +8,13 @@
   - All scripts are processed for development (unminified) and production (minified, fingerprinted, with SRI) environments.
 
   Repo: https://github.com/oxypteros/alpha
-  */
--}}
+  */}}
 
 {{- /*
   `alpha-tail.js`:
   - Processed by Hugo templates for i18n string replacement and conditional feature loading.
   - Built using js.Build.
-  */
--}}
+  */}}
 {{- $data := dict "Lang" .Site.Language.Lang "Site" .Site -}}
 {{- with resources.Get "alpha/js/alpha-tail.js" | resources.ExecuteAsTemplate (printf "alpha-tail-%s.js" .Site.Language.Lang) $data -}}
   {{- $content := .Content | strings.TrimSpace -}}
@@ -42,8 +40,7 @@
   `alpha-contact.js`:
   - Processed by Hugo templates for i18n string replacement and conditional feature loading.
   - Built using js.Build.
-  */
--}}
+  */}}
 {{- if .Page.HasShortcode "contact" }}
   {{- $data := dict "Lang" .Site.Language.Lang "Site" .Site -}}
   {{- with resources.Get "alpha/js/alpha-contact.js" | resources.ExecuteAsTemplate (printf "alpha-contact-%s.js" .Site.Language.Lang) $data -}}
@@ -71,8 +68,7 @@
   - Processed by js.Build for minification and fingerprinting in production.
   - Loaded with `defer` to ensure non-blocking loading.
   - Users should copy the `custom-tail.js` in  the root `/assets/js/`.
-  */
--}}
+  */}}
 {{- with resources.Get "js/custom-tail.js" }}
   {{- $content := .Content | strings.TrimSpace -}}
   {{- /* Remove pre-defined JSDoc-style comment blocks */}}
@@ -117,4 +113,4 @@
       {{- end }}
     {{- end }}
   {{- end }}
-{{- end }}
+{{- end -}}

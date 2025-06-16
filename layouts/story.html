@@ -1,22 +1,10 @@
 {{- /*
-  story.html (layout): Defines the main HTML structure for Alpha's story layout.
-
-  Includes:
-  - Page `<h1>`
-  - Frontmatter defined dropcap
-  - Content block
-
-  Dependencies:
-  - `partial "components/metadata-series.html"`
-  - `partial "components/metadata-license.html"`
-  - `partial "components/metadata-date.html"`
-  - `partial "components/metadata-taxonomy.html"`
-  - `partial "components/navigation-series.html"`
-  - `partial "components/recommended-posts.html"`
+  Layout: story.html 
+  Purpose: Defines the main HTML structure for Alpha's story layout.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
-  
+
 {{ define "main" }}
   <div class="flex flex-col items-center">
     <article class="flex w-full max-w-7xl flex-col items-center px-4">
@@ -39,7 +27,7 @@
         {{ .Content }}
       </div>
       <footer
-        class="max-w-story my-16 flex w-full flex-col items-center gap-2 text-lg"
+        class="max-w-story mt-16 mb-56 flex w-full flex-col items-center gap-2 text-lg"
       >
         <div
           class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"
@@ -55,14 +43,14 @@
           {{ partial "components/metadata-taxonomy.html" . }}
         </div>
         <div class="w-full">
-        {{- if .Page.Params.series }}
-        {{ partial "components/navigation-series.html" . }}
-        {{- end }}
+          {{- if .Page.Params.series }}
+            {{ partial "components/navigation-series.html" . }}
+          {{- end }}
         </div>
       </footer>
     </article>
-    <div class="mb-16 w-full max-w-7xl px-4">
+    <div class="mb-24 w-full max-w-7xl px-4">
       {{ partial "components/recommended-posts.html" . }}
     </div>
   </div>
-{{- end }}
+{{- end -}}
