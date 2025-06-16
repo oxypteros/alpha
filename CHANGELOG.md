@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+<!-- ## [Unreleased] -->
+## [0.3.0-beta] — 2025-06-16
 ### Added
 - **SEO Image Support:** 
     - Automatically control and optimizes social sharing images (Open Graph, Twitter Cards, Schema.org) for all page types.
@@ -16,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Refactored Schema.org metadata** to include images on all page types and minor changes to JSON-LD structure to meet current Google and Schema.org best practices.
+- **Improved performance of 'Recommended Posts'** partial by implementing `hugo.Store` based caching, resulting in significantly faster builds (relates to [#4](https://github.com/oxypteros/alpha/issues/4)).
+- **Refactored card components** to a single shared partial (`components/card-post.html`), improving maintainability and ensuring visual consistency across the site (relates to [#3](https://github.com/oxypteros/alpha/issues/3)).
+
+### Fixed
+- **Corrected logic in 'Recommended Posts'** partial to handle edge cases more reliably (resolves [#4](https://github.com/oxypteros/alpha/issues/4)).
 
 ## [0.2.0-beta] — 2025-06-11
 ### Changed
