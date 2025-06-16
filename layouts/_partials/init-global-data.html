@@ -7,7 +7,7 @@
   - Avoids repeated expensive `.Site.RegularPages` + `where` calls
   - Store the result in `hugo.Store` using language specific keys for 
   multilingual support
-  - Makes post lists accessible globally with `.Scratch.Get`
+  - Makes post lists accessible globally with `.hugo.Store`
 
   Repo: https://github.com/oxypteros/alpha
 */}}
@@ -32,4 +32,4 @@
   {{- hugo.Store.Set $featuredKey (first 1 .) -}}
 {{- else }}
   {{- hugo.Store.Set $featuredKey "" -}}
-{{- end }}
+{{- end -}}
