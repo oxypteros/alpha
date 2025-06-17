@@ -76,7 +76,6 @@
     {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
     {{- /* Scripts */}}
     {{- partial "tail/js.html" . }}
-    {{- partial "tail/custom-js.html" . }}
     {{- /* Icons */}}
     {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang .Page.Params.layout .Page.Params.author }}
 
