@@ -64,14 +64,14 @@
 {{- end }}
 
 {{- /* Conditionally load the local Goatcounter script in PRODUCTION only */}}
-{{- if .Site.Params.goatcounter_prefix }}
+{{- with .Site.Params.goatcounter_prefix }}
   {{- if hugo.IsProduction }}
     {{- with resources.Get "js/goatcounter.js" }}
       {{- $opts := dict "minify" true }}
       {{- $jsBuilt := . | js.Build $opts }}
       {{- $jsFinal := $jsBuilt | fingerprint }}
       <script
-        data-goatcounter="https://{{- .Site.Params.goatcounter_prefix -}}.goatcounter.com/count"
+        data-goatcounter="https://{{- . -}}.goatcounter.com/count"
         src="{{ $jsFinal.RelPermalink }}"
         integrity="{{ $jsFinal.Data.Integrity }}"
         crossorigin="anonymous"
