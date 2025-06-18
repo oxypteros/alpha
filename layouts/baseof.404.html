@@ -50,7 +50,7 @@
   <body
     class="bg-sur dark:bg-sur-d text-on-sur dark:text-on-sur-d flex min-h-dvh flex-col items-center justify-between font-sans"
   >
-    {{ partialCached "header.html" . .Site.Language.Lang}}
+    {{ partial "header.html" . }}
     <main class="pt-header dark:bg-sur-d z-10 w-full grow">
       {{- block "main" . }}{{ end }}
     </main>
@@ -75,9 +75,10 @@
     <div class="sr-only" aria-live="polite" data-alpha="announcer"></div>
     
     {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
+    {{- /* Scripts */}}
     {{- partial "tail/js.html" . }}
-    {{- partial "tail/custom-js.html" . }}
-    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang -}}
+    {{- /* Icons */}}
+    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang .Page.Params.layout .Page.Params.author -}}
     
     {{- /* Templates */}}
     {{- /* Search Modal */}}
