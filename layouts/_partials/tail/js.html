@@ -9,19 +9,18 @@
   - All scripts are processed for development and production.
 
   Repo: https://github.com/oxypteros/alpha
-  */}}
+*/}}
 
 {{- /*
   Assets: js/custom-tail.js
   Purpose: Allows users to inject their own JavaScript into the body of every page.
 
   Behavior:
-  - The script is only included if the `custom-tail.js` file exists and contains 
+  - The script is only included if the `custom-tail.js` file exists and contains
   code beyond a JSDoc-style comment block (pre-defined).
   - To use it copy or create the file at `/assets/js/custom-tail.js`
   - Processed by js.Build for minification and fingerprinting in production.
-  
-  */}}
+*/}}
 {{- with resources.Get "js/custom-tail.js" }}
   {{- /* Check for content beyond the comment block */}}
   {{- $content := .Content | strings.TrimSpace -}}
@@ -44,7 +43,7 @@
   Purpose: Powers the website's contact form submission.
 
   Behavior:
-  - Send the contact form values to the webhook defined in params.toml 
+  - Send the contact form values to the webhook defined in params.toml
   (`make_hook`)
   - Processed by js.Build for minification and fingerprinting in production.
 */}}
@@ -65,25 +64,23 @@
 
 {{- /* Conditionally load the local Goatcounter script in PRODUCTION only */}}
 {{- with .Site.Params.goatcounter_prefix }}
+  {{- $goat := . }}
   {{- if hugo.IsProduction }}
     {{- with resources.Get "js/goatcounter.js" }}
       {{- $opts := dict "minify" true }}
-      {{- $jsBuilt := . | js.Build $opts }}
-      {{- $jsFinal := $jsBuilt | fingerprint }}
+      {{- $jsFinal := . | js.Build $opts }}
       <script
-        data-goatcounter="https://{{- . -}}.goatcounter.com/count"
+        data-goatcounter="https://{{- $goat -}}.goatcounter.com/count"
         src="{{ $jsFinal.RelPermalink }}"
-        integrity="{{ $jsFinal.Data.Integrity }}"
-        crossorigin="anonymous"
         async
       ></script>
     {{- end }}
   {{- else }}
-    {{- /* Display a console warning in development*/}}
+    {{- /* Display a console warning in development */}}
     <script>
       console.warn(
-        `Goatcounter is enabled in your config (goatcounter_prefix) but is not active in localhost. It will load automatically in production.`
+        `Goatcounter is enabled in your config (goatcounter_prefix) but is not active in localhost. It will load automatically in production.`,
       );
     </script>
   {{- end }}
-{{- end }}
+{{- end -}}
