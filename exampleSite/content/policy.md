@@ -7,7 +7,11 @@ show_date = true
 
 title = "Policy"
 
+# SEO
 description = "A demo policy for a no cookies, privacy friendly website"
+seo_type = "WebPage"
+seo_image = ""
+twitter_username = ""
 +++
 ## Demo Privacy Policy
 
@@ -87,10 +91,7 @@ We use both Session and Persistent Cookies for the purposes set out below:
 
 	Purpose: These Cookies allow us to remember choices You make when You use the Website, such as remembering your login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter your preferences every time You use the Website.
 
-
-
 For more information about the cookies we use and your choices regarding cookies, please visit our Cookies Policy or the Cookies section of our Privacy Policy.
-
 
 ### Use of Your Personal Data
 
@@ -163,29 +164,11 @@ The Company may disclose Your Personal Data in the good faith belief that such a
 
 The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Children's Privacy
 
 Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers.
 
 If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent's consent before We collect and use that information.
-
 
 ## Links to Other Websites
 

@@ -1,10 +1,9 @@
 # Root Hugo Configuration
-# Place this file in the root of your Hugo site to define global settings.
 #
 # For theme-specific settings, see: `config/_default/`
 # Documentation: https://alpha.oxypteros.com/docs/config/hugo-toml
 
-baseURL = "http://localhost:1313" # Replace with production URL
+baseURL = "http://example.com" # Replace with production URL
 title = "Alpha Theme"
 theme = "alpha"
 #timeZone = "Europe/Rome"
@@ -25,10 +24,7 @@ theme = "alpha"
 #  [[build.cachebusters]]
 #    source = '(postcss|tailwind)\.config\.js'
 #    target = 'css'
-[module]
-  [module.hugoVersion]
-    min = "0.146.1"
-    max = "0.147.5"
+#[module]
 #  [[module.mounts]]
 #    source = 'assets'
 #    target = 'assets'
@@ -36,5 +32,3 @@ theme = "alpha"
 #    disableWatch = true
 #    source = 'hugo_stats.json'
 #    target = 'assets/notwatching/hugo_stats.json'
-
-

@@ -1,7 +1,7 @@
 +++
 draft = false
 date = "2025-05-29T13:25:21+02:00"
-lastmod = ""
+lastmod = "2025-06-18T13:42:17+02:00"
 layout = "page"
 
 title = "How-to Alpha"
@@ -15,7 +15,12 @@ tags = ["Hugo", "Writing", "Alpha"]
 
 recommended = true
 featured = false
+
+# SEO
 description = "Some thoughts on how to approach Alpha, what to expect, and where to start."
+seo_type = "BlogPosting"
+seo_image = ""
+twitter_username = ""
 +++
 
 By now (at the final part of this little trilogy) I hope you have a clear sense of what my goals with **Alpha** are:
@@ -25,7 +30,7 @@ By now (at the final part of this little trilogy) I hope you have a clear sense 
 
 The second goal, let me tell you, is easier said than done. To achieve it, I needed to write simple, instructive, and non-technical documentation. But given the nature of the project, it’s also essential to cover technical topics, without making things tedious for those with some or even advanced experience.
 
-My solution? A tested one! A separate tutorial for Hugo and web novices that gently introduces more technical concepts and eventually points them to the main documentation, which is intended for users with some familiarity.
+My solution? [A tested one](/blog/why-alpha/#first-steps)! A separate tutorial for Hugo and web novices that gently introduces more technical concepts and eventually points them to the main documentation, which is intended for users with some familiarity.
 
 ## For the Novices
 

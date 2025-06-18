@@ -3,30 +3,36 @@
 #
 # Documentation: https://alpha.oxypteros.com/docs/config/params-toml/
 
-
 # Header Settings
 pseudologo_enabled = true
-
 
 # Footer Settings
 established_year = "2025"
 motto = "\"Unleash your words\""
 
-
 # Performance Settings
 prefetch_enabled = true
-
 
 # Integrations
 pagefind_enabled = false
 goatcounter_prefix = ""
 
-
 # Visitor Settings
 noCookies_snackbar = true
 visitor_settings = true
 
-
 #Development Settings
 tailwind_enabled = false
 ocd_enabled = true
+
+#SEO
+seo_organization = ""
+seo_author = ""
+seo_logo_path = ""
+seo_default_image = "" # Filename only. Place image in `/assets/img/`
+seo_license = ""
+seo_author_url = "" # For fb or linkedin
+seo_twitter_username = ""
+seo_manifest_short_name = "Alpha"
+seo_manifest_theme_color = ""
+seo_manifest_bg_color = ""
