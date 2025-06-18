@@ -7,8 +7,6 @@ show_date = false
 
 title = "{{ replace .File.ContentBaseName `-` ` ` | title }}"
 
-description = ""
-
 # SEO
 description = ""
 seo_type = ""
