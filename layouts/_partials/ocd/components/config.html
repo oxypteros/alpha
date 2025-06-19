@@ -43,7 +43,7 @@
   {{- warnf "%s" $logMessage }}
 {{- end }}
 
-{{- if and (eq .Page.Params.description "") (eq .Page.Params.seo_description "") }}
+{{- if eq .Page.Params.description "" }}
   {{- $ocdErrors = $ocdErrors | append "ocd-fm-110" }}
   {{- /* Warnf for error: ocd-fm-110 */}}
   {{ $page := .Page.RelPermalink }}
@@ -54,7 +54,7 @@
 {{- end }}
 
 {{- /* Head Errors */}}
-{{- $ocdHeadErrors := .Page.Scratch.Get "ocdHeadErrors" | default (slice) }}
+{{- $ocdHeadErrors := .Store.Get "ocdHeadErrors" | default (slice) }}
 
 {{- $allErrors := union $ocdErrors $ocdHeadErrors }}
 

@@ -94,7 +94,7 @@
     {{- warnf "OCD Error [%s] Page: %s | SEO image does not meet quality standards (min-width: 1000px, aspect-ratio: ~1.91)." $ocdErrorCode .Page.RelPermalink -}}
   {{- end -}}
 
-  {{- .Page.Scratch.Set "ocdHeadErrors" $ocdHeadErrors -}}
+  {{- .Store.Set "ocdHeadErrors" $ocdHeadErrors -}}
 {{- end -}}
 
 {{- /* Data Population */}}
