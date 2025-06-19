@@ -76,7 +76,7 @@
   {{- warnf "%s" $logMessage }}
 
   {{- /* OCD error card for: odc-sc-121 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
     <div
       class="ocd ocd-card ocd-card-error ocd-shadow"
       data-error="{{ $errorCode }}"
@@ -135,7 +135,7 @@
     {{- warnf "%s" $logMessage }}
 
     {{- /* OCD error card for: odc-sc-122 */}}
-    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+      {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
       <div
         class="ocd ocd-card ocd-card-error ocd-shadow"
         data-error="{{ $errorCode }}"
@@ -186,7 +186,7 @@
     {{- warnf "%s" $logMessage }}
 
     {{- /* OCD error card for: odc-sc-123 */}}
-    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+      {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
       <div
         class="ocd ocd-card ocd-card-error ocd-shadow"
         data-error="{{ $errorCode }}"
