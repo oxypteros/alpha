@@ -1,0 +1,87 @@
+{{- /*
+  Shortcode: help.html
+  Purpose: Show helpful information about Alpha theme and some components only in
+  dev. environment.
+
+  Example: {{< help TYPE="" >}}
+
+  Params:
+  - TYPE (string, optional): Help type ('shortcodes' (default) | markdown').
+
+  Error handler:
+  - ocdWarn (global)
+  - OCD (scoped)
+
+  Docs: https://alpha.oxypteros.com/shortcodes/help
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- if  and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
+  {{- /* Help shortcode rules */}}
+  {{- $scName := "help" -}}
+  {{- $rules := dict
+    "validKeys" (slice "TYPE" "LIMIT" "TITLE")
+    "params" (dict
+    "TYPE"  (dict "validation" "in_list" "list" (slice "shortcodes" "markdown") "default" "shortcodes")
+    "TITLE" (dict "validation" "any_string")
+    "LIMIT" (dict "validation" "is_positive_integer")
+    )
+  -}}
+  {{- /* Help shortcode metadata */}}
+  {{- $errorMeta := dict
+    "docURL" "https://alpha.oxypteros.com/docs/shortcodes/help"
+    "example" "help TYPE=\"markdown\""
+    "errorCodes" (dict
+    "invalidKey" "ocd-sc-100"
+    "invalidValue" "ocd-sc-101"
+    )
+  -}}
+
+  {{- /* Validate shortcode input */}}
+  {{- $validationResult := partial "ocd/components/validator.html" (dict "rules" $rules "userInput" .Params) -}}
+
+  {{- /* Render the shortcode on successful validation */}}
+  {{- if $validationResult.isValid }}
+    {{- $data := $validationResult.data -}}
+
+    {{- /* `data/help/*.[lang].toml files` */}}
+    {{- if site.Data.help }}
+      {{- $lang := .Site.Language.Lang -}}
+      {{- $helpData := index site.Data.help (printf "%s.%s" $data.type $lang) -}}
+      {{- $dataFileKey := printf "help/%s.%s" $data.type $lang -}}
+      {{/* Check if the data was actually loaded */}}
+      {{- if $helpData }}
+        {{- if eq $data.type "shortcodes" }}
+          {{- partial "ocd/components/help/shortcodes.html" (dict "context" $helpData) -}}
+        {{- else if eq $data.type "markdown" }}
+          {{- partial "ocd/components/help/markdown.html" (dict "context" $helpData) -}}
+        {{- end }}
+      {{- else }}
+        {{- /* Error message if the data file is missing */}}
+        <div class="ocd-error-card">
+          <strong>Help Error:</strong> Data file not found for type
+          '{{ $data.type }}' and language '{{ $lang }}'.
+          <br />
+          Expected at: <code>data/{{ $dataFileKey }}.toml</code>
+        </div>
+      {{- end }}
+    {{- else }}
+      {{- /* Error message for missing folder */}}
+      <div class="ocd-error-card">
+        <strong>Help Error:</strong> The <code>data/help</code> directory seems
+        to be missing.
+      </div>
+    {{- end }}
+  {{- else }}
+    {{- /* On failed validation call the OCD handler */}}
+    {{- partial "ocd/components/handler.html" (dict
+      "scName" .Name
+      "errors" $validationResult.errors
+      "rules" $rules
+      "meta" $errorMeta
+      "page" .Page
+      "position" .Position
+      )
+    -}}
+  {{- end }}
+{{- end -}}
