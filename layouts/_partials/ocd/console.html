@@ -10,11 +10,11 @@
         <svg aria-hidden="true" width="32" height="32">
           <use href="#ocd-logo"></use>
         </svg>
-        <h2>Console</h2>
+        <h2>{{ i18n "OcdConsole" . | default "Console" }}</h2>
       </div>
       <button
         class="ocd-close-button"
-        aria-label="Close settings modal"
+        aria-label="{{ i18n "OcdConsoleCloseBtnAria" . | default "Close settings modal" }}"
         data-alpha="ocd-close-console"
       >
         <svg aria-hidden="true" width="22" heigh="22">
@@ -24,8 +24,8 @@
     </header>
     <div class="ocd-utility-bar">
       <button
-        title="OCD help"
-        aria-label="Get OCD help"
+        title="{{ i18n "OcdConsoleHelpBtnTitle" . | default "OCD help" }}"
+        aria-label="{{ i18n "OcdConsoleHelpBtnAria" . | default "Show help about OCD" }}"
         data-alpha="ocd-console-help-button"
       >
         <svg aria-hidden="true" width="22" heigh="22">
@@ -36,15 +36,15 @@
         href="https://github.com/oxypteros/alpha/issue"
         target="_blank"
         rel="noopener noreferrer"
-        title="Report an alpha issue"
-        aria-label="Report an issue with alpha at github (will open a new tab)"
+        title="{{ i18n "OcdConsoleIssueTitle" . | default "Report an Alpha theme issue on GitHub" }}"
+        aria-label="{{ i18n "OcdConsoleIssueAria" . | default "Report an issue with the Alpha theme on GitHub (opens in a new tab)" }}"
       >
         <svg aria-hidden="true" width="22" heigh="22">
           <use href="#icon-error"></use></svg
       ></a>
       <button
-      title="OCD reset errors"
-      aria-label="Reset the current error list"
+      title="{{ i18n "OcdConsoleResetBtnTitle" . | default "OCD reset errors" }}"
+      aria-label="{{ i18n "OcdConsoleResetBtnAria" . | default "Reset the current OCD error list" }}"
       data-alpha="ocd-console-reset-button"
     >
       <svg aria-hidden="true" width="22" heigh="22">
