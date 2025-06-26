@@ -1,106 +1,85 @@
 {{- /*
-  text-snippet.html (shortcode): Renders centered text content provided within the shortcode. Best used for short text blocks like introductions or as a text separator between sections.
-  
-  Target: Global.
-  
+  Shortcode: text-snippet.html
+  Purpose: Renders centered text content provided within the shortcode. Best used for short text blocks like introductions or as a text separator between sections.
+
+  Target: Global
+
   Example:
-    {{< text-snippet TITLE="" >}}
-      /... Markdown .../
-    {{< /text-snippet >}}
-   
-  Params: 
-    TITLE (string, optional): <h2> heading. 
-   
+  { {< text-snippet TITLE="" >} }
+  /... Markdown .../
+  { {< /text-snippet >} }
+
+  Params:
+  - TITLE (string, optional): H2 heading.
+
   Error handler:
-    - warnf
-    - OCD
-  
-  Docs: https://alpha.oxypteros.com/shortcodes/text-snippet 
-  Repo: https://github.com/oxypteros/alpha 
+  - ocdWarn (global)
+  - OCD (scoped)
+
+  Docs: https://alpha.oxypteros.com/shortcodes/text-snippet
+  Repo: https://github.com/oxypteros/alpha
 */}}
+{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
+{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
 
-{{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
+{{- /* * Text-snippet Shortcode Data */}}
+{{- $scName := "featured" -}}
+{{- /* ** Featured shortcode rules */}}
+{{- $rules := dict
+  "validKeys" (slice "TITLE")
+  "params" (dict
+  "TITLE"  (dict "validation" "any_string")
+  )
+-}}
+{{- /* ** Featured shortcode metadata */}}
+{{- $errorMeta := dict
+  "docURL" "https://alpha.oxypteros.com/docs/shortcodes/text-snippet"
+  "example" "text-snippet TITLE=\"Example title\""
+  "errorCodes" (dict
+  "invalidKey"   "ocd-sc-120"
+  )
+-}}
 
-{{- $content := .Inner | markdownify }}
-{{- /* Context for error reporting (warnf, OCD)*/}}
-{{ $page := .Page.RelPermalink }}
+{{- /* * Validate shortcode input */}}
+{{- $validationResult := partial "ocd/components/validator.html" (dict "rules" $rules "userInput" .Params) -}}
 
+{{- /* ** Conditions to render shortcode or OCD */}}
+{{- /* *** Input validation */}}
+{{- $validInput := false }}
+{{- if $validationResult.isValid }}
+  {{- $validInput = true }}
+{{- end }}
 
-{{- /* OCD: Validate params manually against an allowlist. */}}
-{{- $allowedKeys := slice "title" }}
-{{- $invalidKeys := slice }}
-
-
-{{- /* Invalid Parameter Error Handling (OCD) */}}
-
-
-{{- /* NOTE: Not closed shortcode error is handled by Hugo */}}
-{{- range $key, $value := .Params }}
-  {{- if not (in $allowedKeys (lower $key)) }}
-    {{- $invalidKeys = $invalidKeys | append $key }}
+{{- /* - On failed input validation call the OCD handler */}}
+{{- if not $validInput }}
+  {{ if or ($ocdWarnEnabled) ($ocdEnabled) }}
+    {{- partial "ocd/components/handler.html" (dict
+      "scName"   .Name
+      "errors"   $validationResult.errors
+      "rules"    $rules
+      "meta"     $errorMeta
+      "page"     .Page
+      "position" .Position
+      )
+    -}}
   {{- end }}
 {{- end }}
 
-{{- if gt (len $invalidKeys) 0 }}
-  {{- /* Warnf for error: ocd-sc-111 */}}
-  {{- $errorCode := "ocd-sc-111" }}
-  {{- $invalidKeysString := delimit $invalidKeys ", " }}
-  {{- $errorMessage := printf "Invalid parameters: %s" $invalidKeysString }}
-  {{- $logMessage := printf "OcdError [%s] Page: %s | %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: ocd-sc-111 */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScParamError" . | default "Shortcode Parameter Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- $count := len $invalidKeys }}
-            {{- i18n "OcdScTextSnippet111" $count | default "Invalid parameter in the text snippet shortcode on this page:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScParameter" $count  | default "The parameters," }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $invalidKeysString }}</span
-            >&nbsp;
-            {{ i18n "OcdScNotRecognized"  $count  | default "are not recognized." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
-          <span class="ocd-mono-solution">TITLE</span>
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
+{{- /* * On successful validations render shortcode */}}
+{{- if $validInput }}
+  {{- $data := $validationResult.data -}}
+  {{- $content := .Inner | markdownify }}
+  {{- /* Shortcode Rendering */}}
+  <div class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4">
+    {{- with $data.title }}
+      <h2
+        class="font-200 text-on-sur-var dark:text-on-sur-var-d mb-16 w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual"
+      >
+        {{- . -}}
+      </h2>
+    {{- end }}
+    <div class="font-300 max-w-story text-center text-xl leading-relaxed">
+      {{ $content }}
     </div>
-  {{- end }}
-{{- end }}
-
-{{- /* Shortcode Rendering */}}
-<div class="mb-32 mt-8 flex w-full max-w-7xl flex-col items-center px-4">
-  {{- with $title }}
-    <h2 class="font-200 text-on-sur-var dark:text-on-sur-var-d mb-16 w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual">
-      {{- $title -}}
-    </h2>
-  {{- end }}
-  <div class="font-300 max-w-story text-center text-xl leading-relaxed">
-    {{ $content }}
   </div>
-</div>
+{{- end -}}
