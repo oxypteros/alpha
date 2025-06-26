@@ -1,0 +1,120 @@
+footer_desc = "Markdown cheat sheet rendered by the shortcode **help**.\nTo view *help* about different topics, use the **TYPE** parameter."
+footer_URL = "https://alpha.oxypteros.com/docs/content-creation/page-markdown/"
+
+# Help Shortcode
+[markdown.headings]
+  order = 10
+  title = "Headings"
+  description = "Visually and semantically divide text into sections."
+  syntax = "## Heading H2\n### Heading H3\n#### Heading H4\n##### Heading H5\n###### Heading H6"
+  [markdown.rel_link]
+  order = 21
+  title = "Relative Links"
+  description = "An internal link that points to another page or anchor within the same website."
+  syntax = "[relative link](/blog/why-alpha/ \"Link hover description\")"
+[markdown.abs_link]
+  order = 22
+  title = "Absolute Links"
+  description = "An external link that points to another website."
+  syntax = "[absolute link](https://gohugo.io/documentation/ \"Link hover description\")"
+[markdown.image]
+  order = 23
+  title = "Images"
+  description = "Renders an image if its placed in a page bundle."
+  syntax = "![Description of the photo](image.jpg \"Optional caption\")"
+[markdown.linked_image]
+  order = 24 
+  title = "Linked Images"
+  description = "Make an image a clickable link to another page."
+  syntax = "[![Description of photo](image.jpg \"Optional caption\")](/link/to/page/ \"Link hover description\")"
+[markdown.inline_code]
+  order = 25
+  title = "Inline code"
+  description = "Renders an inline code snippet."
+  syntax = "`console.log(\"Hello, world!\");`"
+[markdown.codeblock]
+  order = 26
+  title = "Multiline code"
+  description = "Renders a multiline codeblock."
+  syntax = "```bash\nmkdir my-website\ncd my-website\nhugo new site . # Think dot as a HERE sign\n```"
+[markdown.unordered]
+  order = 30
+  title = "Unordered List"
+  description = "Displays a bulleted list of items."
+  syntax = "- Item 1\n- Item 2\n- Item 3"
+[markdown.ordered]
+  order = 31
+  title = "Ordered List"
+  description = "Displays a numbered list of items."
+  syntax = "1. Item 1\n2. Item 2\n3. Item 3"
+[markdown.checklist]
+  order = 32
+  title = "Checklist"
+  description = "Displays a *\"to-do\"* list of items."
+  syntax = "- [ ] First item\n- [x] Second item\n- [ ] Third item"
+[markdown.description]
+  order = 33
+  title = "Description List"
+  description = "Displays a semantic list of terms and their descriptions."
+  syntax = "Term 1\n: Description 1\nTerm 2\n: Description 2"
+[markdown.blockquote]
+  order = 40
+  title = "Blockquote"
+  syntax = "> *\"Unleash your words\"*"
+[markdown.hr]
+  order = 50
+  title = "Horizontal Rule"
+  description = "A visual and semantic separator."
+  syntax = "(Empty Line)\n---\n(Empty Line)"
+[markdown.bold]
+  order = 60
+  title = "Bold Text"
+  syntax = "**Bold text example**"
+[markdown.italics]
+  order = 63
+  title = "Italic Text"
+  syntax = "*Italic text example*"
+[markdown.escaping]
+  order = 64 
+  title = "Escaping Characters"
+  description = "Override a markdown formatting character by preceding it with a backslash."
+  syntax = "\\*This text is not italic\\*"
+[markdown.mark]
+  order = 66
+  title = "Mark Text"
+  syntax = "==Marked text example=="
+[markdown.del]
+  order = 69
+  title = "Deleted Text"
+  syntax = "~~Deleted text example~~"
+[markdown.ins]
+  order = 72
+  title = "Added Text"
+  syntax = "++Added text example++"
+[markdown.superscript]
+  order = 75
+  title = "Superscript Text"
+  syntax = "Ca^2+^"
+[markdown.subscript]
+  order = 78
+  title = "Subscript Text"
+  syntax = "H~2~O"
+[markdown.em_dash]
+  order = 81
+  title = "Em dash"
+  description = "A punctuation mark for a pause---stronger than a comma, weaker than a period."
+  syntax = "Text example---text continues"
+[markdown.line_breaks] 
+  order = 82
+  title = "Line Break"
+  description = "Use two spaces at the end of a line to force a line break."
+  syntax = "First line␣␣\nSecond line"
+[markdown.footnotes]
+  order = 90
+  title = "Footnotes"
+  syntax = "Text with a footnote reference[^1]\n[^1]: Footnote definition"
+[markdown.table]
+  order = 100
+  title = "Table"
+  description = "Create a table of data."
+  syntax = "| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1/1 | Cell 1/2 |\n| Cell 2/1 | Cell 2/2 |\n| Cell 3/1 | Cell 3/2 |"
