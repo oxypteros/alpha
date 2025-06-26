@@ -1,0 +1,82 @@
+{{- /*
+  Partial: ocd/components/warn/sc-invalid-values.html
+  Purpose: Generates an OCD standardized `warnf` message for shortcodes that are 
+  called with invalid parameter values.
+
+  Requires a dictionary expecting the following keys:
+  - ocdErrorCode (string) : The OCD error code
+  - scName (string)       : The name of the shortcode.
+  - invalidValues (map)   : A map of parameters with their invalid values.
+  - rules (object)        : The full shortcode rules object.
+  - page (object)         : The full .Page object from the shortcode.
+  - position (object)     : The full .Position object from the shortcode.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $scName := .scName -}}
+{{- $invalidValues := .invalidValues -}}
+{{- $page := .page -}}
+{{- $position := .position -}}
+{{- $errorCode := .ocdErrorCode -}}
+{{- $paramsRules := .rules.params -}} 
+
+{{- $invalidCount := len $invalidValues -}}
+
+{{- $errorDetails := slice -}}
+{{- range $paramName, $badValue := $invalidValues }}
+  {{- $detailString := printf `> %s="%s"` (upper $paramName) $badValue -}}
+  {{- $errorDetails = $errorDetails | append $detailString -}}
+{{- end }}
+{{- $formattedErrorDetails := delimit $errorDetails "\n        " -}}
+
+{{- $helpBlock := "" -}}
+{{- if .invalidValues }}
+  {{- $helpSnippets := slice -}}
+  {{- range $paramName, $badValue := .invalidValues }}
+    {{- $snippet := "" -}}
+    {{- $rule := index $paramsRules (upper $paramName) -}}
+    {{- if $rule }}
+      {{- if eq $rule.validation "in_list" }}
+        {{- $formattedValidValues := delimit $rule.list ", " -}}
+        {{- $snippet = printf "> %s : %s" (upper $paramName) $formattedValidValues -}}
+      {{- else if eq $rule.validation "is_positive_integer" }}
+        {{- $snippet = printf "> %s : Must be a positive integer" (upper $paramName) -}}
+      {{- else }}
+        {{- $snippet = printf "> %s : See documentation" (upper $paramName) -}}
+      {{- end }}
+    {{- else }}
+      {{- $snippet = printf "> %s : (Rule definition not found)" (upper $paramName) -}}
+    {{- end }}
+    {{- $helpSnippets = $helpSnippets | append $snippet -}}
+  {{- end }}
+
+  {{- $helpHeader := "Valid values:" -}}
+  {{- $formattedSnippets := delimit $helpSnippets "\n             " -}}
+  {{- $helpBlock = printf "%s\n             %s" $helpHeader $formattedSnippets -}}
+{{- end -}}
+
+{{- $titleLabel := cond (eq $invalidCount 1) "Invalid Value" "Invalid Values" -}}
+{{- $reasonLabel := cond (eq $invalidCount 1) "value was" "values were" -}}
+
+{{- warnf `
+   
+[OCD] %s in %q Shortcode
+──────────────────────────────────────────────
+ Code   : %s
+ Reason : The following invalid %s used:
+        %s
+ Page   : %s
+ File   : %s
+──────────────────────────────────────────────
+ %s
+
+──────────────────────────────────────────────`
+  $titleLabel $scName
+  $errorCode
+  $reasonLabel
+  $formattedErrorDetails
+  $page.Permalink
+  $position
+  $helpBlock
+-}}
