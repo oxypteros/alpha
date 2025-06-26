@@ -1,5 +1,9 @@
+<!-- Alpha Version Block -->
 <div>
-  <div class="ocd-alpha-version" aria-label="Alpha version">
+  <div class="ocd-alpha-version">
+    <!-- Screen reader text -->
+    <span class="ocd-sr-only">{{ i18n "OcdAlphaVerAria" . | default "Alpha theme version:" }}</span>
+    
     <svg class="ocd-logo-alpha" width="16" height="16" aria-hidden="true">
       <use href="#alpha-logo"></use>
     </svg>
@@ -8,8 +12,13 @@
     ><span data-alpha="ocd-alpha-update-badge"></span>
   </div>
 </div>
+
+<!-- Hugo Version Block -->
 <div>
-  <div class="ocd-hugo-version" aria-label="Hugo version">
+  <div class="ocd-hugo-version">
+    <!-- Screen reader text -->
+    <span class="ocd-sr-only">{{ i18n "OcdHugoVerAria" . | default "Hugo version:" }}</span>
+
     <svg width="16" height="16" aria-hidden="true">
       <use href="#hugo-logo"></use>
     </svg>
