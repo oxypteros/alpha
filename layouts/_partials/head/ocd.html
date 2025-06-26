@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="{{ .RelPermalink }}" />
 {{- end }}
 
-{{- with resources.Get "alpha/js/ocd.js" }}
-  <script type="module" src="{{ .RelPermalink }}"></script>
-{{- end -}}
+
+{{- $ocdJsPath := "alpha/js/ocd.js" -}}
+{{- $jsTpl := resources.Get $ocdJsPath  -}}
+{{- $ocdJs := $jsTpl | js.Build  -}}
+{{- $finalJs := $ocdJs }}
+<script
+  type="module"
+  src="{{ $finalJs.RelPermalink }}"
+></script>
