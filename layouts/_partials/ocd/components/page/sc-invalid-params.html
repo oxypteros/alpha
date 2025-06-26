@@ -1,0 +1,88 @@
+{{- /*
+  Partial: ocd/components/page/sc-invalid-params.html
+  Purpose: Generates an OCD on page message for shortcodes that are
+  called with unknown parameters.
+
+  Requires a dictionary expecting the following keys:
+  - ocdErrorCode (string) : The OCD error code
+  - scName (string)       : The name of the shortcode.
+  - invalidParams (slice) : The list of unknown parameters found.
+  - validParams (slice)   : The list of all known parameters.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- $errorCode := .ocdErrorCode -}}
+{{- $scName := .scName -}}
+{{- $invalidParams := .invalidParams -}}
+{{- $validParams := .validParams -}}
+
+{{- /* - Separate invalid params from values */}}
+{{- $invalidKeys := slice -}}
+{{- range $k, $_ := .invalidParams }}
+  {{- $invalidKeys = $invalidKeys | append $k }}
+{{- end }}
+{{- /* - Format params for use */}}
+{{- $formattedInvalid := delimit (sort $invalidKeys) ", " -}}
+{{- $formattedValid := delimit $validParams ", " -}}
+
+{{- /* - Count for i18n */}}
+{{- $countInvalid := len $invalidParams -}}
+{{- $countValid := len $validParams -}}
+
+
+<div
+  class="ocd ocd ocd-card ocd-card-error ocd-shadow"
+  data-error="{{ $errorCode }}"
+>
+  <header class="ocd-card-header ocd-card-header-error">
+    <h2 class="ocd-title">
+      {{- i18n "OcdScParamError" $countInvalid | default "Shortcode Parameter Error" }}
+    </h2>
+    <svg aria-hidden="true" focusable="false" width="24" height="24">
+      <use href="#ocd-error-icon"></use>
+    </svg>
+  </header>
+  <div class="ocd-card-content ocd-card-content-error">
+    <div>
+      <p>
+        {{- i18n "OcdScInvParam" $countInvalid | default "Invalid parameter used in the shortcode:" }}
+        <span class="ocd-mono ocd-mono-error"
+          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+        >.
+      </p>
+      <p>
+        {{- i18n "OcdScParameter" $countInvalid | default "The parameters," }}&nbsp;
+        <span class="ocd-mono ocd-mono-error">{{ $formattedInvalid }}</span
+        >&nbsp;
+        {{ i18n "OcdScNotRecognized" $countInvalid | default "are not recognized." }}
+      </p>
+    </div>
+    <hr />
+    <p>
+      {{ i18n "OcdScValidParameters" $countValid | default "Valid parameters:" }}
+      <span class="ocd-mono ocd-mono-solution">{{ $formattedValid }}</span>
+    </p>
+  </div>
+  <footer class="ocd-card-footer ocd-card-footer-error">
+    <div class="ocd-error-meta">
+      <p>
+        {{ $scName }}
+        {{ i18n "OcdScInput" . | default "input:" }}
+        {{- /* Render pair invalid param and value */}}
+        {{- $total := len $invalidParams -}}
+        {{- $i := 0 -}}
+        {{- range $invalidParam, $invalidValue := $invalidParams }}
+          <span class="ocd-mono ocd-mono-error">{{ $invalidParam }}</span
+          ><span class="ocd-mono">="{{ $invalidValue }}"</span>
+          {{- $i = add $i 1 -}}
+          {{- if lt $i $total }}<span class="ocd-mono">, </span>{{ end -}}
+        {{- end -}}
+      </p>
+      <a
+        class="ocd-mono ocd-mono-error"
+        href="https://alpha.oxypteros.com/docs/ocd"
+        >{{ $errorCode }}</a
+      >
+    </div>
+  </footer>
+</div>

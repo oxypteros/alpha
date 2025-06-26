@@ -1,0 +1,65 @@
+{{- /*
+  Partial: ocd/components/warn/sc-invalid-params.html
+  Purpose: Generates an OCD standardized `warnf` message for shortcodes that are 
+  called with unknown parameters.
+
+  Requires a dictionary expecting the following keys:
+  - ocdErrorCode (string) : The OCD error code
+  - scName (string)       : The name of the shortcode.
+  - invalidParams (map)   : A of unknown parameters and their values.
+  - validParams (slice)   : The list of all valid parameters.
+  - page (object)         : The full .Page object from the shortcode.
+  - position (object)     : The full .Position object from the shortcode.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $scName := .scName -}}
+{{- $invalidParams := .invalidParams -}}
+{{- $validParams := .validParams -}}
+{{- $page := .page -}}
+{{- $position := .position -}}
+{{- $errorCode := .ocdErrorCode -}}
+
+{{- /* - Dynamic labels based on count */}}
+{{- $invalidCount := len $invalidParams -}}
+{{- $validCount := len $validParams -}}
+
+{{- $titleLabel := cond (eq $invalidCount 1) "Unknown Parameter" "Unknown Parameters" -}}
+{{- $reasonLabel := cond (eq $invalidCount 1) "parameter was" "parameters were"}}
+{{- $paramLabel := cond (eq $invalidCount 1) "Parameter" "Parameters" -}}
+{{- $paramValidLabel := cond (eq $validCount 1) "Parameter" "Parameters" -}}
+{{- /* - Separate invalid params from values */}}
+
+{{- $errorDetails := slice -}}
+{{- range $paramName, $badValue := $invalidParams }}
+  {{- $detailString := printf `> %s` $paramName -}}
+  {{- $errorDetails = $errorDetails | append $detailString -}}
+{{- end }}
+{{- $formattedErrorDetails := delimit $errorDetails "\n        " -}}
+
+{{- /* - Format key lists for clean printing */}}
+{{- $formattedValid := delimit $validParams ", " -}}
+
+
+{{- /* - Print the warning */}}
+{{- warnf `
+[OCD] %s in %q Shortcode
+──────────────────────────────────────────────────
+ Code   : %s
+ Reason : The following unknown %s used:
+        %s
+ Page   : %s
+ File   : %s
+──────────────────────────────────────────────────
+ Valid %s : %s
+
+──────────────────────────────────────────────────`
+  $titleLabel $scName
+  $errorCode
+  $reasonLabel
+  $formattedErrorDetails
+  $page.Permalink 
+  $position
+  $paramValidLabel $formattedValid
+-}}

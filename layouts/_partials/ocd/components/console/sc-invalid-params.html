@@ -1,0 +1,76 @@
+{{- /*
+  Partial: ocd/components/console/sc-invalid-params.html
+  Purpose: Generates an OCD console entry for shortcodes that are
+  called with invalid parameters.
+
+  Requires a dictionary expecting the following keys:
+  - ocdErrorCode (string) : The OCD error code.
+  - scName (string)       : The name of the shortcode.
+  - invalidParams (slice) : The list of invalid parameters found.
+  - validParams (slice)   : The list of all valid parameters.
+  - example (slice)       : A valid shortcode example.
+  - docURL (slice)        : The shortcode specific Alpha docs URL.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- $scName := .scName -}}
+{{- $invalidParams  := .invalidParams -}}
+{{- $validParams := .validParams -}}
+{{- $errorCode := .ocdErrorCode -}}
+{{- $scExample := .example }}
+{{- $docURL := .docURL }}
+{{- /* - Separate invalid params from values */}}
+{{- $invalidKeys := slice -}}
+{{- range $k, $_ := .invalidParams }}
+  {{- $invalidKeys = $invalidKeys | append $k }}
+{{- end }}
+{{- /* - Format params for use */}}
+{{- $formattedInvalid := delimit (sort $invalidKeys) ", " -}}
+{{- $formattedValid := delimit $validParams ", " -}}
+
+{{- $countInvalid := len $invalidParams -}}
+{{- $countValid := len $validParams -}}
+<template data-alpha="ocd-sc-invalid-param-template">
+  <div class="ocd-console-explanation">
+    <h2>{{i18n "OcdScInvParamConsTitle" $countInvalid | default "Unknown Parameter in"}} {{ $scName }} {{ i18n "OcdShortcode" .  | default ""}}</h2>
+    <p>
+      {{ i18n "OcdTheParam" $countInvalid | default "The parameter" }}
+      <span class="ocd-mono ocd-mono-con-error">{{ $formattedInvalid }}</span>
+      {{ i18n "OcdScUsedConsole" $countInvalid | default "used in the shortcode" }}
+      <span class="ocd-mono ocd-mono-con-error"
+        >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+      > 
+      {{ i18n "OcdScNotRecognized" $countInvalid | default "is not recognized." }}
+    </p>
+    <p>
+      {{ i18n "OcdScValidParamConsole" $countValid | default "Valid parameters for the" }}
+      <span class="ocd-mono ocd-mono-con-solution"
+        >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+      >
+      {{ i18n "OcdScShortcodeAreConsole" $countValid | default "shortcode are:" }}
+    </p>
+
+    <ul>
+      {{ range $validParams }}
+        <li><span class="ocd-mono ocd-mono-con-solution">{{ . }}</span></li>
+      {{- end }}
+    </ul>
+
+    <p>
+      {{ i18n "OcdExample" . }}
+      <span class="ocd-mono ocd-mono-con-solution"
+        >&lbrace;&lbrace;&lt; {{ $scExample }} &gt;&rbrace;&rbrace;</span
+      >
+    </p>
+  </div>
+  <div class="ocd-console-doc">
+    <div class="hr hr-left"></div>
+    <a href="{{ $docURL }}"
+      ><span class="ocd-mono"
+        >{{ $scName }}</span
+      >
+      {{ i18n "OcdDoc" . }}</a
+    >
+    <div class="hr hr-right"></div>
+  </div>
+</template>
