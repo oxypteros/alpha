@@ -9,17 +9,15 @@
 
   Maps generic shape:
   - rules:
+  {
   "validKeys": ["KEY1", "KEY2"],
   "params": {
   "KEY1": { "default": "value", "validation": "in_list", "list": ["v1", "v2"] },
-  "KEY2": { "default": 10, "validation": "is_positive_integer" }
+  "KEY2": { "default": 10, "validation": "is_positive_integer" },
+  ...
   }
-  - returns:
-  "isValid": (bool),
-  "errors": { "invalidKeys": {...}, "invalidValues": {...} },
-  "data": { "key1": "value", "key2": 10 },
-  "userInput": { "key1": "value" }
   }
+
   Repo:https://github.com/oxypteros/alpha
 */}}
 {{- $rules := .rules -}}
