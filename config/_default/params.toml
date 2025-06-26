@@ -24,6 +24,7 @@ visitor_settings = true
 #Development Settings
 tailwind_enabled = false
 ocd_enabled = true
+ocdWarn_enabled = true
 
 #SEO
 seo_organization = ""
