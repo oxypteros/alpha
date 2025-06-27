@@ -4,7 +4,7 @@
 
   Target: _index.md (homepage, sections)
 
-  Example:{ {< featured STYLE="" >} }
+  Example:{ {< featured STYLE="" >}}
 
   Params:
   - STYLE (string, optional): Visual style of the featured article.
@@ -31,11 +31,11 @@
 {{- /* ** Featured shortcode metadata */}}
 {{- $errorMeta := dict
   "docURL" "https://alpha.oxypteros.com/docs/shortcodes/featured"
-  "example" "featured STYLE=\"banner\""
+  "example" "&lbrace;&lbrace;&lt; featured STYLE=\"banner\" &gt;&rbrace;&rbrace;"
   "errorCodes" (dict
-  "invalidKey"   "ocd-sc-110"
-  "invalidValue" "ocd-sc-111"
-  "featNotFound" "ocd-sc-112"
+  "invalidKey"   "ocd-sc-120"
+  "invalidValue" "ocd-sc-121"
+  "featNotFound" "ocd-sc-122"
   )
 -}}
 
@@ -61,7 +61,7 @@
 {{- end }}
 
 {{- /* - On failed featured post retrieval show OCD shortcode unique warning */}}
-{{- if not $validFeatured }}
+{{- if and (not $validFeatured) ($validInput) }}
   {{- if or ($ocdWarnEnabled) ($ocdEnabled) }}
     {{- $errorData := dict
       "context"   .
