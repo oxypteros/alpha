@@ -1,0 +1,145 @@
+{{- /*
+  Partial: ocd/components/unique/global-data-sc.html
+  Purpose: Render the `OCD warn`, `OCD on page`, and `OCD console` warning 
+  message for shortcodes that using the global data partial stores.
+
+ Requires a dictionary expecting the following keys:
+  - context (object)     : The page context ( . )
+  - errorCode (string)   : The OCD error code
+  - scName (string)      : The name of the shortcode.
+  - docURL (string)      : The shortcode documentation URL
+  - frontmatter (string) : The frontmatter key/value string
+  - title (string)       : The translated title 
+  - consLine1 (string)   : The translated line of text for the console
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
+{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+{{- $context := .context -}}
+{{- $docURL := .docURL -}}
+{{- $errorCode := .errorCode -}}
+{{- $scName := .scName -}}
+{{- $frontmatter := .frontmatter -}}
+{{- $title := .title -}}
+{{- $consLine1 := .consLine1 -}}
+
+{{- if  $ocdWarnEnabled }}
+  
+  <!-- prettier-ignore -->
+  {{- warnf `
+[OCD] %s
+──────────────────────────────────────────────
+Code   : %s
+Reason : No content marked as %s was found.
+Page   : %s
+File   : %s
+──────────────────────────────────────────────
+To display the '%s' shortcode, at least 
+one post must include %s in the 
+frontmatter.
+──────────────────────────────────────────────`
+$title
+$errorCode
+$scName
+$context.Page.Permalink
+$context.Position
+$scName
+$frontmatter
+-}}
+{{- end }}
+
+{{- if $ocdEnabled }}
+  <div
+    class="ocd ocd ocd-card ocd-card-warning ocd-shadow"
+    data-error="{{ $errorCode }}"
+  >
+    <header class="ocd-card-header ocd-card-header-warning">
+      <h2 class="ocd-title">
+        {{- $title }}
+      </h2>
+      <svg aria-hidden="true" focusable="false" width="24" height="24">
+        <use href="#ocd-warning-icon"></use>
+      </svg>
+    </header>
+    <div class="ocd-card-content ocd-card-content-warning">
+      <div>
+        <p>
+          {{- i18n "OcdThe" . |default "The" }}
+          <span class="ocd-mono ocd-mono-warning"
+            >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+          >
+          {{ i18n "OcdScRequireOne" . | default "shortcode requires at least one post marked as" }} {{ $scName }}.
+        </p>
+      </div>
+      <hr />
+      <p>
+        {{ i18n "OcdSet" . | default "Set" }}
+        <span class="ocd-mono ocd-mono-solution">{{ $frontmatter}}</span>
+        {{ i18n "OcdScFmSolution" . | default "to the frontmatter of one or more posts." }}
+      </p>
+    </div>
+    <footer class="ocd-card-footer ocd-card-footer-warning">
+      <div class="ocd-warning-meta">
+        <a class="ocd-mono ocd-mono-warning" href="{{ $docURL }}"
+          >{{ $scName }} {{ i18n "OcdDoc" | default "documentation" }}</a
+        >
+        <a
+          class="ocd-mono ocd-mono-warning"
+          href="https://alpha.oxypteros.com/docs/ocd"
+          >{{ $errorCode }}</a
+        >
+      </div>
+    </footer>
+  </div>
+
+  <template data-alpha="{{ $errorCode }}-template">
+    <div class="ocd-console-explanation">
+      <h2>
+        {{- $title }}
+      </h2>
+      <p>
+        {{- i18n "OcdShortcode" . | default "Shortcode" }}
+        <span class="ocd-mono ocd-mono-con-warning"
+          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+        >
+        {{ i18n "OcdScIsDisabled" . | default "is disabled." }}
+      </p>
+      <p class="ocd-my-1">
+        {{ i18n "OcdScToEnable" . | default "To enable it, set:" }}
+        <span class="ocd-mono ocd-mono-con-solution">{{ $frontmatter }}</span>
+         {{ $consLine1 }}
+      </p>
+      <div class="ocd-console-example">
+        {{ i18n "OcdExample" . | default "Example:" }}
+        <br />
+        <span>+++</span>
+        <br />
+        <span>draft = false</span>
+        <br />
+        <span>
+          /... {{ i18n "OcdScOtherKeys" . | default "Other Keys" }} .../</span
+        >
+        <br />
+        <span class="ocd-mono ocd-mono-con-solution"
+          >{{ $frontmatter }}&nbsp;&nbsp;
+          {{ i18n "OcdScFmExComment" . | default "#  Ensure this line exists and is set to true." }}</span
+        >
+        <br />
+        <span>
+          /... {{ i18n "OcdScFeatKeys" . | default "Other Keys" }} .../</span
+        >
+        <br />
+        <span>+++</span>
+        </div>
+    </div>
+    <div class="ocd-console-doc">
+      <div class="hr hr-left"></div>
+      <a href="{{ $docURL }}"
+        ><span class="ocd-mono">{{ $scName }}</span> {{ i18n "OcdDoc" . }}</a
+      >
+      <div class="hr hr-right"></div>
+    </div>
+  </template>
+{{- end }}
