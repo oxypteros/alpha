@@ -71,8 +71,8 @@ other = "Tagged as:"
 [EditOnGithub]
 other = "Edit this page on Github"
 
-[AnomymousStats]
-other = "Anomymous statistics"
+[AnonymousStats]
+other = "Anonymous statistics"
 
 [CollectedStats]
 other = "We collect anonymous stats to refine functionality."
@@ -137,10 +137,10 @@ other = "Settings modal is open"
 other = "Settings modal is closed"
 
 [TrackingDisabled]
-other = "Anomymous tracking is disabled"
+other = "Anonymous tracking is disabled"
 
 [TrackingEnabled]
-other = "Anomymous tracking is enabled"
+other = "Anonymous tracking is enabled"
 
 [PrefetchDisabled]
 other = "Prefetch function is disabled"
@@ -183,6 +183,269 @@ other = "Info"
 
 [SocialHeading]
 other = "Social media links"
+
+# OCD
+[OcdExample]
+other = "Example:"
+[OcdDoc]
+other = "documentation"
+[OcdScInteger]
+other = "A positive integer (e.g. 1, 2, 3, ...)"
+[OcdShortcode]
+other = "Shortcode"
+[OcdThe]
+other = "The"
+## FAB
+[OcdFabAria]
+other = "Open OCD console if errors exist, otherwise open OCD settings"
+## OCD Settings
+[OcdSettings]
+other = "OCD Settings"
+
+[OcdSettingsCloseBtn]
+other = "Close settings modal"
+
+[OcdSettingsPosition]
+other = "Position"
+
+[OcdSettingsPosLabel]
+other = "Change the FAB position"
+
+[OcdSettingsPosOptionBR]
+other = "Bottom/Right"
+
+[OcdSettingsPosOptionBL]
+other = "Bottom/Left"
+
+[OcdSettingsCons]
+other = "Console"
+
+[OcdSettingsConsDesc]
+other = "Open the OCD console"
+
+[OcdSettingsConsOpen]
+other = "Open"
+
+[OcdSettingsConsOpenAria]
+other = "Open the console"
+
+[OcdSettingsUpd]
+other = "Updates"
+
+[OcdSettingsUpdDesc]
+other = "Check for alpha and hugo updates"
+
+[OcdSettingsUpdCheck]
+other = "Check"
+
+[OcdSettingsUpdCheckAria]
+other = "Check for updates"
+
+[OcdSettingsDis]
+other = "Disable OCD"
+
+[OcdSettingsDisSet]
+other = "Set"
+
+[OcdSettingsDisInThe]
+other = "in the"
+
+[OcdSettingsDisConfigFile]
+other = "config file"
+
+[OcdSettingsDoc]
+other = "OCD Documentation"
+
+[OcdVersion]
+other = "version"
+
+## OCD Console
+[OcdConsole]
+other = "Console"
+
+[OcdConsoleCloseBtnAria]
+other = "Close console modal"
+
+[OcdConsoleHelpBtnTitle]
+other = "OCD help"
+
+[OcdConsoleHelpBtnAria]
+other = "Show help about OCD"
+
+[OcdConsoleIssueTitle]
+other = "Report an Alpha theme issue on GitHub"
+
+[OcdConsoleIssueAria]
+other = "Report an issue with the Alpha theme on GitHub (opens in a new tab)"
+
+[OcdConsoleResetBtnTitle]
+other = "OCD reset errors"
+
+[OcdConsoleResetBtnAria]
+other = "Reset the current OCD error list"
+
+[OcdAlphaVerAria]
+other = "Alpha theme version:"
+
+[OcdHugoVerAria]
+other = "Hugo version:"
+
+## Help Shortcode
+[OcdHelpSyntax]
+other = "Syntax"
+
+[OcdHelpParameters]
+other = "Parameters"
+
+[OcdHelpOptional]
+other = "optional"
+
+[OcdHelpRequired]
+other = "required"
+
+[OcdHelpValues]
+other = "Values"
+
+[OcdHelpExample]
+other = "Example"
+
+[OcdHelpDocumentation]
+other = "Documentation"
+[OcdHelpAbout]
+other = "About"
+
+[OcdHelpScDocs]
+other = "Shortcodes Documentation"
+
+
+## Shortcode unknown parameter (page)
+[OcdScParamError]
+one = "Shortcode Parameter Error"
+other = "Shortcode Parameters Error"
+
+[OcdScInvParam]
+one = "Invalid parameter used in the shortcode"
+other = "Invalid parameters used in the shortcode"
+
+[OcdScParameter]
+one = "The parameter"
+other = "The parameters"
+
+[OcdScNotRecognized]
+one = "is not recognized."
+other = "are not recognized."
+
+[OcdScValidParameters]
+one = "Valid parameter:"
+other = "Valid parameters:"
+
+## Shortcode invalid values (page)
+[OcdScValueWarn]
+one = "Shortcode Value Warning"
+other ="Shortcode Values Warning"
+
+[OcdScInvValue]
+one = "Invalid value used in the shortcode"
+other = "Invalid values used in the shortcode"
+
+[OcdScValues]
+one = "The value"
+other = "The values"
+[OcdScValidValues]
+other = "Valid Values:"
+
+## Shortcode unknown parameter  (console)
+[OcdScInvParamConsTitle]
+one = "Unknown Parameter in"
+other = "Unknown Parameters in"
+[OcdTheParam]
+one = "The parameter"
+other = "The parameters"
+
+[OcdScUsedConsole]
+other = "used in the shortcode"
+
+[OcdScInvParamConsole]
+one = "is invalid."
+other = "are invalid."
+
+[OcdScValidParamConsole]
+one = "Valid parameter for the"
+other = "Valid parameters for the"
+
+[OcdScShortcodeAreConsole]
+one = "shortcode is:"
+other = "shortcode are:"
+
+## Shortcode Featured - ocd-sc-122
+[OcdScFeatTitle]
+other = "No Featured Content Found"
+
+[OcdSet]
+other = "Set"
+
+[OcdScFeat]
+other = "shortcode requires at least one post marked as featured."
+
+[OcdScFeatSolution]
+other = "in the frontmatter of one or more posts."
+
+[OcdScIsDisabled]
+other = "is disabled."
+
+[OcdScFeatEnable]
+other = "To enable it, set:"
+
+[OcdScFeatEnableFm]
+other = "in the frontmatter of the post you want to feature."
+
+[OcdScFeatKeys]
+other = "Other Keys"
+
+[OcdScFeatExComment]
+other = "# Ensure this line exists and is set to true"
+
+## Hero Shortcode -ocd-sc-112
+[OcdScHeroTitle]
+one = "Incomplete Link/Text Pair"
+other = "Incomplete Link/Text Pairs"
+
+[OcdScHeroReason]
+one = "shortcode has an incomplete"
+other = "shortcode has incomplete"
+
+[OcdScHeroLinkText]
+other = "link/text"
+
+[OcdScHeroPairs]
+one = "pair."
+other = "pairs."
+
+[OcdScHeroBtnPair]
+other = "Button Pair"
+
+[OcdScHeroLinkPair]
+other = "Link Pair"
+
+[OcdScHeroExplain]
+other = "This will affect usability and accessibility."
+
+[OcdScHeroProvided]
+other = "You provided"
+
+[OcdScHeroMissingLink]
+other = ", but the corresponding link"
+
+[OcdScHeroMissingText]
+other = ", but the corresponding text"
+
+[OcdScHeroIsMissing]
+other = "is missing."
+
+[OcdScHeroSolution]
+other = "For each link, provide both the URL and the text, or remove both attributes."
+
+
 # Ocd
 [OcdOn]
 other = "on:"
@@ -204,18 +467,14 @@ other = "Shortcode Input Error"
 other = "Invalid style value in the numbered list shortcode, on:"
 [OcdScSpecifiedStyle]
 other = "The specified style,"
-[OcdScNotRecognized]
-other = "is not recognized."
+
 [OcdScAvailableStyles]
 other = "Available Styles:"
-[OcdScParamError]
-other = "Shortcode Parameter Error"
+
 [OcdScNumList101]
 one = "Invalid parameter detected in the numbered list shortcode, on:"
 other = "Invalid parameters detected in the numbered list shortcode, on:"
-[OcdScParameter]
-one = "The parameter"
-other = "The parameters"
+
 [OcdScAcceptedParameters]
 other = "Accepted parameters: "
 [OcdScTextSnippet111]
