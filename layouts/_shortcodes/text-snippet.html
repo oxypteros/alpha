@@ -23,20 +23,20 @@
 {{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
 
 {{- /* * Text-snippet Shortcode Data */}}
-{{- $scName := "featured" -}}
-{{- /* ** Featured shortcode rules */}}
+{{- $scName := "text-snippet" -}}
+{{- /* ** Text-snippet shortcode rules */}}
 {{- $rules := dict
   "validKeys" (slice "TITLE")
   "params" (dict
   "TITLE"  (dict "validation" "any_string")
   )
 -}}
-{{- /* ** Featured shortcode metadata */}}
+{{- /* ** Text-snippet shortcode metadata */}}
 {{- $errorMeta := dict
   "docURL" "https://alpha.oxypteros.com/docs/shortcodes/text-snippet"
-  "example" "text-snippet TITLE=\"Example title\""
+  "example" "<br>&lbrace;&lbrace;&lt; text-snippet TITLE=\"Example title\" &gt;&rbrace;&rbrace;<br><br>/... Markdown .../<br><br>&lbrace;&lbrace;&lt; /text-snippet &gt;&rbrace;&rbrace;"
   "errorCodes" (dict
-  "invalidKey"   "ocd-sc-120"
+  "invalidKey"   "ocd-sc-130"
   )
 -}}
 
