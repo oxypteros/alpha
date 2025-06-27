@@ -74,7 +74,7 @@
     <p>
       {{ i18n "OcdExample" . }}
       <span class="ocd-mono ocd-mono-con-solution"
-        >&lbrace;&lbrace;&lt; {{ $scExample }} &gt;&rbrace;&rbrace;</span
+        >{{ $scExample | safeHTML }}</span
       >
     </p>
   </div>
