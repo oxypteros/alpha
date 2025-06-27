@@ -1,10 +1,11 @@
 {{- /*
   Shortcode: featured.html
-  Purpose: Renders the latest post with `featured = true`.
+  Purpose: Renders the latest post with `featured = true`. The featured post is 
+  retrieved by the `hugo.Store` set by `init-global-data` partial
 
   Target: _index.md (homepage, sections)
 
-  Example:{ {< featured STYLE="" >}}
+  Example:{{< featured STYLE="" >}}
 
   Params:
   - STYLE (string, optional): Visual style of the featured article.
@@ -64,12 +65,15 @@
 {{- if and (not $validFeatured) ($validInput) }}
   {{- if or ($ocdWarnEnabled) ($ocdEnabled) }}
     {{- $errorData := dict
-      "context"   .
-      "scName"    $scName
-      "docURL"    $errorMeta.docURL
-      "errorCode" $errorMeta.errorCodes.featNotFound
+      "context"     .
+      "scName"      $scName
+      "docURL"      $errorMeta.docURL
+      "errorCode"   $errorMeta.errorCodes.featNotFound
+      "frontmatter" "featured = true"
+      "title"       (i18n "OcdScFeatTitle")
+      "consLine1"   (i18n "OcdScFeatEnableFm") 
     -}}
-    {{- partial "ocd/components/unique/featured-sc.html" $errorData }}
+    {{- partial "ocd/components/unique/global-data-sc.html" $errorData }}
   {{- end }}
 {{- end }}
 
