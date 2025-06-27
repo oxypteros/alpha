@@ -67,10 +67,7 @@
 
 {{- /* ** Conditions to render shortcode or OCD */}}
 {{- /* *** Input validation */}}
-{{- $validInput := false }}
-{{- if $validationResult.isValid }}
-  {{- $validInput = true }}
-{{- end }}
+{{- $validInput :=  $validationResult.isValid  -}}
 
 {{- /* - On failed input validation call the OCD handler */}}
 {{- if not $validInput }}
