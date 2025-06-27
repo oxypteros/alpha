@@ -1,7 +1,7 @@
 {{- /*
   Partial: ocd/components/unique/featured-sc.html
   Purpose: Render the `OCD warn`, `OCD on page`, and `OCD console` warning 
-  message for error `ocd-sc-112` of the featured shortcode.
+  message for error `ocd-sc-122` of the featured shortcode.
 
  Requires a dictionary expecting the following keys:
   - context (object)   : The page context ( . )
@@ -85,7 +85,7 @@ $frontmatter
     </footer>
   </div>
 
-  <template data-alpha="ocd-sc-112-template">
+  <template data-alpha="{{ $errorCode }}-template">
     <div class="ocd-console-explanation">
       <h2>
         {{- i18n "OcdScFeatTitle" . | default "No Featured Content Found" }}
