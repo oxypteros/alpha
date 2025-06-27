@@ -33,10 +33,10 @@
 
   )
 -}}
-{{- /* ** Featured shortcode metadata */}}
+{{- /* ** Recommended shortcode metadata */}}
 {{- $errorMeta := dict
   "docURL" "https://alpha.oxypteros.com/docs/shortcodes/recommended"
-  "example" "&lbrace;&lbrace;&lt; recommended STYLE=\"Suggestions\" LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+  "example" "&lbrace;&lbrace;&lt; recommended TITLE=\"Suggestions\" LIMIT=\"6\" &gt;&rbrace;&rbrace;"
   "errorCodes" (dict
   "invalidKey"   "ocd-sc-140"
   "invalidValue" "ocd-sc-141"
@@ -49,21 +49,17 @@
 
 {{- /* ** Conditions to render shortcode or OCD */}}
 {{- /* *** Input validation */}}
-{{- $validInput := false }}
-{{- if $validationResult.isValid }}
-  {{- $validInput = true }}
-{{- end }}
+{{- $validInput := $validationResult.isValid }}
+
 
 {{- /* - Retrieve recommended pages from the global store */}}
-{{- $lang := .Page.Language.Lang -}}
+{{- $lang := .Page.Language.Lang | default .Site.Language.Lang -}}
 {{- $recommendedKey := printf "recommended_%s" $lang -}}
 {{- $recommendedPages := hugo.Store.Get $recommendedKey -}}
 
 {{- /* *** Recommended post validation */}}
-{{- $validRecommended := false }}
-{{- if $recommendedPages }}
-  {{- $validRecommended = true }}
-{{- end }}
+{{- $validRecommended := $recommendedPages}}
+
 
 {{- /* - On failed recommended post retrieval show OCD shortcode unique warning */}}
 {{- if and (not $validRecommended) ($validInput) }}
@@ -99,11 +95,10 @@
 {{- /* * On successful validations render shortcode */}}
 {{- if and $validInput $validRecommended }}
   {{- $data := $validationResult.data -}}
-  {{ $intNumber := $data.limit | default 4 }}
-  {{- $numPages := $intNumber }}
+  {{- $intLimit := $data.limit | default 4 -}}
 
-  {{- /* Get a sample, but don’t exceed the $numPages */}}
-  {{- $sampleSize := math.Min (len $recommendedPages) $numPages }}
+  {{- /* Get a sample, but don’t exceed the $intLimit */}}
+  {{- $sampleSize := math.Min (len $recommendedPages) $intLimit }}
 
   {{- /* Respect the limit */}}
   {{- $actualPages := first $sampleSize ($recommendedPages) }}

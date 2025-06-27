@@ -45,10 +45,7 @@
 
 {{- /* ** Conditions to render shortcode or OCD */}}
 {{- /* *** Input validation */}}
-{{- $validInput := false }}
-{{- if $validationResult.isValid }}
-  {{- $validInput = true }}
-{{- end }}
+{{- $validInput := $validationResult.isValid  -}}
 
 {{- /* - Retrieve featured post from the global store */}}
 {{- $lang := .Page.Language.Lang -}}
@@ -56,10 +53,7 @@
 {{- $featuredPosts := hugo.Store.Get $featuredKey -}}
 
 {{- /* *** Featured post validation */}}
-{{- $validFeatured := false }}
-{{- if $featuredPosts }}
-  {{- $validFeatured = true }}
-{{- end }}
+{{- $validFeatured := $featuredPosts -}}
 
 {{- /* - On failed featured post retrieval show OCD shortcode unique warning */}}
 {{- if and (not $validFeatured) ($validInput) }}
