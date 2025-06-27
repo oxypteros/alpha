@@ -1,11 +1,11 @@
 {{- /*
   Partial: init-global-data.html
-  Purpose: Collect and store post data for reuse across templates (recommended, 
-  latest, featured)
+  Purpose: Collect and store post data for reuse across templates (recommended,
+  latest, featured, recent)
 
-   Behavior:
+  Behavior:
   - Avoids repeated expensive `.Site.RegularPages` + `where` calls
-  - Store the result in `hugo.Store` using language specific keys for 
+  - Store the result in `hugo.Store` using language specific keys for
   multilingual support
   - Makes post lists accessible globally with `.hugo.Store`
 
@@ -14,17 +14,31 @@
 
 {{- $lang := .Site.Language.Lang -}}
 
-{{- /* Store Recommended Posts */}}
+{{- /* * Store Recommended Posts */}}
 {{- $recKey := printf "recommended_%s" $lang -}}
 {{- hugo.Store.Set $recKey (where .Site.RegularPages "Params.recommended" true) -}}
 
-{{- /* Store Latest Post */}}
+{{- /* * Store Latest Post and All Non-Featured Posts */}}
 {{- $latestKey := printf "latest_%s" $lang -}}
-{{- with where .Site.RegularPages "Params.featured" "!=" true }}
-  {{- hugo.Store.Set $latestKey (first 1 .ByDate.Reverse) }}
-{{- else }}
+{{- $allLatestKey := printf "all_latest_%s" $lang -}}
+
+{{- /* ** Find all non featured post */}}
+{{- $nonFeaturedPosts := where .Site.RegularPages "Params.featured" "!=" true -}}
+
+{{- if $nonFeaturedPosts -}}
+  {{- /* - Sort the list */}}
+  {{- $sortedNonFeatured := $nonFeaturedPosts.ByDate.Reverse -}}
+
+  {{- /* - Store the single latest post */}}
+  {{- hugo.Store.Set $latestKey (first 1 $sortedNonFeatured) -}}
+
+  {{- /* - Store the FULL sorted list */}}
+  {{- hugo.Store.Set $allLatestKey $sortedNonFeatured -}}
+{{- else -}}
+  {{- /* - Failsafe: If there are no posts, set both keys to an empty slice */}}
   {{- hugo.Store.Set $latestKey slice -}}
-{{- end }}
+  {{- hugo.Store.Set $allLatestKey slice -}}
+{{- end -}}
 
 {{- /* Store Featured Post */}}
 {{- $lang := .Site.Language.Lang -}}
