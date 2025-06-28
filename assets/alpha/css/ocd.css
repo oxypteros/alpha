@@ -103,6 +103,7 @@
 .ocd-mono-solution {
   color: var(--ocd-correct);
 }
+
 /** OCD Card Layout **/
 .ocd-card {
   display: flex;
@@ -318,6 +319,12 @@
   hr {
     border-top: 1px solid var(--ocd-warning);
     background-color: var(--ocd-warning);
+  }
+  ul {
+    margin: .5rem;
+  }
+  li {
+    margin: .2rem 0;
   }
 }
 .ocd-card-footer-warning {
@@ -709,10 +716,11 @@
     font-size: 1.1rem;
     font-weight: 500;
     color: var(--ocd-sur-accent);
+    margin-bottom: 1.5rem;
   }
   p {
     font-size: 0.9rem;
-    margin: 0.5rem 0;
+    margin: 0.6rem 0;
   }
   ul {
     margin: 0.5rem 1rem;
@@ -736,6 +744,10 @@
   a:hover {
     text-decoration-thickness: 2px;
   }
+}
+.ocd-console-example {
+  font-size: 0.93rem;
+  margin: 2rem 0;
 }
 .ocd-mono-con-warning {
   font-weight: 500;
