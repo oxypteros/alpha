@@ -26,14 +26,12 @@
     "validKeys" (slice "TYPE")
     "params" (dict
     "TYPE"  (dict "validation" "in_list" "list" (slice "shortcodes" "markdown") "default" "shortcodes")
-    "TITLE" (dict "validation" "any_string")
-    "LIMIT" (dict "validation" "is_positive_integer")
     )
   -}}
   {{- /* ** Help shortcode metadata */}}
   {{- $errorMeta := dict
     "docURL"  "https://alpha.oxypteros.com/docs/shortcodes/help"
-    "example" "help TYPE=\"markdown\""
+    "example" "&lbrace;&lbrace;&lt; help TYPE=\"markdown\" &gt;&rbrace;&rbrace;"
     "errorCodes" (dict
     "invalidKey"   "ocd-sc-100"
     "invalidValue" "ocd-sc-101"
