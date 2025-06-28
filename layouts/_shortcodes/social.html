@@ -1,248 +1,129 @@
 {{- /*
-  social.html (shortcode): Renders a social network list with icons or text.
+  Shortcode: social.html
+  Purpose: Renders a social network list with icons or text.
 
   Target: Global
 
   Example:
-  {{< social LIMIT="" >}}
+  { {< social LIMIT="" >} }
 
-  Params: 
-  - LIMIT (integral, optional): Number of menu item to show 
-  
+  Params:
+  - LIMIT (integral, optional): Number of menu item to show
+
   Error handler:
-  - warnf 
-  - OCD 
-  
-  Docs: https://alpha.oxypteros.com/shortcodes/social 
-  Repo: https://github.com/oxypteros/alpha 
+  - ocdWarn (global)
+  - OCD (scoped)
+
+  Docs: https://alpha.oxypteros.com/shortcodes/social
+  Repo: https://github.com/oxypteros/alpha
 */}}
-{{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}
 
-{{- /* Parameter and menu initial validation */}}
-{{- $isNumber := (printf "%v" $limit | findRE "^[1-9][0-9]*$") }}
-{{- $menu := .Site.Menus.sc_social }}
-{{- $firstN := $menu }}
-{{- $intNumber := 0 }}
-{{- $warnNumber := false }}
+{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
+{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
 
-{{- if and $isNumber $menu }}
-  {{- $intNumber = (index $isNumber 0 | int) }}
-  {{- $firstN = first $intNumber $menu }}
-{{- else if $limit }}
-  {{- $warnNumber = true }}
-{{- end }}
+{{- /* * Social Shortcode Data */}}
+{{- $scName := "social" -}}
+{{- /* ** Social shortcode rules */}}
+{{- $rules := dict
+  "validKeys" (slice "LIMIT")
+  "params" (dict
+  "LIMIT" (dict "validation" "is_positive_integer")
+  )
+-}}
+{{- /* ** Social shortcode metadata */}}
+{{- $errorMeta := dict
+  "docURL" "https://alpha.oxypteros.com/docs/shortcodes/social"
+  "example" "&lbrace;&lbrace;&lt; LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+  "errorCodes" (dict
+  "invalidKey"   "ocd-sc-220"
+  "invalidValue" "ocd-sc-221"
+  "missingMenu"  "ocd-sc-228"
+  )
+-}}
 
-{{- /* Context for error reporting (warnf, OCD) */}}
-{{ $page := .Page.RelPermalink }}
+{{- /* *  Validate shortcode input */}}
+{{- $validationResult := partial "ocd/components/validator.html" (dict "rules" $rules "userInput" .Params) -}}
 
-{{- /* warnf, OCD: Validate params manually against an allowlist. */}}
-{{- $allowedKeys := slice "limit" }}
-{{- $invalidKeys := slice }}
+{{- /* ** Conditions to render shortcode or OCD */}}
+{{- /* *** Input validation */}}
+{{- $validInput := $validationResult.isValid }}
 
-{{- /* Invalid Parameter Error Handling (warnf, OCD) */}}
-
-{{- range $key, $value := .Params }}
-  {{- if not (in $allowedKeys (lower $key)) }}
-    {{- $invalidKeys = $invalidKeys | append $key }}
+{{- /* - On failed input validation call the OCD handler */}}
+{{- if not $validInput }}
+  {{ if or ($ocdWarnEnabled) ($ocdEnabled) }}
+    {{- partial "ocd/components/handler.html" (dict
+      "scName"   .Name
+      "errors"   $validationResult.errors
+      "rules"    $rules
+      "meta"     $errorMeta
+      "page"     .Page
+      "position" .Position
+      )
+    -}}
   {{- end }}
 {{- end }}
+{{- /* * On successful validations render shortcode */}}
+{{- if $validInput }}
+  {{- $data := $validationResult.data -}}
+  {{- $menuToRender := .Site.Menus.sc_social -}}
 
-{{- if gt (len $invalidKeys) 0 }}
-  {{- /* Warnf for error: ocd-sc-171 */}}
-  {{- $errorCode := "ocd-sc-171" }}
-  {{- $invalidKeysString := delimit $invalidKeys ", " }}
-  {{- $errorMessage := printf "Invalid parameter: %s" $invalidKeysString }}
-  {{- $logMessage := printf "OcdError [%s] Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: odc-sc-171 */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScParamError" . | default "Shortcode Parameter Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- $count := len $invalidKeys }}
-            {{- i18n "OcdScSocial171" $count | default "Invalid parameter in the social shortcode on:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScParameter" $count  | default "The parameters," }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $invalidKeysString }}</span
-            >&nbsp;
-            {{ i18n "OcdScNotRecognized"  $count  | default "are not recognized." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
-          <span class="ocd-mono-solution">LIMIT</span>
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
-  {{- end }}
-{{- end }}
-
-{{- /* Missing Menu Error Handling (warnf, OCD) */}}
-
-{{- if and hugo.IsServer (eq $menu nil) }}
-  {{- /* Warnf for error: ocd-sc-172 */}}
-  {{- $errorCode := "ocd-sc-172" }}
-  {{- $errorMessage := printf "Menu sc_social is not set." }}
-  {{- $logMessage := printf "OcdError [%s] - Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: odc-sc-172 */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScContentError" . | default "Shortcode Content Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- i18n "OcdScSocial172" . | default "Missing menu for the social shortcode on page:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScTheMenu" . | default "The menu " }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">sc_social</span>&nbsp;
-            {{ i18n "OcdScIsNotSet" . | default "is not set." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{- i18n "OcdScCreatePopulate" . | default "Create or populate a" }}
-          <span class="ocd-mono-solution">[[sc_social]]</span>
-          {{ i18n "OcdScMenuOn" . | default "menu on " }}
-          <span class="ocd-mono ocd-mono-solution"
-            >/config/_defaults/menus.toml</span
-          >
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
+  {{ if not $menuToRender }}
+    {{- if or ($ocdWarnEnabled) ($ocdEnabled) }}
+      {{- $errorData := dict
+        "context"         .
+        "name"            $scName
+        "docURL"          $errorMeta.docURL
+        "errorCode"       $errorMeta.errorCodes.missingMenu
+        "scExample"       $errorMeta.example
+        "menu"            "[[sc_social]]"
+        "menuFile"        "config/_default/menus.toml"
+      -}}
+      {{- partial "ocd/components/unique/missing-menu.html" $errorData }}
+    {{- end }}
   {{- end }}
 
-{{- end }}
-
-{{- /* Wrong Number Value Error Handling (warnf, OCD) */}}
-
-{{- if and hugo.IsServer $warnNumber }}
-  {{- /* Warnf for error: ocd-sc-173 */}}
-  {{- $errorCode := "ocd-sc-173" }}
-  {{- $errorMessage := printf "The value of the LIMIT parameter is not an integer: %s." $limit }}
-  {{- $logMessage := printf "OcdError [%s] - Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: odc-sc-173 */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
+  {{- if $menuToRender }}
+      {{- if $data.limit -}}
+      {{- $intNumber := $data.limit -}}
+      {{- $menuToRender = first $intNumber $menuToRender -}}
+    {{- end -}}
+    {{- /* Create unique id's for aria-labels in case of multiple shortcodes */}}
+    {{- $base := .Page.File.BaseFileName | urlize }}
+    {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+    {{- $uid := printf "%s-%v" $base $ordinal }}
+    <aside
+      class="sc-social mt-8 mb-32 flex w-full max-w-7xl items-center justify-center px-4"
+      aria-labelledby="social-heading-{{- $uid -}}"
     >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScContentError" . | default "Shortcode Content Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- i18n "OcdScSocial173" . | default "Invalid parameter value for the social shortcode on:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScThe" . | default "The" }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">LIMIT</span>&nbsp;
-            {{- i18n "OcdScParameterValue" . | default "parameter value" }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $limit }}</span>&nbsp;
-            {{ i18n "OcdScIsInvalid" . | default "is invalid." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{- i18n "OcdSc" . | default "" }}
-          <span class="ocd-mono-solution">LIMIT</span>
-          {{ i18n "OcdSc" . | default "must be an integer." }}
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
+      <h2 id="social-heading-{{- $uid -}}" class="sr-only">
+        {{- i18n "SocialHeading" . | default "Social media links" }}
+      </h2>
+      <ul
+        class="flex w-full max-w-xl flex-wrap items-center justify-center gap-3"
+      >
+        {{- range $menuToRender }}
+          <li>
+            <a
+              class="group hover:text-pri dark:hover:text-pri-d flex rounded-full p-2"
+              href="{{ .URL }}"
+              aria-label="{{- i18n "FollowUsOn" . | default "Follow us on:"}} {{ .Name }}"
+            >
+              {{ with .Pre }}
+                <svg
+                  class="stroke-on-sur dark:stroke-on-sur-d dark:group-hover:stroke-pri-d group-hover:stroke-pri size-6"
+                  aria-hidden="true"
+                  width="20"
+                  height="20"
+                >
+                  <use href="{{ . }}"></use>
+                </svg>
+              {{- else }}
+                {{ .Name }}
+              {{- end }}
+            </a>
+          </li>
+        {{- end }}
+      </ul>
+    </aside>
   {{- end }}
-{{- end }}
-{{- if $menu }}
-  {{- /* Create unique id's for aria-labels in case of multiple shortcodes */}}
-  {{- $base := .Page.File.BaseFileName | urlize }}
-  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
-  {{- $uid := printf "%s-%v" $base $ordinal }}
-  <aside
-    class="sc-social mt-8 mb-32 flex w-full max-w-7xl items-center justify-center px-4"
-    aria-labelledby="social-heading-{{- $uid -}}"
-  >
-    <h2 id="social-heading-{{- $uid -}}" class="sr-only">
-      {{- i18n "SocialHeading" . | default "Social media links" }}
-    </h2>
-    <ul
-      class="flex w-full max-w-xl flex-wrap items-center justify-center gap-3"
-    >
-      {{- range $firstN }}
-        <li>
-          <a
-            class="group hover:text-pri dark:hover:text-pri-d flex rounded-full p-2"
-            href="{{ .URL }}"
-            aria-label="{{ .Name }}"
-          >
-            {{ with .Pre }}
-              <svg
-                class="stroke-on-sur dark:stroke-on-sur-d dark:group-hover:stroke-pri-d group-hover:stroke-pri size-6"
-                aria-hidden="true"
-                width="20"
-                height="20"
-              >
-                <use href="{{ . }}"></use>
-              </svg>
-            {{- else }}
-              {{ .Name }}
-            {{- end }}
-          </a>
-        </li>
-      {{- end }}
-    </ul>
-  </aside>
-{{- end }}
+{{- end -}}
