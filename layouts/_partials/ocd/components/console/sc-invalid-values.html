@@ -32,7 +32,8 @@
   <div class="ocd-console-explanation">
     <h2>
       {{ i18n "OcdScInvValueConsTitle" $invalidCount | default "Invalid Values in" }}
-      {{ $scName }} {{ i18n "OcdShortcode" .  | default "" }}
+      {{ $scName }}
+      {{ i18n "OcdShortcode" .  | default "" }}
     </h2>
     <p>
       {{ i18n "OcdTheValue" $invalidCount | default "The value" }}
@@ -72,10 +73,10 @@
       {{- end }}
     </ul>
     <div class="ocd-console-example">
-      {{ i18n "OcdExample" . }}
-      <span class="ocd-mono ocd-mono-con-solution"
-        >{{ $scExample | safeHTML }}</span
-      >
+      {{ i18n "OcdExample" . | default "Example:" }}
+      <p class="ocd-mono ocd-mono-con-solution">
+        {{- $scExample | safeHTML }}
+      </p>
     </div>
   </div>
   <div class="ocd-console-doc">
