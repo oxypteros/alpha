@@ -38,7 +38,7 @@
 
 {{- /* * Hero Shortcode Data */}}
 {{- $scName := "hero" -}}
-{{- /* ** Featured shortcode rules */}}
+{{- /* ** Hero shortcode rules */}}
 {{- $rules := dict
   "validKeys" (slice "TITLE" "SUBTITLE" "BTN-TEXT" "BTN-LINK" "BTN-LABEL" "LINK-TEXT" "LINK" "LINK-LABEL")
   "params" (dict
@@ -52,10 +52,10 @@
   "LINK-LABEL" (dict "validation" "any_string")
   )
 -}}
-{{- /* ** Featured shortcode metadata */}}
+{{- /* ** Hero shortcode metadata */}}
 {{- $errorMeta := dict
   "docURL" "https://alpha.oxypteros.com/docs/shortcodes/hero"
-  "example" "<br /><span>&lbrace;&lbrace;&lt; help</span><br /><span>&nbsp;&nbsp;TITLE=\"Thoughts & Code\"</span><br /><span>&nbsp;&nbsp;SUBTITLE=\"A minimal blog about web, tech, and ideas.\"</span><br /><span>&nbsp;&nbsp;BTN-TEXT=\"Read the Blog\"</span><br /><span>&nbsp;&nbsp;BTN-LINK=\"/blog\"</span><br /><span>&nbsp;&nbsp;BTN-LABEL=\"Go to blog posts\"</span><br /><span>&nbsp;&nbsp;LINK-TEXT=\"About Me\"</span><br /><span>&nbsp;&nbsp;LINK=\"/about\"</span><br /><span>&nbsp;&nbsp;LINK-LABEL=\"Learn more about the author\"</span><br /><span class=\"ocd-mono ocd-mono-con-solution\">&gt;&rbrace;&rbrace;</span>"
+  "example" "&lbrace;&lbrace;&lt; help<br />&nbsp;&nbsp;TITLE=\"Thoughts & Code\"<br />&nbsp;&nbsp;SUBTITLE=\"A minimal blog about web, tech, and ideas.\"<br />&nbsp;&nbsp;BTN-TEXT=\"Read the Blog\"<br />&nbsp;&nbsp;BTN-LINK=\"/blog\"<br />&nbsp;&nbsp;BTN-LABEL=\"Go to blog posts\"<br />&nbsp;&nbsp;LINK-TEXT=\"About Me\"<br />&nbsp;&nbsp;LINK=\"/about\"<br />&nbsp;&nbsp;LINK-LABEL=\"Learn more about the author\"<br />&gt;&rbrace;&rbrace;"
   "errorCodes" (dict
   "invalidKey"   "ocd-sc-110"
   "invalidPairs" "ocd-sc-112"
@@ -114,6 +114,7 @@
         "scName"          $scName
         "docURL"          $errorMeta.docURL
         "errorCode"       $errorMeta.errorCodes.invalidPairs
+        "scExample"       $errorMeta.example 
         "isBtnPairValid"  $isBtnPairValid
         "isLinkPairValid" $isLinkPairValid
         "btnLink"         $btnLink
@@ -121,7 +122,7 @@
         "link"            $link
         "linkTxt"         $linkTxt
       -}}
-      {{- partial "ocd/components/unique/hero-sc.html" $errorData }}
+      {{- partial "ocd/components/unique/link-pairs-sc.html" $errorData }}
     {{- end }}
   {{- else }}
 
