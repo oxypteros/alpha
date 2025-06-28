@@ -184,9 +184,14 @@ other = "Info"
 [SocialHeading]
 other = "Social media links"
 
+[FollowUsOn]
+other= "Follow us on:"
+
 # OCD
 [OcdExample]
 other = "Example:"
+[OcdSolution]
+other = "Solution:"
 [OcdDoc]
 other = "documentation"
 [OcdScInteger]
@@ -195,9 +200,11 @@ other = "A positive integer (e.g. 1, 2, 3, ...)"
 other = "Shortcode"
 [OcdThe]
 other = "The"
+
 ## FAB
 [OcdFabAria]
 other = "Open OCD console if errors exist, otherwise open OCD settings"
+
 ## OCD Settings
 [OcdSettings]
 other = "OCD Settings"
@@ -311,6 +318,7 @@ other = "Example"
 
 [OcdHelpDocumentation]
 other = "Documentation"
+
 [OcdHelpAbout]
 other = "About"
 
@@ -377,73 +385,115 @@ other = "Valid parameters for the"
 one = "shortcode is:"
 other = "shortcode are:"
 
-## Shortcode Featured - ocd-sc-122
+## Unique Global Data
+[OcdScRecTitle]
+other = "No Recommended Content Found"
+[OcdScRec]
+other = "recommended"
 [OcdScFeatTitle]
 other = "No Featured Content Found"
-
+[OcdScFeat1]
+other = "featured"
 [OcdSet]
 other = "Set"
 
-[OcdScFeat]
-other = "shortcode requires at least one post marked as featured."
+[OcdScRequireOne]
+other = "shortcode requires at least one post marked as"
 
-[OcdScFeatSolution]
+[OcdScFmSolution]
 other = "in the frontmatter of one or more posts."
 
 [OcdScIsDisabled]
 other = "is disabled."
 
-[OcdScFeatEnable]
+[OcdScToEnable]
 other = "To enable it, set:"
 
 [OcdScFeatEnableFm]
 other = "in the frontmatter of the post you want to feature."
 
-[OcdScFeatKeys]
+[OcdScRecEnableFm]
+other = "in the frontmatter of the post you want to recommend."
+
+[OcdScOtherKeys]
 other = "Other Keys"
 
-[OcdScFeatExComment]
+[OcdScFmExComment]
 other = "# Ensure this line exists and is set to true"
 
-## Hero Shortcode -ocd-sc-112
-[OcdScHeroTitle]
+## Unique Link Pairs
+[OcdScPairsTitle]
 one = "Incomplete Link/Text Pair"
 other = "Incomplete Link/Text Pairs"
 
-[OcdScHeroReason]
+[OcdScPairsReason]
 one = "shortcode has an incomplete"
 other = "shortcode has incomplete"
 
-[OcdScHeroLinkText]
+[OcdScPairsLinkText]
 other = "link/text"
 
-[OcdScHeroPairs]
+[OcdScPairsPairs]
 one = "pair."
 other = "pairs."
 
-[OcdScHeroBtnPair]
+[OcdScPairsBtnPair]
 other = "Button Pair"
 
-[OcdScHeroLinkPair]
+[OcdScPairsLinkPair]
 other = "Link Pair"
 
-[OcdScHeroExplain]
+[OcdScPairsExplain]
 other = "This will affect usability and accessibility."
 
-[OcdScHeroProvided]
+[OcdScPairsProvided]
 other = "You provided"
 
-[OcdScHeroMissingLink]
+[OcdScPairsMissingLink]
 other = ", but the corresponding link"
 
-[OcdScHeroMissingText]
+[OcdScPairsMissingText]
 other = ", but the corresponding text"
 
-[OcdScHeroIsMissing]
+[OcdScPairsIsMissing]
 other = "is missing."
 
-[OcdScHeroSolution]
+[OcdScPairsSolution]
+one = "Provide both the URL and the text, or remove both attributes."
 other = "For each link, provide both the URL and the text, or remove both attributes."
+
+
+## Image 404
+[OcdImg404Title]
+other = "Image Not Found"
+[OcdImgTheImage]
+other = "The image"
+[OcdImgCannotFound]
+other = "cannot be found."
+[OcdImgMakeSure]
+other = "Make sure that the image with filename"
+
+[OcdImgIsPlaced]
+other = "is placed inside the"
+
+[OcdImgFolder]
+other = "folder."
+
+## Menu 404
+[OcdMenu404Title]
+other = "Menu Not Defined"
+
+[OcdMenuTheMenu]
+other = "The menu"
+
+[OcdMenuNotDefined]
+other = "is not defined."
+
+[OcdMenuDefine]
+other = "Define and populate the menu"
+
+[OcdMenuInFile]
+other = "in the file"
 
 
 # Ocd
