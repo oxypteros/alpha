@@ -1,4 +1,4 @@
-// /assets/alpha/js/modules/ocd/dom.js
+// /assets/alpha/ocd/js/modules/dom.js
 
 export const ocdContainer = document.querySelector(
   '[data-alpha="ocd-container"]',

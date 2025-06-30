@@ -368,6 +368,10 @@
   width: 1rem;
   height: 1rem;
   stroke: #3a494c;
+  flex-shrink: 0;
+}
+.ocd-logo-hugo {
+  flex-shrink: 0;
 }
 .dark .ocd-logo-alpha {
   stroke: #dcf5f9;
@@ -797,6 +801,7 @@
     height: 1rem;
     width: 1rem;
     margin-right: 0.2rem;
+    flex-shrink: 0;
   }
 }
 .ocd-version {

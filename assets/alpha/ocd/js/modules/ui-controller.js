@@ -1,4 +1,4 @@
-// /assets/alpha/js/modules/ocd/ui-controller.js
+// /assets/alpha/ocd/js/modules/ui-controller.js
 
 import { OcdStates, StorageKeys } from "./constants.js";
 import * as Dom from "./dom.js";

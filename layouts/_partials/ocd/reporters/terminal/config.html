@@ -1,0 +1,67 @@
+{{- /*
+  Partial: ocd/reporters/terminal/config.html
+  Purpose: Renders the terminal warnings for results from `checks/config.logic.html`.
+*/}}
+
+{{- $errors := .configErrors -}}
+
+{{- range $errors -}}
+
+  {{- $code := .code -}}
+  {{- $key := .key -}}
+  {{- $file := .file -}}
+  {{- $lang := .lang -}}
+  {{- $paramYear := .value -}}
+  {{- $currentYear := .currentYear -}}
+  {{- $title := "" -}}
+  {{- $reason := "" -}}
+  {{- $solution := "" -}}
+
+  {{- if eq $code "ocd-config-102" -}}
+    {{- $title = printf "Missing Site Title" }}
+    {{- $reason = printf "The '%s' key is missing or empty." $key -}}
+    {{- $solution = printf "Add the website name as '%s' in the %s\nEx. %s = \"My Website\"" $key $file $key -}}
+  {{- end -}}
+
+  {{- if eq $code "ocd-config-114" -}}
+    {{- $title = printf "Missing Language Code" -}}
+    {{- $reason = printf "The '%s' key is missing or empty." $key -}}
+    {{- $solution = printf "Add a '%s' for every language defined.\nEx. %s = \"en_US\"" $key $key }}
+  {{- else if eq $code "ocd-config-112" -}}
+    {{- $title = printf "Missing Language Weight" -}}
+    {{- $reason = printf "The '%s' key for language [%s] is missing or invalid." $key $lang -}}
+    {{- $solution = printf "Add a '%s' value for the language [%s].\nEx. %s = 2" $key $lang $key }}
+  {{- else if eq $code "ocd-config-113" -}}
+    {{- $title = printf "Missing Language Name" -}}
+    {{- $reason = printf "The '%s' key for language [%s] is missing or empty." $key $lang -}}
+    {{- $solution = printf "Add a '%s' for the language [%s].\nEx. %s = \"English\"" $key $lang $key -}}
+  {{- end -}}
+
+  {{- if eq $code "ocd-config-121" -}}
+    {{- $title = printf "Invalid Year Value" -}}
+    {{- $reason = printf "The '%s' key has an invalid value: %q." $key $paramYear -}}
+    {{- $solution = printf "Add a valid year as value of '%s'.\nEx. %s = %q" $key $key $currentYear }}
+  {{- else if eq $code "ocd-config-122" -}}
+    {{- $title = printf "Future Year Value" -}}
+    {{- $reason = printf "The %q value for the key %s is a future year"  $paramYear $key -}}
+    {{- $solution = printf "Add the current or a past year as value of '%s'.\nEx. %s = %q" $key $key $currentYear -}}
+  {{- end -}}
+
+
+  <!-- prettier-ignore -->
+  {{- warnf `
+[OCD] %s
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+File   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$title    
+$code
+$reason
+$file
+$solution
+-}}
+{{- end -}}

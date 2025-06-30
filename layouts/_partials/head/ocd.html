@@ -9,12 +9,12 @@
   Repo: https://github.com/oxypteros/alpha
 */}}
 
-{{- with resources.Get "alpha/css/ocd.css" }}
+{{- with resources.Get "alpha/ocd/css/ocd.css" }}
   <link rel="stylesheet" href="{{ .RelPermalink }}" />
 {{- end }}
 
 
-{{- $ocdJsPath := "alpha/js/ocd.js" -}}
+{{- $ocdJsPath := "alpha/ocd/js/ocd.js" -}}
 {{- $jsTpl := resources.Get $ocdJsPath  -}}
 {{- $ocdJs := $jsTpl | js.Build  -}}
 {{- $finalJs := $ocdJs }}

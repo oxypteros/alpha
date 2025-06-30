@@ -1,0 +1,50 @@
+{{- /*
+  Partial: ocd/components/console/templates.html
+  Purpose: Renders and caches all static <template> elements for the OCD console.
+
+*/}}
+
+{{- $lang := .Site.Language.Lang | default "en" -}}
+
+{{- /* * Cache the "Update" Templates */}}
+{{- $updatesCacheKey := printf "ocd-update-templates-%s" $lang -}}
+{{- $updatesHTML := "" -}}
+
+{{- if site.Store.Get $updatesCacheKey }}
+  {{- $updatesHTML = site.Store.Get $updatesCacheKey -}}
+{{- else }}
+  {{- $noAlphaUpdates := printf `<template data-alpha="ocd-no-alpha-updates-template"><div class="ocd-console-explanation"><p class="ocd-con-no-updates"><svg class="ocd-logo-alpha" width="16" height="16" aria-hidden="true"><use href="#alpha-logo"></use></svg>%s</p></div></template>` (i18n "OcdConsAlphaNoUpdate") -}}
+  {{- $noHugoUpdates := printf `<template data-alpha="ocd-no-hugo-updates-template"><div class="ocd-console-explanation"><p class="ocd-con-no-updates"><svg class="ocd-logo-hugo" width="16" height="16" aria-hidden="true"><use href="#hugo-logo"></use></svg>%s</p></div></template>` (i18n "OcdConsHugoNoUpdate") -}}
+  {{- $alphaUpdates := printf `<template data-alpha="ocd-alpha-updates-template"><div class="ocd-console-explanation"><p class="ocd-con-no-updates"><svg class="ocd-logo-alpha" width="16" height="16" aria-hidden="true"><use href="#alpha-logo"></use></svg>%s</p></div></template>` (i18n "OcdConsAlphaUpdate") -}}
+  {{- $hugoUpdates := printf `<template data-alpha="ocd-hugo-updates-template"><div class="ocd-console-explanation"><p class="ocd-con-no-updates"><svg class="ocd-logo-hugo" width="16" height="16" aria-hidden="true"><use href="#hugo-logo"></use></svg>%s</p></div></template>` (i18n "OcdConsHugoUpdate") -}}
+  
+  {{- /* - Concatenate them all */}}
+  {{- $updatesHTML = printf "%s %s %s %s" $noAlphaUpdates $noHugoUpdates $alphaUpdates $hugoUpdates -}}
+  
+  {{- /* - Store the entire block in the cache */}}
+  {{- site.Store.Set $updatesCacheKey $updatesHTML -}}
+{{- end }}
+
+{{- /* * Cache the "Help" Template */}}
+{{- $helpCacheKey := printf "alpha/ocd/help/%s.md" $lang -}}
+{{- $helpHTML := "" -}}
+
+{{- if site.Store.Get $helpCacheKey }}
+  {{- $helpHTML = site.Store.Get $helpCacheKey -}}
+{{- else }}
+  {{- $helpFilePath := printf "alpha/ocd/help/%s.md" $lang -}}
+  {{- with resources.Get $helpFilePath }}
+    {{- $helpHTML = .Content | markdownify -}}
+  {{- else }}
+    {{- $helpHTML = printf `<div class="ocd-console-explanation"><h2>Help File Not Found</h2><p>OCD help file not found at <span class="ocd-mono ocd-mono-con-warning">/assets/%s</span></p></div>` $helpCacheKey -}}
+  {{- end }}
+  {{- site.Store.Set $helpCacheKey $helpHTML -}}
+{{- end }}
+
+{{- /* ** Print the cached HTML blocks */}}
+
+{{- $updatesHTML | safeHTML -}}
+
+<template data-alpha="ocd-help-template">
+  {{- $helpHTML | safeHTML -}}
+</template>

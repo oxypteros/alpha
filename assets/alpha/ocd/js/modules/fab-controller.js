@@ -1,4 +1,4 @@
-// /assets/alpha/js/modules/ocd/fab-controller.js
+// /assets/alpha/ocd/js/modules/fab-controller.js
 
 import { OcdPositions, OcdStates, StorageKeys } from "./constants.js";
 import { ocdContainer, selectPositionElement, ocdFab } from "./dom.js";

@@ -99,7 +99,7 @@
     {{- end }}
 
     {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
+    {{- if or (.Site.Params.ocd_enabled | default true) (.Site.Params.ocdWarn_enabled | default true) }}
       {{- partial "ocd/main.html" . -}}
     {{- end -}}
   </body>

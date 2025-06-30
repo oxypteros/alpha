@@ -1,4 +1,4 @@
-// /assets/alpha/js/modules/ocd/constants.js
+// /assets/alpha/ocd/js/modules/constants.js
 
 export const OcdPositions = {
   BOTTOM_LEFT: "ocd-bottom-left",

@@ -1,0 +1,29 @@
+{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
+{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+
+{{- if or $ocdEnabled $ocdWarnEnabled }}
+  {{- /* * Config Files Errors */}}
+  {{- $configErrors := partialCached "ocd/checks/config.logic.html" . .Lang -}}
+
+  {{- /* * Page Errors */}}
+  {{- $frontmatterErrors := partial "ocd/checks/frontmatter.logic.html" . -}}
+
+  {{- /* * Unreachable Errors */}}
+  {{- /* ** Head Errors */}}
+  {{- $ocdHeadErrors := .Store.Get "ocdHeadErrors" | default (slice) -}}
+
+  {{- if $ocdWarnEnabled }}
+    {{- if gt (len $configErrors) 0 -}}
+      {{- partial "ocd/reporters/terminal/config.html" (dict "configErrors" $configErrors) -}}
+    {{- end -}}
+    {{- if gt (len $frontmatterErrors) 0 -}}
+      {{- partial "ocd/reporters/terminal/frontmatter.html" (dict "fmErrors" $frontmatterErrors) -}}
+    {{- end -}}
+  {{- end }}
+
+  {{- if $ocdEnabled }}
+    {{- if gt (len $configErrors) 0 -}}
+      {{- partial "ocd/views/console/config.html" (dict "configErrors" $configErrors) -}}
+    {{- end -}}
+  {{- end }}
+{{- end }}

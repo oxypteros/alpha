@@ -297,6 +297,17 @@ other = "Alpha theme version:"
 [OcdHugoVerAria]
 other = "Hugo version:"
 
+[OcdConsAlphaNoUpdate]
+other = "You're using the latest version of the Alpha theme."
+
+[OcdConsHugoNoUpdate]
+other = "You're using the latest version of Hugo."
+
+[OcdConsAlphaUpdate]
+other = "A new version of the Alpha theme is available!"
+
+[OcdConsHugoUpdate]
+other = "A new version of Hugo is available!"
 ## Help Shortcode
 [OcdHelpSyntax]
 other = "Syntax"

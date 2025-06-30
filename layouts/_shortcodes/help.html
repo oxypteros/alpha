@@ -39,7 +39,7 @@
   -}}
 
   {{- /* * Validate shortcode input */}}
-  {{- $validationResult := partial "ocd/components/validator.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validationResult := partial "ocd/core/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
 
   {{- /* * Render the shortcode on successful validation */}}
   {{- if $validationResult.isValid }}
@@ -75,7 +75,7 @@
     {{- end }}
   {{- else }}
     {{- /* ** On failed validation call the OCD handler */}}
-    {{- partial "ocd/components/handler.html" (dict
+    {{- partial "ocd/core/handler.logic.html" (dict
       "scName"   .Name
       "errors"   $validationResult.errors
       "rules"    $rules

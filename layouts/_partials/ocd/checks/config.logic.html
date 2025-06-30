@@ -1,0 +1,103 @@
+{{- /*
+  Partial: ocd/components/diag-configs.html
+  Purpose: Performs diagnostic checks on the Hugo config files and returns error
+  objects.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- $errors := slice -}}
+
+{{- /*
+  hugo.toml: Missing .Site.Title
+  Code: ocd-config-102
+*/}}
+{{- if not (strings.TrimSpace .Site.Title) -}}
+  {{- $errorObject := dict
+    "code" "ocd-config-102"
+    "key"  "title"
+    "file" "hugo.toml"
+  -}}
+  {{- $errors = $errors | append $errorObject -}}
+{{- end -}}
+
+{{- /*
+  languages.toml: Missing weight, languageName, languageCode
+  Codes: ocd-config-112, ocd-config-113, ocd-config-114
+*/}}
+{{- if gt (len .Site.Languages) 1 -}}
+  {{- $languageErrors := slice -}}
+  {{- range .Site.Languages -}}
+    {{- $langCode := .LanguageCode -}}
+
+    {{- /* Check for weight. */}}
+    {{- if lt .Weight 1 -}}
+      {{- $errorObject := dict
+        "code"    "ocd-config-112"
+        "key"     "weight"
+        "file"    "config/_default/languages.toml"
+        "lang"    $langCode
+      -}}
+      {{- $languageErrors = $languageErrors | append $errorObject -}}
+    {{- end -}}
+
+    {{- /* Check for languageName */}}
+    {{- if not (strings.TrimSpace .LanguageName) -}}
+      {{- $errorObject := dict
+        "code"    "ocd-config-113"
+        "key"     "languageName"
+        "file"    "config/_default/languages.toml"
+        "lang"    $langCode
+      -}}
+      {{- $languageErrors = $languageErrors | append $errorObject -}}
+    {{- end -}}
+
+    {{- /* Check for languageCode */}}
+    {{- if not (strings.TrimSpace .LanguageCode) -}}
+      {{- $errorObject := dict
+        "code"    "ocd-config-114"
+        "key"     "languageCode"
+        "file"    "config/_default/languages.toml"
+      -}}
+      {{- $languageErrors = $languageErrors | append $errorObject -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Merge the language errors into the main error slice. */}}
+  {{- if $languageErrors -}}
+    {{- $errors = append $errors $languageErrors -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /*
+  params.toml: Invalid or in future established_year
+  Codes: ocd-config-121, ocd-config-122
+*/}}
+{{- if .Site.Params.established_year -}}
+  {{- $paramYear := string .Site.Params.established_year -}}
+  {{- $currentYear := now.Format "2006" -}}
+  {{- $validYearFormat := findRE `^\d{4}$` $paramYear -}}
+
+  {{- if not $validYearFormat -}}
+    {{- /* Invalid Year Format */}}
+    {{- $errorObject := dict
+      "code"        "ocd-config-121"
+      "key"         "established_year"
+      "value"       $paramYear
+      "currentYear" $currentYear
+      "file"        "config/_default/params.toml"
+    -}}
+    {{- $errors = $errors | append $errorObject -}}
+  {{- else if gt $paramYear $currentYear -}}
+    {{- /* Future Year Value */}}
+    {{- $errorObject := dict
+      "code"        "ocd-config-122"
+      "key"         "established_year"
+      "value"       $paramYear
+      "currentYear" $currentYear
+      "file"        "config/_default/params.toml"
+    -}}
+    {{- $errors = $errors | append $errorObject -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $errors -}}

@@ -1,4 +1,4 @@
-// /assets/alpha/js/modules/ocd/update-checker.js
+// /assets/alpha/ocd/js/modules/update-checker.js
 
 import { ApiUrls, DocUrls } from "./constants.js";
 import {

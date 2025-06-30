@@ -7,9 +7,9 @@
  *
  */
 
-import { initializeErrorTracking } from './modules/ocd/error-tracker.js';
-import { restoreFabPosition, updateFabState } from './modules/ocd/fab-controller.js';
-import { initializeUiEventListeners } from './modules/ocd/ui-controller.js';
+import { initializeErrorTracking } from './modules/error-tracker.js';
+import { restoreFabPosition, updateFabState } from './modules/fab-controller.js';
+import { initializeUiEventListeners } from './modules/ui-controller.js';
 
 function main() {
   console.log("OCD is running");

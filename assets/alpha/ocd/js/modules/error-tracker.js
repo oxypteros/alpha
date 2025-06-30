@@ -1,4 +1,4 @@
-// /assets/alpha/js/modules/ocd/error-tracker.js
+// /assets/alpha/ocd/js/modules/error-tracker.js
 
 import { StorageKeys } from "./constants.js";
 
