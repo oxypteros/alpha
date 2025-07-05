@@ -73,12 +73,16 @@
   {{- $licenseURL = "https://creativecommons.org/licenses/by-nc-nd/4.0/" -}}
 {{- end }}
 
-{{- /* Description Fallbacks */}}
+{{- /* Description Logic */}}
 {{- $rawDescription := "" -}}
-{{- with $page.Params.description -}}
-  {{- $rawDescription = . -}}
-{{- else with $page.Summary -}}
-  {{- $rawDescription = . | truncate 160 -}}
+{{- if $page.Params.description -}}
+  {{- $rawDescription = $page.Params.description -}}
+{{- else if eq .Kind "taxonomy" -}}
+  {{- $formatDescription := i18n "DefaultTaxonomyDescription" | default "Browse all %s on %s—an overview of available %s for easy discovery." }}
+  {{- $rawDescription = printf $formatDescription .Data.Plural .Site.Title .Data.Plural -}}
+{{- else if eq .Kind "term" -}}
+  {{- $formatDescription := i18n "DefaultTermsDescription" | default "Explore all pages related to %q on %s—discover related content and topics" }}
+{{- $rawDescription = printf $formatDescription .Title .Site.Title  -}}
 {{- end -}}
 
 {{- $description := $rawDescription | plainify  | strings.TrimSpace -}}
