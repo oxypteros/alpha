@@ -1,0 +1,28 @@
+{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
+{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+
+  {{- /* * Frontmatter Errors */}}
+  {{- $frontmatterErrors := partial "ocd/core/frontmatter/check.logic.html" . -}}
+
+  {{- /* * Unreachable Errors */}}
+  {{- /* ** Head Errors */}}
+  {{- $ocdHeadFmErrors := .Store.Get "ocdHeadFmErrors" | default (slice) -}}
+
+  {{- /* All errors */}}
+  {{- $allFrontmatterErrors := $frontmatterErrors | append $ocdHeadFmErrors -}}
+
+  {{- /* ocdWarn to terminal */}}
+  {{- if $ocdWarnEnabled }}
+    {{- if gt (len $allFrontmatterErrors) 0 -}}
+      {{- partial "ocd/dispatchers/terminal/frontmatter.html" (dict "frontmatterErrors" $allFrontmatterErrors) -}}
+    {{- end -}}
+  {{- end }}
+
+  {{- /* OCD to console */}}
+  {{- if $ocdEnabled }}
+    {{- if gt (len $allFrontmatterErrors) 0 -}}
+      {{- partial "ocd/dispatchers/console/frontmatter.html" (dict "frontmatterErrors" $allFrontmatterErrors) -}}
+      {{- partial "ocd/dispatchers/page/frontmatter.html" (dict "frontmatterErrors" $allFrontmatterErrors) -}}
+    {{- end -}}
+  {{- end }}
+

@@ -1,0 +1,268 @@
+{{- /*
+  Partial: ocd/views/console/frontmatter.html
+  Purpose: Renders the console warnings for results from
+  `checks/frontmatter.logic.html`.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $errors := .frontmatterErrors -}}
+{{- range $errors -}}
+  {{- /* Dictionary keys */}}
+  {{- $code := .code -}}
+  {{- $page := .page -}}
+  {{- $file := .file -}}
+  {{- $key := .key -}}
+  {{- $keyValue := .keyValue -}}
+  {{- $validValues := .validValues -}}
+  {{- $date := .date -}}
+  {{- $lastmod := .lastmod -}}
+  {{- $path := .path -}}
+
+  {{- /* Declared vars */}}
+  {{- $title := "" -}}
+  {{- $reason := "" -}}
+  {{- $expandedReason := "" -}}
+  {{- $solution := "" -}}
+  {{- $docURL := "" -}}
+  {{- $example := "" -}}
+  {{- $preDoc := "" -}}
+
+  {{- /* Styled vars */}}
+  {{- $styledWarnKey := printf `<span class="ocd-mono ocd-mono-con-warning">%s</span>` $key -}}
+  {{- $styledWarnKeyValue := printf `<span class="ocd-mono ocd-mono-con-warning">%q</span>` $keyValue -}}
+  {{- $styledWarnFile := printf `<span class="ocd-mono ocd-mono-con-warning">%s</span>` $file -}}
+  {{- $styledSolKey := printf `<span class="ocd-mono ocd-mono-con-solution">%s</span>` $key -}}
+  {{- $styledSolFile := printf `<span class="ocd-mono ocd-mono-con-solution">%s</span>` $file -}}
+
+  {{- /* Invalid Lastmod Date */}}
+  {{- if eq $code "ocd-fm-102" -}}
+    {{- /* Custom variables */}}
+    {{- $styledSolDate := printf `<span class="ocd-mono ocd-mono-con-solution">%q</span>` $date -}}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmInvalidLastmod" | default "Invalid Modification Date" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmInvalidLastmodReason" | default "Ensure the %s is set to a date and time on or after the publish date." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdFmInvalidLastmodSolution" | default "Change the %s value to a date after the published date: %s." -}}
+    {{- $solution = printf $solutionFormat $styledSolKey $styledSolDate -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/page/" -}}
+    {{- $preDoc = "frontmatter" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- /* Invalid Layout Layout */}}
+  {{- if eq $code "ocd-fm-111" -}}
+    {{- /* Custom variables */}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmInvalidLayout" | default "Unknown Layout Specified" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmInvalidLayoutReason" | default "The %s parameter contains an invalid value: %s." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnKeyValue -}}
+    {{- /* Solution */}}
+    {{- $solution =  printf "Check for typos or use one of the valid layouts provided by the theme:\n%s"  $valuesList -}}
+    {{- $solutionFormat := i18n "OcdFmInvalidLayoutSolution" | default "Use one of the following valid values: %s " -}}
+    {{- $solution = printf $solutionFormat $valuesList -}}
+    {{- /* Example */}}
+    {{- $example = printf "%s = \"page\"" $key -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/" -}}
+    {{- $preDoc = "content creation" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- /* Missing Page Title */}}
+  {{- if eq $code "ocd-fm-122" -}}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmMissingTitle" | default "Missing Page Title" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmMissingTitleReason" | default "The %s parameter is missing or empty." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdFmMissingTitleSolution" | default "Add a non-empty %s to the frontmatter of %s" -}}
+    {{- $styledSolFile = printf `<span class="ocd-mono ocd-mono-con-solution">content/%s</span>` $file -}}
+    {{- $solution = printf $solutionFormat $styledSolKey $styledSolFile -}}
+    {{- /* Example */}}
+    {{- $example = printf "%s = \"An intriguing title\"" $key -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/page/" -}}
+    {{- $preDoc = "frontmatter" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- /* Invalid License Value */}}
+  {{- if eq $code "ocd-fm-131" -}}
+    {{- /* Custom variables */}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmInvalidLicense" | default "Invalid License Value" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmInvalidLicenseReason" | default "The %s parameter contains an invalid value: %s." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnKeyValue -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdFmInvalidLicenseSolution" | default "Check for typos or use one of the supported values: %s" -}}
+    {{- $solution = printf $solutionFormat  $valuesList -}}
+    {{- /* Example */}}
+    {{- $example = printf "%s = \"CC-BY\"" $key -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/page/" -}}
+    {{- $preDoc = "frontmatter" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- /* Invalid Recommended Value */}}
+  {{- if eq $code "ocd-fm-141" -}}
+    {{- /* Custom variables */}}
+    {{- $styledBoolean := printf `<span class="ocd-mono ocd-mono-con-solution">unquoted true or false</span>` }}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmInvalidRecommended" | default "Invalid Recommended Value" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmInvalidRecommendedReason" | default "The value of %s is invalid: %s." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnKeyValue -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdFmInvalidRecommendedSolution" | default "The %s key accepts only boolean values (%s)." -}}
+    {{- $solution = printf $solutionFormat $styledSolKey $styledBoolean -}}
+    {{- /* Example */}}
+    {{- $example = printf "%s = true" $key -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/page/" -}}
+    {{- $preDoc = "frontmatter" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- /* Invalid Featured Value */}}
+  {{- if eq $code "ocd-fm-151" -}}
+    {{- /* Custom variables */}}
+    {{- $styledBoolean := printf `<span class="ocd-mono ocd-mono-con-solution">unquoted true or false</span>` }}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmInvalidFeatured" | default "Invalid Featured Value" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmInvalidFeaturedReason" | default "The value of %s is invalid: %s." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnKeyValue -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdFmInvalidFeaturedSolution" | default "The %s key accepts only boolean values (%s)." -}}
+
+    {{- $solution = printf $solutionFormat $styledSolKey $styledBoolean -}}
+    {{- /* Example */}}
+    {{- $example = printf "%s = true" $key -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/page/" -}}
+    {{- $preDoc = "frontmatter" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- /* Missing Page Description */}}
+  {{- if eq $code "ocd-fm-161" -}}
+    {{- /* Custom variables */}}
+    {{- $styledSolFile = printf `<span class="ocd-mono ocd-mono-con-solution">content/%s</span>` $file -}}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmMissingDescription" | default "Missing Page Description" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmMissingDescriptionReason" | default "The %s parameter is missing or empty." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdFmMissingDescriptionSolution" | default "Add a %s value in the frontmatter of the page %s" -}}
+    {{- $solution = printf $solutionFormat $styledSolKey $styledSolFile -}}
+    {{- /* Example */}}
+    {{- $example = printf "%s = \"A short and compelling summary of this page.\"" $key -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/page/" -}}
+    {{- $preDoc = "frontmatter" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- /* Missing SEO Image */}}
+  {{- if eq $code "ocd-fm-171" -}}
+    {{- /* Custom variables */}}
+    {{- $styledSolPath := printf `<span class="ocd-mono ocd-mono-con-solution">assets/%s</span>` $path -}}
+    {{- $styledSolKeyValue := printf `<span class="ocd-mono ocd-mono-con-solution">%s</span>` $keyValue -}}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmMissingSeoImage" | default "Missing SEO Image" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmMissingSeoImageReason" | default "The SEO image %s defined in frontmatter could not be found" -}}
+    {{- $reason = printf $reasonFormat $styledWarnKeyValue -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdFmMissingSeoImageSolution" | default "Ensure the image %s exists in the page bundle or at the exact path: %s" -}}
+    {{- $solution = printf $solutionFormat $styledSolKeyValue $styledSolPath -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/page/" -}}
+    {{- $preDoc = "frontmatter" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+  {{- /* Bad Quality SEO Image */}}
+  {{- if eq $code "ocd-fm-172" -}}
+    {{- /* Custom variables */}}
+    {{- $styledWarnImgStandards := printf `<span class="ocd-mono ocd-mono-con-warning">min-width: 1000px, aspect-ratio: ~1.91</span>` -}}
+    {{- $styledSolImgWidth := printf `<span class="ocd-mono ocd-mono-con-solution">width: 1200px height: 630px</span>` -}}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdFmBadSeoImage" | default "Bad Quality SEO Image" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdFmBadSeoImageReason" | default "The SEO image %s defined in frontmatter does not meet quality standards. (%s)" -}}
+    {{- $reason = printf $reasonFormat $styledWarnKeyValue $styledWarnImgStandards -}}
+    {{- /* Expanded Reason */}}
+    {{- $expandedReasonFormat := i18n "OcdFmBadSeoImageExpReason" | default "The image cannot be processed and will be used as is." }}
+    {{- $expandedReason = printf $expandedReasonFormat -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdFmBadSeoImageSolution" | default "Use a image that meet the recommended criteria: %s" -}}
+    {{- $solution = printf $solutionFormat $styledSolImgWidth -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/content-creation/page/" -}}
+    {{- $preDoc = "frontmatter" -}}
+    {{- /* ocd.js trigger */}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- /* Render the console template */}}
+  <template data-alpha="{{ $code }}-template">
+    <div class="ocd-console-explanation">
+      {{- with $title }}
+      <h2>
+        {{- . -}}
+      </h2>
+      {{- end }}
+      {{- with $reason }}
+      <p>
+        {{- . | safeHTML -}}
+      </p>
+      {{- end }}
+      {{- with $expandedReason }}
+        <p>{{ . }}</p>
+      {{- end }}
+      <br />
+      {{- with $solution }}
+      <h3 class="ocd-console-h3">
+        {{ i18n "OcdSolution" . | default "Solution:" }}
+      </h3>
+      <p>{{ . | safeHTML }}</p>
+      {{- end }}
+      {{- with $example }}
+        <div class="ocd-console-example">
+          <h3>{{ i18n "OcdExample" . | default "Example:" }}</h3>
+          <p class="ocd-mono ocd-mono-con-solution">
+            {{- $example | safeHTML }}
+          </p>
+        </div>
+      {{- end }}
+    </div>
+    <div class="ocd-console-doc">
+      <div class="hr hr-left"></div>
+      {{- with $docURL }}
+      <a href="{{ . }}"
+        ><span class="ocd-mono"></span>{{ $preDoc }} {{ i18n "OcdDoc" . }}</a
+      >
+      {{- end }}
+      <div class="hr hr-right"></div>
+    </div>
+  </template>
+{{- end }}

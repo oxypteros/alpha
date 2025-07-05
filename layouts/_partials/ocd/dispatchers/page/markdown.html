@@ -1,0 +1,86 @@
+{{- $context := . -}}
+{{- /* Dictionary keys */}}
+{{- $code := .code | default "ocd-md-000" -}}
+{{- $path := .path -}}
+{{- $permalink := .permalink -}}
+{{- $destination := .destination -}}
+{{- $dir := .dir -}}
+{{- $alt := .alt -}}
+{{- $isBundle := .isBundle -}}
+
+{{- /* Declared vars */}}
+
+{{- /* Get markdown errors from data */}}
+{{- $errors := site.Data.ocd.errors.markdown -}}
+{{- $entry := index $errors $code -}}
+
+{{- $titleKey := $entry.title | default "OcdMdUnknownTitle" -}}
+{{- $severity := $entry.severity | default "warning" -}}
+{{- $reasonKey := $entry.reason | default "OcdMdUnknownReason" -}}
+{{- $solutionKey := $entry.solution | default "OcdMdUnknownSolution" -}}
+{{- $exampleKey := $entry.example  | default "OcdMdUnknownExample" -}}
+{{- $preExampleKey := $entry.preExample  -}}
+{{- $docURLKey := $entry.docURL | default "OcdMdUnknownDocURL" -}}
+
+{{- $title := i18n $titleKey | safeHTML -}}
+{{- $reason := printf (i18n $reasonKey) $destination | safeHTML -}}
+{{- $solution := printf (i18n $solutionKey) | safeHTML  -}}
+{{- $preExample := i18n $preExampleKey | safeHTML -}}
+{{- $example := i18n $exampleKey | safeHTML -}}
+{{- $docURL := printf $docURLKey | safeHTML -}}
+
+{{- /* Local Image Not Found */}}
+{{ if eq $code "ocd-md-101" }}
+  {{- if $isBundle }}
+    {{- $solutionBundleKey := $entry.solutionBundle -}}
+    {{- $solution =  printf (i18n $solutionBundleKey) | safeHTML -}}
+
+    {{- $exampleBundleKey := $entry.exampleBundle -}}
+     {{- $example = printf (i18n $exampleBundleKey) $dir $destination | safeHTML -}}
+  {{- else }}
+    {{- $solutionAssetsKey := $entry.solutionAssets -}}
+    {{- $solution = printf (i18n $solutionAssetsKey) $destination | safeHTML -}}
+
+    {{- $exampleAssetsKey := $entry.exampleAssets -}}
+    {{- $example = printf (i18n $exampleAssetsKey) $destination | safeHTML -}}
+  {{- end }}
+
+  {{- $docURL = i18n $docURLKey -}}
+
+{{- /* Remote Image Not Found */}}
+{{- else if eq $code "ocd-md-103" }}
+
+  {{- $providedLink := i18n "OcdCardProvidedLink" -}}
+  {{- $example = printf  $exampleKey $destination $providedLink  -}} 
+
+  {{- /* Missing Alt from Image */}}
+{{- else if eq $code "ocd-md-104" }}
+{{- $example = printf (i18n $exampleKey) $destination | safeHTML }}
+{{- else }}
+{{- end }}
+
+{{- $severityClass := cond (eq $severity "error") "ocd-card-error" "ocd-card-warning" -}}
+{{- $ocdIcon := cond (eq $severityClass "ocd-card-error") "#ocd-error-icon" "#ocd-warning-icon" -}}
+
+
+<div class="ocd ocd-card {{ $severityClass }} ocd-shadow">
+  <header class="ocd-card-header">
+    <h2 class="ocd-title">{{ $title }}</h2>
+    <svg aria-hidden="true" focusable="false" width="24" height="24">
+      <use href="{{ $ocdIcon }}"></use>
+    </svg>
+  </header>
+
+  <div class="ocd-card-content">
+    <div class="ocd-card-content-reason">{{ $reason }}</div>
+    <hr />
+    <div class="ocd-card-content-solution">{{ $solution }}</div>
+  </div>
+
+  <footer class="ocd-card-footer">
+    <div class="ocd-card-footer-meta">
+      <p>{{ with $preExample }}<strong>{{ . }}</strong>{{- end }}{{- with $example }} {{ . | safeHTML }}{{- end }}</p>
+      <a class="ocd-mono" href="{{ $docURL }}" target="_blank" rel="noopener noreferrer">{{ $code }}</a>
+    </div>
+  </footer>
+</div>

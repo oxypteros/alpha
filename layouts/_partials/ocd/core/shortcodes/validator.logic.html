@@ -7,17 +7,6 @@
   - rules (map)     : The rules dict of the shortcode
   - userInput (map) : The `.Params` of the shortcode
 
-  Maps generic shape:
-  - rules:
-  {
-  "validKeys": ["KEY1", "KEY2"],
-  "params": {
-  "KEY1": { "default": "value", "validation": "in_list", "list": ["v1", "v2"] },
-  "KEY2": { "default": 10, "validation": "is_positive_integer" },
-  ...
-  }
-  }
-
   Repo:https://github.com/oxypteros/alpha
 */}}
 {{- $rules := .rules -}}

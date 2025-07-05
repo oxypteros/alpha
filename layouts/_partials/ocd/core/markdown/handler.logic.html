@@ -1,0 +1,31 @@
+{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
+{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+
+{{- /* Data passed from caller templates */}}
+{{- $code := .code -}}
+{{- $page := .page -}}
+{{- $destination := .destination -}}
+{{- $path := .path -}}
+{{- $dir := .dir -}}
+{{- $permalink := .permalink -}}
+{{- $alt := .alt -}}
+{{- $isBundle := .isBundle -}}
+
+ {{- $mdErrorData := dict 
+    "code"        $code
+    "page"        $page
+    "destination" $destination
+    "path"        $path
+    "permalink"   $permalink
+    "dir"         $dir
+    "alt"         $alt
+    "isBundle"    $isBundle
+  -}}
+{{ if $ocdWarnEnabled }}
+  {{- partial "ocd/dispatchers/terminal/markdown.html" $mdErrorData }}
+{{- end }}
+
+{{ if $ocdEnabled }}
+  {{- partial "ocd/dispatchers/page/markdown.html" $mdErrorData }}
+  {{- partial "ocd/dispatchers/console/markdown.html" $mdErrorData }}
+{{- end }}

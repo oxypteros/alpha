@@ -1,0 +1,57 @@
+{{- /*
+  Partial: ocd/dispatchers/terminal/markdown.html
+  Purpose: Renders the terminal warnings for markdown errors.
+*/}}
+
+{{- /* Dictionary keys */}}
+{{- $code := .code | default "ocd-md-000" -}}
+{{- $path := .path -}}
+{{- $permalink := .permalink -}}
+{{- $destination := .destination -}}
+
+{{- /* Declared variables */}}
+{{- $title := "" -}}
+{{- $reason := "" -}}
+{{- $page := $permalink -}}
+{{- $file := printf "/content/%s" $path -}}
+{{- $solution := "" -}}
+
+{{- /* Dispatcher for Image Not Found (ocd-md-101) */}}
+{{- if eq $code "ocd-md-101" -}}
+  {{- $title = printf "Image Not Found" -}}
+  {{- $reason = printf "The '%s' could not be found." $destination -}}
+  {{- $file = printf "/content/%s" $path -}}
+  {{- $solution = printf "1. Ensure the file '%s' exists in the page bundle.\n2. Check for typos in the markdown declaration." $destination -}}
+
+{{- /* Dispatcher for Missing Alt Text (ocd-md-102) */}}
+{{- else if eq $code "ocd-md-102" }}
+  {{- $title = "Missing Image Alt Text" -}}
+  {{- $reason = printf "The '%s' is missing its text description." $destination -}}
+  {{- $solution = printf "Provide a descriptive text for accessibility.\nEx. ![A description of the %s.](%s)" $destination $destination -}}
+
+{{- /* Dispatcher for Unhandled Errors */}}
+{{- else }}
+  {{- $title = "Unhandled Error" -}}
+  {{- $reason = printf "An unhandled error occurred." -}}
+  {{- $solution = "This error code does not have a specific handler." -}}
+{{- end -}}
+
+
+<!-- prettier-ignore -->
+{{- warnf `
+[OCD] %s
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+Page   : %s
+File   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$title    
+$code
+$reason
+$page
+$file
+$solution
+-}}

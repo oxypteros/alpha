@@ -1,0 +1,194 @@
+{{- /*
+  Partial: ocd/views/console/config.html
+  Purpose: Renders the console warnings for results from `checks/config.logic.html`.
+*/}}
+
+{{- $errors := .configErrors -}}
+
+{{- range $errors -}}
+
+  {{- $code := .code -}}
+  {{- $file := .file -}}
+  {{- $key := .key -}}
+  {{- $keyValue := .keyValue -}}
+  {{- $lang := .lang -}}
+  {{- $paramYear := .value -}}
+  {{- $currentYear := .currentYear -}}
+  {{- $path := .path -}}
+  {{- $title := "" -}}
+  {{- $reason := "" -}} 
+  {{- $expandedReason := "" -}}
+  {{- $solution := "" -}}
+  {{- $docURL := "" -}}
+  {{- $example := "" -}}
+ 
+  {{- $styledWarnKey := printf `<span class="ocd-mono ocd-mono-con-warning">%s</span>` $key -}}
+  {{- $styledWarnFile := printf `<span class="ocd-mono ocd-mono-con-warning">%s</span>` $file -}}
+    {{- $styledWarnLang := printf `<span class="ocd-mono ocd-mono-con-warning">[%s]</span>` $lang -}}
+{{- $styledWarnParamYear := printf `<span class="ocd-mono ocd-mono-con-warning">%q</span>` $paramYear -}}
+  {{- $styledWarnKeyValue := printf `<span class="ocd-mono ocd-mono-con-warning">%q</span>` $keyValue -}}
+  {{- $styledSolKey := printf `<span class="ocd-mono ocd-mono-con-solution">%s</span>` $key -}}
+  {{- $styledSolFile := printf `<span class="ocd-mono ocd-mono-con-solution">%s</span>` $file -}}
+  {{- $styledSolLang := printf `<span class="ocd-mono ocd-mono-con-solution">[%s]</span>` $lang -}}
+  {{- $styledSolCurrentYear := printf `<span class="ocd-mono ocd-mono-con-solution">%s</span>` $currentYear -}}
+
+  {{- if eq $code "ocd-config-102" -}}
+  {{- /* Missing Site Title */}}
+    {{- $title = i18n "OcdConfigMissingSiteTitle" | default "Missing Site Title" -}}
+    {{- $reasonFormat := i18n "OcdConfigMissingSiteTitleReason" | default "The %s key in %s is missing or empty." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnFile -}}
+
+    {{- $solutionFormat := i18n "OcdConfigMissingTitleSolution" | default "Add your website name as a value of the %s key in %s." -}}
+    {{- $solution = printf $solutionFormat $styledSolKey $styledSolFile -}}
+
+    {{- $example = printf "%s = \"My Website\"" $key -}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/config/hugo-toml" }}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+ 
+  {{- if eq $code "ocd-config-114" -}} 
+  {{- /* Missing Language Code */}}
+    {{- $title = i18n "OcdConfigMissingLanguageCode" | default "Missing Language Code" -}}
+    {{- $reasonFormat := i18n "OcdConfigMissingLanguageCodeReason" | default "The %s key in %s is missing or empty." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnFile -}}
+
+    {{- $solutionFormat := i18n "OcdConfigMissingLanguageCodeSolution" | default "Add a %s for every language defined in %s." -}}
+    {{- $solution = printf $solutionFormat $styledSolKey $styledSolFile -}}
+
+    {{- $example = printf "%s = %q" $key (i18n "OcdConfigLanguageCode" | default "en_US") -}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/config/languages-toml/" }}
+    {{ $file = "languages.toml"}}
+    <div data-error="{{ $code }}"></div>
+  {{- else if eq $code "ocd-config-112" -}}
+  {{- /* Missing Language Weight */}}
+    {{- $title = i18n "OcdConfigMissingLanguageWeight" | default "Missing Language Weight" -}}
+    {{- $reasonFormat := i18n "OcdConfigMissingLanguageWeightReason" | default "The %s key for the language %s is missing or invalid." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnLang -}}
+
+    {{- $solutionFormat := i18n "OcdConfigMissingLanguageWeightSolution" | default "Add a %s value for the language %s." -}}
+    {{- $solution = printf $solutionFormat $styledSolKey $styledSolLang -}}
+
+    {{- $example = printf "%s = %s" $key ( i18n "OcdConfigLanguageWeight" | default "2") -}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/config/languages-toml/" }}
+    {{ $file = "languages.toml"}}
+    <div data-error="{{ $code }}"></div>
+{{- else if eq $code "ocd-config-113" -}}
+  {{- /* Missing Language Name */}}
+    {{- $title = i18n "OcdConfigMissingLanguageName" | default "Missing Language Name" -}}
+    {{- $reasonFormat := i18n "OcdConfigMissingLanguageNameReason" | default "The %s key for the language %s is missing or empty." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnLang -}}
+
+    {{- $solutionFormat := i18n "OcdConfigMissingLanguageNameSolution" | default "Add a %s for the language %s." -}}
+    {{- $solution = printf $solutionFormat $styledSolKey $styledSolLang -}}
+
+    {{- $example = printf "%s = %q" $key (i18n "OcdConfigLanguageName" | default "English") -}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/config/languages-toml/" }}
+    {{ $file = "languages.toml"}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- if eq $code "ocd-config-121" -}}
+  {{- /* Invalid Year Value */}}
+    {{- $title = i18n "OcdConfigInvalidYearValue" | default "Invalid Year Value" -}}
+    {{- $reasonFormat := i18n "OcdConfigInvalidYearValueReason" | default "The %s key has the invalid value: %s." -}}
+    {{- $reason = printf $reasonFormat $styledWarnKey $styledWarnParamYear -}}
+
+    {{- $solutionFormat := i18n "OcdConfigInvalidYearValueSolution" | default "Add a valid year as value of the %s key." -}}
+    {{- $solution = printf $solutionFormat $styledSolKey -}}
+
+    {{- $example = printf "%s = %q" $key $currentYear -}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/config/params-toml/" }}
+    {{ $file = "params.toml"}}
+    <div data-error="{{ $code }}"></div>
+    {{- else if eq $code "ocd-config-122" -}}
+      {{- /* Future Year Value */}}
+    {{- $title = i18n "OcdConfigFutureYearValue" | default "Future Year Value" -}}
+    {{- $reasonFormat := i18n "OcdConfigFutureYearValueReason" | default "The %s value for the key %s is a future year." -}}
+    {{- $reason = printf $reasonFormat $styledWarnParamYear $styledWarnKey  -}}
+
+    {{- $solutionFormat := i18n "OcdConfigFutureYearValueSolution" | default "Add the current or a past year as value of the %s key." -}}
+    {{- $solution = printf $solutionFormat $styledSolKey -}}
+
+    {{- $example = printf "%s = %q" $key $currentYear -}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/config/params-toml/" }}
+    {{ $file = "params.toml"}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  {{- if eq $code "ocd-config-132" -}}
+  {{- /* Missing SEO Image */}}
+   {{- $styledSolPath := printf `<span class="ocd-mono ocd-mono-con-solution">assets/%s</span>` $path -}}
+    {{- $styledSolKeyValue := printf `<span class="ocd-mono ocd-mono-con-solution">%s</span>` $keyValue -}}
+    {{- /* Title */}}
+    {{- $title = i18n "OcdConfigMissingSeoImage" | default "Missing SEO Image" -}}
+    {{- /* Reason */}}
+    {{- $reasonFormat := i18n "OcdConfigMissingSeoImageReason" | default "The SEO image %s defined in %s could not be found" -}}
+    {{- $reason = printf $reasonFormat $styledWarnKeyValue $styledWarnFile -}}
+    {{- /* Solution */}}
+    {{- $solutionFormat := i18n "OcdConfigMissingSeoImageSolution" | default "Ensure the image %s exists at the exact path: %s" -}}
+    {{- $solution = printf $solutionFormat $styledSolKeyValue $styledSolPath -}}
+    {{- /* Link */}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/config/params-toml/" }}
+    {{ $file = "params.toml"}}
+    <div data-error="{{ $code }}"></div>
+    {{- end }}
+
+    {{-  if eq $code "ocd-config-133" -}}
+      {{- /* Bad SEO Image */}}
+    {{- $styledWarnImgStandards := printf `<span class="ocd-mono ocd-mono-con-warning">min-width: 1000px, aspect-ratio: ~1.91</span>` -}}
+    {{- $styledSolImgWidth := printf `<span class="ocd-mono ocd-mono-con-solution">width: 1200px height: 630px</span>` -}}
+    {{- $title = i18n "OcdConfigBadSeoImage" | default "Bad Quality SEO Image" -}}
+    {{- $reasonFormat := i18n "OcdConfigBadSeoImageReason" | default "The SEO image %s defined in %s does not meet quality standards. (%s)" -}}
+    {{- $reason = printf $reasonFormat  $styledWarnKeyValue $styledWarnFile $styledWarnImgStandards -}}
+    {{- $expandedReasonFormat := i18n "OcdConfigBadSeoImageExpReason" | default "The image cannot be processed and will be used as is." }}
+    {{- $expandedReason = printf $expandedReasonFormat -}}
+    {{- $solutionFormat := i18n "OcdConfigBadSeoImageSolution" | default "Use a image that meet the recommended criteria: %s" -}}
+    {{- $solution = printf $solutionFormat $styledSolImgWidth -}}
+    {{- $docURL = "https://alpha.oxypteros.com/docs/config/params-toml/" }}
+    {{- $file = "params.toml" -}}
+    <div data-error="{{ $code }}"></div>
+  {{- end -}}
+
+  <template data-alpha="{{ $code }}-template">
+    <div class="ocd-console-explanation">
+{{- with $title }}
+      <h2>
+        {{- . -}}
+      </h2>
+      {{- end }}
+      {{- with $reason }}
+      <p>
+        {{- . | safeHTML -}}
+      </p>
+      {{- end }}
+      {{- with $expandedReason }}
+        <p>{{ . }}</p>
+      {{- end }}
+      <br />
+      {{- with $solution }}
+      <h3 class="ocd-console-h3">
+        {{ i18n "OcdSolution" . | default "Solution:" }}
+      </h3>
+      <p>{{ . | safeHTML }}</p>
+      {{- end }}
+      {{- with $example }}
+        <div class="ocd-console-example">
+          <h3>{{ i18n "OcdExample" . | default "Example:" }}</h3>
+          <p class="ocd-mono ocd-mono-con-solution">
+            {{- $example | safeHTML }}
+          </p>
+        </div>
+      {{- end }}
+    </div>
+    <div class="ocd-console-doc">
+      <div class="hr hr-left"></div>
+      {{- with $docURL }}
+      <a href="{{ . }}"
+        ><span class="ocd-mono"></span>{{ $file }} {{ i18n "OcdDoc" . }}</a
+      >
+      {{- end }}
+      <div class="hr hr-right"></div>
+    </div>
+  </template>
+{{- end }}

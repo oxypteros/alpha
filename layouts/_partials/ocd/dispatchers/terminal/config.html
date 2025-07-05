@@ -9,10 +9,12 @@
 
   {{- $code := .code -}}
   {{- $key := .key -}}
+  {{- $keyValue := .keyValue -}}
   {{- $file := .file -}}
   {{- $lang := .lang -}}
   {{- $paramYear := .value -}}
   {{- $currentYear := .currentYear -}}
+  {{- $path := .path -}}
   {{- $title := "" -}}
   {{- $reason := "" -}}
   {{- $solution := "" -}}
@@ -47,7 +49,17 @@
     {{- $solution = printf "Add the current or a past year as value of '%s'.\nEx. %s = %q" $key $key $currentYear -}}
   {{- end -}}
 
+  {{- if eq $code "ocd-config-132" -}}
+    {{- $title = printf "Missing SEO Image" }}
+    {{- $reason = printf "The SEO image %q could not be found." $keyValue -}}
+    {{- $solution =  printf "Place the '%s' image at 'assets/%s'."  $keyValue $path -}}
+  {{- end -}}
 
+  {{-  if eq $code "ocd-config-133" -}}
+    {{- $title = printf "Bad Quality SEO Image" -}}
+    {{- $reason = printf "The defined SEO image %q does not meet quality standards." $keyValue -}}
+    {{- $solution =  printf "Recommended dimensions are 1200x630px."  -}}
+  {{- end -}}
   <!-- prettier-ignore -->
   {{- warnf `
 [OCD] %s

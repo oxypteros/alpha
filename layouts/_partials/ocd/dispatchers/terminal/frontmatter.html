@@ -1,0 +1,106 @@
+{{- /*
+  Partial: ocd/reporters/terminal/frontmatter.html
+  Purpose: Renders the terminal warnings for results from `checks/frontmatter.logic.html`.
+*/}}
+{{- $errors := .frontmatterErrors -}}
+
+{{- range $errors -}}
+  {{- /* Dictionary keys */}}
+  {{- $code := .code -}}
+  {{- $page := .page -}}
+  {{- $file := .file -}}
+  {{- $key := .key -}}
+  {{- $keyValue := .keyValue -}}
+  {{- $validValues := .validValues -}}
+  {{- $date := .date -}}
+  {{- $lastmod := .lastmod -}}
+  {{- $path := .path -}}
+
+  {{- /* Declared vars */}}
+  {{- $title := "" -}}
+  {{- $reason := "" -}}
+  {{- $solution := "" -}}
+
+  {{- /* Invalid Lastmod Date */}}
+  {{- if eq $code "ocd-fm-102" -}}
+    {{- $title = printf "Invalid Modification Date" -}}
+    {{- $dateFormatted := $date.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- $reason = printf "The '%s' is set to a time before the 'date'." $key -}}
+    {{- $solution =  printf "Ensure the '%s' in your frontmatter has a value\non or after: %q." $key $dateFormatted -}}
+  {{- end -}}
+
+  {{- /* Invalid Layout Layout */}}
+  {{- if eq $code "ocd-fm-111" -}}
+    {{- $title = printf "Invalid Layout Value" -}}
+    {{- $reason = printf "The '%s' value %q is invalid." $key $keyValue -}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- $solution =  printf "Use one of the valid layouts:\n%s"  $valuesList -}}
+  {{- end -}}
+
+  {{- /* Missing Page Title */}}
+  {{- if eq $code "ocd-fm-122" -}}
+    {{- $title = printf "Missing Page Title" -}}
+    {{- $reason = printf "The '%s' is missing or it is empty." $key -}}
+    {{- $solution =  printf "Add a '%s' value in the frontmatter of the page.\nEx. %s = \"A Page Title\" " $key $key -}}
+  {{- end -}}
+
+  {{- /* Invalid License Value */}}
+  {{- if eq $code "ocd-fm-131" -}}
+    {{- $title = printf "Invalid License Value" -}}
+    {{- $reason = printf "The '%s' value %q is invalid." $key $keyValue -}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- $solution =  printf "Use one of the valid licenses:\n%s " $valuesList -}}
+  {{- end -}}
+
+  {{- /* Invalid Recommended Value */}}
+  {{- if eq $code "ocd-fm-141" -}}
+    {{- $title = printf "Invalid Recommended Value" -}}
+    {{- $reason = printf "The '%s' value %q is invalid." $key $keyValue -}}
+    {{- $solution =  printf "Use an unquoted boolean value: true or false.\nEx. %s = true" $key -}}
+  {{- end -}}
+
+  {{- /* Invalid Featured Value */}}
+  {{- if eq $code "ocd-fm-151" -}}
+    {{- $title = printf "Invalid Featured Value" -}}
+    {{- $reason = printf "The '%s' value %q is invalid." $key $keyValue -}}
+    {{- $solution =  printf "Use an unquoted boolean value: true or false.\nEx. %s = true" $key -}}
+  {{- end -}}
+
+  {{- /* Missing Page Description */}}
+  {{- if eq $code "ocd-fm-161" -}}
+    {{- $title = printf "Missing Page Description" -}}
+    {{- $reason = printf "The '%s' is missing or it is empty." $key -}}
+    {{- $solution =  printf "Add a '%s' in the frontmatter.\nEx. %s = \"A page description for SEO\" " $key $key -}}
+  {{- end -}}
+ {{- /* Missing SEO Image */}}
+  {{- if eq $code "ocd-fm-171" -}}
+    {{- $title = printf "Missing SEO Image" -}}
+    {{- $reason = printf "The SEO image %q could not be found." $keyValue -}}
+    {{- $solution =  printf "Place the %q image in the page bundle\nor at 'assets/%s'."  $keyValue $path -}}
+  {{- end -}}
+    {{- /* Bad Quality SEO Image */}}
+  {{-  if eq $code "ocd-fm-172" -}}
+    {{- $title = printf "Bad Quality SEO Image" -}}
+    {{- $reason = printf "The defined SEO image %q does not meet quality standards." $keyValue -}}
+    {{- $solution =  printf "Recommended dimensions are 1200x630px."  -}}
+  {{- end -}}
+
+  <!-- prettier-ignore -->
+  {{- warnf `
+[OCD] %s
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+Page   : %s
+File   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$title    
+$code
+$reason
+$page
+$file
+$solution
+-}}
+{{- end -}}

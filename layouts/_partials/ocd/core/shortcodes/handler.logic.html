@@ -1,6 +1,7 @@
 {{- /*
   Partial: ocd/components/handler.html
-  Purpose: Acts as an error "adapter" or router. Receives structured errors from the validator partial and conditionally calls OCD error reporting partials.
+  Purpose: Acts as an error "adapter" or router. Receives structured errors from 
+  the validator partial and conditionally calls OCD error reporting partials.
 
   Requires a dictionary expecting the following keys:
   - scName (string)   : Shortcode name
@@ -9,31 +10,6 @@
   - meta (map)        : Shortcode's metadata map
   - page (object)     : The shortcode's page context (`.Page`)
   - position (object) : The shortcode's position (`.Position`)
-
-  Maps generic shape:
-  - rules:
-  {
-  "validKeys": ["KEY1", "KEY2"],
-  "params": {
-  "KEY1": { "default": "value", "validation": "in_list", "list": ["v1", "v2"] },
-  "KEY2": { "default": INTEGER, "validation": "is_positive_integer" },
-  ...
-  }
-  }
-
-  - meta:
-  {
-  "docURL"  "..."
-  "example" "..."
-  "errorCodes" { "invalidKey"   "c1", "invalidValue" "c2" }
-  }
-
-  - errors:
-  {
-  "isValid": false,
-  "errors": { "invalidKeys": {"UNKNOWN": "value"}, "invalidValues": {...} },
-  ...
-  }
 
   Repo:https://github.com/oxypteros/alpha
 */}}
@@ -64,12 +40,12 @@
 
   {{- /* *** Render invalid params errors only on Hugo terminal */}}
   {{- if $ocdWarnEnabled }}
-    {{- partial "ocd/components/warn/sc-invalid-params.html" $errorData -}}
+    {{- partial "ocd/dispatchers/terminal/sc-invalid-params.html" $errorData -}}
   {{- end }}
   {{- /* *** Render invalid params errors only on page and on console */}}
   {{- if $ocdEnabled }}
-    {{- partial "ocd/components/page/sc-invalid-params.html" $errorData -}}
-    {{- partial "ocd/components/console/sc-invalid-params.html" $errorData -}}
+     {{- partial "ocd/dispatchers/page/sc-invalid-params.html" $errorData -}}
+    {{- partial "ocd/dispatchers/console/sc-invalid-params.html" $errorData -}}
   {{- end }}
 
 {{- else }}
@@ -92,12 +68,12 @@
     -}}
     {{- /* *** Render invalid values errors only on Hugo terminal */}}
     {{- if $ocdWarnEnabled }}
-      {{- partial "ocd/components/warn/sc-invalid-values.html" $errorData -}}
+      {{- partial "ocd/dispatchers/terminal/sc-invalid-values.html" $errorData -}}
     {{- end }}
     {{- /* *** Render invalid values errors only on page and on console */}}
     {{- if $ocdEnabled }}
-      {{- partial "ocd/components/page/sc-invalid-values.html" $errorData -}}
-      {{- partial "ocd/components/console/sc-invalid-values.html" $errorData -}}
+          {{- partial "ocd/dispatchers/page/sc-invalid-values.html" $errorData -}}
+      {{- partial "ocd/dispatchers/console/sc-invalid-values.html" $errorData -}}
     {{- end }}
   {{- end }}
 {{- end -}}

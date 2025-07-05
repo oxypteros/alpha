@@ -1,0 +1,225 @@
+# OCD Cards
+[OcdCardExample]
+other = "Example:"
+[OcdCardInput]
+other = "Input:"
+[OcdCardProvidedLink]
+other = "Provided Link"
+
+# OCD md errors
+## ocd-md-101
+[OcdMdImageNotFound]
+other = "Image Not Found"
+[OcdMdImageNotFoundReason]
+other = "<p>The <span class='ocd-mono'>%s</span> could not be found.</p>"
+[OcdMdImageNotFoundBundleSolution]
+other = "<p>Please check the following:</p><ol><li>The image exists in the bundle or <span class='ocd-mono'>assets/img/</span>.</li><li>The Markdown syntax has no typos.</li></ol>"
+[OcdMdImageNotFoundAssetsSolution]
+other = "Please check the following: <ol><li>The file <span class='ocd-mono'>%s</span> exists in the <span class='ocd-mono'>assets/img/</span> directory.</li><li>Your Markdown reference is correct and has no typos.</li></ol>"
+[OcdMdImageNotFoundBundleExample]
+other = "<span class='ocd-mono'>content/%s%s</span>"
+[OcdMdImageNotFoundAssetsExample]
+other = "<span class='ocd-mono'>assets/img/%s</span>"
+
+## ocd-md-103
+[OcdMdRemoteImageNotFound]
+other = "Remote Image Fetch Failed"
+[OcdMdRemoteImageNotFoundReason]
+other = "<p>Could not download the remote image from:<br><span class='ocd-mono'>%s</span></p>"
+[OcdMdRemoteImageNotFoundSolution]
+other = "<p>Please check the URL and ensure the remote server is accessible.</p>"
+[OcdMdRemoteImageNotFoundExample]
+other = "<a href='%s' target='_blank' rel='noopener noreferrer'>Provided Link</a>"
+
+## ocd-md-104
+[OcdMdMissingAlt]
+other = "Missing Alternative Text"
+[OcdMdMissingAltReason]
+other = "<p>The text description for <span class='ocd-mono'>%s</span> is missing.</p>"
+[OcdMdMissingAltSolution]
+other = "<p>Please provide a short descriptive text.</p>"
+[OcdMdMissingAltExample]
+other = "<span class='ocd-mono'>![Short image description](%s)</span>"
+
+# OCD cfg errors
+## ocd-cfg-102
+[OcdCfgMissingTitle]
+other = "Missing Site Title"
+[OcdCfgMissingTitleReason]
+other = "The key <span class='ocd-mono'>%s</span> in <span class='ocd-mono'>%s</span> is missing or empty."
+[OcdCfgMissingTitleSolution]
+other = "Add your website name as a value of the <span class='ocd-mono'>%s</span> key in <span class='ocd-mono'>%s</span>."
+[OcdCfgMissingTitleExample]
+other = "<span class='ocd-mono'>title = \"My website\"</span>"
+
+## ocd-cfg-112
+[OcdCfgMissingLangWeight]
+other = "Missing Language Weight"
+[OcdCfgMissingLangWeightReason]
+other = "The <span class='ocd-mono'>%s</span> key for the language <span class='ocd-mono'>[%s]</span> is missing or invalid."
+[OcdCfgMissingLangWeightSolution]
+other = "Add a <span class='ocd-mono'>%s</span> value for the language <span class='ocd-mono'>[%s]</span>."
+[OcdCfgMissingLangWeightExample]
+other = "<span class='ocd-mono'>weight = 2</span>"
+
+## ocd-cfg-113
+[OcdCfgMissingLangName]
+other = "Missing Language Name"
+[OcdCfgMissingLangNameReason]
+other = "The <span class='ocd-mono'>%s</span> key for the language <span class='ocd-mono'>[%s]</span> is missing or empty."
+[OcdCfgMissingLangNameSolution]
+other = "Add a <span class='ocd-mono'>%s</span> for the language <span class='ocd-mono'>[%s]</span>."
+[OcdCfgMissingLangNameExample]
+other = "<span class='ocd-mono'>languageName = \"English\"</span>"
+
+## ocd-cfg-121
+[OcdCfgInvalidYear]
+other = "Invalid Year Value"
+[OcdCfgInvalidYearReason]
+other = "The <span class='ocd-mono'>%s</span> key has the invalid value: <span class='ocd-mono'>%q</span>"
+[OcdCfgInvalidYearSolution]
+other = "Add a valid year as value of the <span class='ocd-mono'>%s</span> key."
+[OcdCfgInvalidYearExample]
+other = "<span class='ocd-mono'>established_year = %q</span>"
+
+## ocd-cfg-122
+[OcdCfgFutureYear]
+other = "Future Year Value"
+[OcdCfgFutureYearReason]
+other = "The <span class='ocd-mono'>%s</span> value for the key <span class='ocd-mono'>%q</span> is a future year."
+[OcdCfgFutureYearSolution]
+other = "Add the current or a past year as value of the <span class='ocd-mono'>%s</span> key."
+[OcdCfgFutureYearExample]
+other = "<span class='ocd-mono'>established_year = %q</span>"
+
+## ocd-cfg-132
+[OcdCfgMissingSeoImage]
+other = "Missing Seo Image"
+[OcdCfgMissingSeoImageReason]
+other = "The SEO image <span class='ocd-mono'>%q</span> defined in <span class='ocd-mono'>%s</span> could not be found."
+[OcdCfgMissingSeoImageSolution]
+other = "Ensure the image exists at the exact path: <span class='ocd-mono'>assets/%s</span>"
+[OcdCfgMissingSeoImageExample]
+other = "<span class='ocd-mono'>%s = %q</span>"
+
+## ocd-cfg-133
+[OcdCfgBadSeoImage]
+other = "Bad Quality SEO Image"
+[OcdCfgBadSeoImageReason]
+other = "The SEO image <span class='ocd-mono'>%q</span> defined in <span class='ocd-mono'>%s</span> does not meet quality standards.<br> (<span class='ocd-mono'>min-width: 1000px, aspect-ratio: ~1.91</span>)"
+[OcdCfgBadSeoImageSolution]
+other = "Use a image that meet the recommended criteria:<br> <span class='ocd-mono'>width: 1200px, height: 630px</span>."
+[OcdCfgBadSeoImageExample]
+other = "<span class='ocd-mono'>%s = %q</span>"
+
+
+# OCD fm errors
+## ocd-fm-102
+[OcdFmInvalidLastmod]
+other = "Invalid Modification Date"
+[OcdFmInvalidLastmodReason]
+other = "Ensure the <span class='ocd-mono'>%s</span> is set to a date and time on or after the publish date."
+[OcdFmInvalidLastmodSolution]
+other = "Change the <span class='ocd-mono'>%s</span> value to a date after the published date: <span class='ocd-mono'>%s</span>."
+[OcdFmInvalidLastmodExample]
+other = "<span class='ocd-mono'>lastmod = %q</span>"
+
+## ocd-fm-111
+[OcdFmInvalidLayout]
+other = "Unknown Layout Specified"
+[OcdFmInvalidLayoutReason]
+other = "The <span class='ocd-mono'>%s</span> parameter contains an invalid value: <span class='ocd-mono'>%q</span>."
+[OcdFmInvalidLayoutSolution]
+other = "Use one of the following valid layout values:<br> <span class='ocd-mono'>%s</span> "
+[OcdFmInvalidLayoutExample]
+other = "<span class='ocd-mono'>layout = \"page\"</span>"
+
+## ocd-fm-122
+[OcdFmMissingTitle]
+other = "Missing Page Title"
+[OcdFmMissingTitleReason]
+other = "The <span class='ocd-mono'>%s</span> parameter is missing or empty."
+[OcdFmMissingTitleSolution]
+other = "Add a non-empty <span class='ocd-mono'>%s</span> to the frontmatter of the page."
+[OcdFmMissingTitleExample]
+other = "<span class='ocd-mono'>title = \"A Page Title\"</span>"
+
+## ocd-fm-131
+[OcdFmInvalidLicense]
+other = "Invalid License Value"
+[OcdFmInvalidLicenseReason]
+other = "The <span class='ocd-mono'>%s</span> parameter contains an invalid value: <span class='ocd-mono'>%q</span>."
+[OcdFmInvalidLicenseSolution]
+other = "Check for typos or use one of the supported values:<br> <span class='ocd-mono'>%s</span>"
+[OcdFmInvalidLicenseExample]
+other = "<span class='ocd-mono'>license = \"CC-BY\"</span>"
+
+## ocd-fm-141
+[OcdFmInvalidRecommended]
+other = "Invalid Recommended Value"
+[OcdFmInvalidRecommendedReason]
+other = "The value of <span class='ocd-mono'>%s</span> is invalid: <span class='ocd-mono'>%q</span>."
+[OcdFmInvalidRecommendedSolution]
+other = "The <span class='ocd-mono'>%s</span> key accepts only boolean values (unquoted <span class='ocd-mono'>true</span> or <span class='ocd-mono'>false</span>)."
+[OcdFmInvalidRecommendedExample]
+other = "<span class='ocd-mono'>recommended = true</span>"
+
+## ocd-fm-151
+[OcdFmInvalidFeatured]
+other = "Invalid Featured Value"
+[OcdFmInvalidFeaturedReason]
+other = "The value of <span class='ocd-mono'>%s</span> is invalid: <span class='ocd-mono'>%q</span>."
+[OcdFmInvalidFeaturedSolution]
+other = "The <span class='ocd-mono'>%s</span> key accepts only boolean values (unquoted <span class='ocd-mono'>true</span> or <span class='ocd-mono'>false</span>)."
+[OcdFmInvalidFeaturedExample]
+other = "<span class='ocd-mono'>featured = true</span>"
+
+## ocd-fm-161
+[OcdFmMissingDescription]
+other = "Missing Page Description"
+[OcdFmMissingDescriptionReason]
+other = "The <span class='ocd-mono'>%s</span> parameter is missing or empty."
+[OcdFmMissingDescriptionSolution]
+other = "Add a non-empty <span class='ocd-mono'>%s</span> to the frontmatter of the page."
+[OcdFmMissingDescriptionExample]
+other = "<span class='ocd-mono'>description = \"A ~150ch page description\"</span>"
+
+## ocd-fm-171
+[OcdFmMissingSeoImage]
+other = "Missing SEO Image"
+[OcdFmMissingSeoImageReason]
+other = "The SEO image <span class='ocd-mono'>%q</span> defined in frontmatter could not be found."
+[OcdFmMissingSeoImageSolution]
+other = "Ensure the image exists in the page bundle or at the exact path: <span class='ocd-mono'>assets/%s</span>"
+[OcdFmMissingSeoImageExample]
+other = "<span class='ocd-mono'>%s = %q</span>"
+
+## ocd-fm-172
+[OcdFmBadSeoImage]
+other = "Bad Quality SEO Image"
+[OcdFmBadSeoImageReason]
+other = "The SEO image <span class='ocd-mono'>%q</span> defined in frontmatter does not meet quality standards. (<span class='ocd-mono'>min-width: 1000px, aspect-ratio: ~1.91</span>)"
+[OcdFmBadSeoImageSolution]
+other = "Use a image that meet the recommended criteria:<br> <span class='ocd-mono'>width: 1200px, height: 630px</span>."
+[OcdFmBadSeoImageExample]
+other = "<span class='ocd-mono'>%s = %q</span>"
+
+# Fallback
+[OcdMdUnknownTitle]
+other = "Unknown Error Code"
+
+[OcdMdUnknownReason]
+other = "Invalid or undefined error code: <span class='ocd-mono'>%s</span>"
+
+[OcdMdUnknownSolution]
+other = "Either I forgot to <span class='ocd-mono'>define it</span>, or \"someone\" got <span class='ocd-mono'>creative</span> with the inputs."
+
+[OcdMdUnknownExample]
+other = "<span class='ocd-mono'>Magic only works when the <strong>spell(ing)</strong> is real.</span>"
+
+[OcdMdUnknownDocURL]
+other = "https://github.com/oxypteros/alpha/issues/"
+
+# DO NOT REMOVE
+[OcdI18nSelfCheck]
+other = "OcdI18nSelfCheck"

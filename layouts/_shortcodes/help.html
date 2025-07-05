@@ -39,7 +39,7 @@
   -}}
 
   {{- /* * Validate shortcode input */}}
-  {{- $validationResult := partial "ocd/core/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validationResult := partial "ocd/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
 
   {{- /* * Render the shortcode on successful validation */}}
   {{- if $validationResult.isValid }}
@@ -53,9 +53,9 @@
       {{/* - Check if the data was actually loaded */}}
       {{- if $helpData }}
         {{- if eq $data.type "shortcodes" }}
-          {{- partial "ocd/components/help/shortcodes.html" (dict "context" $helpData) -}}
+          {{- partial "ocd/lib/help/shortcodes.html" (dict "context" $helpData) -}}
         {{- else if eq $data.type "markdown" }}
-          {{- partial "ocd/components/help/markdown.html" (dict "context" $helpData) -}}
+          {{- partial "ocd/lib/help/markdown.html" (dict "context" $helpData) -}}
         {{- end }}
       {{- else }}
         {{- /* - Error message if the data file is missing */}}
@@ -75,7 +75,7 @@
     {{- end }}
   {{- else }}
     {{- /* ** On failed validation call the OCD handler */}}
-    {{- partial "ocd/core/handler.logic.html" (dict
+    {{- partial "ocd/core/shortcodes/handler.logic.html" (dict
       "scName"   .Name
       "errors"   $validationResult.errors
       "rules"    $rules
