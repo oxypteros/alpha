@@ -17,14 +17,13 @@
  */
 
 export const initLazyLoad = () => {
-  const ids = ["article-content", "page-content", "story-content"];
+  const selectors = [".article-content", ".page-content", ".story-content"];
 
-  ids.forEach((id) => {
-    const container = document.getElementById(id);
+  selectors.forEach((selector) => {
+    const container = document.querySelector(selector);
 
     if (container) {
       const firstChild = container.firstElementChild;
-
       if (firstChild && firstChild.tagName === "FIGURE") {
         const img = firstChild.querySelector('img[loading="lazy"]');
 
@@ -34,5 +33,6 @@ export const initLazyLoad = () => {
       }
     }
   });
+
   //console.log("lazy-load.js imported");
 };

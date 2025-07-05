@@ -71,13 +71,13 @@ const pagefindAlphaI18n = {
   initPagefindAlpha(pagefindAlphaI18n);
 {{- end }}
 
-
-// --- Core Module Imports ---
 // These modules are fundamental to the theme's base functionality and user experience.
 
 // Removes lazy loading for images above the fold.
+
 import { initLazyLoad } from "./modules/lazy-load.js";
-initLazyLoad();
+initLazyLoad(); 
+
 
 // Provides "Copy to clipboard" functionality for code blocks.
 import { initCopyCode } from "./modules/copy-code.js";
