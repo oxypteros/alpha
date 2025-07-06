@@ -52,6 +52,10 @@ other = "Add your website name as a value of the <span class='ocd-mono'>%s</span
 [OcdCfgMissingTitleExample]
 other = "<span class='ocd-mono'>title = \"My website\"</span>"
 
+### Console
+[OcdCfgMissingTitleExampleConsole]
+other = "<span class='ocd-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='ocd-mono'>title = \"My website\"</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span>"
+
 ## ocd-cfg-112
 [OcdCfgMissingLangWeight]
 other = "Missing Language Weight"
@@ -61,6 +65,13 @@ other = "The <span class='ocd-mono'>%s</span> key for the language <span class='
 other = "Add a <span class='ocd-mono'>%s</span> value for the language <span class='ocd-mono'>[%s]</span>."
 [OcdCfgMissingLangWeightExample]
 other = "<span class='ocd-mono'>weight = 2</span>"
+
+### Console
+[OcdCfgMissingLangWeightSolutionConsole]
+other = "Add a <span class='ocd-mono'>%s</span> value for the language <span class='ocd-mono'>[%s]</span>, in <span class='ocd-mono'>%s</span>."
+[OcdCfgMissingLangWeightExampleConsole]
+other = "<span class='ocd-mono-comment'># %s<br></span><span class='ocd-mono'>[%s]</span><br>&nbsp;&nbsp;<span class='ocd-mono'>weight = 2</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span>"
+
 
 ## ocd-cfg-113
 [OcdCfgMissingLangName]
@@ -72,6 +83,12 @@ other = "Add a <span class='ocd-mono'>%s</span> for the language <span class='oc
 [OcdCfgMissingLangNameExample]
 other = "<span class='ocd-mono'>languageName = \"English\"</span>"
 
+### Console
+[OcdCfgMissingLangNameSolutionConsole]
+other = "Add a <span class='ocd-mono'>%s</span> value for the language <span class='ocd-mono'>[%s]</span>, in <span class='ocd-mono'>%s</span>."
+[OcdCfgMissingLangNameExampleConsole]
+other = "<span class='ocd-mono-comment'># %s</span><br><span class='ocd-mono'>[en]</span><br>&nbsp;&nbsp;<span class='ocd-mono'>weight = 1</span><br>&nbsp;&nbsp;<span class='ocd-mono'>%s = \"English\"</span><br>&nbsp;&nbsp;<span class='ocd-mono'>...</span>"
+
 ## ocd-cfg-121
 [OcdCfgInvalidYear]
 other = "Invalid Year Value"
@@ -81,6 +98,12 @@ other = "The <span class='ocd-mono'>%s</span> key has the invalid value: <span c
 other = "Add a valid year as value of the <span class='ocd-mono'>%s</span> key."
 [OcdCfgInvalidYearExample]
 other = "<span class='ocd-mono'>established_year = %q</span>"
+
+### Console 
+[OcdCfgInvalidYearSolutionConsole]
+other = "Add a valid year as value of the <span class='ocd-mono'>%s</span> key, in <span class='ocd-mono'>%s</span>"
+[OcdCfgInvalidYearExampleConsole]
+other = "<span class='ocd-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'># Footer Settings</span><br>&nbsp;&nbsp;<span class='ocd-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span>"
 
 ## ocd-cfg-122
 [OcdCfgFutureYear]
@@ -92,15 +115,25 @@ other = "Add the current or a past year as value of the <span class='ocd-mono'>%
 [OcdCfgFutureYearExample]
 other = "<span class='ocd-mono'>established_year = %q</span>"
 
+### Console 
+[OcdCfgFutureYearSolutionConsole]
+other = "Add the current or a past year as value of the <span class='ocd-mono'>%s</span> key in %s."
+[OcdCfgFutureYearExampleConsole]
+other = "<span class='ocd-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'># Footer Settings</span><br>&nbsp;&nbsp;<span class='ocd-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span>"
+
 ## ocd-cfg-132
 [OcdCfgMissingSeoImage]
 other = "Missing Seo Image"
 [OcdCfgMissingSeoImageReason]
-other = "The SEO image <span class='ocd-mono'>%q</span> defined in <span class='ocd-mono'>%s</span> could not be found."
+other = "The SEO image <span class='ocd-mono'>%q</span> in <span class='ocd-mono'>%s</span> could not be found."
 [OcdCfgMissingSeoImageSolution]
 other = "Ensure the image exists at the exact path: <span class='ocd-mono'>assets/%s</span>"
 [OcdCfgMissingSeoImageExample]
 other = "<span class='ocd-mono'>%s = %q</span>"
+
+### Console
+[OcdCfgMissingSeoImageExampleConsole]
+other = "<span class='ocd-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'># SEO</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='ocd-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span>"
 
 ## ocd-cfg-133
 [OcdCfgBadSeoImage]
@@ -112,6 +145,13 @@ other = "Use a image that meet the recommended criteria:<br> <span class='ocd-mo
 [OcdCfgBadSeoImageExample]
 other = "<span class='ocd-mono'>%s = %q</span>"
 
+### Console
+[OcdCfgBadSeoImageReasonConsole]
+other = "The SEO image <span class='ocd-mono'>%q</span> in <span class='ocd-mono'>%s</span> does not meet quality standards. (<span class='ocd-mono'>min-width: 1000px, aspect-ratio: ~1.91</span>)"
+[OcdCfgBadSeoImageSolutionConsole]
+other = "The provided image will not be resized and will be used as is.<br> For best results use an image that meet the recommended criteria for a SEO image: <span class='ocd-mono'>width: 1200px, height: 630px</span>."
+[OcdCfgBadSeoImageExampleConsole]
+other = "<span class='ocd-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'># SEO</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='ocd-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='ocd-mono-comment'>...</span>"
 
 # OCD fm errors
 ## ocd-fm-102
@@ -205,19 +245,19 @@ other = "Use a image that meet the recommended criteria:<br> <span class='ocd-mo
 other = "<span class='ocd-mono'>%s = %q</span>"
 
 # Fallback
-[OcdMdUnknownTitle]
+[OcdUnknownTitle]
 other = "Unknown Error Code"
 
-[OcdMdUnknownReason]
-other = "Invalid or undefined error code: <span class='ocd-mono'>%s</span>"
+[OcdUnknownReason]
+other = "Invalid or undefined error code!"
 
-[OcdMdUnknownSolution]
-other = "Either I forgot to <span class='ocd-mono'>define it</span>, or \"someone\" got <span class='ocd-mono'>creative</span> with the inputs."
+[OcdUnknownSolution]
+other = "Either I forgot to <span class='ocd-mono'>define it</span>, or <em>\"someone\"</em> got <span class='ocd-mono'>creative</span> with the inputs."
 
-[OcdMdUnknownExample]
-other = "<span class='ocd-mono'>Magic only works when the <strong>spell(ing)</strong> is real.</span>"
+[OcdUnknownExample]
+other = "<span class='ocd-mono'><em>&ldquo;Magic only works when the <strong>spell(ing)</strong> is real.&rdquo;</em></span>"
 
-[OcdMdUnknownDocURL]
+[OcdUnknownDocURL]
 other = "https://github.com/oxypteros/alpha/issues/"
 
 # DO NOT REMOVE
