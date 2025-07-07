@@ -1,9 +1,11 @@
 {{- /*
   Partial: ocd/dispatchers/console/config.html
   Purpose: Renders the console warnings for config errors.
+
+  Repo: https://github.com/oxypteros/alpha
 */}}
 
-{{- /* Input data from core/config/handler.logic */}}
+{{- /* Input data from core/config/handler.logic */}} 
 {{- $cfgErrors := .configErrors -}}
 
 {{- /* Input data from 'data/ocd/console/config.toml' */}}
@@ -24,7 +26,7 @@
   {{- /* Get config error values from data */}}
   {{- $entry := (index $cfgErrorDefs $code) | default dict -}}
 
-  {{- /* Define severity for page card (css) */}}
+  {{- /* Define severity for console (css) */}}
   {{- $severity := $entry.severity | default "warning" -}}
   {{- $severityClass := cond (eq $severity "error") "ocd-console-error" "ocd-console-warning" -}}
 
@@ -117,7 +119,7 @@
     {{- $reason = printf (i18n $reasonKey)  | safeHTML -}}
   {{- end }}
 
-
+{{- /* Render the console template and the Js trigger */}}
   <div data-error="{{ $code }}"></div>
   <template data-alpha="{{ $code }}-template">
     <div class="ocd-console-explanation {{ $severityClass }}">
