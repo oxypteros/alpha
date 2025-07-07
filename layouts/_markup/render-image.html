@@ -23,7 +23,7 @@
   {{- if $bundleImage -}}
     {{- $image = $bundleImage -}}
   {{- else -}}
-    {{- /* Not in bundle. Try assets. */ -}}
+    {{- /* Not in bundle. Try assets. */}}
     {{- $matches := resources.Match (printf "img/*%s" $destination) -}}
     {{- if gt (len $matches) 0 -}}
       {{- $image = index $matches 0 -}}
@@ -44,11 +44,9 @@
     {{- $errorCode = "ocd-md-101" -}}
   {{- end -}}
 {{- end }}
-{{- if not $plainText -}}
+{{- if and ($image) (not $plainText) -}}
   {{- $errorCode = "ocd-md-104" -}}
 {{- end -}}
-
-
 
 {{- if $errorCode }}
   {{- $pagePath := .Page.File.Path -}}
