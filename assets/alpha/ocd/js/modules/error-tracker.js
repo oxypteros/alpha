@@ -13,10 +13,8 @@ const updateLocalStorage = () => {
     JSON.parse(localStorage.getItem(StorageKeys.ERROR_LIST)) || {};
 
   if (errorElements.length > 0) {
-    // Use a Set to ensure unique errors per page
-    errorData[currentPage] = [
-      ...new Set([...errorElements].map((el) => el.dataset.error)),
-    ];
+errorData[currentPage] = [...errorElements].map((el) => el.dataset.error);
+
   } else {
     delete errorData[currentPage]; // Remove page from list if no errors
   }
