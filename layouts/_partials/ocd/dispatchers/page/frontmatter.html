@@ -1,10 +1,16 @@
+{{- /*
+  Partial: ocd/dispatchers/page/frontmatter.html
+  Purpose: Renders the page warnings for frontmatter errors.
+
+    Repo: https://github.com/oxypteros/alpha
+*/}}
 {{- /* Input data from 'core/frontmatter/handler.logic' */}}
 {{- $fmErrors := .frontmatterErrors -}}
 
-{{- /* Input data from 'data/ocd/errors/frontmatter.toml' */}}
-{{- $fmErrorDefs := site.Data.ocd.errors.frontmatter -}}
+{{- /* Input data from 'data/ocd/page/frontmatter.toml' */}}
+{{- $fmErrorDefs := site.Data.ocd.page.frontmatter -}}
 
-{{- range $fmErrors -}}
+{{- range first 1 $fmErrors -}}
   {{- /*
     Dictionary keys provided by the partials:
     'ocd/core/frontmatter/check.logic.html'
@@ -20,7 +26,7 @@
   {{- $validValues := .validValues -}}
   {{- $validLicenses := .validValues -}}
 
-  {{- /* Get frontmatter error values from data */}}
+  {{- /* Get frontmatter error values from data for page */}}
   {{- $entry := (index $fmErrorDefs $code) | default dict -}}
 
   {{- /* Define severity for page card (css) */}}
@@ -29,19 +35,19 @@
   {{- $ocdIcon := cond (eq $severity "error") "#ocd-error-icon" "#ocd-warning-icon" -}}
 
   {{- /* Format values for default use */}}
-  {{- $titleKey := $entry.title | default "OcdMdUnknownTitle" -}}
+  {{- $titleKey := $entry.title | default "OcdUnknownTitle" -}}
   {{- $title := i18n $titleKey | safeHTML -}}
 
   {{- $key := $entry.key -}}
 
-  {{- $reasonKey := $entry.reason | default "OcdMdUnknownReason" -}}
+  {{- $reasonKey := $entry.reason | default "OcdUnknownReason" -}}
   {{- $reason := i18n $reasonKey | safeHTML -}}
 
-  {{- $solutionKey := $entry.solution | default "OcdMdUnknownSolution" -}}
+  {{- $solutionKey := $entry.solution | default "OcdUnknownSolution" -}}
   {{- $solution := i18n $solutionKey | safeHTML -}}
 
   {{- $preExample := i18n ($entry.preExample | default "") | safeHTML -}}
-  {{- $example := i18n ($entry.example | default "OcdMdUnknownExample") | safeHTML -}}
+  {{- $example := i18n ($entry.example | default "OcdUnknownExample") | safeHTML -}}
 
   {{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
 
@@ -127,7 +133,7 @@
       Code: ocd-fm-000 or undefined
     */}}
   {{- else }}
-    {{- $reason = printf (i18n $reasonKey)  $code | safeHTML -}}
+    {{- $reason = printf (i18n $reasonKey) | safeHTML -}}
   {{- end }}
 
   <div class="ocd ocd-card-container">
