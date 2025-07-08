@@ -21,12 +21,12 @@ goatcounter_prefix = ""
 noCookies_snackbar = true
 visitor_settings = true
 
-#Development Settings
+# Development Settings
 tailwind_enabled = false
 ocd_enabled = true
 ocdWarn_enabled = true
 
-#SEO
+# SEO
 seo_organization = ""
 seo_author = ""
 seo_logo_path = ""
