@@ -64,10 +64,9 @@
     </p>
   </div>
   <footer class="ocd-card-footer ocd-card-footer-error">
-    <div class="ocd-error-meta">
+    <div class="ocd-error-meta ocd-card-footer-meta">
       <p>
-        {{ $scName }}
-        {{ i18n "OcdScInput" . | default "input:" }}
+        <strong>{{ i18n "OcdCardInput" . | default "Input:" }}</strong>
         {{- /* Render pair invalid param and value */}}
         {{- $total := len $invalidParams -}}
         {{- $i := 0 -}}

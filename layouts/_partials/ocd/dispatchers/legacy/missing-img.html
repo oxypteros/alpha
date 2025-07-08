@@ -82,11 +82,11 @@ $solution
          
         {{ i18n "OcdImgMakeSure" . | default "Make sure that the image with filename"}}
         <span class="ocd-mono ocd-mono-solution">{{ $filename }}</span
-        > {{ i18n "OcdImgIsPlaced" . | default "is placed inside the"}}<span class="ocd-mono ocd-mono-solution">{{ $imgFolder }}</span
+        > {{ i18n "OcdImgIsPlaced" . | default "is placed inside the"}} <span class="ocd-mono ocd-mono-solution">{{ $imgFolder }}</span
         > {{ i18n "OcdImgFolder" . | default "folder." }}</p>
     </div>
     <footer class="ocd-card-footer ocd-card-footer-warning">
-      <div class="ocd-warning-meta">
+      <div class="ocd-card-footer-meta ocd-warning-meta">
         <a class="ocd-mono ocd-mono-warning" href="{{ $docURL }}"
           >{{ $name }} {{ i18n "OcdDoc" }}</a
         >
@@ -115,7 +115,7 @@ $solution
       <div class="ocd-console-example">
         {{ i18n "OcdSolution" . | default "Solution:" }}
         <p class="ocd-mono">
-            {{ i18n "OcdImgMakeSure" . | default "Make sure that the image with filename"}}
+            {{ i18n "OcdImgMakeSure" . | default "Make sure that the image with filename"}} 
         <span class="ocd-mono ocd-mono-warning">{{ $filename }}</span
         > {{ i18n "OcdImgIsPlaced" . | default "is placed inside the"}} <span class="ocd-mono ocd-mono-warning">{{ $imgFolder }}</span
         > {{ i18n "OcdImgFolder" . | default "folder." }}
