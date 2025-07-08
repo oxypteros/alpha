@@ -9,9 +9,9 @@
 {{- $repoURL := "" -}}
 
 {{- /* Head css/js files check */}}
-{{- $ocdSelfCheckHeadErrors := .Store.Get "ocdSelfCheckHeadErrors" | default (slice) -}}
-{{- if gt (len $ocdSelfCheckHeadErrors) 0 -}}
-  {{- range $ocdSelfCheckHeadErrors -}}
+{{- $ocdSelfCheckHeadpage := .Store.Get "ocdSelfCheckHeadpage" | default (slice) -}}
+{{- if gt (len $ocdSelfCheckHeadpage) 0 -}}
+  {{- range $ocdSelfCheckHeadpage -}}
     {{- $ocdSelfCheck = false -}}
 
     {{- $code = .code -}}
@@ -41,38 +41,51 @@
   {{- $solution = printf "OCD UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
 {{- end }}
 
-{{- /* Missing data markdown check */}}
-{{- if not site.Data.ocd.errors.markdown -}}
+{{- /* Missing page data markdown check */}}
+{{- if not site.Data.ocd.page.markdown -}}
   {{- $ocdSelfCheck = false -}}
 
   {{- $code = "ocd-file-104" -}}
   {{- $file = printf "markdown.toml" -}}
-  {{- $path = printf "data/ocd/errors/markdown.toml" }}
-  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/ocd/errors/markdown.toml" }}
+  {{- $path = printf "data/ocd/page/markdown.toml" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/ocd/page/markdown.toml" }}
   {{- $solution = printf "OCD UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
 {{- end }}
 
-{{- /* Missing data config check */}}
-{{- if not site.Data.ocd.errors.config -}}
+{{- /* Missing page data config check */}}
+{{- if not site.Data.ocd.page.config -}}
   {{- $ocdSelfCheck = false -}}
 
   {{- $code = "ocd-file-105" -}}
   {{- $file = printf "config.toml" -}}
-  {{- $path = printf "data/ocd/errors/config.toml" }}
-  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/ocd/errors/config.toml" }}
+  {{- $path = printf "data/ocd/page/config.toml" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/ocd/page/config.toml" }}
   {{- $solution = printf "OCD UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
 {{- end }}
 
-{{- /* Missing data config check */}}
-{{- if not site.Data.ocd.errors.frontmatter -}}
+{{- /* Missing page data frontmatter check */}}
+{{- if not site.Data.ocd.page.frontmatter -}}
   {{- $ocdSelfCheck = false -}}
 
   {{- $code = "ocd-file-106" -}}
   {{- $file = printf "frontmatter.toml" -}}
-  {{- $path = printf "data/ocd/errors/frontmatter.toml" }}
-  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/ocd/errors/frontmatter.toml" }}
+  {{- $path = printf "data/ocd/page/frontmatter.toml" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/ocd/page/frontmatter.toml" }}
   {{- $solution = printf "OCD UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
 {{- end }}
+
+
+{{- /* Missing console data config check */}}
+{{- if not site.Data.ocd.console.config -}}
+  {{- $ocdSelfCheck = false -}}
+
+  {{- $code = "ocd-file-120" -}}
+  {{- $file = printf "config.toml" -}}
+  {{- $path = printf "data/ocd/console/" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/ocd/console/config.toml" }}
+  {{- $solution = printf "OCD UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
+{{- end }}
+
 {{- /* Show ocdWarn self check results */}}
 {{- if not $ocdSelfCheck }}
 <!-- prettier-ignore -->
