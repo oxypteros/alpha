@@ -23,7 +23,7 @@
   {{- if $ocdEnabled -}}
     {{- if gt (len $allConfigErrors) 0 -}}
       {{- partial "ocd/dispatchers/console/config.html" (dict "configErrors" $allConfigErrors) -}}
-      {{- /* Disabled page error render. Still undecided if it's too intrusive for UX  */}}
+      {{- /* Disabled page config error render. Still undecided if it's too intrusive for UX  */}}
        {{- /* partial "ocd/dispatchers/page/config.html" (dict "configErrors" $allConfigErrors) */}}
     {{- end -}}
   {{- end -}}
