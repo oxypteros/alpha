@@ -7,7 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-<!-- ## [Unreleased] -->
+<!--## [Unreleased] -->
+## [0.3.0-rc] — 2025-07-08
+### Changed
+- **Overhauled OCD System (v1.0.0-rc):** Completely refactored the error detection and reporting system for significantly improved accuracy, performance, and maintainability.
+    - Separated functionality into distinct contexts: a global terminal scope for build-time errors and on-page UI components for content creators.
+    - Ensured a complete separation of concerns, decoupling the OCD from the Alpha theme for better portability and future development.
+    - Resolves issues [1](https://github.com/oxypteros/alpha/issues/1), [5](https://github.com/oxypteros/alpha/issues/5), [6](https://github.com/oxypteros/alpha/issues/6)
+- **Example Site:** Updated all demo and example site content to align with the new frontmatter structure introduced in `v0.3.0-beta`.
+- **Dependency Updates:** Upgraded Tailwind CSS and `tailwind/cli` to their latest versions for improved performance and access to new features.
+
 ## [0.3.0-beta] — 2025-06-16
 ### Added
 - **SEO Image Support:** 
