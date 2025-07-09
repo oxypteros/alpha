@@ -1,24 +1,19 @@
 {{- /*
   Partial: ocd/components/handler.html
   Purpose: Acts as an error "adapter" or router. Receives structured errors from 
-  the validator partial and conditionally calls OCD error reporting partials.
-
-  Requires a dictionary expecting the following keys:
-  - scName (string)   : Shortcode name
-  - errors (map)      : Returning error map from the validator partial
-  - rules (map)       : Validation rules map of the shortcode
-  - meta (map)        : Shortcode's metadata map
-  - page (object)     : The shortcode's page context (`.Page`)
-  - position (object) : The shortcode's position (`.Position`)
+  the validator partial and the data/shortcodes/rules.toml and conditionally 
+  calls OCD error reporting partials.
 
   Repo:https://github.com/oxypteros/alpha
 */}}
-{{- $scName := .scName -}}
-{{- $errors := .errors -}}
 {{- $rules := .rules -}}
-{{- $meta := .meta -}}
+{{- $scName := $rules.scName -}}
+{{- $errors := .errors -}}
 {{- $page := .page -}}
 {{- $position := .position -}}
+{{- $shortcodeData := .data -}}
+{{- $invalidParamCode := $rules.errorCodes.invalidParam -}}
+{{- $invalidValueCode := $rules.errorCodes.invalidValue -}}
 
 {{- /* - OCD conditional vars */}}
 {{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
@@ -26,16 +21,14 @@
 
 {{- /* * Check for invalid keys and fail fast. If not then check for invalid values. */}}
 {{- /* ** Invalid parameters map */}}
-{{- with $errors.invalidKeys -}}
+{{- with $errors.invalidParams -}}
   {{- $errorData := dict
-    "ocdErrorCode"  $meta.errorCodes.invalidKey
+    "code"          $invalidParamCode
     "scName"        $scName
-    "invalidParams" .
-    "validParams"   $rules.validKeys
+    "invalidParams" .                
+    "validParams"   $rules.validParams
     "page"          $page
     "position"      $position
-    "example"       $meta.example
-    "docURL"        $meta.docURL
   -}}
 
   {{- /* *** Render invalid params errors only on Hugo terminal */}}
@@ -57,14 +50,13 @@
     {{- end }}
 
     {{- $errorData := dict
-      "ocdErrorCode"   $meta.errorCodes.invalidValue
+      "code"           $invalidValueCode
       "scName"         $scName
       "invalidValues"  $invalidValuesMap
       "rules"          $rules
       "page"           $page
       "position"       $position
-      "example"        $meta.example
-      "docURL"         $meta.docURL
+
     -}}
     {{- /* *** Render invalid values errors only on Hugo terminal */}}
     {{- if $ocdWarnEnabled }}

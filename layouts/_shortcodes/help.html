@@ -19,30 +19,29 @@
   Repo: https://github.com/oxypteros/alpha
 */}}
 {{- if  and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-  {{- /* * Help Shortcode Data */}}
-  {{- $scName := "help" -}}
-  {{- /* ** Help shortcode rules */}}
-  {{- $rules := dict
-    "validKeys" (slice "TYPE")
-    "params" (dict
-    "TYPE"  (dict "validation" "in_list" "list" (slice "shortcodes" "markdown") "default" "shortcodes")
-    )
-  -}}
-  {{- /* ** Help shortcode metadata */}}
-  {{- $errorMeta := dict
-    "docURL"  "https://alpha.oxypteros.com/docs/shortcodes/help"
-    "example" "&lbrace;&lbrace;&lt; help TYPE=\"markdown\" &gt;&rbrace;&rbrace;"
-    "errorCodes" (dict
-    "invalidKey"   "ocd-sc-100"
-    "invalidValue" "ocd-sc-101"
-    )
-  -}}
+  {{- /* Shortcode rules */}}
+  {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
-  {{- /* * Validate shortcode input */}}
-  {{- $validationResult := partial "ocd/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- /* Vars */}}
+  {{- $validInput := "" -}}
+  {{- $validationResult := "" -}}
+
+  {{- /* Get shortcodes rules and validate input */}}
+  {{- if $rules -}}
+    {{- $rules = merge $rules (dict "scName" .Name) -}}
+    {{- $validationResult = partial "ocd/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+    {{- $validInput = $validationResult.isValid }}
+  {{- else -}}
+    {{- warnf "OCD: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+  {{- end -}}
+
+  {{- /* On failed input validation call the OCD handler */}}
+  {{- if not $validInput -}}
+    {{- partial "ocd/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
 
   {{- /* * Render the shortcode on successful validation */}}
-  {{- if $validationResult.isValid }}
+  {{- if $validInput }}
     {{- $data := $validationResult.data -}}
 
     {{- /* - `data/help/*.[lang].toml files` */}}
@@ -73,16 +72,5 @@
         to be missing.
       </div>
     {{- end }}
-  {{- else }}
-    {{- /* ** On failed validation call the OCD handler */}}
-    {{- partial "ocd/core/shortcodes/handler.logic.html" (dict
-      "scName"   .Name
-      "errors"   $validationResult.errors
-      "rules"    $rules
-      "meta"     $errorMeta
-      "page"     .Page
-      "position" .Position
-      )
-    -}}
   {{- end }}
 {{- end -}}

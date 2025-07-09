@@ -1,20 +1,33 @@
 {{- /*
-  Partial: ocd/components/page/sc-invalid-params.html
-  Purpose: Generates an OCD on page message for shortcodes that are
-  called with unknown parameters.
-
-  Requires a dictionary expecting the following keys:
-  - ocdErrorCode (string) : The OCD error code
-  - scName (string)       : The name of the shortcode.
-  - invalidParams (slice) : The list of unknown parameters found.
-  - validParams (slice)   : The list of all known parameters.
+  Partial: ocd/dispatchers/page/sc-invalid-params.html
+  Purpose: Renders the page errors for invalid parameters in shortcodes.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- $errorCode := .ocdErrorCode -}}
+
+{{- /*
+  Dictionary keys from the handler originated by:
+  'ocd/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $code := .code -}}
 {{- $scName := .scName -}}
 {{- $invalidParams := .invalidParams -}}
 {{- $validParams := .validParams -}}
+
+{{- /* Input data from 'data/ocd/page/shortcodes.toml' */}}
+{{- $scErrorDefs := site.Data.ocd.page.shortcodes -}}
+
+{{- /* Get shortcode error values from data for page */}}
+{{- $entry := (index $scErrorDefs $code) | default dict -}}
+
+{{- /* Define severity for page (css) */}}
+{{- $severity := $entry.severity | default "warning" -}}
+{{- $severityClass := cond (eq $severity "error") "ocd-card-error" "ocd-card-warning" -}}
+{{- $ocdIcon := cond (eq $severity "error") "#ocd-error-icon" "#ocd-warning-icon" -}}
+
+{{- /* Format values for default use */}}
+{{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
 
 {{- /* - Separate invalid params from values */}}
 {{- $invalidKeys := slice -}}
@@ -25,25 +38,22 @@
 {{- $formattedInvalid := delimit (sort $invalidKeys) ", " -}}
 {{- $formattedValid := delimit $validParams ", " -}}
 
-{{- /* - Count for i18n */}}
+{{- /* - Count for i18n pluralization */}}
 {{- $countInvalid := len $invalidParams -}}
 {{- $countValid := len $validParams -}}
 
 
-<div
-  class="ocd ocd ocd-card ocd-card-error ocd-shadow"
-  data-error="{{ $errorCode }}"
->
-  <header class="ocd-card-header ocd-card-header-error">
+<div class="ocd ocd-card {{ $severityClass }} ocd-shadow">
+  <header class="ocd-card-header">
     <h2 class="ocd-title">
       {{- i18n "OcdScParamError" $countInvalid | default "Shortcode Parameter Error" }}
     </h2>
     <svg aria-hidden="true" focusable="false" width="24" height="24">
-      <use href="#ocd-error-icon"></use>
+      <use href="{{- $ocdIcon -}}"></use>
     </svg>
   </header>
-  <div class="ocd-card-content ocd-card-content-error">
-    <div>
+  <div class="ocd-card-content">
+    <div class="ocd-card-content-reason">
       <p>
         {{- i18n "OcdScInvParam" $countInvalid | default "Invalid parameter used in the shortcode:" }}
         <span class="ocd-mono ocd-mono-error"
@@ -58,14 +68,16 @@
       </p>
     </div>
     <hr />
-    <p>
-      {{ i18n "OcdScValidParameters" $countValid | default "Valid parameters:" }}
-      <span class="ocd-mono ocd-mono-solution">{{ $formattedValid }}</span>
-    </p>
-  </div>
-  <footer class="ocd-card-footer ocd-card-footer-error">
-    <div class="ocd-error-meta ocd-card-footer-meta">
+    <div class="ocd-card-content-solution">
       <p>
+        {{ i18n "OcdScValidParameters" $countValid | default "Valid parameters:" }}
+        <span class="ocd-mono ocd-mono-solution">{{ $formattedValid }}</span>
+      </p>
+    </div>
+  </div>
+  <footer class="ocd-card-footer">
+    <div class="ocd-card-footer-meta">
+      <p class="ocd-mono">
         <strong>{{ i18n "OcdCardInput" . | default "Input:" }}</strong>
         {{- /* Render pair invalid param and value */}}
         {{- $total := len $invalidParams -}}
@@ -77,11 +89,9 @@
           {{- if lt $i $total }}<span class="ocd-mono">, </span>{{ end -}}
         {{- end -}}
       </p>
-      <a
-        class="ocd-mono ocd-mono-error"
-        href="https://alpha.oxypteros.com/docs/ocd"
-        >{{ $errorCode }}</a
-      >
+      {{- with $docURL }}
+        <a class="ocd-mono" href="{{ $docURL }}">{{ $code }}</a>
+      {{- end }}
     </div>
   </footer>
 </div>

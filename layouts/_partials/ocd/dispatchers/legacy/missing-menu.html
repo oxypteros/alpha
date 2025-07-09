@@ -1,26 +1,16 @@
 {{- /*
-  Partial: ocd/components/unique/missing-menu.html
+  Partial: ocd/dispatchers/legacy/missing-menu.html
   Purpose: Render the `OCD warn`, `OCD on page`, and `OCD console` warning
   message for missing menu.
-
-  Requires a dictionary expecting the following keys:
-  - context (object)       : The page context ( . )
-  - errorCode (string)     : The OCD error code
-  - example (string)       : Complete shortcode example (supports HTML)
-  - name (string)          : The name of the shortcode.
-  - docURL (string)        : The shortcode documentation URL
-  - menu              
-  - menuFile
 
   Repo: https://github.com/oxypteros/alpha
 */}}
 
 {{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
 {{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+
 {{- $context := .context -}}
-{{- $docURL := .docURL -}}
 {{- $errorCode := .errorCode -}}
-{{- $scExample := .scExample -}}
 {{- $name := .name -}}
 {{- $menuName := .menu }}       
 {{- $menuFile := .menuFile }}
@@ -31,8 +21,8 @@
   {{- /* *** ocdWarn messages */}}
   {{ $reason := printf "Menu %s cannot be found." $menuName}}
 
-  {{- $solution := printf "Define the %s menu in the file %s" $menuName $menuFile }}
-  
+  {{- $solution := printf "Define the %s menu in the file\n'%s'." $menuName $menuFile }}
+  {{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $context.Position -}}
 
   {{- /* *** Final ocdWarn for terminal */}}
   <!-- prettier-ignore -->
@@ -49,7 +39,7 @@ File   : %s
 $errorCode
 $reason
 $context.Page.Permalink
-$context.Position
+$relPosition
 $solution
   -}}
 {{- end }}
@@ -57,10 +47,10 @@ $solution
 {{- if $ocdEnabled }}
   {{- /* ** OCD Page */}}
   <div
-    class="ocd ocd ocd-card ocd-card-warning ocd-shadow"
+    class="ocd ocd-card ocd-card-warning ocd-shadow"
     data-error="{{ $errorCode }}"
   >
-    <header class="ocd-card-header ocd-card-header-warning">
+    <header class="ocd-card-header">
       <h2 class="ocd-title">
         {{- i18n "OcdMenu404Title" . | default "Menu Not Defined" -}}
       </h2>
@@ -68,28 +58,25 @@ $solution
         <use href="#ocd-warning-icon"></use>
       </svg>
     </header>
-    <div class="ocd-card-content ocd-card-content-warning">
+    <div class="ocd-card-content">
       <div>
         <p>
           {{ i18n "OcdMenuTheMenu" . | default "The menu" }} 
-          <span class="ocd-mono ocd-mono-warning"
+          <span class="ocd-mono"
             > {{ $menuName }} </span
           > {{ i18n "OcdMenuNotDefined" . | default "is not defined." }}
         </p>
       </div>
       <hr />
       <p>
-         
         {{ i18n "OcdMenuDefine" . | default "Define and populate the menu"}}
-        <span class="ocd-mono ocd-mono-solution">{{ $menuName }}</span
-        > {{ i18n "OcdMenuInFile" . | default "in the file"}} <span class="ocd-mono ocd-mono-solution">{{ $menuFile }}</span
+        <span class="ocd-mono">{{ $menuName }}</span
+        > {{ i18n "OcdMenuInFile" . | default "in the file"}} <span class="ocd-mono">{{ $menuFile }}</span
         >.</p>
     </div>
-    <footer class="ocd-card-footer ocd-card-footer-warning">
-      <div class="ocd-warning-meta">
-        <a class="ocd-mono ocd-mono-warning" href="{{ $docURL }}"
-          >{{ $name }} {{ i18n "OcdDoc" }}</a
-        >
+    <footer class="ocd-card-footer">
+      <div class="ocd-card-footer-meta">
+       <p></p>
         <a
           class="ocd-mono ocd-mono-warning"
           href="https://alpha.oxypteros.com/docs/ocd"
@@ -100,33 +87,30 @@ $solution
   </div>
   {{- /* ** OCD Console */}}
   <template data-alpha="{{ $errorCode }}-template">
-    <div class="ocd-console-explanation">
+    <div class="ocd-console-explanation ocd-console-warning">
       <h2>
         {{- i18n "OcdMenu404Title" . | default "Menu Not Defined" -}}
       </h2>
       <p>
         {{ i18n "OcdMenuTheMenu" . | default "The menu" }} 
-          <span class="ocd-mono ocd-mono-warning"
+          <span class="ocd-mono"
             > {{ $menuName }} </span
           > {{ i18n "OcdMenuNotDefined" . | default "is not defined." }}
       </p>
       
       <div class="ocd-console-example">
-        {{ i18n "OcdSolution" . | default "Solution:" }}
-        <p class="ocd-mono">
+       <strong>{{ i18n "OcdSolution" . | default "Solution:" }}</strong>
+        <p>
            {{ i18n "OcdMenuDefine" . | default "Define and populate the menu"}}
-        <span class="ocd-mono ocd-mono-solution">{{ $menuName }}</span
-        > {{ i18n "OcdMenuInFile" . | default "in the file"}} <span class="ocd-mono ocd-mono-solution">{{ $menuFile }}</span
+        <span class="ocd-mono">{{ $menuName }}</span
+        > {{ i18n "OcdMenuInFile" . | default "in the file"}} <span class="ocd-mono">{{ $menuFile }}</span
         >.</p>
         </p>
       </div>
-    </div>
+    
     <div class="ocd-console-doc">
-      <div class="hr hr-left"></div>
-      <a href="{{ $docURL }}"
-        ><span class="ocd-mono">{{ $name }}</span> {{ i18n "OcdDoc" }}</a
-      >
       <div class="hr hr-right"></div>
     </div>
+  </div>
   </template>
-{{- end }}
+{{- end -}}

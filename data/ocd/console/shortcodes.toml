@@ -1,0 +1,113 @@
+[ocd-sc-100]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScHelpExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/help/"
+
+[ocd-sc-101]
+severity   = "warning"
+preExample = "OcdCardExample"
+example    = "OcdScHelpExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/help/"
+
+[ocd-sc-110]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScHeroExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/hero/"
+
+[ocd-sc-120]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScFeatExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/featured/"
+
+[ocd-sc-121]
+severity   = "warning"
+preExample = "OcdCardExample"
+example    = "OcdScFeatExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/featured/"
+
+[ocd-sc-130]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScTxtSnippetExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/text-snippet/"
+
+[ocd-sc-140]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScRecExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/recommended/"
+
+[ocd-sc-141]
+severity   = "warning"
+preExample = "OcdCardExample"
+example    = "OcdScRecExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/recommended/"
+
+[ocd-sc-160]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScRecentExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/recent/"
+
+[ocd-sc-161]
+severity   = "warning"
+preExample = "OcdCardExample"
+example    = "OcdScRecentExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/recent/"
+
+[ocd-sc-170]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScCtaExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/cta/"
+
+[ocd-sc-180]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScNumExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/num-list/"
+
+[ocd-sc-181]
+severity   = "warning"
+preExample = "OcdCardExample"
+example    = "OcdScNumExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/num-list/"
+
+[ocd-sc-190]
+severity = "error"
+preExample = "OcdCardExample"
+example    = "OcdScFaqExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/faq/"
+
+[ocd-sc-200]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScAboutExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/about/"
+
+[ocd-sc-210]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScStatusCardExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/status-card/"
+
+[ocd-sc-211]
+severity   = "warning"
+preExample = "OcdCardExample"
+example    = "OcdScStatusCardExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/status-card/"
+
+[ocd-sc-220]
+severity   = "error"
+preExample = "OcdCardExample"
+example    = "OcdScSocialExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/social/"
+
+[ocd-sc-221]
+severity   = "warning"
+preExample = "OcdCardExample"
+example    = "OcdScSocialExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/social/"

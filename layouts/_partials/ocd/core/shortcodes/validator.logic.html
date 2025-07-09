@@ -22,21 +22,21 @@
 {{- $result := dict "isValid" true "errors" (dict) "data" (dict) "userInput" $lowerUserInput -}}
 
 {{- /* ** Initialize dictionaries to hold all data. */}}
-{{- $invalidKeys := dict -}}
+{{- $invalidParams := dict -}}
 {{- $invalidValues := dict -}}
 {{- $cleanData := dict -}}
 
 {{- /* *** Check for unknown parameter keys */}}
 {{- range $key, $value := $userInput }}
   {{- /* - Check (upper $key) against the rules to maintain case-insensitivity */}}
-  {{- if not (in $rules.validKeys (upper $key)) }}
-    {{- $invalidKeys = merge $invalidKeys (dict $key $value) -}}
+  {{- if not (in $rules.validParams (upper $key)) }}
+    {{- $invalidParams = merge $invalidParams (dict $key $value) -}}
   {{- end }}
 {{- end }}
 
-{{- if $invalidKeys }}
-  {{- /* - Invalid keys are found, fail fast and add them to the invalid keys map */}}
-  {{- $result = merge $result (dict "isValid" false "errors" (dict "invalidKeys" $invalidKeys)) -}}
+{{- if $invalidParams }}
+  {{- /* - Invalid params are found, fail fast and add them to the invalid params map */}}
+  {{- $result = merge $result (dict "isValid" false "errors" (dict "invalidParams" $invalidParams)) -}}
 {{- else }}
   {{- /* *** Unknown keys validation passed. Start values validation */}}
   {{- range $key, $rule := $rules.params }}

@@ -1,25 +1,46 @@
 {{- /*
-  Partial: ocd/components/console/sc-invalid-values.html
-  Purpose: Generates an OCD console entry for shortcodes that are
-  called with invalid values.
-
-  Requires a dictionary expecting the following keys:
-  - ocdErrorCode (string) : The OCD error code
-  - scName (string)       : The name of the shortcode.
-  - invalidValues (map)   : A map of parameters with their invalid values.
-  - rules (object)        : The full shortcode rules object.
-  - page (object)         : The full .Page object from the shortcode.
-  - position (object)     : The full .Position object from the shortcode.
+  Partial: ocd/dispatchers/console/sc-invalid-values.html
+  Purpose: Renders the console errors for invalid parameters value in shortcodes.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
+
+{{- /*
+  Dictionary keys from the handler originated by:
+  'ocd/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $code := .code -}}
 {{- $scName := .scName -}}
 {{- $invalidValues := .invalidValues -}}
-{{- $errorCode := .ocdErrorCode -}}
 {{- $paramsRules := .rules.params -}}
-{{- $scExample := .example }}
-{{- $docURL := .docURL }}
-{{- /* Count of invalid valeus for i18n */}}
+{{- $page := .page }}
+
+{{- /* Input data from 'data/ocd/console/shortcodes.toml' */}}
+{{- $scErrorDefs := site.Data.ocd.console.shortcodes -}}
+
+{{- /* Get shortcode error values from data for console */}}
+{{- $entry := (index $scErrorDefs $code) | default dict -}}
+
+{{- /* Define severity for console (css) */}}
+{{- $severity := $entry.severity | default "warning" -}}
+{{- $severityClass := cond (eq $severity "error") "ocd-console-error" "ocd-console-warning" -}}
+
+{{- /* Format values for default use */}}
+
+{{- $noAnsi := replaceRE `\x1b\[[0-9;]*m` "" $page -}}
+{{- $noQuotes := trim $noAnsi "\"" -}}
+{{- $cleanPage := replaceRE "^.*(/content/.*)" "$1" $noQuotes -}}
+
+{{- $preExample := i18n ($entry.preExample | default "Example:") | safeHTML -}}
+
+{{- $example := printf (i18n $entry.example) $cleanPage | safeHTML -}}
+
+{{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+{{- $preDoc := $entry.preDoc | default "" -}}
+
+
+{{- /* Count for i18n pluralization */}}
 {{- $invalidCount := len $invalidValues -}}
 
 {{- /* Invalid values list */}}
@@ -27,16 +48,21 @@
 {{- range $k, $v := .invalidValues -}}
   {{- $badValuesOnly = $badValuesOnly | append (printf `"%s"` $v) -}}
 {{- end -}}
+
+{{- /* - Format values for use */}}
 {{- $formattedInvalidValues := delimit $badValuesOnly ", " -}}
-<template data-alpha="ocd-sc-invalid-value-template">
-  <div class="ocd-console-explanation">
+
+
+
+{{- /* Render the OCD Js trigger and the console template */}}
+<div data-error="{{ $code }}"></div>
+<template data-alpha="{{ $code }}-template">
+  <div class="ocd-console-explanation {{ $severityClass }}">
     <h2>
-      {{ i18n "OcdScInvValueConsTitle" $invalidCount | default "Invalid Values in" }}
-      {{ $scName }}
-      {{ i18n "OcdShortcode" .  | default "" }}
+      {{ i18n "OcdScInvValueTitleConsole" $invalidCount | default "Shortcode Invalid Values" }}
     </h2>
     <p>
-      {{ i18n "OcdTheValue" $invalidCount | default "The value" }}
+      {{ i18n "OcdScValues" $invalidCount | default "The value" }}
       <span class="ocd-mono ocd-mono-con-error"
         >{{ $formattedInvalidValues }}</span
       >
@@ -46,12 +72,13 @@
       >
       {{ i18n "OcdScNotRecognized" $invalidCount | default "is not recognized." }}
     </p>
+        <br />
+    <div class="ocd-console-solution">
+      <h3 class="ocd-console-h3">
+        <strong>{{ i18n "OcdSolution" . | default "Solution:" }}</strong>
+      </h3>
     <p>
-      {{ i18n "OcdScValidValueConsole" . | default "Valid values for the" }}
-      <span class="ocd-mono ocd-mono-con-solution"
-        >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
-      >
-      {{ i18n "OcdScShortcodeAreConsole" . | default "shortcode are:" }}
+      {{ i18n "OcdScValidValueConsole" . | default "Valid values for the shortcode are:" }}
     </p>
     <ul>
       {{- range $paramName, $badValue := .invalidValues -}}
@@ -72,18 +99,22 @@
         </li>
       {{- end }}
     </ul>
-    <div class="ocd-console-example">
-      {{ i18n "OcdExample" . | default "Example:" }}
-      <p class="ocd-mono ocd-mono-con-solution">
-        {{- $scExample | safeHTML }}
-      </p>
-    </div>
+    {{- with $example }}
+      <div class="ocd-console-example">
+        <h3><strong>{{ $preExample }}</strong></h3>
+        <p class="ocd-mono">
+          {{- $example | safeHTML }}
+        </p>
+      </div>
+    {{- end }}
   </div>
   <div class="ocd-console-doc">
-    <div class="hr hr-left"></div>
-    <a href="{{ $docURL }}"
-      ><span class="ocd-mono">{{ $scName }}</span> {{ i18n "OcdDoc" . }}</a
-    >
+    {{- with $docURL }}
+      <div class="hr hr-left"></div>
+      <a href="{{ $docURL }}"
+        ><span class="ocd-mono">{{ $scName }}</span> {{ i18n "OcdDoc" . }}</a
+      >
+    {{- end }}
     <div class="hr hr-right"></div>
   </div>
 </template>

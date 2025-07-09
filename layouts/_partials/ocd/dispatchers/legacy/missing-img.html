@@ -1,38 +1,27 @@
 {{- /*
-  Partial: ocd/components/unique/missing-img.html
-  Purpose: Render the `OCD warn`, `OCD on page`, and `OCD console` warning
+  Partial: ocd/dispatchers/legacy/missing-img.html
+  Purpose: Render the `OCD warn`, `OCD on page`, and `OCD console` error
   message for missing-images.
-
-  Requires a dictionary expecting the following keys:
-  - context (object)       : The page context ( . )
-  - errorCode (string)     : The OCD error code
-  - example (string)       : Complete shortcode example (supports HTML)
-  - name (string)          : The name of the shortcode.
-  - docURL (string)        : The shortcode documentation URL
-  - filename               
-  - imgFolder
 
   Repo: https://github.com/oxypteros/alpha
 */}}
 
 {{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
 {{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
-{{- $context := .context -}}
-{{- $docURL := .docURL -}}
-{{- $errorCode := .errorCode -}}
-{{- $scExample := .scExample -}}
-{{- $name := .name -}}
-{{- $filename := .filename }}       
-{{- $imgFolder := .imgFolder }}
 
+{{- $context := .context -}}
+{{- $errorCode := .errorCode -}}
+{{- $name := .name -}}
+{{- $filename := .filename }}
+{{- $imgFolder := .imgFolder }}
 
 {{- /* ** ocdWarn */}}
 {{- if  $ocdWarnEnabled }}
-  {{- /* *** ocdWarn messages */}}
-  {{ $reason := printf "Image %s cannot be found." $filename}}
 
+  {{- /* *** ocdWarn messages */}}
+  {{ $reason := printf "Image %s cannot be found." $filename }}
+  {{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $context.Position -}}
   {{- $solution := printf "Place the image %s inside the folder %s" $filename $imgFolder }}
-  
 
   {{- /* *** Final ocdWarn for terminal */}}
   <!-- prettier-ignore -->
@@ -49,7 +38,7 @@ File   : %s
 $errorCode
 $reason
 $context.Page.Permalink
-$context.Position
+$relPosition
 $solution
   -}}
 {{- end }}
@@ -57,41 +46,39 @@ $solution
 {{- if $ocdEnabled }}
   {{- /* ** OCD Page */}}
   <div
-    class="ocd ocd ocd-card ocd-card-warning ocd-shadow"
+    class="ocd ocd-card ocd-card-error ocd-shadow"
     data-error="{{ $errorCode }}"
   >
-    <header class="ocd-card-header ocd-card-header-warning">
+    <header class="ocd-card-header">
       <h2 class="ocd-title">
         {{- i18n "OcdImg404Title" . | default "Image Not Found" -}}
       </h2>
       <svg aria-hidden="true" focusable="false" width="24" height="24">
-        <use href="#ocd-warning-icon"></use>
+        <use href="#ocd-error-icon"></use>
       </svg>
     </header>
-    <div class="ocd-card-content ocd-card-content-warning">
+    <div class="ocd-card-content">
       <div>
         <p>
-          {{ i18n "OcdImgTheImage" . | default "The image" }} 
-          <span class="ocd-mono ocd-mono-warning"
-            > {{ $filename }} </span
-          > {{ i18n "OcdImgCannotFound" . | default "cannot be found." }}
+          {{ i18n "OcdImgTheImage" . | default "The image" }}
+          <span class="ocd-mono"> {{ $filename }} </span>
+          {{ i18n "OcdImgCannotFound" . | default "cannot be found." }}
         </p>
       </div>
       <hr />
       <p>
-         
-        {{ i18n "OcdImgMakeSure" . | default "Make sure that the image with filename"}}
-        <span class="ocd-mono ocd-mono-solution">{{ $filename }}</span
-        > {{ i18n "OcdImgIsPlaced" . | default "is placed inside the"}} <span class="ocd-mono ocd-mono-solution">{{ $imgFolder }}</span
-        > {{ i18n "OcdImgFolder" . | default "folder." }}</p>
+        {{ i18n "OcdImgMakeSure" . | default "Make sure that the image" }}
+        <span class="ocd-mono">{{ $filename }}</span>
+        {{ i18n "OcdImgIsPlaced" . | default "is placed inside the" }}
+        <span class="ocd-mono">{{ $imgFolder }}</span>
+        {{ i18n "OcdImgFolder" . | default "folder." }}
+      </p>
     </div>
-    <footer class="ocd-card-footer ocd-card-footer-warning">
-      <div class="ocd-card-footer-meta ocd-warning-meta">
-        <a class="ocd-mono ocd-mono-warning" href="{{ $docURL }}"
-          >{{ $name }} {{ i18n "OcdDoc" }}</a
-        >
+    <footer class="ocd-card-footer">
+      <div class="ocd-card-footer-meta">
+        <p></p>
         <a
-          class="ocd-mono ocd-mono-warning"
+          class="ocd-mono"
           href="https://alpha.oxypteros.com/docs/ocd"
           >{{ $errorCode }}</a
         >
@@ -100,33 +87,27 @@ $solution
   </div>
   {{- /* ** OCD Console */}}
   <template data-alpha="{{ $errorCode }}-template">
-    <div class="ocd-console-explanation">
+    <div class="ocd-console-explanation ocd-console-error">
       <h2>
-       {{- i18n "OcdImg404Title" . | default "Image Not Found" -}}
+        {{- i18n "OcdImg404Title" . | default "Image Not Found" -}}
       </h2>
       <p>
-        {{ i18n "OcdImgTheImage" . | default "The image" }} 
-        <span class="ocd-mono ocd-mono-con-warning"
-          > {{ $filename }} </span
-        >
+        {{ i18n "OcdImgTheImage" . | default "The image" }}
+        <span class="ocd-mono"> {{ $filename }} </span>
         {{ i18n "OcdImgCannotFound" . | default "cannot be found." }}
       </p>
-      
       <div class="ocd-console-example">
-        {{ i18n "OcdSolution" . | default "Solution:" }}
-        <p class="ocd-mono">
-            {{ i18n "OcdImgMakeSure" . | default "Make sure that the image with filename"}} 
-        <span class="ocd-mono ocd-mono-warning">{{ $filename }}</span
-        > {{ i18n "OcdImgIsPlaced" . | default "is placed inside the"}} <span class="ocd-mono ocd-mono-warning">{{ $imgFolder }}</span
-        > {{ i18n "OcdImgFolder" . | default "folder." }}
+        <strong>{{ i18n "OcdSolution" . | default "Solution:" }}</strong>
+        <p>
+          {{ i18n "OcdImgMakeSure" . | default "Make sure that the image with filename" }}
+          <span class="ocd-mono">{{ $filename }}</span>
+          {{ i18n "OcdImgIsPlaced" . | default "is placed inside the" }}
+          <span class="ocd-mono">{{ $imgFolder }}</span>
+          {{ i18n "OcdImgFolder" . | default "folder." }}
         </p>
       </div>
     </div>
     <div class="ocd-console-doc">
-      <div class="hr hr-left"></div>
-      <a href="{{ $docURL }}"
-        ><span class="ocd-mono">{{ $name }}</span> {{ i18n "OcdDoc" }}</a
-      >
       <div class="hr hr-right"></div>
     </div>
   </template>

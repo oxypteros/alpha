@@ -1,65 +1,65 @@
 {{- /*
-  Partial: ocd/components/warn/sc-invalid-params.html
-  Purpose: Generates an OCD standardized `warnf` message for shortcodes that are 
-  called with unknown parameters.
-
-  Requires a dictionary expecting the following keys:
-  - ocdErrorCode (string) : The OCD error code
-  - scName (string)       : The name of the shortcode.
-  - invalidParams (map)   : A of unknown parameters and their values.
-  - validParams (slice)   : The list of all valid parameters.
-  - page (object)         : The full .Page object from the shortcode.
-  - position (object)     : The full .Position object from the shortcode.
+  Partial: ocd/dispatchers/terminal/sc-invalid-params.html
+  Purpose: Renders the terminal warnings for invalid parameters in shortcodes.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
 
+{{- /*
+  Dictionary keys from the handler originated by:
+  'ocd/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $code := .code -}}
 {{- $scName := .scName -}}
 {{- $invalidParams := .invalidParams -}}
 {{- $validParams := .validParams -}}
 {{- $page := .page -}}
 {{- $position := .position -}}
-{{- $errorCode := .ocdErrorCode -}}
 
-{{- /* - Dynamic labels based on count */}}
+{{- /* Format $position for html render */}}
+{{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $position -}}
+
+{{- /* - Dynamic labels based on count for pluralization */}}
 {{- $invalidCount := len $invalidParams -}}
 {{- $validCount := len $validParams -}}
 
-{{- $titleLabel := cond (eq $invalidCount 1) "Unknown Parameter" "Unknown Parameters" -}}
-{{- $reasonLabel := cond (eq $invalidCount 1) "parameter was" "parameters were"}}
-{{- $paramLabel := cond (eq $invalidCount 1) "Parameter" "Parameters" -}}
-{{- $paramValidLabel := cond (eq $validCount 1) "Parameter" "Parameters" -}}
-{{- /* - Separate invalid params from values */}}
+{{- $title := cond (eq $invalidCount 1) "Shortcode Parameter Error" "Shortcode Parameters Error" -}}
+{{- $reason := cond (eq $invalidCount 1) "parameter was" "parameters were"}}
+{{- $paramValid := cond (eq $validCount 1) "Parameter" "Parameters" -}}
 
+{{- /* - Separate invalid params from values */}}
 {{- $errorDetails := slice -}}
 {{- range $paramName, $badValue := $invalidParams }}
   {{- $detailString := printf `> %s` $paramName -}}
   {{- $errorDetails = $errorDetails | append $detailString -}}
 {{- end }}
-{{- $formattedErrorDetails := delimit $errorDetails "\n        " -}}
+
+{{- $formattedErrorDetails := delimit $errorDetails "\n             " -}}
 
 {{- /* - Format key lists for clean printing */}}
 {{- $formattedValid := delimit $validParams ", " -}}
 
 
-{{- /* - Print the warning */}}
+<!-- prettier-ignore -->
 {{- warnf `
-[OCD] %s in %q Shortcode
+[OCD] %s 
 ──────────────────────────────────────────────────
- Code   : %s
- Reason : The following unknown %s used:
-        %s
- Page   : %s
- File   : %s
+ Code      : %s
+ Shortcode : {{< %s >}}
+ Reason    : The following unknown %s used:
+             %s
+ Page      : %s
+ File      : %s
 ──────────────────────────────────────────────────
  Valid %s : %s
-
 ──────────────────────────────────────────────────`
-  $titleLabel $scName
-  $errorCode
-  $reasonLabel
+  $title
+  $code 
+  $scName
+  $reason
   $formattedErrorDetails
   $page.Permalink 
-  $position
-  $paramValidLabel $formattedValid
+  $relPosition
+  $paramValid $formattedValid
 -}}

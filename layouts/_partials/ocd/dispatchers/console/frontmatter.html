@@ -160,14 +160,14 @@
       {{- with $solution }}
         <div class="ocd-console-solution">
           <h3 class="ocd-console-h3">
-            {{ i18n "OcdSolution" . | default "Solution:" }}
+            <strong>{{ i18n "OcdSolution" . | default "Solution:" }}</strong>
           </h3>
           <p>{{ . | safeHTML }}</p>
         </div>
       {{- end }}
       {{- with $example }}
         <div class="ocd-console-example">
-          <h3>{{ $preExample }}</h3>
+          <h3><strong>{{ $preExample }}</strong></h3>
           <p class="ocd-mono ocd-mono-con-solution">
             {{- $example | safeHTML }}
           </p>

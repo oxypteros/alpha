@@ -77,8 +77,8 @@ order = 1
   order = 4
   title = "Text Snippet Shortcode"
   description = "Closed shortcode for attention grabbing text."
-  syntax = "&lbrace;&lbrace;&lt; text-snippet TITLE=\"\" &gt;&rbrace;&rbrace;\n  Mardown Content\n&lbrace;&lbrace;&lt; /text-snippet &gt;&rbrace;&rbrace;"
-  example = "&lbrace;&lbrace;&lt; text-snippet TITLE=\"Welcome\"&gt;&rbrace;&rbrace;\n This site was *created*...\n ... \n **Enjoy yous stay!**\n&lbrace;&lbrace;&lt; /text-snippet &gt;&rbrace;&rbrace;"
+  syntax = "&lbrace;&lbrace;&lt; text_snippet TITLE=\"\" &gt;&rbrace;&rbrace;\n  Mardown Content\n&lbrace;&lbrace;&lt; /text_snippet &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; text_snippet TITLE=\"Welcome\"&gt;&rbrace;&rbrace;\n This site was *created*...\n ... \n **Enjoy yous stay!**\n&lbrace;&lbrace;&lt; /text_snippet &gt;&rbrace;&rbrace;"
   docLink = "https://alpha.oxypteros.com/docs/shortcodes/text-snippet/"
   
   [[shortcodes.text_snippet.parameters]]
@@ -109,8 +109,8 @@ order = 1
   order = 6
   title = "Text Content Shortcode"
   description = "Closed shortcode for content text."
-  syntax = "&lbrace;&lbrace;&lt; text-content &gt;&rbrace;&rbrace;\n  Mardown Content\n&lbrace;&lbrace;&lt; /text-content &gt;&rbrace;&rbrace;"
-  example = "&lbrace;&lbrace;&lt; text-content &gt;&rbrace;&rbrace;\n ## Behind the Scenes\n At this point let tell you that...\n&lbrace;&lbrace;&lt; /text-content &gt;&rbrace;&rbrace;"
+  syntax = "&lbrace;&lbrace;&lt; text_content &gt;&rbrace;&rbrace;\n  Mardown Content\n&lbrace;&lbrace;&lt; /text_content &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; text_content &gt;&rbrace;&rbrace;\n ## Behind the Scenes\n At this point let tell you that...\n&lbrace;&lbrace;&lt; /text_content &gt;&rbrace;&rbrace;"
   docLink = "https://alpha.oxypteros.com/docs/shortcodes/text-content/"
 
 # Recent Shortcode
@@ -161,8 +161,8 @@ order = 1
   order = 9
   title = "Numbered List Shortcode"
   description = "Renders a list of a sections child pages."
-  syntax = "&lbrace;&lbrace;&lt; num-list TITLE=\"\" STYLE=\"\" LIMIT=\"\" &gt;&rbrace;&rbrace;"
-  example = "&lbrace;&lbrace;&lt; num-list TITLE=\"Step by Step\" STYLE=\"pill\" LIMIT=\"4\"  &gt;&rbrace;&rbrace;"
+  syntax = "&lbrace;&lbrace;&lt; num_list TITLE=\"\" STYLE=\"\" LIMIT=\"\" &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; num_list TITLE=\"Step by Step\" STYLE=\"pill\" LIMIT=\"4\"  &gt;&rbrace;&rbrace;"
   docLink = "https://alpha.oxypteros.com/docs/shortcodes/num-list/"
   
   [[shortcodes.num_list.parameters]]
@@ -218,7 +218,7 @@ order = 1
   order = 12
   title = "Status Card Shortcode"
   description = "Closed shortcode that renders a status card."
-  syntax = "&lbrace;&lbrace;&lt; status-card TITLE=\"\" TYPE=\"\" &gt;&rbrace;&rbrace;\n Markdown Content  \n&lbrace;&lbrace;&lt; /status-card &gt;&rbrace;&rbrace;"
+  syntax = "&lbrace;&lbrace;&lt; status_card TITLE=\"\" TYPE=\"\" &gt;&rbrace;&rbrace;\n Markdown Content  \n&lbrace;&lbrace;&lt; /status_card &gt;&rbrace;&rbrace;"
   docLink = "https://alpha.oxypteros.com/docs/shortcodes/status-card/"
   
   [[shortcodes.status_card.parameters]]

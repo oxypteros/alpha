@@ -1,24 +1,35 @@
 {{- /*
-  Partial: ocd/components/page/sc-invalid-values.html
-  Purpose: Generates an OCD on page message for shortcodes that are 
-  called with invalid parameter values.
-
-  Requires a dictionary expecting the following keys:
-  - ocdErrorCode (string) : The OCD error code
-  - scName (string)       : The name of the shortcode.
-  - invalidValues (map)   : A map of parameters with their invalid values.
-  - rules (object)        : The full shortcode rules object.
-  - page (object)         : The full .Page object from the shortcode.
-  - position (object)     : The full .Position object from the shortcode.
+  Partial: ocd/dispatchers/page/sc-invalid-values.html
+  Purpose: Renders the page errors for invalid parameters values in shortcodes.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
+
+{{- /*
+  Dictionary keys from the handler originated by:
+  'ocd/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
 {{- $scName := .scName -}}
 {{- $invalidValues := .invalidValues -}}
-{{- $errorCode := .ocdErrorCode -}}
+{{- $code := .code -}}
 {{- $paramsRules := .rules.params -}}
 
-{{- /* Count of invalid valeus for i18n */}}
+{{- /* Input data from 'data/ocd/page/shortcodes.toml' */}}
+{{- $scErrorDefs := site.Data.ocd.page.shortcodes -}}
+
+{{- /* Get shortcode error values from data for page */}}
+{{- $entry := (index $scErrorDefs $code) | default dict -}}
+
+{{- /* Define severity for page (css) */}}
+{{- $severity := $entry.severity | default "warning" -}}
+{{- $severityClass := cond (eq $severity "error") "ocd-card-error" "ocd-card-warning" -}}
+{{- $ocdIcon := cond (eq $severity "error") "#ocd-error-icon" "#ocd-warning-icon" -}}
+
+{{- /* Format values for default use */}}
+{{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+
+{{- /* Count for i18n pluralization */}}
 {{- $invalidCount := len $invalidValues -}}
 
 {{- /* Invalid values list */}}
@@ -28,73 +39,72 @@
 {{- end -}}
 {{- $formattedInvalidValues := delimit $badValuesOnly ", " -}}
 
-<div
-  class="ocd ocd-card ocd-card-warning ocd-shadow"
-  data-error="{{ $errorCode }}"
->
-  <header class="ocd-card-header ocd-card-header-warning">
+
+<div class="ocd ocd-card {{ $severityClass }} ocd-shadow">
+  <header class="ocd-card-header">
     <h2 class="ocd-title">
       {{- i18n "OcdScValueWarn" $invalidCount | default "Shortcode Value Warning" -}}
     </h2>
     <svg aria-hidden="true" focusable="false" width="24" height="24">
-      <use href="#ocd-warning-icon"></use>
+      <use href="{{- $ocdIcon -}}"></use>
     </svg>
   </header>
-  <div class="ocd-card-content ocd-card-content-warning">
-    <div>
+  <div class="ocd-card-content">
+    <div class="ocd-card-content-reason">
       <p>
         {{- i18n "OcdScInvValue" $invalidCount | default "Invalid value used in the shortcode" }}
-        <span class="ocd-mono ocd-mono-warning"
+        <span class="ocd-mono"
           >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
         >.
       </p>
       <p>
-        {{- i18n "OcdScValues" $invalidCount | default "The value," }} 
-        <span class="ocd-mono ocd-mono-warning">{{ $formattedInvalidValues }}</span
-        > 
+        {{- i18n "OcdScValues" $invalidCount | default "The value," }}
+        <span class="ocd-mono">{{ $formattedInvalidValues }}</span>
         {{ i18n "OcdScNotRecognized" $invalidCount | default "is not recognized." -}}
       </p>
     </div>
     <hr />
-    {{ i18n "OcdScValidValues" . | default "Valid Values:" }}
-    <ul class="ocd-warning-list">
-      {{- /* For each parameter list valid values */}}
-      {{- range $paramName, $badValue := .invalidValues -}}
-        <li>
-          <span class="ocd-mono">
-            {{- $rule := index $paramsRules (upper $paramName) -}}
-            {{- if $rule -}}
-              {{- if eq $rule.validation "in_list" -}}
-                {{- printf "%s: %s" (upper $paramName) (delimit $rule.list ", ") -}}
-              {{- else if eq $rule.validation "is_positive_integer" -}}
-                {{- printf "%s: " (upper $paramName) -}} {{- i18n "OcdScInteger" | default "A positive integer (e.g., 1, 2, 3, ...)"}}
-              {{- else -}}
-                {{- printf "%s: See documentation for valid options" (upper $paramName) -}}
+    <div class="ocd-card-content-solution">
+      {{ i18n "OcdScValidValues" . | default "Valid Values:" }}
+      <ul class="ocd-warning-list">
+        {{- /* For each parameter list valid values */}}
+        {{- range $paramName, $badValue := .invalidValues -}}
+          <li>
+            <span class="ocd-mono">
+              {{- $rule := index $paramsRules (upper $paramName) -}}
+              {{- if $rule -}}
+                {{- if eq $rule.validation "in_list" -}}
+                  {{- printf "%s: %s" (upper $paramName) (delimit $rule.list ", ") -}}
+                {{- else if eq $rule.validation "is_positive_integer" -}}
+                  {{- printf "%s: " (upper $paramName) -}}
+                  {{- i18n "OcdScInteger" | default "A positive integer (e.g., 1, 2, 3, ...)" }}
+                {{- else -}}
+                  {{- printf "%s: See documentation for valid options" (upper $paramName) -}}
+                {{- end -}}
               {{- end -}}
-            {{- end -}}
-          </span>
-        </li>
-      {{- end -}}
-    </ul>
+            </span>
+          </li>
+        {{- end -}}
+      </ul>
+    </div>
   </div>
-  <footer class="ocd-card-footer ocd-card-footer-warning">
-    <div class="ocd-card-footer-meta ocd-warning-meta">
-      <p>
+  <footer class="ocd-card-footer">
+    <div class="ocd-card-footer-meta">
+      <p class="ocd-mono">
         <strong>{{ i18n "OcdCardInput" . | default "Input: " }}</strong>
-        {{- /* String of the users invalid input */}}
+        {{- /* String of invalid input */}}
         {{- $total := len .invalidValues -}}
         {{- $i := 0 -}}
         {{ range $paramName, $badValue := .invalidValues }}
           {{- $i = add $i 1 }}
-          {{ printf `%s="` (upper $paramName) | safeHTML }} 
-          <span class="ocd-mono-warning">{{ $badValue }}</span>"{{ if lt $i $total }}<span class="ocd-mono">, </span>{{ end -}}
+          {{ printf `%s="` (upper $paramName) | safeHTML -}}
+          <span class="ocd-mono-warning">{{- $badValue -}}</span
+          >"{{ if lt $i $total }}<span class="ocd-mono">, </span>{{ end -}}
         {{- end -}}
       </p>
-      <a
-        class="ocd-mono ocd-mono-warning"
-        href="https://alpha.oxypteros.com/docs/ocd"
-        >{{ $errorCode }}</a
-      >
+      {{- with $docURL }}
+        <a class="ocd-mono" href="{{ $docURL }}">{{ $code }}</a>
+      {{- end }}
     </div>
   </footer>
 </div>

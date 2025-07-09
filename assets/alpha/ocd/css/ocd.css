@@ -338,6 +338,9 @@
   .ocd-mono {
     color: var(--ocd-correct);
   }
+  .ocd-mono-error {
+    color: var(--ocd-on-error-sur);
+  }
 }
 
 /** Warning Card */
@@ -874,12 +877,16 @@
   }
   a {
     font-size: 0.9rem;
+    text-decoration: none;
   }
   a:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 2px;
     color: var(--ocd-on-sur);
+  }
+  .ocd-mono {
+    color: var(--ocd-correct);
   }
 }
 

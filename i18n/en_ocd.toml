@@ -1,10 +1,6 @@
 # OCD
-[OcdExample]
-other = "Example:"
-[OcdSolution]
-other = "Solution:"
-[OcdDoc]
-other = "documentation"
+
+
 [OcdScInteger]
 other = "A positive integer (e.g. 1, 2, 3, ...)"
 [OcdShortcode]
@@ -184,28 +180,10 @@ other = "The values"
 [OcdScValidValues]
 other = "Valid Values:"
 
-## Shortcode unknown parameter  (console)
-[OcdScInvParamConsTitle]
-one = "Unknown Parameter in"
-other = "Unknown Parameters in"
-[OcdTheParam]
-one = "The parameter"
-other = "The parameters"
 
-[OcdScUsedConsole]
-other = "used in the shortcode"
 
-[OcdScInvParamConsole]
-one = "is invalid."
-other = "are invalid."
 
-[OcdScValidParamConsole]
-one = "Valid parameter for the"
-other = "Valid parameters for the"
 
-[OcdScShortcodeAreConsole]
-one = "shortcode is:"
-other = "shortcode are:"
 
 ## Unique Global Data
 [OcdScRecTitle]
@@ -292,7 +270,7 @@ other = "The image"
 [OcdImgCannotFound]
 other = "cannot be found."
 [OcdImgMakeSure]
-other = "Make sure that the image with filename"
+other = "Make sure that the image"
 
 [OcdImgIsPlaced]
 other = "is placed inside the"
@@ -602,6 +580,85 @@ other = "Use an image that meet the recommended criteria:<br> <span class='ocd-m
 [OcdFmBadSeoImageExample]
 other = "<span class='ocd-mono'>%s = %q</span>"
 
+## OCD sc Errors
+[OcdSolution]
+other = "Solution:"
+[OcdDoc]
+other = "documentation"
+## Shortcode invalid parameter  (console)
+[OcdScInvParamTitle]
+one = "Shortcode Parameter Error"
+other = "Shortcode Parameters Error"
+
+[OcdScTheParam]
+one = "The parameter"
+other = "The parameters"
+
+[OcdScUsedConsole]
+other = "used in the shortcode"
+[OcdScInvParamConsole]
+one = "is invalid."
+other = "are invalid."
+
+[OcdScValidParamConsole]
+one = "Valid parameter for the shortcode is:"
+other = "Valid parameters for the shortcode are:"
+
+## Shortcode invalid values (Console)
+[OcdScInvValueTitleConsole]
+one = "Shortcode Invalid Value"
+other = "Shortcode Invalid Values"
+
+[OcdScValidValuesConsole]
+one = "Valid value for the shortcode is:"
+other = "Valid values for the shortcode are:"
+
+## ocd-sc-100
+[OcdScHelpExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; help TYPE=\"markdown\" &gt;&rbrace;&rbrace;"
+
+## ocd-sc-110
+[OcdScHeroExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; hero<br />&nbsp;&nbsp;TITLE=\"Thoughts & Code\"<br />&nbsp;&nbsp;SUBTITLE=\"A minimal blog about web, tech, and ideas.\"<br />&nbsp;&nbsp;BTN-TEXT=\"Read the Blog\"<br />&nbsp;&nbsp;BTN-LINK=\"/blog\"<br />&nbsp;&nbsp;BTN-LABEL=\"Go to blog posts\"<br />&nbsp;&nbsp;LINK-TEXT=\"About Me\"<br />&nbsp;&nbsp;LINK=\"/about\"<br />&nbsp;&nbsp;LINK-LABEL=\"Learn more about the author\"<br />&gt;&rbrace;&rbrace;"
+
+## ocd-sc-120
+[OcdScFeatExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; featured STYLE=\"banner\" &gt;&rbrace;&rbrace;"
+
+## ocd-sc-130
+[OcdScTxtSnippetExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; text_snippet TITLE=\"Example title\" &gt;&rbrace;&rbrace;<br><br><span class='ocd-mono-comment'>/... Markdown .../</span><br><br>&lbrace;&lbrace;&lt; /text_snippet &gt;&rbrace;&rbrace;"
+
+## ocd-sc-140
+[OcdScRecExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; recommended TITLE=\"Suggestions\" LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+
+## ocd-sc-160
+[OcdScRecentExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; recent TITLE=\"Latest Posts\" LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+
+## ocd-sc-170
+[OcdScCtaExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; cta<br />&nbsp;&nbsp;TITLE=\"Enjoying the posts?\"<br />&nbsp;&nbsp;BTN-TEXT=\"Subscribe\"<br />&nbsp;&nbsp;BTN-LINK=\"/subscribe\"<br />&nbsp;&nbsp;BTN-LABEL=\"Go to subscription page\"<br />&gt;&rbrace;&rbrace;<br />&nbsp;&nbsp;<span class='ocd-mono-comment'>Get new posts delivered **straight** to your inbox.</span><br />&lbrace;&lbrace;&lt; /cta &gt;&rbrace;&rbrace;"
+
+## ocd-sc-180
+[OcdScNumExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; num_list TITLE=\"Chapters\" STYLE=\"card\" LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+## ocd-sc-190
+[OcdScFaqExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; faq<br />&nbsp;&nbsp;TITLE=\"Frequently Asked Questions\"<br>&nbsp;&nbsp;SUBTITLE=\"You Asked, We Answered.\"<br />&gt;&rbrace;&rbrace;<br>&nbsp;&nbsp;<span class='ocd-mono-comment'>## First Question<br />&nbsp;&nbsp;Answer for the first question<br>&nbsp;&nbsp;## Second Question<br />&nbsp;&nbsp;Answer for the second question</span><br>&lbrace;&lbrace;&lt; /faq &gt;&rbrace;&rbrace;"
+
+## ocd-sc-200
+[OcdScAboutExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; about<br />&nbsp;&nbsp;AUTHOR=\"John Smith\"<br />&nbsp;&nbsp;AVATAR=\"my-picture.jpg\"<br />&gt;&rbrace;&rbrace;<br />&nbsp;&nbsp;<span class='ocd-mono-comment'>Author of the series...<br />&nbsp;&nbsp;&nbsp;(Markdown text)<br />&nbsp;&nbsp;...here for you.</span><br />&lbrace;&lbrace;&lt; /about &gt;&rbrace;&rbrace;"
+
+## ocd-sc-210
+[OcdScStatusCardExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; status_card<br />&nbsp;&nbsp;TITLE=\"Disclaimer\"<br />&nbsp;&nbsp;TYPE=\"warning\"<br />&gt;&rbrace;&rbrace;<br />&nbsp;&nbsp; <span class='ocd-mono-comment'>I write *code* and *words*. Neither is guaranteed bug-free</span><br />&lbrace;&lbrace;&lt; /status_card &gt;&rbrace;&rbrace;"
+
+## ocd-sc-220
+[OcdScSocialExample]
+other = "<span class='ocd-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; social LIMIT=\"6\" &gt;&rbrace;&rbrace;"
 # Fallback
 [OcdUnknownTitle]
 other = "Unknown Error Code"

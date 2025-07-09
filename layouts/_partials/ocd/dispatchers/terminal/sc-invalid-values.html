@@ -1,26 +1,26 @@
 {{- /*
-  Partial: ocd/components/warn/sc-invalid-values.html
-  Purpose: Generates an OCD standardized `warnf` message for shortcodes that are 
-  called with invalid parameter values.
-
-  Requires a dictionary expecting the following keys:
-  - ocdErrorCode (string) : The OCD error code
-  - scName (string)       : The name of the shortcode.
-  - invalidValues (map)   : A map of parameters with their invalid values.
-  - rules (object)        : The full shortcode rules object.
-  - page (object)         : The full .Page object from the shortcode.
-  - position (object)     : The full .Position object from the shortcode.
+  Partial: ocd/dispatchers/terminal/sc-invalid-values.html
+  Purpose: Renders the terminal warnings for invalid parameters value in shortcodes.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
 
+{{- /*
+  Dictionary keys from the handler originated by:
+  'ocd/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $code := .code -}}
 {{- $scName := .scName -}}
 {{- $invalidValues := .invalidValues -}}
 {{- $page := .page -}}
 {{- $position := .position -}}
-{{- $errorCode := .ocdErrorCode -}}
 {{- $paramsRules := .rules.params -}} 
 
+{{- /* Format $position for html render */}}
+{{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $position -}}
+
+{{- /* Count for pluralization */}}
 {{- $invalidCount := len $invalidValues -}}
 
 {{- $errorDetails := slice -}}
@@ -53,30 +53,31 @@
 
   {{- $helpHeader := "Valid values:" -}}
   {{- $formattedSnippets := delimit $helpSnippets "\n             " -}}
-  {{- $helpBlock = printf "%s\n             %s" $helpHeader $formattedSnippets -}}
+  {{- $helpBlock = printf "%s\n   %s" $helpHeader $formattedSnippets -}}
 {{- end -}}
 
-{{- $titleLabel := cond (eq $invalidCount 1) "Invalid Value" "Invalid Values" -}}
-{{- $reasonLabel := cond (eq $invalidCount 1) "value was" "values were" -}}
+{{- $title := cond (eq $invalidCount 1) "Shortcode Invalid Value" "Shortcode Invalid Values" -}}
+{{- $reason := cond (eq $invalidCount 1) "value was" "values were" -}}
 
+<!-- prettier-ignore -->
 {{- warnf `
-   
-[OCD] %s in %q Shortcode
+[OCD] %s 
 ──────────────────────────────────────────────
- Code   : %s
- Reason : The following invalid %s used:
-        %s
- Page   : %s
- File   : %s
+ Code      : %s
+ Shortcode : {{< %s >}}
+ Reason    : The following invalid %s used:
+             %s
+ Page      : %s
+ File      : %s
 ──────────────────────────────────────────────
  %s
-
 ──────────────────────────────────────────────`
-  $titleLabel $scName
-  $errorCode
-  $reasonLabel
+  $title 
+  $code
+  $scName
+  $reason
   $formattedErrorDetails
   $page.Permalink
-  $position
+  $relPosition
   $helpBlock
 -}}

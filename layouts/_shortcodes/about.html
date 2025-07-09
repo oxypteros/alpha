@@ -11,7 +11,7 @@
 
   Params:
   - AUTHOR (string, optional): H2 heading. Fall back to frontmatter author
-  - AVATAR (string, optional): Avatar filename placed inside /assets/img/
+  - AVATAR (string, optional): Avatar filename placed inside '/assets/img/''
 
   Error handler:
   - ocdWarn (global)
@@ -20,52 +20,30 @@
   Docs: https://alpha.oxypteros.com/docs/shortcodes/about
   Repo: https://github.com/oxypteros/alpha
 */}}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+
+{{- /* Vars */}}
 {{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
 {{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
 
-{{- /* * About Shortcode Data */}}
-{{- $scName := "about" -}}
-{{- /* ** About shortcode rules */}}
-{{- $rules := dict
-  "validKeys" (slice "AUTHOR" "AVATAR")
-  "params" (dict
-  "AUTHOR"      (dict "validation" "any_string")
-  "AVATAR"   (dict "validation" "any_string")
-  )
--}}
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "ocd/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "OCD: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
 
-{{- /* ** About shortcode metadata */}}
-{{- $errorMeta := dict
-  "docURL" "https://alpha.oxypteros.com/docs/shortcodes/about"
-  "example" "&lbrace;&lbrace;&lt; about<br />&nbsp;&nbsp;AUTHOR=\"John Smith\"<br />&nbsp;&nbsp;AVATAR=\"my-picture.jpg\"<br />&gt;&rbrace;&rbrace;<br />&nbsp;&nbsp;Author of the series...<br />&nbsp;&nbsp;&nbsp;(Markdown text)<br />&nbsp;&nbsp;...here for you.<br />&lbrace;&lbrace;&lt; /about &gt;&rbrace;&rbrace;"
-  "errorCodes" (dict
-  "invalidKey"   "ocd-sc-200"
-  "missingImg"   "ocd-sc-209"
-  )
-  "imgFolder" "/assets/img"
--}}
-
-{{- /* *  Validate shortcode input */}}
-{{- $validationResult := partial "ocd/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
-
-{{- /* ** Conditions to render shortcode or OCD */}}
-{{- /* *** Input validation */}}
-{{- $validInput := $validationResult.isValid }}
-
-{{- /* - On failed input validation call the OCD handler */}}
-{{- if not $validInput }}
-  {{ if or ($ocdWarnEnabled) ($ocdEnabled) }}
-    {{- partial "ocd/core/shortcodes/handler.logic.html" (dict
-      "scName"   .Name
-      "errors"   $validationResult.errors
-      "rules"    $rules
-      "meta"     $errorMeta
-      "page"     .Page
-      "position" .Position
-      )
-    -}}
-  {{- end }}
-{{- end }}
+{{- /* On failed input validation call the OCD handler */}}
+{{- if not $validInput -}}
+  {{- if or ($ocdWarnEnabled) ($ocdEnabled) -}}
+    {{- partial "ocd/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
 
 {{- /* * On successful validations render shortcode */}}
 {{- if $validInput }}
@@ -86,12 +64,10 @@
     {{- if or ($ocdWarnEnabled) ($ocdEnabled) }}
       {{- $errorData := dict
         "context"         .
-        "name"            $scName
-        "docURL"          $errorMeta.docURL
-        "errorCode"       $errorMeta.errorCodes.missingImg
-        "scExample"       $errorMeta.example
+        "name"            .Name
+        "errorCode"       "ocd-sc-209"
         "filename"        $data.avatar
-        "imgFolder"       $errorMeta.imgFolder
+        "imgFolder"       "assets/img/"
       -}}
       {{- partial "ocd/dispatchers/legacy/missing-img.html" $errorData }}
     {{- end }}

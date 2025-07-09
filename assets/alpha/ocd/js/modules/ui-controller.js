@@ -4,25 +4,9 @@ import { OcdStates, StorageKeys } from "./constants.js";
 import * as Dom from "./dom.js";
 import { handlePositionChange } from "./fab-controller.js";
 import { checkUpdates } from "./update-checker.js";
-/**
- * Maps a specific error code to a generic template name.
- * @param {string} error - The specific error code (e.g., "ocd-sc-100").
- * @returns {string} The name of the template to use (e.g., "ocd-sc-invalid-param-template").
- */
-const getTemplateNameForError = (error) => {
-  // Check for shortcode invalid parameter errors (ends in 0)
-  if (error.startsWith("ocd-sc-") && error.endsWith("0")) {
-    return "ocd-sc-invalid-param-template";
-  }
 
-  // Check for shortcode invalid value errors (ends in 1)
-  if (error.startsWith("ocd-sc-") && error.endsWith("1")) {
-    return "ocd-sc-invalid-value-template";
-  }
+const getTemplateNameForError = (error) => `${error}-template`;
 
-  // For all other errors (like ocd-*-*), use the original 1-to-1 mapping.
-  return `${error}-template`;
-};
 // Console Content
 export const appendTemplate = (template) => {
   if (template) {
