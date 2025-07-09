@@ -11,8 +11,8 @@ weight = 1
 description = "A description of the page for SEO and social sharing"
 +++
 
-{{< text-snippet TITLE="From a cluttered mind">}}
+{{< text_snippet TITLE="From a cluttered mind">}}
 
 Ideas, opinions, and perspectives, unapologetically personal for the Alpha theme.
 
-{{< /text-snippet >}}
+{{< /text_snippet >}}

@@ -23,18 +23,18 @@ seo_image = ""
 twitter_username = ""
 +++
 
-{{< status-card TITLE="Disclaimer" TYPE="info" >}}
+{{< status_card TITLE="Disclaimer" TYPE="info" >}}
 
-This post reflects my **personal experience**. Your mileage may vary!
+This post series reflects my **personal experience**. Your mileage may vary!
 
-{{< /status-card >}}
+{{< /status_card >}}
 
-{{< text-snippet TITLE="It's too late">}}
+{{< text_snippet TITLE="It's too late">}}
 
 I really think it's too late to ask *“Why Hugo?”*. You’re probably already using Hugo, or about to do so. And since **Alpha is built for Hugo**, it’s not like you’re comparing options.
 Still, here's a wordy *why I chose Hugo for Alpha* instead of another Jamstack tool or something more dynamic and *“modern”*.
 
-{{< /text-snippet >}}
+{{< /text_snippet >}}
 
 ## A Little Insight
 

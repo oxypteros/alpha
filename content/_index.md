@@ -13,14 +13,10 @@ seo_image = ""
 twitter_username = ""
 +++
 
-
-{{< status-card TITLE="Just Shortcodes" TYPE="warning" >}}
+{{< status_card TITLE="Just Shortcodes" TYPE="warning" >}}
 
 The homepage is left **intentionally empty**!  
 To build your homepage, combine shortcodes with regular text content.  
 See the [Alpha shortcode documentation](https://alpha.oxypteros.com/docs/shortcodes/) for guidance.
 
-{{< /status-card >}}
-
-{{< num-list >}}
-{{< recommended >}}
+{{< /status_card >}}

@@ -6,7 +6,7 @@ layout = "utility"
 show_date = true
 
 title = "Policy"
-
+recommended = true
 # SEO
 description = ""
 seo_type = ""
@@ -14,10 +14,10 @@ seo_image = ""
 twitter_username = ""
 +++
 
-{{< status-card TITLE="Utility Page" TYPE="warning" >}}
+{{< status_card TITLE="Utility Page" TYPE="warning" >}}
 
 This is a policy page meant for adding your site’s policies.  
 It uses `layout = "utility"`.  
 Learn more about [Alpha's layouts and content](https://alpha.oxypteros.com/docs/content-creation).
 
-{{< /status-card >}}
+{{< /status_card >}}
