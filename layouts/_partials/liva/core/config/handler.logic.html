@@ -1,0 +1,31 @@
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+
+{{- if or $livaEnabled $livaWarnEnabled }}
+  {{- /* * Config Files Errors */}}
+  {{- $configErrors := partialCached "liva/core/config/check.logic.html" . .Lang -}}
+
+  {{- /* * Unreachable Errors */}}
+  {{- /* ** Head Errors */}}
+
+  {{- $livaHeadConfigErrors := .Store.Get "livaHeadConfigErrors" | default (slice) -}}
+  {{- /* All errors */}}
+  {{- $allConfigErrors := $configErrors | append $livaHeadConfigErrors -}}
+
+  {{- /* livaWarn to terminal */}}
+  {{- if $livaWarnEnabled -}}
+    {{- if gt (len $allConfigErrors) 0 -}}
+      {{- partial "liva/dispatchers/terminal/config.html" (dict "configErrors" $allConfigErrors) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* LiVa to console */}}
+  {{- if $livaEnabled -}}
+    {{- if gt (len $allConfigErrors) 0 -}}
+      {{- partial "liva/dispatchers/console/config.html" (dict "configErrors" $allConfigErrors) -}}
+      {{- /* Disabled page config error render. Still undecided if it's too intrusive for UX  */}}
+       {{- /* partial "liva/dispatchers/page/config.html" (dict "configErrors" $allConfigErrors) */}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+

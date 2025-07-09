@@ -1,0 +1,114 @@
+{{- /*
+  Partial: liva/dispatchers/legacy/missing-img.html
+  Purpose: Render the `LiVa warn`, `LiVa on page`, and `LiVa console` error
+  message for missing-images.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+
+{{- $context := .context -}}
+{{- $errorCode := .errorCode -}}
+{{- $name := .name -}}
+{{- $filename := .filename }}
+{{- $imgFolder := .imgFolder }}
+
+{{- /* ** livaWarn */}}
+{{- if  $livaWarnEnabled }}
+
+  {{- /* *** livaWarn messages */}}
+  {{ $reason := printf "Image %s cannot be found." $filename }}
+  {{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $context.Position -}}
+  {{- $solution := printf "Place the image %s inside the folder %s" $filename $imgFolder }}
+
+  {{- /* *** Final livaWarn for terminal */}}
+  <!-- prettier-ignore -->
+  {{- warnf `
+[LiVa] Image Not Found
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+Page   : %s
+File   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$errorCode
+$reason
+$context.Page.Permalink
+$relPosition
+$solution
+  -}}
+{{- end }}
+
+{{- if $livaEnabled }}
+  {{- /* ** LiVa Page */}}
+  <div
+    class="liva liva-card liva-card-error liva-shadow"
+    data-error="{{ $errorCode }}"
+  >
+    <header class="liva-card-header">
+      <h2 class="liva-title">
+        {{- i18n "LivaImg404Title" . | default "Image Not Found" -}}
+      </h2>
+      <svg aria-hidden="true" focusable="false" width="24" height="24">
+        <use href="#liva-error-icon"></use>
+      </svg>
+    </header>
+    <div class="liva-card-content">
+      <div>
+        <p>
+          {{ i18n "LivaImgTheImage" . | default "The image" }}
+          <span class="liva-mono"> {{ $filename }} </span>
+          {{ i18n "LivaImgCannotFound" . | default "cannot be found." }}
+        </p>
+      </div>
+      <hr />
+      <p>
+        {{ i18n "LivaImgMakeSure" . | default "Make sure that the image" }}
+        <span class="liva-mono">{{ $filename }}</span>
+        {{ i18n "LivaImgIsPlaced" . | default "is placed inside the" }}
+        <span class="liva-mono">{{ $imgFolder }}</span>
+        {{ i18n "LivaImgFolder" . | default "folder." }}
+      </p>
+    </div>
+    <footer class="liva-card-footer">
+      <div class="liva-card-footer-meta">
+        <p></p>
+        <a
+          class="liva-mono"
+          href="https://alpha.oxypteros.com/docs/liva"
+          >{{ $errorCode }}</a
+        >
+      </div>
+    </footer>
+  </div>
+  {{- /* ** LiVa Console */}}
+  <template data-alpha="{{ $errorCode }}-template">
+    <div class="liva-console-explanation liva-console-error">
+      <h2>
+        {{- i18n "LivaImg404Title" . | default "Image Not Found" -}}
+      </h2>
+      <p>
+        {{ i18n "LivaImgTheImage" . | default "The image" }}
+        <span class="liva-mono"> {{ $filename }} </span>
+        {{ i18n "LivaImgCannotFound" . | default "cannot be found." }}
+      </p>
+      <div class="liva-console-example">
+        <strong>{{ i18n "LivaSolution" . | default "Solution:" }}</strong>
+        <p>
+          {{ i18n "LivaImgMakeSure" . | default "Make sure that the image with filename" }}
+          <span class="liva-mono">{{ $filename }}</span>
+          {{ i18n "LivaImgIsPlaced" . | default "is placed inside the" }}
+          <span class="liva-mono">{{ $imgFolder }}</span>
+          {{ i18n "LivaImgFolder" . | default "folder." }}
+        </p>
+      </div>
+    </div>
+    <div class="liva-console-doc">
+      <div class="hr hr-right"></div>
+    </div>
+  </template>
+{{- end }}

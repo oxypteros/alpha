@@ -1,0 +1,29 @@
+<!-- Alpha Version Block -->
+<div>
+  <div class="liva-alpha-version">
+    <!-- Screen reader text -->
+    <span class="liva-sr-only">{{ i18n "LivaAlphaVerAria" . | default "Alpha theme version:" }}</span>
+    
+    <svg class="liva-logo-alpha" width="16" height="16" aria-hidden="true">
+      <use href="#alpha-logo"></use>
+    </svg>
+    <span class="liva-mono liva-version" data-alpha="local-alpha-version"
+      >v0.3.0-beta</span
+    ><span data-alpha="liva-alpha-update-badge"></span>
+  </div>
+</div>
+
+<!-- Hugo Version Block -->
+<div>
+  <div class="liva-hugo-version">
+    <!-- Screen reader text -->
+    <span class="liva-sr-only">{{ i18n "LivaHugoVerAria" . | default "Hugo version:" }}</span>
+
+    <svg width="16" height="16" aria-hidden="true">
+      <use href="#hugo-logo"></use>
+    </svg>
+    <span class="liva-mono liva-version" data-alpha="local-hugo-version"
+      >v{{- hugo.Version }}</span
+    ><span data-alpha="liva-hugo-update-badge"></span>
+  </div>
+</div>

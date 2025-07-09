@@ -1,0 +1,112 @@
+{{- /*
+  Partial: liva/dispatchers/legacy/global-data-sc.html
+  Purpose: Render the `LiVa warn`, `LiVa on page`, and `LiVa console` warning
+  message for shortcodes that using the global data partial stores.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+
+{{- $context := .context -}}
+{{- $errorCode := .errorCode -}}
+{{- $scName := .scName -}}
+{{- $frontmatter := .frontmatter -}}
+{{- $title := .title -}}
+{{- $consLine1 := .consLine1 -}}
+
+{{- if  $livaWarnEnabled }}
+  {{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $context.Position -}}
+  <!-- prettier-ignore -->
+  {{- warnf `
+[LiVa] %s
+──────────────────────────────────────────────
+Code   : %s
+Reason : No content marked as %s was found.
+Page   : %s
+File   : %s
+──────────────────────────────────────────────
+To display the '%s' shortcode, at least 
+one post must include '%s' in the 
+frontmatter.
+──────────────────────────────────────────────`
+$title
+$errorCode
+$scName
+$context.Page.Permalink
+$relPosition
+$scName
+$frontmatter
+-}}
+{{- end }}
+
+{{- if $livaEnabled }}
+  <div
+    class="liva liva liva-card liva-card-warning liva-shadow"
+    data-error="{{ $errorCode }}"
+  >
+    <header class="liva-card-header">
+      <h2 class="liva-title">
+        {{- $title }}
+      </h2>
+      <svg aria-hidden="true" focusable="false" width="24" height="24">
+        <use href="#liva-warning-icon"></use>
+      </svg>
+    </header>
+    <div class="liva-card-content">
+      <div>
+        <p>
+          {{- i18n "LivaThe" . |default "The" }}
+          <span class="liva-mono"
+            >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+          >
+          {{ i18n "LivaScRequireOne" . | default "shortcode requires at least one post marked as" }}
+          {{ $scName }}.
+        </p>
+      </div>
+      <hr />
+      <p>
+        {{ i18n "LivaSet" . | default "Set" }}
+        <span class="liva-mono">{{ $frontmatter }}</span>
+        {{ i18n "LivaScFmSolution" . | default "to the frontmatter of one or more posts." }}
+        <br />
+        (You may need to restart the <span class="liva-mono">hugo server</span> to update the live preview.)
+      </p>
+    </div>
+    <footer class="liva-card-footer">
+      <div class="liva-card-footer-meta">
+        <p></p>
+        <a class="liva-mono" href="https://alpha.oxypteros.com/docs/liva"
+          >{{ $errorCode }}</a
+        >
+      </div>
+    </footer>
+  </div>
+
+  <template data-alpha="{{ $errorCode }}-template">
+    <div class="liva-console-explanation liva-console-warning">
+      <h2>
+        {{- $title }}
+      </h2>
+      <p>
+        {{- i18n "LivaShortcode" . | default "Shortcode" }}
+        <span class="liva-mono "
+          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+        >
+        {{ i18n "LivaScIsDisabled" . | default "is disabled." }}
+      </p>
+      <p class="liva-my-1">
+        {{ i18n "LivaScToEnable" . | default "To enable it, set:" }}
+        <span class="liva-mono">{{ $frontmatter }}</span>
+        {{ $consLine1 }}
+      </p>
+      <p> (You may need to restart the <span class="liva-mono">hugo server</span> to update the live preview.)</p>
+      <div class="liva-console-example">
+      </div>
+    </div>
+    <div class="liva-console-doc">
+      <div class="hr hr-right"></div>
+    </div>
+  </template>
+{{- end }}

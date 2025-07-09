@@ -1,0 +1,190 @@
+{{- /*
+  Partial: liva/views/console/frontmatter.html
+  Purpose: Renders the console warnings for frontmatter errors.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /* Input data from 'core/frontmatter/handler.logic' */}}
+{{- $fmErrors := .frontmatterErrors -}}
+
+{{- /* Input data from 'data/liva/console/frontmatter.toml' */}}
+{{- $fmErrorDefs := site.Data.liva.console.frontmatter -}}
+
+{{- range $fmErrors -}}
+  {{- /*
+    Dictionary keys provided by the partials:
+    'liva/core/frontmatter/check.logic.html'
+    'head/seo/images.html'
+  */}}
+  {{- $code := .code | default "liva-fm-000" -}}
+  {{- $page := .page -}}
+  {{- $file := .file -}}
+  {{- $path := .path -}}
+  {{- $keyValue := .keyValue -}}
+  {{- $date := .date -}}
+  {{- $lastmod := .lastmod -}}
+  {{- $validValues := .validValues -}}
+  {{- $validLicenses := .validValues -}}
+
+  {{- /* Get frontmatter error values from data for console */}}
+  {{- $entry := (index $fmErrorDefs $code) | default dict -}}
+
+  {{- /* Define severity for console (css) */}}
+  {{- $severity := $entry.severity | default "warning" -}}
+  {{- $severityClass := cond (eq $severity "error") "liva-console-error" "liva-console-warning" -}}
+
+  {{- /* Format values for default use */}}
+  {{- $titleKey := $entry.title | default "LivaUnknownTitle" -}}
+  {{- $title := i18n $titleKey | safeHTML -}}
+
+  {{- $key := $entry.key -}}
+
+  {{- $reasonKey := $entry.reason | default "LivaUnknownReason" -}}
+  {{- $reason := i18n $reasonKey | safeHTML -}}
+
+  {{- $solutionKey := $entry.solution | default "LivaUnknownSolution" -}}
+  {{- $solution := i18n $solutionKey | safeHTML -}}
+
+  {{- $preExample := i18n ($entry.preExample | default "") | safeHTML -}}
+  {{- $example := i18n ($entry.example | default "LivaUnknownExample") | safeHTML -}}
+
+  {{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+  {{- $preDoc := $entry.preDoc | default "" -}}
+
+  {{- /*
+    Check that lastmod is not before date
+    Code: liva-fm-102
+  */}}
+  {{- if eq $code "liva-fm-102" -}}
+    {{- $formattedDate := $date.Format "2006-01-02T15:04:05-07:00" }}
+    {{- $reason = printf (i18n $reasonKey) $key | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key $date | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file $formattedDate $key $formattedDate | safeHTML -}}
+
+    {{- /*
+      Check that layout is valid
+      Code: liva-fm-111
+    */}}
+  {{- else if eq $code "liva-fm-111" -}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $valuesList | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+
+    {{- /*
+      Check Page.Title
+      Code: liva-fm-122
+    */}}
+  {{- else if eq $code "liva-fm-122" -}}
+    {{- $reason = printf (i18n $reasonKey) $key  | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+
+    {{- /*
+      Check for a valid license
+      Code: liva-fm-131
+    */}}
+  {{- else if eq $code "liva-fm-131" -}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $valuesList | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+
+    {{- /*
+      Check for non boolean recommended value
+      Code: liva-fm-141
+    */}}
+  {{- else if eq $code "liva-fm-141" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue| safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+     {{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+
+    {{- /*
+      Check for non boolean featured value
+      Code: liva-fm-151
+    */}}
+  {{- else if eq $code "liva-fm-151" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue| safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+{{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+
+    {{- /*
+      Check Page.Params.description only for pages that have a file
+      Code: liva-fm-161
+    */}}
+  {{- else if eq $code "liva-fm-161" -}}
+    {{- $reason = printf (i18n $reasonKey) $key | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+{{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+
+    {{- /*
+      Check for missing SEO image
+      Code: liva-fm-171
+    */}}
+  {{- else if eq $code "liva-fm-171" -}}
+    {{- $reason = printf (i18n $reasonKey) $keyValue | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey)  $path | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key $keyValue | safeHTML -}}
+
+    {{- /*
+      Check for bad qualitySEO image
+      Code: liva-fm-172
+    */}}
+  {{- else if eq $code "liva-fm-172" -}}
+    {{- $reason = printf (i18n $reasonKey) $keyValue | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key $keyValue | safeHTML -}}
+    {{- /*
+      Generic fallback for missing or undefined code
+      Code: liva-fm-000 or undefined
+    */}}
+  {{- else }}
+    {{- $reason = printf (i18n $reasonKey) | safeHTML -}}
+  {{- end }}
+
+  {{- /* Render the console template and the Js trigger */}}
+  <div data-error="{{ $code }}"></div>
+  <template data-alpha="{{ $code }}-template">
+    <div class="liva-console-explanation {{ $severityClass }}">
+      {{- with $title }}
+        <h2>
+          {{- . -}}
+        </h2>
+      {{- end }}
+      {{- with $reason }}
+        <p>
+          {{- . | safeHTML -}}
+        </p>
+      {{- end }}
+      <br />
+      {{- with $solution }}
+        <div class="liva-console-solution">
+          <h3 class="liva-console-h3">
+            <strong>{{ i18n "LivaSolution" . | default "Solution:" }}</strong>
+          </h3>
+          <p>{{ . | safeHTML }}</p>
+        </div>
+      {{- end }}
+      {{- with $example }}
+        <div class="liva-console-example">
+          <h3><strong>{{ $preExample }}</strong></h3>
+          <p class="liva-mono liva-mono-con-solution">
+            {{- $example | safeHTML }}
+          </p>
+        </div>
+      {{- end }}
+    </div>
+    <div class="liva-console-doc">
+      {{- if $preDoc }}
+        <div class="hr hr-left"></div>
+        {{- with $docURL }}
+          <a href="{{ . }}"
+            ><span class="liva-mono"></span> {{ $preDoc }}
+            {{ i18n "LivaDoc" . }}</a
+          >
+        {{- end }}
+      {{- end }}
+      <div class="hr hr-right"></div>
+    </div>
+  </template>
+{{- end -}}

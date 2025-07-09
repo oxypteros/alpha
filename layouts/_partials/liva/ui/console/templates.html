@@ -1,0 +1,50 @@
+{{- /*
+  Partial: liva/components/console/templates.html
+  Purpose: Renders and caches all static <template> elements for the LiVa console.
+
+*/}}
+
+{{- $lang := .Site.Language.Lang | default "en" -}}
+
+{{- /* * Cache the "Update" Templates */}}
+{{- $updatesCacheKey := printf "liva-update-templates-%s" $lang -}}
+{{- $updatesHTML := "" -}}
+
+{{- if site.Store.Get $updatesCacheKey }}
+  {{- $updatesHTML = site.Store.Get $updatesCacheKey -}}
+{{- else }}
+  {{- $noAlphaUpdates := printf `<template data-alpha="liva-no-alpha-updates-template"><div class="liva-console-explanation"><p class="liva-con-no-updates"><svg class="liva-logo-alpha" width="16" height="16" aria-hidden="true"><use href="#alpha-logo"></use></svg>%s</p></div></template>` (i18n "LivaConsAlphaNoUpdate") -}}
+  {{- $noHugoUpdates := printf `<template data-alpha="liva-no-hugo-updates-template"><div class="liva-console-explanation"><p class="liva-con-no-updates"><svg class="liva-logo-hugo" width="16" height="16" aria-hidden="true"><use href="#hugo-logo"></use></svg>%s</p></div></template>` (i18n "LivaConsHugoNoUpdate") -}}
+  {{- $alphaUpdates := printf `<template data-alpha="liva-alpha-updates-template"><div class="liva-console-explanation"><p class="liva-con-no-updates"><svg class="liva-logo-alpha" width="16" height="16" aria-hidden="true"><use href="#alpha-logo"></use></svg>%s</p></div></template>` (i18n "LivaConsAlphaUpdate") -}}
+  {{- $hugoUpdates := printf `<template data-alpha="liva-hugo-updates-template"><div class="liva-console-explanation"><p class="liva-con-no-updates"><svg class="liva-logo-hugo" width="16" height="16" aria-hidden="true"><use href="#hugo-logo"></use></svg>%s</p></div></template>` (i18n "LivaConsHugoUpdate") -}}
+  
+  {{- /* - Concatenate them all */}}
+  {{- $updatesHTML = printf "%s %s %s %s" $noAlphaUpdates $noHugoUpdates $alphaUpdates $hugoUpdates -}}
+  
+  {{- /* - Store the entire block in the cache */}}
+  {{- site.Store.Set $updatesCacheKey $updatesHTML -}}
+{{- end }}
+
+{{- /* * Cache the "Help" Template */}}
+{{- $helpCacheKey := printf "alpha/liva/help/%s.md" $lang -}}
+{{- $helpHTML := "" -}}
+
+{{- if site.Store.Get $helpCacheKey }}
+  {{- $helpHTML = site.Store.Get $helpCacheKey -}}
+{{- else }}
+  {{- $helpFilePath := printf "alpha/liva/help/%s.md" $lang -}}
+  {{- with resources.Get $helpFilePath }}
+    {{- $helpHTML = .Content | markdownify -}}
+  {{- else }}
+    {{- $helpHTML = printf `<div class="liva-console-explanation"><h2>Help File Not Found</h2><p>LiVa help file not found at <span class="liva-mono liva-mono-con-warning">/assets/%s</span></p></div>` $helpCacheKey -}}
+  {{- end }}
+  {{- site.Store.Set $helpCacheKey $helpHTML -}}
+{{- end }}
+
+{{- /* ** Print the cached HTML blocks */}}
+
+{{- $updatesHTML | safeHTML -}}
+
+<template data-alpha="liva-help-template">
+  {{- $helpHTML | safeHTML -}}
+</template>

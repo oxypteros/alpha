@@ -1,0 +1,84 @@
+<div
+  class="liva liva-settings liva-shadow liva-hidden"
+  aria-expanded="false"
+  data-alpha="liva-settings"
+  inert
+>
+  <header>
+    {{ i18n "LivaSettings" . |default "LiVa Settings" }}
+    <button
+      class="liva-close-button"
+      aria-label="{{ i18n "LivaSettingsCloseBtn" . | default "Close settings modal" }}"
+      data-alpha="liva-close-settings"
+    >
+      <svg aria-hidden="true" width="22" heigh="22">
+        <use href="#liva-close-icon"></use>
+      </svg>
+    </button>
+  </header>
+  <div class="liva-settings-position">
+    <div>
+      <h2>{{ i18n "LivaSettingsPosition" . | default "Position" }}</h2>
+      <p>
+        <label for="fab-position-select"
+          >{{ i18n "LivaSettingsPosLabel" . | default "Change the FAB position" }}</label
+        >
+      </p>
+    </div>
+    <select
+      id="fab-position-select"
+      class="liva-position-select"
+      data-alpha="liva-select-position"
+    >
+      <option value="liva-bottom-right">
+        {{ i18n "LivaSettingsPosOptionBR" . | default "Bottom/Right" }}
+      </option>
+      <option value="liva-bottom-left">
+        {{ i18n "LivaSettingsPosOptionBL" . | default "Bottom/Left" }}
+      </option>
+    </select>
+  </div>
+  <div class="liva-settings-console">
+    <div>
+      <h2>{{ i18n "LivaSettingsCons" . | default "Console" }}</h2>
+      <p>{{ i18n "LivaSettingsConsDesc" . | default "Open the LiVa console" }}</p>
+    </div>
+    <button aria-label="{{ i18n "LivaSettingsConsOpenAria" . | default "Open the console" }}" data-alpha="liva-open-console-button">
+      {{ i18n "LivaSettingsConsOpen" . | default "Open" }}
+    </button>
+  </div>
+  <div class="liva-settings-updates">
+    <div>
+      <h2>{{ i18n "LivaSettingsUpd" . | default "Updates" }}</h2>
+      <p>
+        {{ i18n "LivaSettingsUpdDesc" . | default "Check for alpha and hugo updates" }}
+      </p>
+    </div>
+    <button aria-label="{{ i18n "LivaSettingsUpdCheckAria" . | default "Check for updates" }}" data-alpha="liva-updates-button">
+      {{ i18n "LivaSettingsUpdCheck" . | default "Check" }}
+    </button>
+  </div>
+  <div class="liva-settings-info">
+    <div>
+      <h2>{{ i18n "LivaSettingsDis" . | default "Disable LiVa" }}</h2>
+      <p>
+        {{ i18n "LivaSettingsDisSet" . | default "Set" }}
+        <span class="liva-mono">liva_enabled=false</span>
+        {{ i18n "LivaSettingsDisInThe" . | default "in the" }}
+        <span class="liva-mono">`params.toml`</span>
+        {{ i18n "LivaSettingsDisConfigFile" . | default "config file" }}.
+      </p>
+    </div>
+  </div>
+  <footer>
+    <a href="https://alpha.oxypteros.com/docs/liva"
+      >{{ i18n "LivaSettingsDoc" . | default "LiVa Documentation" }}</a
+    >
+    <div class="liva-version" aria-label="LiVa {{ i18n "LivaVersion" .  | default "version"}}">
+      <svg width="14" height="14" aria-hidden="true">
+        <use href="#liva-logo"></use>
+      </svg>
+      <span class="liva-mono liva-no-select">v1.0.0-rc</span>
+    </div>
+  </footer>
+</div>

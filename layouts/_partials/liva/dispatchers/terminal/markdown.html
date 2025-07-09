@@ -1,0 +1,92 @@
+{{- /*
+  Partial: liva/dispatchers/terminal/markdown.html
+  Purpose: Renders the terminal warnings for markdown errors.
+
+   Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /* Input data from core/markdown/handler.logic */}}
+{{- $mdErrors := . -}}
+
+{{- range $mdErrors -}}
+  {{- /*
+    Dictionary keys provided by :
+    '_markup/render-image.html'
+  */}}
+  {{- $code := .code | default "liva-md-000" -}}
+  {{- $path := .path -}}
+  {{- $permalink := .permalink -}}
+  {{- $destination := .destination -}}
+  {{- $dir := .dir -}}
+  {{- $isBundle := .isBundle -}}
+
+  {{- /* Declared variables */}}
+  {{- $title := "" -}}
+  {{- $reason := "" -}}
+  {{- $page := $permalink -}}
+  {{- $file := printf "/content/%s" $path -}}
+  {{- $solution := "" -}}
+
+  {{- /*
+    Markdown local image not found (in bundle or assets)
+    Code: liva-md-101
+  */}}
+  {{- if eq $code "liva-md-101" -}}
+    {{- $title = printf "Image Not Found" -}}
+    {{- $reason = printf "The '%s' could not be found." $destination -}}
+    {{- $file = printf "/content/%s" $path -}}
+
+    {{- if $isBundle }}
+      {{- $solution = printf "a. Ensure one of the following files exists:\n   1. '%s%s' or\n   2. 'assets/img/%s'\nb. Check for typos in the markdown declaration."  $dir $destination $destination -}}
+    {{- else }}
+      {{- $solution = printf "1. Ensure the file 'assets/img/%s' exist.\n2. Check for typos in the markdown declaration." $destination -}}
+    {{- end -}}
+
+    {{- /*
+      Markdown remote image not found
+      Code: liva-md-103
+    */}}
+  {{- else if eq $code "liva-md-103" }}
+    {{- $title = "Remote Image Fetch Failed" -}}
+    {{- $reason = printf "Could not download the remote image:\n         %s" $destination -}}
+    {{- $solution = printf "Please check the URL and ensure the remote server\nis accessible." -}}
+
+    {{- /*
+      Missing alt from markdown image
+      Code: liva-md-104
+    */}}
+  {{- else if eq $code "liva-md-104" -}}
+    {{- $title = "Missing Image Alt Text" -}}
+    {{- $reason = printf "The '%s' is missing its text description." $destination -}}
+    {{- $solution = printf "Provide a descriptive text for accessibility.\nEx. ![A description of the image.](%s)"  $destination -}}
+
+    {{- /*
+      Fallback for missing or undefined code
+      Code: liva-md-000 or undefined
+    */}}
+  {{- else }}
+    {{- $title = "Unknown Error Code" -}}
+    {{- $reason = printf "Error code missing or undefined." -}}
+    {{- $solution = "\"Magic only works when the spell(ing)is real.\"" -}}
+  {{- end -}}
+
+
+  <!-- prettier-ignore -->
+  {{- warnf `
+[LiVa] %s
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+Page   : %s
+File   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$title    
+$code
+$reason
+$page
+$file
+$solution
+-}}
+{{- end -}}

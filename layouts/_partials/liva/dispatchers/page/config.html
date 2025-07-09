@@ -1,0 +1,153 @@
+{{- /*
+  Partial: liva/dispatchers/page/config.html
+  Purpose: Renders the page warnings for config errors.
+
+    Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- /* Input data from core/config/handler.logic */}}
+{{- $cfgErrors := .configErrors -}}
+
+{{- /* Input data from 'data/liva/page/config.toml' */}}
+{{- $cfgErrorDefs := site.Data.liva.page.config -}}
+
+{{- range first 1 $cfgErrors -}}
+  {{- /*
+    Dictionary keys provided by the partials:
+    'liva/core/config/check.logic.html'
+    'head/seo/images.html'
+  */}}
+  {{- $code := .code | default "liva-cfg-000" -}}
+  {{- $lang := .lang -}}
+  {{- $keyValue := .keyValue -}}
+  {{- $path := .path -}}
+  {{- $currentYear := .currentYear -}}
+
+  {{- /* Get config error values from data */}}
+  {{- $entry := (index $cfgErrorDefs $code) | default dict -}}
+
+  {{- /* Define severity for page card (css) */}}
+  {{- $severity := $entry.severity | default "warning" -}}
+  {{- $severityClass := cond (eq $severity "error") "liva-card-error" "liva-card-warning" -}}
+  {{- $livaIcon := cond (eq $severity "error") "#liva-error-icon" "#liva-warning-icon" -}}
+
+  {{- /* Format values for default use */}}
+  {{- $titleKey := $entry.title | default "LivaUnknownTitle" -}}
+  {{- $title := i18n $titleKey | safeHTML -}}
+
+  {{- $key := $entry.key -}}
+
+  {{- $file := $entry.file -}}
+
+  {{- $reasonKey := $entry.reason | default "LivaUnknownReason" -}}
+  {{- $reason := i18n $reasonKey | safeHTML -}}
+
+  {{- $solutionKey := $entry.solution | default "LivaUnknownSolution" -}}
+  {{- $solution := i18n $solutionKey | safeHTML -}}
+
+  {{- $preExample := i18n ($entry.preExample | default "") | safeHTML -}}
+  {{- $example := i18n ($entry.example | default "LivaUnknownExample") | safeHTML -}}
+
+  {{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+
+  {{- /*
+    hugo.toml: Missing .Site.Title
+    Code: liva-cfg-102
+  */}}
+  {{- if eq $code "liva-cfg-102" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $file | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key $file | safeHTML -}}
+
+    {{- /*
+      languages.toml: Missing Lang weight
+      Codes: liva-cfg-112
+    */}}
+  {{- else if eq $code "liva-cfg-112" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $lang | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key $lang| safeHTML -}}
+
+    {{- /*
+      languages.toml: Missing languageName
+      Codes: liva-cfg-113
+    */}}
+  {{- else if eq $code "liva-cfg-113" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $lang | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key $lang| safeHTML -}}
+
+    {{- /*
+      params.toml: Invalid established_year
+      Codes: liva-cfg-121
+    */}}
+  {{- else if eq $code "liva-cfg-121" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue| safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $currentYear | safeHTML -}}
+
+    {{- /*
+      params.toml: Future established_year
+      Codes: liva-cfg-122
+    */}}
+  {{- else if eq $code "liva-cfg-122" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue| safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $currentYear | safeHTML -}}
+
+    {{- /*
+      params.toml: Missing SEO image seo_default_image
+      Codes: liva-cfg-132
+    */}}
+  {{- else if eq $code "liva-cfg-132" -}}
+    {{- $reason = printf (i18n $reasonKey) $keyValue $file | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $path | safeHTML -}}
+    {{- $example = printf (i18n $entry.example )  $key $keyValue | safeHTML -}}
+
+    {{- /*
+      params.toml: Bad quality SEO image seo_default_image
+      Codes: liva-cfg-132
+    */}}
+  {{- else if eq $code "liva-cfg-133" -}}
+    {{- $reason = printf (i18n $reasonKey) $keyValue $file | safeHTML -}}
+    {{- $example = printf (i18n $entry.example )  $key $keyValue | safeHTML -}}
+
+    {{- /*
+      Fallback for missing or undefined code
+      Code: liva-cfg-000 or undefined
+    */}}
+  {{- else }}
+   {{- $reason = printf (i18n $reasonKey)  | safeHTML -}}
+  {{- end }}
+
+  <div class="liva liva-card-container">
+    <div class="liva liva-card {{ $severityClass }} liva-shadow">
+      <header class="liva-card-header">
+        <h2 class="liva-title">{{- with $title }}{{ . }}{{- end }}</h2>
+        <svg aria-hidden="true" focusable="false" width="24" height="24">
+          <use href="{{- $livaIcon -}}"></use>
+        </svg>
+      </header>
+
+      <div class="liva-card-content">
+        <div class="liva-card-content-reason">{{- with $reason }}{{ . }}{{- end }}</div>
+        <hr />
+        <div class="liva-card-content-solution">{{- with $solution }}{{ . }}{{- end }}</div>
+      </div>
+
+      <footer class="liva-card-footer">
+        <div class="liva-card-footer-meta">
+          <p>
+            {{ with $preExample }}
+              <strong>{{ . }}</strong>
+            {{- end }}
+            {{ with $example }}{{ . | safeHTML }}{{- end }}
+          </p>
+          <a
+            class="liva-mono"
+            href="{{ $docURL }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            >{{ $code }}</a
+          >
+        </div>
+      </footer>
+    </div>
+  </div>
+{{- end -}}

@@ -1,0 +1,65 @@
+{{- /*
+  Partial: liva/dispatchers/terminal/sc-invalid-params.html
+  Purpose: Renders the terminal warnings for invalid parameters in shortcodes.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /*
+  Dictionary keys from the handler originated by:
+  'liva/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $code := .code -}}
+{{- $scName := .scName -}}
+{{- $invalidParams := .invalidParams -}}
+{{- $validParams := .validParams -}}
+{{- $page := .page -}}
+{{- $position := .position -}}
+
+{{- /* Format $position for html render */}}
+{{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $position -}}
+
+{{- /* - Dynamic labels based on count for pluralization */}}
+{{- $invalidCount := len $invalidParams -}}
+{{- $validCount := len $validParams -}}
+
+{{- $title := cond (eq $invalidCount 1) "Shortcode Parameter Error" "Shortcode Parameters Error" -}}
+{{- $reason := cond (eq $invalidCount 1) "parameter was" "parameters were"}}
+{{- $paramValid := cond (eq $validCount 1) "Parameter" "Parameters" -}}
+
+{{- /* - Separate invalid params from values */}}
+{{- $errorDetails := slice -}}
+{{- range $paramName, $badValue := $invalidParams }}
+  {{- $detailString := printf `> %s` $paramName -}}
+  {{- $errorDetails = $errorDetails | append $detailString -}}
+{{- end }}
+
+{{- $formattedErrorDetails := delimit $errorDetails "\n             " -}}
+
+{{- /* - Format key lists for clean printing */}}
+{{- $formattedValid := delimit $validParams ", " -}}
+
+
+<!-- prettier-ignore -->
+{{- warnf `
+[LiVa] %s 
+──────────────────────────────────────────────────
+ Code      : %s
+ Shortcode : {{< %s >}}
+ Reason    : The following unknown %s used:
+             %s
+ Page      : %s
+ File      : %s
+──────────────────────────────────────────────────
+ Valid %s : %s
+──────────────────────────────────────────────────`
+  $title
+  $code 
+  $scName
+  $reason
+  $formattedErrorDetails
+  $page.Permalink 
+  $relPosition
+  $paramValid $formattedValid
+-}}

@@ -1,0 +1,31 @@
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+
+{{- /* Data passed from caller templates */}}
+{{- $code := .code -}}
+{{- $page := .page -}}
+{{- $destination := .destination -}}
+{{- $path := .path -}}
+{{- $dir := .dir -}}
+{{- $permalink := .permalink -}}
+{{- $alt := .alt -}}
+{{- $isBundle := .isBundle -}}
+
+ {{- $mdErrorData := dict 
+    "code"        $code
+    "page"        $page
+    "destination" $destination
+    "path"        $path
+    "permalink"   $permalink
+    "dir"         $dir
+    "alt"         $alt
+    "isBundle"    $isBundle
+  -}}
+{{ if $livaWarnEnabled }}
+  {{- partial "liva/dispatchers/terminal/markdown.html" (slice $mdErrorData) }}
+{{- end }}
+
+{{ if $livaEnabled }}
+  {{- partial "liva/dispatchers/page/markdown.html" (slice $mdErrorData) }}
+  {{- partial "liva/dispatchers/console/markdown.html" ( slice $mdErrorData) }}
+{{- end }}

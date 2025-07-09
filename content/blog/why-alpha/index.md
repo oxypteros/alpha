@@ -60,7 +60,7 @@ That was a **lightbulb** moment! I realized I could potentially creating **not j
 
 So, I recruit them as testers for a proof-of-concept experiment. To help them do that, I put together a basic guide, that eventually evolved into the, **“[From Zero with Zero](https://alpha.oxypteros.com/get-started)”** tutorial. It helped them build and deploy a Hugo site using Alpha, even though they had never heard terms like *Jamstack*, *Markdown*, or *TOML*.  
 
-The experiment turned out to be unexpectedly successful. One of the testers, in fact, found a small template I had written (originally just a dev tool for logging and debugging) particularly useful for working with shortcodes. That simple observation led to the creation of **[OCD](https://alpha.oxypteros.com/docs/ocd)**, a more robust helper for Alpha.
+The experiment turned out to be unexpectedly successful. One of the testers, in fact, found a small template I had written (originally just a dev tool for logging and debugging) particularly useful for working with shortcodes. That simple observation led to the creation of **[LiVa](https://alpha.oxypteros.com/docs/liva)**, a more robust helper for Alpha.
 
 
 After that small test I decided Alpha might be worth sharing.  

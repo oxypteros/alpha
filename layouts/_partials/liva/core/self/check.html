@@ -1,0 +1,111 @@
+{{- /* LiVa Self Check */}}
+{{- $livaSelfCheck := true -}}
+{{- $title := printf "Initialization Failed" -}}
+{{- $code := "" -}}
+{{- $reason := printf "Critical asset is missing" -}}
+{{- $path := "" -}}
+{{- $file := "" -}}
+{{- $solution := "" -}}
+{{- $repoURL := "" -}}
+
+{{- /* Head css/js files check */}}
+{{- $livaSelfCheckHeadpage := .Store.Get "livaSelfCheckHeadpage" | default (slice) -}}
+{{- if gt (len $livaSelfCheckHeadpage) 0 -}}
+  {{- range $livaSelfCheckHeadpage -}}
+    {{- $livaSelfCheck = false -}}
+
+    {{- $code = .code -}}
+    {{- $file = .file -}}
+    {{- $path = .path -}}
+
+    {{- if eq $code "liva-file-101" }}
+      {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/assets/alpha/liva/css" -}}
+    {{- else if eq $code "liva-file-102" }}
+      {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/assets/alpha/liva/js" -}}
+    {{- else }}
+      {{- $repoURL = "https://github.com/oxypteros/alpha/" -}}
+    {{- end }}
+
+    {{- $solution = printf "LiVa UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
+  {{- end -}}
+{{- end }}
+{{- /* Missing i18n file check */}}
+{{- if not (i18n "LivaI18nSelfCheck") -}}
+  {{- $livaSelfCheck = false -}}
+
+  {{- $code = "liva-file-103" -}}
+  {{- $reason = printf "Critical asset or i18n value is missing" -}}
+  {{- $file = printf "en_liva.toml" -}}
+  {{- $path = printf "i18n/en_liva.toml" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/i18n/en_liva.toml" }}
+  {{- $solution = printf "LiVa UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
+{{- end }}
+
+{{- /* Missing page data markdown check */}}
+{{- if not site.Data.liva.page.markdown -}}
+  {{- $livaSelfCheck = false -}}
+
+  {{- $code = "liva-file-104" -}}
+  {{- $file = printf "markdown.toml" -}}
+  {{- $path = printf "data/liva/page/markdown.toml" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/liva/page/markdown.toml" }}
+  {{- $solution = printf "LiVa UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
+{{- end }}
+
+{{- /* Missing page data config check */}}
+{{- if not site.Data.liva.page.config -}}
+  {{- $livaSelfCheck = false -}}
+
+  {{- $code = "liva-file-105" -}}
+  {{- $file = printf "config.toml" -}}
+  {{- $path = printf "data/liva/page/config.toml" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/liva/page/config.toml" }}
+  {{- $solution = printf "LiVa UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
+{{- end }}
+
+{{- /* Missing page data frontmatter check */}}
+{{- if not site.Data.liva.page.frontmatter -}}
+  {{- $livaSelfCheck = false -}}
+
+  {{- $code = "liva-file-106" -}}
+  {{- $file = printf "frontmatter.toml" -}}
+  {{- $path = printf "data/liva/page/frontmatter.toml" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/liva/page/frontmatter.toml" }}
+  {{- $solution = printf "LiVa UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
+{{- end }}
+
+
+{{- /* Missing console data config check */}}
+{{- if not site.Data.liva.console.config -}}
+  {{- $livaSelfCheck = false -}}
+
+  {{- $code = "liva-file-120" -}}
+  {{- $file = printf "config.toml" -}}
+  {{- $path = printf "data/liva/console/" }}
+  {{- $repoURL = "https://github.com/oxypteros/alpha/blob/main/data/liva/console/config.toml" }}
+  {{- $solution = printf "LiVa UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
+{{- end }}
+
+{{- /* Show livaWarn self check results */}}
+{{- if not $livaSelfCheck }}
+<!-- prettier-ignore -->
+{{- warnf `
+[LiVa] %s
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+File   : %s
+Path   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$title
+$code
+$reason
+$file
+$path
+$solution
+-}}
+{{- end }}
+{{- /* Disable LiVa UI */}}
+{{- return $livaSelfCheck -}}

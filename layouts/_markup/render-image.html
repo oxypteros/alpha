@@ -4,7 +4,7 @@
   Features:
   - Pass images on page bundles through Hugo pipes
   - Style them according to Alpha's design
-  - OCD error reporting enabled
+  - LiVa error reporting enabled
 
   Repo: https://github.com/oxypteros/alpha
 */}}
@@ -31,21 +31,21 @@
   {{- end -}}
 {{- end -}}
 
-{{- /* Validate input and report errors to OCD system */}}
-{{- $ocdWarnEnabled := .Page.Site.Params.ocdWarn_enabled | default true -}}
-{{- $ocdEnabled := and hugo.IsDevelopment (.Page.Site.Params.ocd_enabled | default true) -}}
+{{- /* Validate input and report errors to LiVa system */}}
+{{- $livaWarnEnabled := .Page.Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Page.Site.Params.liva_enabled | default true) -}}
 
-{{- /* Determine OCD error code based on input */}}
+{{- /* Determine LiVa error code based on input */}}
 {{- $errorCode := "" }}
 {{- if not $image -}}
   {{- if eq $imageType "remote" -}}
-    {{- $errorCode = "ocd-md-103" -}} 
+    {{- $errorCode = "liva-md-103" -}} 
   {{- else -}}
-    {{- $errorCode = "ocd-md-101" -}}
+    {{- $errorCode = "liva-md-101" -}}
   {{- end -}}
 {{- end }}
 {{- if and ($image) (not $plainText) -}}
-  {{- $errorCode = "ocd-md-104" -}}
+  {{- $errorCode = "liva-md-104" -}}
 {{- end -}}
 
 {{- if $errorCode }}
@@ -53,8 +53,8 @@
   {{- $pageDir := .Page.File.Dir -}}
   {{- $permalink := .Page.Permalink }}
   {{- $isBundle := or (eq .Page.File.BaseFileName "index") (eq .Page.File.BaseFileName "_index") -}} 
-  {{- if or $ocdEnabled $ocdWarnEnabled }}
-    {{- partial "ocd/core/markdown/handler.logic.html" (dict
+  {{- if or $livaEnabled $livaWarnEnabled }}
+    {{- partial "liva/core/markdown/handler.logic.html" (dict
       "code"        $errorCode
       "destination" $destination
       "path"        $pagePath

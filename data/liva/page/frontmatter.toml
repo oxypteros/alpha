@@ -1,0 +1,89 @@
+[liva-fm-102]
+title      = "LivaFmInvalidLastmod"
+severity   = "warning"
+key        = "lastmod"
+reason     = "LivaFmInvalidLastmodReason"
+solution   = "LivaFmInvalidLastmodSolution"
+preExample = "LivaCardExample"
+example    = "LivaFmInvalidLastmodExample"
+docURL     = ""
+
+[liva-fm-111]
+title      = "LivaFmInvalidLayout"
+severity   = "warning"
+key        = "layout"
+reason     = "LivaFmInvalidLayoutReason"
+solution   = "LivaFmInvalidLayoutSolution"
+preExample = "LivaCardExample"
+example    = "LivaFmInvalidLayoutExample"
+docURL     = ""
+
+[liva-fm-122]
+title      = "LivaFmMissingTitle"
+severity   = "warning"
+key        = "title"
+reason     = "LivaFmMissingTitleReason"
+solution   = "LivaFmMissingTitleSolution"
+preExample = "LivaCardExample"
+example    = "LivaFmMissingTitleExample"
+docURL     = ""
+
+[liva-fm-131]
+title      = "LivaFmInvalidLicense"
+severity   = "warning"
+key        = "license"
+reason     = "LivaFmInvalidLicenseReason"
+solution   = "LivaFmInvalidLicenseSolution"
+preExample = "LivaCardExample"
+example    = "LivaFmInvalidLicenseExample"
+docURL     = ""
+
+[liva-fm-141]
+title      = "LivaFmInvalidRecommended"
+severity   = "warning"
+key        = "recommended"
+reason     = "LivaFmInvalidRecommendedReason"
+solution   = "LivaFmInvalidRecommendedSolution"
+preExample = "LivaCardExample"
+example    = "LivaFmInvalidRecommendedExample"
+docURL     = ""
+
+[liva-fm-151]
+title      = "LivaFmInvalidFeatured"
+severity   = "warning"
+key        = "featured"
+reason     = "LivaFmInvalidFeaturedReason"
+solution   = "LivaFmInvalidFeaturedSolution"
+preExample = "LivaCardExample"
+example    = "LivaFmInvalidFeaturedExample"
+docURL     = ""
+
+[liva-fm-161]
+title      = "LivaFmMissingDescription"
+severity   = "warning"
+key        = "description"
+reason     = "LivaFmMissingDescriptionReason"
+solution   = "LivaFmMissingDescriptionSolution"
+preExample = "LivaCardExample"
+example    = "LivaFmMissingDescriptionExample"
+docURL     = ""
+
+[liva-fm-171]
+title      = "LivaFmMissingSeoImage"
+severity   = "warning"
+key        = "seo_image"
+reason     = "LivaFmMissingSeoImageReason"
+solution   = "LivaFmMissingSeoImageSolution"
+preExample = "LivaCardInput"
+example    = "LivaFmMissingSeoImageExample"
+docURL     = ""
+
+[liva-fm-172]
+title      = "LivaFmBadSeoImage"
+severity   = "warning"
+key        = "seo_image"
+reason     = "LivaFmBadSeoImageReason"
+solution   = "LivaFmBadSeoImageSolution"
+preExample = "LivaCardExample"
+example    = "LivaFmBadSeoImageExample"
+docURL     = ""

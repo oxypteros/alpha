@@ -27,8 +27,8 @@
   - LINK-LABEL (string, optional) : `aria-label` attribute for link 2
 
   Error handler:
-  - ocdWarn (global)
-  - OCD (scoped)
+  - livaWarn (global)
+  - LiVa (scoped)
 
   Docs: https://alpha.oxypteros.com/docs/shortcodes/hero
   Repo: https://github.com/oxypteros/alpha
@@ -37,24 +37,24 @@
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
 {{- /* Vars */}}
-{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
-{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
 {{- $validInput := "" -}}
 {{- $validationResult := "" -}}
 
 {{- /* Get shortcodes rules and validate input */}}
 {{- if $rules -}}
   {{- $rules = merge $rules (dict "scName" .Name) -}}
-  {{- $validationResult = partial "ocd/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
   {{- $validInput = $validationResult.isValid }}
 {{- else -}}
-  {{- warnf "OCD: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
 {{- end -}}
 
-{{- /* On failed input validation call the OCD handler */}}
+{{- /* On failed input validation call the LiVa handler */}}
 {{- if not $validInput -}}
-  {{- if or ($ocdWarnEnabled) ($ocdEnabled) -}}
-    {{- partial "ocd/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
   {{- end -}}
 {{- end -}}
 
@@ -82,12 +82,12 @@
   {{- $allPairsAreValid := and $isBtnPairValid $isLinkPairValid -}}
 
   {{- if not $allPairsAreValid }}
-    {{- /* - At least one pair is incomplete show OCD hero unique warning */}}
-    {{- if or ($ocdWarnEnabled) ($ocdEnabled) }}
+    {{- /* - At least one pair is incomplete show LiVa hero unique warning */}}
+    {{- if or ($livaWarnEnabled) ($livaEnabled) }}
       {{- $errorData := dict
         "context"         .
         "scName"          .Name
-        "errorCode"       "ocd-sc-112"
+        "errorCode"       "liva-sc-112"
         "isBtnPairValid"  $isBtnPairValid
         "isLinkPairValid" $isLinkPairValid
         "btnLink"         $btnLink
@@ -95,7 +95,7 @@
         "link"            $link
         "linkTxt"         $linkTxt
       -}}
-      {{- partial "ocd/dispatchers/legacy/link-pairs.html" $errorData }}
+      {{- partial "liva/dispatchers/legacy/link-pairs.html" $errorData }}
     {{- end }}
   {{- else }}
 

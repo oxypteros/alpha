@@ -1,0 +1,120 @@
+{{- /*
+  Partial: liva/dispatchers/console/sc-invalid-values.html
+  Purpose: Renders the console errors for invalid parameters value in shortcodes.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /*
+  Dictionary keys from the handler originated by:
+  'liva/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $code := .code -}}
+{{- $scName := .scName -}}
+{{- $invalidValues := .invalidValues -}}
+{{- $paramsRules := .rules.params -}}
+{{- $page := .page }}
+
+{{- /* Input data from 'data/liva/console/shortcodes.toml' */}}
+{{- $scErrorDefs := site.Data.liva.console.shortcodes -}}
+
+{{- /* Get shortcode error values from data for console */}}
+{{- $entry := (index $scErrorDefs $code) | default dict -}}
+
+{{- /* Define severity for console (css) */}}
+{{- $severity := $entry.severity | default "warning" -}}
+{{- $severityClass := cond (eq $severity "error") "liva-console-error" "liva-console-warning" -}}
+
+{{- /* Format values for default use */}}
+
+{{- $noAnsi := replaceRE `\x1b\[[0-9;]*m` "" $page -}}
+{{- $noQuotes := trim $noAnsi "\"" -}}
+{{- $cleanPage := replaceRE "^.*(/content/.*)" "$1" $noQuotes -}}
+
+{{- $preExample := i18n ($entry.preExample | default "Example:") | safeHTML -}}
+
+{{- $example := printf (i18n $entry.example) $cleanPage | safeHTML -}}
+
+{{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+{{- $preDoc := $entry.preDoc | default "" -}}
+
+
+{{- /* Count for i18n pluralization */}}
+{{- $invalidCount := len $invalidValues -}}
+
+{{- /* Invalid values list */}}
+{{- $badValuesOnly := slice -}}
+{{- range $k, $v := .invalidValues -}}
+  {{- $badValuesOnly = $badValuesOnly | append (printf `"%s"` $v) -}}
+{{- end -}}
+
+{{- /* - Format values for use */}}
+{{- $formattedInvalidValues := delimit $badValuesOnly ", " -}}
+
+
+
+{{- /* Render the LiVa Js trigger and the console template */}}
+<div data-error="{{ $code }}"></div>
+<template data-alpha="{{ $code }}-template">
+  <div class="liva-console-explanation {{ $severityClass }}">
+    <h2>
+      {{ i18n "LivaScInvValueTitleConsole" $invalidCount | default "Shortcode Invalid Values" }}
+    </h2>
+    <p>
+      {{ i18n "LivaScValues" $invalidCount | default "The value" }}
+      <span class="liva-mono liva-mono-con-error"
+        >{{ $formattedInvalidValues }}</span
+      >
+      {{ i18n "LivaScUsedConsole" $invalidCount | default "used in the shortcode" }}
+      <span class="liva-mono liva-mono-con-error"
+        >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+      >
+      {{ i18n "LivaScNotRecognized" $invalidCount | default "is not recognized." }}
+    </p>
+        <br />
+    <div class="liva-console-solution">
+      <h3 class="liva-console-h3">
+        <strong>{{ i18n "LivaSolution" . | default "Solution:" }}</strong>
+      </h3>
+    <p>
+      {{ i18n "LivaScValidValueConsole" . | default "Valid values for the shortcode are:" }}
+    </p>
+    <ul>
+      {{- range $paramName, $badValue := .invalidValues -}}
+        <li>
+          <span class="liva-mono liva-mono-con-solution">
+            {{- $rule := index $paramsRules (upper $paramName) }}
+            {{- if $rule }}
+              {{- if eq $rule.validation "in_list" }}
+                {{- printf "%s: %s" (upper $paramName) (delimit $rule.list ", ") -}}
+              {{- else if eq $rule.validation "is_positive_integer" }}
+                {{- printf "%s: " (upper $paramName) -}}
+                {{- i18n "LivaScInteger" | default "A positive integer (e.g., 1, 2, 3, ...)" }}
+              {{- else }}
+                {{- printf "%s: See documentation for valid options" (upper $paramName) -}}
+              {{- end }}
+            {{- end }}
+          </span>
+        </li>
+      {{- end }}
+    </ul>
+    {{- with $example }}
+      <div class="liva-console-example">
+        <h3><strong>{{ $preExample }}</strong></h3>
+        <p class="liva-mono">
+          {{- $example | safeHTML }}
+        </p>
+      </div>
+    {{- end }}
+  </div>
+  <div class="liva-console-doc">
+    {{- with $docURL }}
+      <div class="hr hr-left"></div>
+      <a href="{{ $docURL }}"
+        ><span class="liva-mono">{{ $scName }}</span> {{ i18n "LivaDoc" . }}</a
+      >
+    {{- end }}
+    <div class="hr hr-right"></div>
+  </div>
+</template>

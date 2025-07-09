@@ -1,0 +1,113 @@
+[liva-sc-100]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScHelpExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/help/"
+
+[liva-sc-101]
+severity   = "warning"
+preExample = "LivaCardExample"
+example    = "LivaScHelpExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/help/"
+
+[liva-sc-110]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScHeroExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/hero/"
+
+[liva-sc-120]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScFeatExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/featured/"
+
+[liva-sc-121]
+severity   = "warning"
+preExample = "LivaCardExample"
+example    = "LivaScFeatExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/featured/"
+
+[liva-sc-130]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScTxtSnippetExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/text-snippet/"
+
+[liva-sc-140]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScRecExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/recommended/"
+
+[liva-sc-141]
+severity   = "warning"
+preExample = "LivaCardExample"
+example    = "LivaScRecExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/recommended/"
+
+[liva-sc-160]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScRecentExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/recent/"
+
+[liva-sc-161]
+severity   = "warning"
+preExample = "LivaCardExample"
+example    = "LivaScRecentExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/recent/"
+
+[liva-sc-170]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScCtaExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/cta/"
+
+[liva-sc-180]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScNumExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/num-list/"
+
+[liva-sc-181]
+severity   = "warning"
+preExample = "LivaCardExample"
+example    = "LivaScNumExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/num-list/"
+
+[liva-sc-190]
+severity = "error"
+preExample = "LivaCardExample"
+example    = "LivaScFaqExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/faq/"
+
+[liva-sc-200]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScAboutExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/about/"
+
+[liva-sc-210]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScStatusCardExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/status-card/"
+
+[liva-sc-211]
+severity   = "warning"
+preExample = "LivaCardExample"
+example    = "LivaScStatusCardExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/status-card/"
+
+[liva-sc-220]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScSocialExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/social/"
+
+[liva-sc-221]
+severity   = "warning"
+preExample = "LivaCardExample"
+example    = "LivaScSocialExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/social/"

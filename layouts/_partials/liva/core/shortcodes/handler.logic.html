@@ -1,0 +1,71 @@
+{{- /*
+  Partial: liva/components/handler.html
+  Purpose: Acts as an error "adapter" or router. Receives structured errors from 
+  the validator partial and the data/shortcodes/rules.toml and conditionally 
+  calls LiVa error reporting partials.
+
+  Repo:https://github.com/oxypteros/alpha
+*/}}
+{{- $rules := .rules -}}
+{{- $scName := $rules.scName -}}
+{{- $errors := .errors -}}
+{{- $page := .page -}}
+{{- $position := .position -}}
+{{- $shortcodeData := .data -}}
+{{- $invalidParamCode := $rules.errorCodes.invalidParam -}}
+{{- $invalidValueCode := $rules.errorCodes.invalidValue -}}
+
+{{- /* - LiVa conditional vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+
+{{- /* * Check for invalid keys and fail fast. If not then check for invalid values. */}}
+{{- /* ** Invalid parameters map */}}
+{{- with $errors.invalidParams -}}
+  {{- $errorData := dict
+    "code"          $invalidParamCode
+    "scName"        $scName
+    "invalidParams" .                
+    "validParams"   $rules.validParams
+    "page"          $page
+    "position"      $position
+  -}}
+
+  {{- /* *** Render invalid params errors only on Hugo terminal */}}
+  {{- if $livaWarnEnabled }}
+    {{- partial "liva/dispatchers/terminal/sc-invalid-params.html" $errorData -}}
+  {{- end }}
+  {{- /* *** Render invalid params errors only on page and on console */}}
+  {{- if $livaEnabled }}
+     {{- partial "liva/dispatchers/page/sc-invalid-params.html" $errorData -}}
+    {{- partial "liva/dispatchers/console/sc-invalid-params.html" $errorData -}}
+  {{- end }}
+
+{{- else }}
+  {{- with $errors.invalidValues }}
+    {{- /* ** Invalid values map */}}
+    {{- $invalidValuesMap := dict -}}
+    {{- range $key, $details := . }}
+      {{- $invalidValuesMap = merge $invalidValuesMap (dict $key $details.value) -}}
+    {{- end }}
+
+    {{- $errorData := dict
+      "code"           $invalidValueCode
+      "scName"         $scName
+      "invalidValues"  $invalidValuesMap
+      "rules"          $rules
+      "page"           $page
+      "position"       $position
+
+    -}}
+    {{- /* *** Render invalid values errors only on Hugo terminal */}}
+    {{- if $livaWarnEnabled }}
+      {{- partial "liva/dispatchers/terminal/sc-invalid-values.html" $errorData -}}
+    {{- end }}
+    {{- /* *** Render invalid values errors only on page and on console */}}
+    {{- if $livaEnabled }}
+          {{- partial "liva/dispatchers/page/sc-invalid-values.html" $errorData -}}
+      {{- partial "liva/dispatchers/console/sc-invalid-values.html" $errorData -}}
+    {{- end }}
+  {{- end }}
+{{- end -}}

@@ -1,0 +1,25 @@
+[liva-md-101]
+title          = "LivaMdImageNotFound"
+severity       = "error"
+reason         = "LivaMdImageNotFoundReason"
+solution       = "LivaMdImageNotFoundSolution"
+solutionAssets = "LivaMdImageNotFoundAssetsSolution"
+preExample     = "LivaCardInput"
+example        = "LivaMdImageNotFoundExample"
+docURL         = "https://alpha.oxypteros.com/docs/content-creation/page-markdown/#image"
+
+[liva-md-103]
+title     = "LivaMdRemoteImageNotFound"
+severity  = "error"
+reason    = "LivaMdRemoteImageNotFoundReason"
+solution  = "LivaMdRemoteImageNotFoundSolution"
+docURL    = "https://alpha.oxypteros.com/docs/content-creation/page-markdown/#image"
+
+[liva-md-104]
+title      = "LivaMdMissingAlt"
+severity   = "warning"
+reason     = "LivaMdMissingAltReason"
+solution   = "LivaMdMissingAltSolution"
+preExample = "LivaCardExample"
+example    = "LivaMdMissingAltExample"
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page-markdown/#image"

@@ -1,0 +1,97 @@
+{{- /*
+  Partial: liva/dispatchers/page/sc-invalid-params.html
+  Purpose: Renders the page errors for invalid parameters in shortcodes.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /*
+  Dictionary keys from the handler originated by:
+  'liva/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $code := .code -}}
+{{- $scName := .scName -}}
+{{- $invalidParams := .invalidParams -}}
+{{- $validParams := .validParams -}}
+
+{{- /* Input data from 'data/liva/page/shortcodes.toml' */}}
+{{- $scErrorDefs := site.Data.liva.page.shortcodes -}}
+
+{{- /* Get shortcode error values from data for page */}}
+{{- $entry := (index $scErrorDefs $code) | default dict -}}
+
+{{- /* Define severity for page (css) */}}
+{{- $severity := $entry.severity | default "warning" -}}
+{{- $severityClass := cond (eq $severity "error") "liva-card-error" "liva-card-warning" -}}
+{{- $livaIcon := cond (eq $severity "error") "#liva-error-icon" "#liva-warning-icon" -}}
+
+{{- /* Format values for default use */}}
+{{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+
+{{- /* - Separate invalid params from values */}}
+{{- $invalidKeys := slice -}}
+{{- range $k, $_ := .invalidParams }}
+  {{- $invalidKeys = $invalidKeys | append $k }}
+{{- end }}
+{{- /* - Format params for use */}}
+{{- $formattedInvalid := delimit (sort $invalidKeys) ", " -}}
+{{- $formattedValid := delimit $validParams ", " -}}
+
+{{- /* - Count for i18n pluralization */}}
+{{- $countInvalid := len $invalidParams -}}
+{{- $countValid := len $validParams -}}
+
+
+<div class="liva liva-card {{ $severityClass }} liva-shadow">
+  <header class="liva-card-header">
+    <h2 class="liva-title">
+      {{- i18n "LivaScParamError" $countInvalid | default "Shortcode Parameter Error" }}
+    </h2>
+    <svg aria-hidden="true" focusable="false" width="24" height="24">
+      <use href="{{- $livaIcon -}}"></use>
+    </svg>
+  </header>
+  <div class="liva-card-content">
+    <div class="liva-card-content-reason">
+      <p>
+        {{- i18n "LivaScInvParam" $countInvalid | default "Invalid parameter used in the shortcode:" }}
+        <span class="liva-mono liva-mono-error"
+          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+        >.
+      </p>
+      <p>
+        {{- i18n "LivaScParameter" $countInvalid | default "The parameters," }}&nbsp;
+        <span class="liva-mono liva-mono-error">{{ $formattedInvalid }}</span
+        >&nbsp;
+        {{ i18n "LivaScNotRecognized" $countInvalid | default "are not recognized." }}
+      </p>
+    </div>
+    <hr />
+    <div class="liva-card-content-solution">
+      <p>
+        {{ i18n "LivaScValidParameters" $countValid | default "Valid parameters:" }}
+        <span class="liva-mono liva-mono-solution">{{ $formattedValid }}</span>
+      </p>
+    </div>
+  </div>
+  <footer class="liva-card-footer">
+    <div class="liva-card-footer-meta">
+      <p class="liva-mono">
+        <strong>{{ i18n "LivaCardInput" . | default "Input:" }}</strong>
+        {{- /* Render pair invalid param and value */}}
+        {{- $total := len $invalidParams -}}
+        {{- $i := 0 -}}
+        {{- range $invalidParam, $invalidValue := $invalidParams }}
+          <span class="liva-mono liva-mono-error">{{ $invalidParam }}</span
+          ><span class="liva-mono">="{{ $invalidValue }}"</span>
+          {{- $i = add $i 1 -}}
+          {{- if lt $i $total }}<span class="liva-mono">, </span>{{ end -}}
+        {{- end -}}
+      </p>
+      {{- with $docURL }}
+        <a class="liva-mono" href="{{ $docURL }}">{{ $code }}</a>
+      {{- end }}
+    </div>
+  </footer>
+</div>

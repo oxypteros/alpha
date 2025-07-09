@@ -45,9 +45,9 @@
       <script src="/pagefind/pagefind-ui.js" defer></script>
     {{- end }}
 
-    {{- /* Conditionally append OCD assets */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-      {{- partialCached "head/ocd.html" . }}
+    {{- /* Conditionally append LiVa assets */}}
+    {{- if and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
+      {{- partialCached "head/liva.html" . }}
     {{- end }}
   </head>
   <body
@@ -102,9 +102,9 @@
       {{- partialCached "tail/settings-template.html" . .Site.Language.Lang -}}
     {{- end }}
 
-    {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-      {{- partial "ocd/main.html" . -}}
+    {{- /* LiVa partial, loaded strictly for dev. mode and locally */}}
+    {{- if and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
+      {{- partial "liva/main.html" . -}}
     {{- end -}}
   </body>
 </html>

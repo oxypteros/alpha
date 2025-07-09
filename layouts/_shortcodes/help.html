@@ -12,13 +12,13 @@
   Values: markdown, shortcodes (default)
 
   Error handler:
-  - ocdWarn (global)
-  - OCD (scoped)
+  - livaWarn (global)
+  - LiVa (scoped)
 
   Docs: https://alpha.oxypteros.com/shortcodes/help
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- if  and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
+{{- if  and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
   {{- /* Shortcode rules */}}
   {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -29,15 +29,15 @@
   {{- /* Get shortcodes rules and validate input */}}
   {{- if $rules -}}
     {{- $rules = merge $rules (dict "scName" .Name) -}}
-    {{- $validationResult = partial "ocd/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+    {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
     {{- $validInput = $validationResult.isValid }}
   {{- else -}}
-    {{- warnf "OCD: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+    {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
   {{- end -}}
 
-  {{- /* On failed input validation call the OCD handler */}}
+  {{- /* On failed input validation call the LiVa handler */}}
   {{- if not $validInput -}}
-    {{- partial "ocd/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
   {{- end -}}
 
   {{- /* * Render the shortcode on successful validation */}}
@@ -52,13 +52,13 @@
       {{/* - Check if the data was actually loaded */}}
       {{- if $helpData }}
         {{- if eq $data.type "shortcodes" }}
-          {{- partial "ocd/lib/help/shortcodes.html" (dict "context" $helpData) -}}
+          {{- partial "liva/lib/help/shortcodes.html" (dict "context" $helpData) -}}
         {{- else if eq $data.type "markdown" }}
-          {{- partial "ocd/lib/help/markdown.html" (dict "context" $helpData) -}}
+          {{- partial "liva/lib/help/markdown.html" (dict "context" $helpData) -}}
         {{- end }}
       {{- else }}
         {{- /* - Error message if the data file is missing */}}
-        <div class="ocd-error-card">
+        <div class="liva-error-card">
           <strong>Help Error:</strong> Data file not found for type
           '{{ $data.type }}' and language '{{ $lang }}'.
           <br />
@@ -67,7 +67,7 @@
       {{- end }}
     {{- else }}
       {{- /* - Error message for missing folder */}}
-      <div class="ocd-error-card">
+      <div class="liva-error-card">
         <strong>Help Error:</strong> The <code>data/help</code> directory seems
         to be missing.
       </div>
