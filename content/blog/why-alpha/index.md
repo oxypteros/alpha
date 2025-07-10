@@ -25,7 +25,7 @@ seo_type = "BlogPosting"
 seo_image = ""
 twitter_username = ""
 +++
-While writing the previous part, "[Why Hugo](/blog/why-hugo)," it was easy to praise Hugo. The benefits are obvious, and more importantly, the whole ecosystem is tested and trusted by an entire community, many of them professionals whose opinions carry weight I can only envy. Nothing I could say would diminish or enhance that.
+While writing the previous part, "[Why Hugo](/blog/why-hugo/)," it was easy to praise Hugo. The benefits are obvious, and more importantly, the whole ecosystem is tested and trusted by an entire community, many of them professionals whose opinions carry weight I can only envy. Nothing I could say would diminish or enhance that.
 
 But now the balance shifts.
 
@@ -58,9 +58,9 @@ A key turning point came when I tried to explain **Hugo** and **Alpha** (still e
 
 That was a **lightbulb** moment! I realized I could potentially creating **not just** a personal theme, but something that, **with a few adaptations**, could become a platform others might use or build upon even though they were novices.
 
-So, I recruit them as testers for a proof-of-concept experiment. To help them do that, I put together a basic guide, that eventually evolved into the, **“[From Zero with Zero](https://alpha.oxypteros.com/get-started)”** tutorial. It helped them build and deploy a Hugo site using Alpha, even though they had never heard terms like *Jamstack*, *Markdown*, or *TOML*.  
+So, I recruit them as testers for a proof-of-concept experiment. To help them do that, I put together a basic guide, that eventually evolved into the, **“[From Zero with Zero](https://alpha.oxypteros.com/get-started/)”** tutorial. It helped them build and deploy a Hugo site using Alpha, even though they had never heard terms like *Jamstack*, *Markdown*, or *TOML*.  
 
-The experiment turned out to be unexpectedly successful. One of the testers, in fact, found a small template I had written (originally just a dev tool for logging and debugging) particularly useful for working with shortcodes. That simple observation led to the creation of **[LiVa](https://alpha.oxypteros.com/docs/liva)**, a more robust helper for Alpha.
+The experiment turned out to be unexpectedly successful. One of the testers, in fact, found a small template I had written (originally just a dev tool for logging and debugging) particularly useful for working with shortcodes. That simple observation led to the creation of **[LiVa](https://alpha.oxypteros.com/docs/liva/)**, a more robust helper for Alpha.
 
 
 After that small test I decided Alpha might be worth sharing.  

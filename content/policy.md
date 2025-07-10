@@ -1,12 +1,12 @@
 +++
 draft = false
-date = "2025-05-29T15:24:26+02:00"
+date = "2025-05-25T15:24:26+02:00"
 lastmod = ""
 layout = "utility"
 show_date = true
 
 title = "Policy"
-recommended = true
+
 # SEO
 description = ""
 seo_type = ""
@@ -18,6 +18,6 @@ twitter_username = ""
 
 This is a policy page meant for adding your site’s policies.  
 It uses `layout = "utility"`.  
-Learn more about [Alpha's layouts and content](https://alpha.oxypteros.com/docs/content-creation).
+Learn more about [Alpha's layouts and content](https://alpha.oxypteros.com/docs/content-creation/).
 
 {{< /status_card >}}

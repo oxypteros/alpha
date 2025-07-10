@@ -77,7 +77,7 @@ Hugo can’t do *everything*, nothing really can. But if your focus is **text**,
 Did I just use ~300 words to repeat Hugo’s 7 word tagline?
 
 > *"The world’s **fastest** framework for building websites."*  
-> — [gohugo.io](https://gohugo.io)
+> — [gohugo.io](https://gohugo.io/)
 
 Yes. It seems like it.
 
