@@ -31,11 +31,11 @@ Other than your text in Alpha everything else is **shortcodes**!
   LINK-LABEL="Visit the official Alpha repository" 
 >}}
 
-{{< featured TYPE="banner">}}
+{{< featured STYLE="banner">}}
 
-{{< text_snippet TITLE="Your text come first">}}
+{{< text_snippet TITLE="Your text come first" >}}
 Alpha puts your words first by minimizing interface *distractions* (UI) enhancing the *User Experience* (UX) for **readers** and the creative experience for you, the **writer**. 
 {{< /text_snippet >}}
 
-{{< recommended TITLE="Recommended Posts" LIMIT="4">}}
+{{< recommended TITLE="Recommended Posts" LIMIT="4" >}}
 
