@@ -6,7 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-<!--## [Unreleased] -->
+<!--## [Unreleased]-->
+
+## [1.0.0-rc.2] — 2025-07-10
+
+### Fixed
+- Latest posts are now correctly sorted by their last modified date (`ByLastmod`) instead of their creation date (`ByDate`).
+- Corrected various minor issues in the exampleSite content.
 
 ## [1.0.0-rc] — 2025-07-10
 
