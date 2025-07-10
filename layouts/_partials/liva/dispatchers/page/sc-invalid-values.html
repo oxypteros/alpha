@@ -1,0 +1,110 @@
+{{- /*
+  Partial: liva/dispatchers/page/sc-invalid-values.html
+  Purpose: Renders the page errors for invalid parameters values in shortcodes.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /*
+  Dictionary keys from the handler originated by:
+  'liva/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $scName := .scName -}}
+{{- $invalidValues := .invalidValues -}}
+{{- $code := .code -}}
+{{- $paramsRules := .rules.params -}}
+
+{{- /* Input data from 'data/liva/page/shortcodes.toml' */}}
+{{- $scErrorDefs := site.Data.liva.page.shortcodes -}}
+
+{{- /* Get shortcode error values from data for page */}}
+{{- $entry := (index $scErrorDefs $code) | default dict -}}
+
+{{- /* Define severity for page (css) */}}
+{{- $severity := $entry.severity | default "warning" -}}
+{{- $severityClass := cond (eq $severity "error") "liva-card-error" "liva-card-warning" -}}
+{{- $livaIcon := cond (eq $severity "error") "#liva-error-icon" "#liva-warning-icon" -}}
+
+{{- /* Format values for default use */}}
+{{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+
+{{- /* Count for i18n pluralization */}}
+{{- $invalidCount := len $invalidValues -}}
+
+{{- /* Invalid values list */}}
+{{- $badValuesOnly := slice -}}
+{{- range $k, $v := .invalidValues -}}
+  {{- $badValuesOnly = $badValuesOnly | append (printf `"%s"` $v) -}}
+{{- end -}}
+{{- $formattedInvalidValues := delimit $badValuesOnly ", " -}}
+
+
+<div class="liva liva-card {{ $severityClass }} liva-shadow">
+  <header class="liva-card-header">
+    <h2 class="liva-title">
+      {{- i18n "LivaScValueWarn" $invalidCount | default "Shortcode Value Warning" -}}
+    </h2>
+    <svg aria-hidden="true" focusable="false" width="24" height="24">
+      <use href="{{- $livaIcon -}}"></use>
+    </svg>
+  </header>
+  <div class="liva-card-content">
+    <div class="liva-card-content-reason">
+      <p>
+        {{- i18n "LivaScInvValue" $invalidCount | default "Invalid value used in the shortcode" }}
+        <span class="liva-mono"
+          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+        >.
+      </p>
+      <p>
+        {{- i18n "LivaScValues" $invalidCount | default "The value," }}
+        <span class="liva-mono">{{ $formattedInvalidValues }}</span>
+        {{ i18n "LivaScNotRecognized" $invalidCount | default "is not recognized." -}}
+      </p>
+    </div>
+    <hr />
+    <div class="liva-card-content-solution">
+      {{ i18n "LivaScValidValues" . | default "Valid Values:" }}
+      <ul class="liva-warning-list">
+        {{- /* For each parameter list valid values */}}
+        {{- range $paramName, $badValue := .invalidValues -}}
+          <li>
+            <span class="liva-mono">
+              {{- $rule := index $paramsRules (upper $paramName) -}}
+              {{- if $rule -}}
+                {{- if eq $rule.validation "in_list" -}}
+                  {{- printf "%s: %s" (upper $paramName) (delimit $rule.list ", ") -}}
+                {{- else if eq $rule.validation "is_positive_integer" -}}
+                  {{- printf "%s: " (upper $paramName) -}}
+                  {{- i18n "LivaScInteger" | default "A positive integer (e.g., 1, 2, 3, ...)" }}
+                {{- else -}}
+                  {{- printf "%s: See documentation for valid options" (upper $paramName) -}}
+                {{- end -}}
+              {{- end -}}
+            </span>
+          </li>
+        {{- end -}}
+      </ul>
+    </div>
+  </div>
+  <footer class="liva-card-footer">
+    <div class="liva-card-footer-meta">
+      <p class="liva-mono">
+        <strong>{{ i18n "LivaCardInput" . | default "Input: " }}</strong>
+        {{- /* String of invalid input */}}
+        {{- $total := len .invalidValues -}}
+        {{- $i := 0 -}}
+        {{ range $paramName, $badValue := .invalidValues }}
+          {{- $i = add $i 1 }}
+          {{ printf `%s="` (upper $paramName) | safeHTML -}}
+          <span class="liva-mono-warning">{{- $badValue -}}</span
+          >"{{ if lt $i $total }}<span class="liva-mono">, </span>{{ end -}}
+        {{- end -}}
+      </p>
+      {{- with $docURL }}
+        <a class="liva-mono" href="{{ $docURL }}">{{ $code }}</a>
+      {{- end }}
+    </div>
+  </footer>
+</div>

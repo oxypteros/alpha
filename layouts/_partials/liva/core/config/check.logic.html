@@ -1,0 +1,84 @@
+{{- /*
+  Partial: liva/checks/config.logic.html
+  Purpose: Performs diagnostic checks on the Hugo config files and returns error
+  objects. 
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- $errors := slice -}}
+
+{{- /*
+  hugo.toml: Missing .Site.Title
+  Code: liva-cfg-102
+*/}}
+{{- if not (strings.TrimSpace .Site.Title) -}}
+  {{- $errorObject := dict
+    "code" "liva-cfg-102"
+  -}}
+  {{- $errors = $errors | append $errorObject -}}
+{{- end -}}
+
+{{- /*
+  languages.toml: Missing weight, languageName
+  Codes: liva-cfg-112, liva-cfg-113
+*/}}
+{{- if gt (len .Site.Languages) 1 -}}
+  {{- $languageErrors := slice -}}
+  {{- range .Site.Languages -}}
+    {{- $langCode := .LanguageCode -}}
+
+    {{- /* Check for weight. */}}
+    {{- if lt .Weight 1 -}}
+      {{- $errorObject := dict
+        "code"    "liva-cfg-112"
+        "lang"    $langCode
+      -}}
+      {{- $languageErrors = $languageErrors | append $errorObject -}}
+    {{- end -}}
+
+    {{- /* Check for languageName */}}
+    {{- if not (strings.TrimSpace .LanguageName) -}}
+      {{- $errorObject := dict
+        "code"    "liva-cfg-113"
+        "lang"    $langCode
+      -}}
+      {{- $languageErrors = $languageErrors | append $errorObject -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Merge the language errors into the main error slice. */}}
+  {{- if $languageErrors -}}
+    {{- $errors = append $errors $languageErrors -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /*
+  params.toml: Invalid or in future established_year
+  Codes: liva-cfg-121, liva-cfg-122
+*/}}
+{{- if .Site.Params.established_year -}}
+  {{- $paramYear := string .Site.Params.established_year -}}
+  {{- $currentYear := now.Format "2006" -}}
+  {{- $validYearFormat := findRE `^\d{4}$` $paramYear -}}
+
+  {{- if not $validYearFormat -}}
+    {{- /* Invalid Year Format */}}
+    {{- $errorObject := dict
+      "code"        "liva-cfg-121"
+      "keyValue"    $paramYear
+      "currentYear" $currentYear
+     
+    -}}
+    {{- $errors = $errors | append $errorObject -}}
+  {{- else if gt $paramYear $currentYear -}}
+    {{- /* Future Year Value */}}
+    {{- $errorObject := dict
+      "code"        "liva-cfg-122"
+      "keyValue"    $paramYear
+      "currentYear" $currentYear
+    -}}
+    {{- $errors = $errors | append $errorObject -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $errors -}}

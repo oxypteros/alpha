@@ -1,0 +1,124 @@
+{{- /*
+  Partial: liva/dispatchers/page/markdown.html
+  Purpose: Renders the page warnings for markdown errors.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /* Input data from core/markdown/handler.logic */}}
+{{- $mdErrors := . -}}
+
+{{- /* Input data from 'data/liva/page/markdown.toml' */}}
+{{- $mdErrorDefs := site.Data.liva.page.markdown -}}
+
+{{- range $mdErrors }}
+
+  {{- /*
+    Dictionary keys provided by:
+    '_markup/render-image.html'
+  */}}
+  {{- $code := .code | default "liva-md-000" -}}
+  {{- $path := .path -}}
+  {{- $permalink := .permalink -}}
+  {{- $destination := .destination -}}
+  {{- $dir := .dir -}}
+  {{- $alt := .alt -}}
+  {{- $isBundle := .isBundle -}}
+
+  {{- /* Get markdown error values from data for page */}}
+  {{- $entry := index $mdErrorDefs $code -}}
+
+  {{- /* Define severity for page card (css) */}}
+  {{- $severity := $entry.severity | default "warning" -}}
+  {{- $severityClass := cond (eq $severity "error") "liva-card-error" "liva-card-warning" -}}
+  {{- $livaIcon := cond (eq $severity "error") "#liva-error-icon" "#liva-warning-icon" -}}
+
+  {{- /* Format values for default use */}}
+  {{- $titleKey := $entry.title | default "LivaMdUnknownTitle" -}}
+  {{- $title := i18n $titleKey | safeHTML -}}
+
+  {{- $reasonKey := $entry.reason | default "LivaMdUnknownReason" -}}
+  {{- $reason := printf (i18n $reasonKey) $destination | safeHTML -}}
+
+  {{- $solutionKey := $entry.solution | default "LivaMdUnknownSolution" -}}
+  {{- $solution := i18n $solutionKey | safeHTML -}}
+
+  {{- $preExample := i18n ($entry.preExample | default "") | safeHTML -}}
+  {{- $example := i18n ($entry.example | default "LivaMdUnknownExample") | safeHTML -}}
+
+  {{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+
+  {{- /*
+    Markdown local image not found (in bundle or assets)
+    Code: liva-md-101
+  */}}
+  {{ if eq $code "liva-md-101" }}
+    {{- if $isBundle }}
+      {{- $example = printf (i18n $entry.example) $alt $destination | safeHTML -}}
+    {{- else }}
+      {{- $solutionAssetsKey := $entry.solutionAssets -}}
+      {{- $solution = printf (i18n $solutionAssetsKey) $destination | safeHTML -}}
+      {{- $exampleAssetsKey := $entry.exampleAssets -}}
+      {{- $example = printf (i18n $exampleAssetsKey) $destination | safeHTML -}}
+    {{- end }}
+
+    {{- /*
+      Markdown remote image not found
+      Code: liva-md-103
+    */}}
+  {{- else if eq $code "liva-md-103" }}
+    {{- $providedLink := i18n "LivaCardProvidedLink" -}}
+
+    {{- /*
+      Missing alt from markdown image
+      Code: liva-md-104
+    */}}
+  {{- else if eq $code "liva-md-104" }}
+    {{- $example = printf (i18n $entry.example) $destination | safeHTML -}}
+
+    {{- /*
+      Fallback for missing or undefined code
+      Code: liva-md-000 or undefined
+    */}}
+  {{- else }}
+    {{- $reason = printf (i18n $reasonKey)  $code | safeHTML -}}
+  {{- end }}
+
+  {{- /* Render the page card */}}
+  <div class="liva liva-card {{ $severityClass }} liva-shadow">
+    <header class="liva-card-header">
+      <h2 class="liva-title">{{- with $title }}{{ . }}{{- end }}</h2>
+      <svg aria-hidden="true" focusable="false" width="24" height="24">
+        <use href="{{- $livaIcon -}}"></use>
+      </svg>
+    </header>
+
+    <div class="liva-card-content">
+      <div class="liva-card-content-reason">
+        {{- with $reason }}{{ . }}{{- end }}
+      </div>
+      <hr />
+      <div class="liva-card-content-solution">
+        {{- with $solution }}{{ . }}{{- end }}
+      </div>
+    </div>
+
+    <footer class="liva-card-footer">
+      <div class="liva-card-footer-meta">
+        <p>
+          {{ with $preExample }}
+            <strong>{{ . }}</strong>
+          {{- end }}
+          {{ with $example }}{{ . | safeHTML }}{{- end }}
+        </p>
+        <a
+          class="liva-mono"
+          href="{{ $docURL }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{{ $code }}</a
+        >
+      </div>
+    </footer>
+  </div>
+{{- end -}}

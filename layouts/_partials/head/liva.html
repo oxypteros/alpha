@@ -1,0 +1,44 @@
+{{- /*
+  Partial: head/liva.html
+  Purpose: Appends the necessary CSS and JS for LiVa on the `<head>`.
+
+  Note:
+  - The LiVa related assets are never included in production builds, maintaining
+  a clean and optimized output.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- $livaSelfCheckHeadErrors := slice -}}
+{{- $livaErrorCode := "" -}}
+{{- with resources.Get "alpha/liva/css/liva.css" }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}" />
+{{- else }}
+  {{- $livaErrorCode = "liva-file-101" }}
+  {{- $livaSelfCheckCss := dict
+    "code" $livaErrorCode
+    "file" "liva.css"
+    "path" "assets/alpha/liva/css/liva.css"
+  -}}
+  {{- $livaSelfCheckHeadErrors = $livaSelfCheckHeadErrors | append $livaSelfCheckCss -}}
+{{- end }}
+
+{{- $livaJsPath := "alpha/liva/js/liva.js" -}}
+
+{{- $jsTpl := resources.Get $livaJsPath -}}
+{{- with $jsTpl }}
+  {{- $livaJs := $jsTpl | js.Build -}}
+  {{- $finalJs := $livaJs }}
+  <script type="module" src="{{ $finalJs.RelPermalink }}"></script>
+{{- else }}
+  {{- $livaErrorCode = "liva-file-102" }}
+  {{- $livaSelfCheckJs := dict
+    "code" $livaErrorCode
+    "file" "liva.js"
+    "path" "assets/alpha/liva/js/liva.js"
+  -}}
+  {{- $livaSelfCheckHeadErrors = $livaSelfCheckHeadErrors | append $livaSelfCheckJs -}}
+{{- end }}
+
+{{- if gt (len $livaSelfCheckHeadErrors) 0 }}
+  {{- .Store.Set "livaSelfCheckHeadErrors" $livaSelfCheckHeadErrors -}}
+{{- end }}

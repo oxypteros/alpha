@@ -413,7 +413,7 @@ b {
 */
 .sc-cta-text {
   a {
-    @apply text-on-sur-var hover:text-on-sur dark:text-on-sur-var-d dark:hover:text-on-sur-d transition-colors duration-400 ease-in-out hover:underline hover:underline-offset-2;
+    @apply text-on-sur hover:text-on-sur-var dark:text-on-sur-d dark:hover:text-on-sur-var-d underline decoration-1 underline-offset-4 transition-colors duration-400 ease-in-out hover:decoration-2;
   }
 }
 .sc-num-list {

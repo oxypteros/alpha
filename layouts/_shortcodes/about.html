@@ -1,200 +1,115 @@
 {{- /*
-  about.html (shortcode): Renders an about element with username and avatar.
+  Shortcode: about.html
+  Purpose: Renders an about element with username and avatar.
 
-  Target Pages: Global
+  Target: Global
 
   Example:
   {{< about AUTHOR="" AVATAR="">}}
+  /... Markdown Content ... /
+  {{< /about>}}
 
-  Params: 
-    - AUTHOR (string, optional): H2 heading. Fall back to frontmatter author
-    - AVATAR (string, optional): Avatar filename placed inside /assets/img/ 
-  
-  Error handler: 
-    - warnf 
-    - OCD 
-  
+  Params:
+  - AUTHOR (string, optional): H2 heading. Fall back to frontmatter author
+  - AVATAR (string, optional): Avatar filename placed inside '/assets/img/''
+
+  Error handler:
+  - livaWarn (global)
+  - LiVa (scoped)
+
   Docs: https://alpha.oxypteros.com/docs/shortcodes/about
-  Repo: https://github.com/oxypteros/alpha 
+  Repo: https://github.com/oxypteros/alpha
 */}}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
-{{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $author := .Get "AUTHOR" | default (.Get "Author") | default (.Get "author") | default .Page.Params.author }}
-{{- $avatar := .Get "AVATAR" | default (.Get "Avatar") | default (.Get "avatar") }}
-{{- $content := .Inner | markdownify }}
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
 
-{{- /* Context for error reporting (warnf, OCD) */}}
-{{ $page := .Page.RelPermalink }}
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
 
-{{- /* warnf, OCD: Validate params manually against an allowlist. */}}
-{{- $allowedKeys := slice "author" "avatar" }}
-{{- $invalidKeys := slice }}
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
 
-{{- /* Invalid Parameter Error Handling (warnf, OCD) */}}
-
-{{- range $key, $value := .Params }}
-  {{- if not (in $allowedKeys (lower $key)) }}
-    {{- $invalidKeys = $invalidKeys | append $key }}
+{{- /* * On successful validations render shortcode */}}
+{{- if $validInput }}
+  {{- $data := $validationResult.data -}}
+  {{- $content := .Inner | markdownify }}
+  {{- /* - Image validation */}}
+  {{- $path := printf "/img/%s" $data.avatar }}
+  {{- $image := "" }}
+  {{- if $data.avatar }}
+    {{- $image = resources.Get $path }}
   {{- end }}
-{{- end }}
-
-{{- if gt (len $invalidKeys) 0 }}
-  {{- /* Warnf for error: ocd-sc-161 */}}
-  {{- $errorCode := "ocd-sc-161" }}
-  {{- $invalidKeysString := delimit $invalidKeys ", " }}
-  {{- $errorMessage := printf "Invalid parameters: %s" $invalidKeysString }}
-  {{- $logMessage := printf "OcdError [%s] Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: odc-sc-161 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScParamError" . | default "Shortcode Parameter Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- $count := len $invalidKeys }}
-            {{- i18n "OcdScAbout161" $count | default "Invalid parameter in the about shortcode on:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScParameter" $count  | default "The parameters," }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $invalidKeysString }}</span
-            >&nbsp;
-            {{ i18n "OcdScNotRecognized"  $count  | default "are not recognized." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
-          <span class="ocd-mono-solution">AUTHOR</span>,
-          <span class="ocd-mono-solution">AVATAR</span>
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
+  {{- $warnImg := false }}
+  {{- if and $data.avatar ( eq $image nil) }}
+    {{- $warnImg = true }}
   {{- end }}
-{{- end }}
-{{- /* Image validation */}}
-{{- $path := printf "/img/%s" $avatar }}
-{{- $image := "" }}
-{{- if $avatar }}
-  {{- $image = resources.Get $path }}
-{{- end }}
-{{- $warnImg := false }}
-{{- if and $avatar ( eq $image nil) }}
-  {{- $warnImg = true }}
-{{- end }}
 
-{{- if $warnImg }}
-  {{- /* Warnf for error: ocd-sc-162 */}}
-  {{- $errorCode := "ocd-sc-162" }}
-  {{- $errorMessage := printf "Image not found: %s (/assets/img/)" $avatar }}
-  {{- $logMessage := printf "OcdError [%s] - Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: odc-sc-162 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScContentError" . | default "Shortcode Content Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- i18n "OcdScAbout162" . | default "Missing image for shortcode about on:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScTheParameter" . | default "The parameter" }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">AVATAR</span>&nbsp;
-            {{ i18n "OcdScIsSetButTheFile" . | default "is set, but the file" }}
-            <span class="ocd-mono ocd-mono-error">{{ $avatar }}</span>&nbsp;
-            {{ i18n "OcdScWasNotFound" . | default "was not found." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{- i18n "OcdScValidValue" . | default "Provide a valid value for the parameter" }}
-          <span class="ocd-mono-solution">AVATAR</span>
-          {{ i18n "OcdScOrEnsureThat" . | default "or ensure that" }}
-          <span class="ocd-mono ocd-mono-solution">{{ $avatar }}</span>
-          {{ i18n "OcdScExistsAt" . | default "exists at" }}
-          <span class="ocd-mono ocd-mono-solution"
-            >/assets/img/{{ $avatar }}</span
-          >
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
+  {{- if $warnImg }}
+    {{- if or ($livaWarnEnabled) ($livaEnabled) }}
+      {{- $errorData := dict
+        "context"         .
+        "name"            .Name
+        "errorCode"       "liva-sc-209"
+        "filename"        $data.avatar
+        "imgFolder"       "assets/img/"
+      -}}
+      {{- partial "liva/dispatchers/legacy/missing-img.html" $errorData }}
+    {{- end }}
   {{- end }}
-{{- end }}
 
-{{- /* Shortcode Rendering */}}
-  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+  {{- /* ** Shortcode Rendering */}}
+  {{- /* - Create unique id's for aria-labels in case of multiple shortcodes */}}
   {{- $base := .Page.File.BaseFileName | urlize }}
   {{- $ordinal := .Ordinal | default (now.UnixNano) }}
   {{- $uid := printf "%s-%v" $base $ordinal }}
-<aside
-  class="sc-about mb-32 flex w-full max-w-7xl flex-wrap justify-center gap-10 px-4"
-  aria-labelledby="about-heading-{{- $uid -}}"
->
-  <div class="flex w-fit flex-col items-center gap-5">
-    {{- if and $avatar $image }}
-      {{- $webp := $image.Resize "100x100 webp" }}
-      {{- $webp2x := $image.Resize "200x200 webp" }}
-      <img
-        class="border-out dark:border-out-d h-25 w-25 rounded-full border shadow-lg"
-        src="{{ $webp.RelPermalink }}"
-        srcset="{{ $webp.RelPermalink }} 1x, {{ $webp2x.RelPermalink }} 2x"
-        loading="lazy"
-        decoding="async"
-        width="{{ $webp.Width }}"
-        height="{{ $webp.Height }}"
-        alt="{{ i18n "AvatarOf" . | default "Avatar of" }} {{ $author }}"
-      />
-    {{- end }}
-    {{- with $author }}
-    <h2
-      id="about-heading-{{- $uid -}}"
-      class="text-on-sur-var dark:text-on-sur-var-d w-fit text-center text-2xl"
-    >
-      {{- . -}}
-    </h2>
-    {{- else }}
-    <h2
-    id="about-heading-{{- $uid -}}"
-    class="sr-only"
-    >
-      {{- i18n "AboutHeading" . | default "About Me" -}}
-    </h2>
-    {{- end }}
-  </div>
-  <article class="w-full max-w-xl">{{ $content }}</article>
-</aside>
+  <aside
+    class="sc-about mb-32 flex w-full max-w-7xl flex-wrap justify-center gap-10 px-4"
+    aria-labelledby="about-heading-{{- $uid -}}"
+  >
+    <div class="flex w-fit flex-col items-center gap-5">
+      {{- if and $data.avatar $image }}
+        {{- $webp := $image.Resize "100x100 webp" }}
+        {{- $webp2x := $image.Resize "200x200 webp" }}
+        <img
+          class="border-out dark:border-out-d h-25 w-25 rounded-full border shadow-lg"
+          src="{{ $webp.RelPermalink }}"
+          srcset="{{ $webp.RelPermalink }} 1x, {{ $webp2x.RelPermalink }} 2x"
+          loading="lazy"
+          decoding="async"
+          width="{{ $webp.Width }}"
+          height="{{ $webp.Height }}"
+          alt="{{ i18n "AvatarOf" . | default "Avatar of" }} {{ $data.author }}"
+        />
+      {{- end }}
+      {{- with $data.author }}
+        <h2
+          id="about-heading-{{- $uid -}}"
+          class="text-on-sur-var dark:text-on-sur-var-d w-fit text-center text-2xl"
+        >
+          {{- . -}}
+        </h2>
+      {{- else }}
+        <h2 id="about-heading-{{- $uid -}}" class="sr-only">
+          {{- i18n "AboutHeading" . | default "About Me" -}}
+        </h2>
+      {{- end }}
+    </div>
+    <article class="w-full max-w-xl">{{ $content }}</article>
+  </aside>
+{{- end -}}

@@ -1,0 +1,153 @@
+{{- /*
+  Partial: liva/dispatchers/terminal/frontmatter.html
+  Purpose: Renders the terminal warnings for frontmatter errors.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /* Input data from 'core/frontmatter/handler.logic' */}}
+{{- $fmErrors := .frontmatterErrors -}}
+
+{{- /* Input data from 'data/liva/console/frontmatter.toml' */}}
+{{- $fmErrorDefs := site.Data.liva.console.frontmatter -}}
+
+{{- range $fmErrors -}}
+  {{- /*
+    Dictionary keys provided by the partials:
+    'liva/core/frontmatter/check.logic.html'
+    'head/seo/images.html'
+  */}}
+  {{- $code := .code | default "liva-fm-000" -}}
+  {{- $page := .page -}}
+  {{- $file := .file | default "¯\\_(ツ)_/¯" -}}
+  {{- $key := .key -}}
+  {{- $keyValue := .keyValue -}}
+  {{- $validValues := .validValues -}}
+  {{- $date := .date -}}
+  {{- $lastmod := .lastmod -}}
+  {{- $path := .path -}}
+
+  {{- /* Get frontmatter error values from data */}}
+  {{- $entry := (index $fmErrorDefs $code) | default dict -}}
+
+  {{- /* Format values for default use */}}
+  {{- $key := printf ($entry.key | default "") -}}
+  
+  {{- /* Declared vars */}}
+  {{- $title := "" -}}
+  {{- $reason := "" -}}
+  {{- $solution := "" -}}
+  {{- $file = printf "content/%s" $file -}}
+  {{- /*
+    Check that lastmod is not before date
+    Code: liva-fm-102
+  */}}
+  {{- if eq $code "liva-fm-102" -}}
+    {{- $title = printf "Invalid Modification Date" -}}
+    {{- $dateFormatted := $date.Format "2006-01-02T15:04:05Z07:00" -}}
+    {{- $reason = printf "The '%s' is set to a time before the 'date'." $key -}}
+    {{- $solution =  printf "Ensure the '%s' in your frontmatter has a value\non or after: %q." $key $dateFormatted -}}
+
+    {{- /*
+      Check that layout is valid
+      Code: liva-fm-111
+    */}}
+  {{- else if eq $code "liva-fm-111" -}}
+    {{- $title = printf "Invalid Layout Value" -}}
+    {{- $reason = printf "The '%s' value %q is invalid." $key $keyValue -}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- $solution =  printf "Use one of the valid layouts:\n%s"  $valuesList -}}
+
+    {{- /*
+      Check Page.Title
+      Code: liva-fm-122
+    */}}
+  {{- else if eq $code "liva-fm-122" -}}
+    {{- $title = printf "Missing Page Title" -}}
+    {{- $reason = printf "The '%s' is missing or it is empty." $key -}}
+    {{- $solution =  printf "Add a '%s' value in the frontmatter of the page.\nEx. %s = \"A Page Title\" " $key $key -}}
+
+    {{- /*
+      Check for a valid license
+      Code: liva-fm-131
+    */}}
+  {{- else if eq $code "liva-fm-131" -}}
+    {{- $title = printf "Invalid License Value" -}}
+    {{- $reason = printf "The '%s' value %q is invalid." $key $keyValue -}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- $solution =  printf "Use one of the valid licenses:\n%s " $valuesList -}}
+
+    {{- /*
+      Check for non boolean recommended value
+      Code: liva-fm-141
+    */}}
+  {{- else if eq $code "liva-fm-141" -}}
+    {{- $title = printf "Invalid Recommended Value" -}}
+    {{- $reason = printf "The '%s' value %q is invalid." $key $keyValue -}}
+    {{- $solution =  printf "Use an unquoted boolean value: true or false.\nEx. %s = true" $key -}}
+
+    {{- /*
+      Check for non boolean featured value
+      Code: liva-fm-151
+    */}}
+  {{- else if eq $code "liva-fm-151" -}}
+    {{- $title = printf "Invalid Featured Value" -}}
+    {{- $reason = printf "The '%s' value %q is invalid." $key $keyValue -}}
+    {{- $solution =  printf "Use an unquoted boolean value: true or false.\nEx. %s = true" $key -}}
+
+    {{- /*
+      Check Page.Params.description only for pages that have a file
+      Code: liva-fm-161
+    */}}
+  {{- else if eq $code "liva-fm-161" -}}
+    {{- $title = printf "Missing Page Description" -}}
+    {{- $reason = printf "The '%s' is missing or it is empty." $key -}}
+    {{- $solution =  printf "Add a '%s' in the frontmatter.\nEx. %s = \"A page description for SEO\" " $key $key -}}
+
+    {{- /*
+      Check for missing SEO image
+      Code: liva-fm-171
+    */}}
+  {{- else if eq $code "liva-fm-171" -}}
+    {{- $title = printf "Missing SEO Image" -}}
+    {{- $reason = printf "The SEO image %q could not be found." $keyValue -}}
+    {{- $solution =  printf "Place the %q image in the page bundle\nor at 'assets/%s'."  $keyValue $path -}}
+
+    {{- /*
+      Check for bad qualitySEO image
+      Code: liva-fm-172
+    */}}
+  {{- else if eq $code "liva-fm-172" -}}
+    {{- $title = printf "Bad Quality SEO Image" -}}
+    {{- $reason = printf "The defined SEO image %q does not meet quality standards." $keyValue -}}
+    {{- $solution =  printf "Recommended dimensions are 1200x630px."  -}}
+
+     {{- /*
+      Fallback for missing or undefined code
+      Code: liva-cfg-000 or undefined
+    */}}
+  {{- else }}
+    {{- $title = printf "Unknown Error Code" -}}
+    {{- $reason = printf "Error code missing or undefined." -}}
+    {{- $solution =  printf "\"Magic only works when the spell(ing)is real.\"" -}}
+  {{- end -}}
+
+  <!-- prettier-ignore -->
+  {{- warnf `
+[LiVa] %s
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+Page   : %s
+File   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$title    
+$code
+$reason
+$page
+$file
+$solution
+-}}
+{{- end -}}

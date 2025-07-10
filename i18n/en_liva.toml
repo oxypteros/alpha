@@ -1,0 +1,680 @@
+# LiVa
+
+
+[LivaScInteger]
+other = "A positive integer (e.g. 1, 2, 3, ...)"
+[LivaShortcode]
+other = "Shortcode"
+[LivaThe]
+other = "The"
+
+## FAB
+[LivaFabAria]
+other = "Open LiVa console if errors exist, otherwise open LiVa settings"
+
+## LiVa Settings
+[LivaSettings]
+other = "LiVa Settings"
+
+[LivaSettingsCloseBtn]
+other = "Close settings modal"
+
+[LivaSettingsPosition]
+other = "Position"
+
+[LivaSettingsPosLabel]
+other = "Change the FAB position"
+
+[LivaSettingsPosOptionBR]
+other = "Bottom/Right"
+
+[LivaSettingsPosOptionBL]
+other = "Bottom/Left"
+
+[LivaSettingsCons]
+other = "Console"
+
+[LivaSettingsConsDesc]
+other = "Open the LiVa console"
+
+[LivaSettingsConsOpen]
+other = "Open"
+
+[LivaSettingsConsOpenAria]
+other = "Open the console"
+
+[LivaSettingsUpd]
+other = "Updates"
+
+[LivaSettingsUpdDesc]
+other = "Check for alpha and hugo updates"
+
+[LivaSettingsUpdCheck]
+other = "Check"
+
+[LivaSettingsUpdCheckAria]
+other = "Check for updates"
+
+[LivaSettingsDis]
+other = "Disable LiVa"
+
+[LivaSettingsDisSet]
+other = "Set"
+
+[LivaSettingsDisInThe]
+other = "in the"
+
+[LivaSettingsDisConfigFile]
+other = "config file"
+
+[LivaSettingsDoc]
+other = "LiVa Documentation"
+
+[LivaVersion]
+other = "version"
+
+## LiVa Console
+[LivaConsole]
+other = "Console"
+
+[LivaConsoleCloseBtnAria]
+other = "Close console modal"
+
+[LivaConsoleHelpBtnTitle]
+other = "LiVa help"
+
+[LivaConsoleHelpBtnAria]
+other = "Show help about LiVa"
+
+[LivaConsoleIssueTitle]
+other = "Report an Alpha theme issue on GitHub"
+
+[LivaConsoleIssueAria]
+other = "Report an issue with the Alpha theme on GitHub (opens in a new tab)"
+
+[LivaConsoleResetBtnTitle]
+other = "LiVa reset errors"
+
+[LivaConsoleResetBtnAria]
+other = "Reset the current LiVa error list"
+
+[LivaAlphaVerAria]
+other = "Alpha theme version:"
+
+[LivaHugoVerAria]
+other = "Hugo version:"
+
+[LivaConsAlphaNoUpdate]
+other = "You're using the latest version of the Alpha theme."
+
+[LivaConsHugoNoUpdate]
+other = "You're using the latest version of Hugo."
+
+[LivaConsAlphaUpdate]
+other = "A new version of the Alpha theme is available!"
+
+[LivaConsHugoUpdate]
+other = "A new version of Hugo is available!"
+## Help Shortcode
+[LivaHelpSyntax]
+other = "Syntax"
+
+[LivaHelpParameters]
+other = "Parameters"
+
+[LivaHelpOptional]
+other = "optional"
+
+[LivaHelpRequired]
+other = "required"
+
+[LivaHelpValues]
+other = "Values"
+
+[LivaHelpExample]
+other = "Example"
+
+[LivaHelpDocumentation]
+other = "Documentation"
+
+[LivaHelpAbout]
+other = "About"
+
+[LivaHelpScDocs]
+other = "Shortcodes Documentation"
+
+
+## Shortcode unknown parameter (page)
+[LivaScParamError]
+one = "Shortcode Parameter Error"
+other = "Shortcode Parameters Error"
+
+[LivaScInvParam]
+one = "Invalid parameter used in the shortcode"
+other = "Invalid parameters used in the shortcode"
+
+[LivaScParameter]
+one = "The parameter"
+other = "The parameters"
+
+[LivaScNotRecognized]
+one = "is not recognized."
+other = "are not recognized."
+
+[LivaScValidParameters]
+one = "Valid parameter:"
+other = "Valid parameters:"
+
+## Shortcode invalid values (page)
+[LivaScValueWarn]
+one = "Shortcode Value Warning"
+other ="Shortcode Values Warning"
+
+[LivaScInvValue]
+one = "Invalid value used in the shortcode"
+other = "Invalid values used in the shortcode"
+
+[LivaScValues]
+one = "The value"
+other = "The values"
+[LivaScValidValues]
+other = "Valid Values:"
+
+
+
+
+
+
+## Unique Global Data
+[LivaScRecTitle]
+other = "No Recommended Content Found"
+[LivaScRec]
+other = "recommended"
+[LivaScFeatTitle]
+other = "No Featured Content Found"
+[LivaScFeat1]
+other = "featured"
+[LivaSet]
+other = "Set"
+
+[LivaScRequireOne]
+other = "shortcode requires at least one post marked as"
+
+[LivaScFmSolution]
+other = "in the frontmatter of one or more posts."
+
+[LivaScIsDisabled]
+other = "is disabled."
+
+[LivaScToEnable]
+other = "To enable it, set:"
+
+[LivaScFeatEnableFm]
+other = "in the frontmatter of the post you want to feature."
+
+[LivaScRecEnableFm]
+other = "in the frontmatter of the post you want to recommend."
+
+[LivaScOtherKeys]
+other = "Other Keys"
+
+[LivaScFmExComment]
+other = "# Ensure this line exists and is set to true"
+
+## Unique Link Pairs
+[LivaScPairsTitle]
+one = "Incomplete Link/Text Pair"
+other = "Incomplete Link/Text Pairs"
+
+[LivaScPairsReason]
+one = "shortcode has an incomplete"
+other = "shortcode has incomplete"
+
+[LivaScPairsLinkText]
+other = "link/text"
+
+[LivaScPairsPairs]
+one = "pair."
+other = "pairs."
+
+[LivaScPairsBtnPair]
+other = "Button Pair"
+
+[LivaScPairsLinkPair]
+other = "Link Pair"
+
+[LivaScPairsExplain]
+other = "This will affect usability and accessibility."
+
+[LivaScPairsProvided]
+other = "You provided"
+
+[LivaScPairsMissingLink]
+other = ", but the corresponding link"
+
+[LivaScPairsMissingText]
+other = ", but the corresponding text"
+
+[LivaScPairsIsMissing]
+other = "is missing."
+
+[LivaScPairsSolution]
+one = "Provide both the URL and the text, or remove both attributes."
+other = "For each link, provide both the URL and the text, or remove both attributes."
+
+## Image 404
+[LivaImg404Title]
+other = "Image Not Found"
+[LivaImgTheImage]
+other = "The image"
+[LivaImgCannotFound]
+other = "cannot be found."
+[LivaImgMakeSure]
+other = "Make sure that the image"
+
+[LivaImgIsPlaced]
+other = "is placed inside the"
+
+[LivaImgFolder]
+other = "folder."
+
+## Menu 404
+[LivaMenu404Title]
+other = "Menu Not Defined"
+
+[LivaMenuTheMenu]
+other = "The menu"
+
+[LivaMenuNotDefined]
+other = "is not defined."
+
+[LivaMenuDefine]
+other = "Define and populate the menu"
+
+[LivaMenuInFile]
+other = "in the file"
+
+# LiVa Cards
+[LivaCardExample]
+other = "Example:"
+[LivaCardInput]
+other = "Input:"
+[LivaCardProvidedLink]
+other = "Provided Link"
+
+# LiVa md errors
+## liva-md-101
+[LivaMdImageNotFound]
+other = "Image Not Found"
+[LivaMdImageNotFoundReason]
+other = "The <span class='liva-mono'>%s</span> could not be found."
+[LivaMdImageNotFoundSolution]
+other = "Please check the following:<ol><li>The image exists in the <span class='liva-mono'>page bundle</span> or in the <span class='liva-mono'>assets/img/</span> directory.</li><li>The Markdown syntax has no typos.</li></ol>"
+[LivaMdImageNotFoundAssetsSolution]
+other = "Please check the following:<ol><li>The image exists in the <span class='liva-mono'>assets/img/</span> directory.</li><li>The Markdown syntax has no typos.</li></ol>"
+[LivaMdImageNotFoundExample]
+other = "<span class='liva-mono'>![%s](%s)</span>"
+
+### Console 
+[LivaMdImageNotFoundExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s<br></span><span class='liva-mono'>![%s](%s)</span>"
+
+## liva-md-103
+[LivaMdRemoteImageNotFound]
+other = "Remote Image Fetch Failed"
+[LivaMdRemoteImageNotFoundReason]
+other = "Could not download the remote image from:<br><span class='liva-mono'>%s</span>"
+[LivaMdRemoteImageNotFoundSolution]
+other = "Please check the <a href='%s' target='_blank' rel='noopener noreferrer'>provided URL</a> and ensure the remote server is accessible.<br><br>"
+
+
+## liva-md-104
+[LivaMdMissingAlt]
+other = "Missing Alternative Text"
+[LivaMdMissingAltReason]
+other = "The text description for <span class='liva-mono'>%s</span> is missing."
+[LivaMdMissingAltSolution]
+other = "Please provide a short descriptive text for the image."
+[LivaMdMissingAltExample]
+other = "<span class='liva-mono'>![Text description of the image](%s)</span>"
+
+
+### Console
+[LivaMdMissingAltSolutionConsole]
+other = "Please provide a short descriptive text to improve the accessibility and usability of the page."
+[LivaMdMissingAltExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s<br></span><span class='liva-mono'>![Text description of the image](%s)</span>"
+# LiVa cfg errors
+## liva-cfg-102
+[LivaCfgMissingTitle]
+other = "Missing Site Title"
+[LivaCfgMissingTitleReason]
+other = "The key <span class='liva-mono'>%s</span> in <span class='liva-mono'>%s</span> is missing or empty."
+[LivaCfgMissingTitleSolution]
+other = "Add your website name as a value of the <span class='liva-mono'>%s</span> key in <span class='liva-mono'>%s</span>."
+[LivaCfgMissingTitleExample]
+other = "<span class='liva-mono'>title = \"My website\"</span>"
+
+### Console
+[LivaCfgMissingTitleExampleConsole]
+other = "<span class='liva-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>title = \"My website\"</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-cfg-112
+[LivaCfgMissingLangWeight]
+other = "Missing Language Weight"
+[LivaCfgMissingLangWeightReason]
+other = "The <span class='liva-mono'>%s</span> key for the language <span class='liva-mono'>[%s]</span> is missing or invalid."
+[LivaCfgMissingLangWeightSolution]
+other = "Add a <span class='liva-mono'>%s</span> value for the language <span class='liva-mono'>[%s]</span>."
+[LivaCfgMissingLangWeightExample]
+other = "<span class='liva-mono'>weight = 2</span>"
+
+### Console
+[LivaCfgMissingLangWeightSolutionConsole]
+other = "Add a <span class='liva-mono'>%s</span> value for the language <span class='liva-mono'>[%s]</span>, in <span class='liva-mono'>%s</span>."
+[LivaCfgMissingLangWeightExampleConsole]
+other = "<span class='liva-mono-comment'># %s<br></span><span class='liva-mono'>[%s]</span><br>&nbsp;&nbsp;<span class='liva-mono'>weight = 2</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+
+## liva-cfg-113
+[LivaCfgMissingLangName]
+other = "Missing Language Name"
+[LivaCfgMissingLangNameReason]
+other = "The <span class='liva-mono'>%s</span> key for the language <span class='liva-mono'>[%s]</span> is missing or empty."
+[LivaCfgMissingLangNameSolution]
+other = "Add a <span class='liva-mono'>%s</span> for the language <span class='liva-mono'>[%s]</span>."
+[LivaCfgMissingLangNameExample]
+other = "<span class='liva-mono'>languageName = \"English\"</span>"
+
+### Console
+[LivaCfgMissingLangNameSolutionConsole]
+other = "Add a <span class='liva-mono'>%s</span> value for the language <span class='liva-mono'>[%s]</span>, in <span class='liva-mono'>%s</span>."
+[LivaCfgMissingLangNameExampleConsole]
+other = "<span class='liva-mono-comment'># %s</span><br><span class='liva-mono'>[en]</span><br>&nbsp;&nbsp;<span class='liva-mono'>weight = 1</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = \"English\"</span><br>&nbsp;&nbsp;<span class='liva-mono'>...</span>"
+
+## liva-cfg-121
+[LivaCfgInvalidYear]
+other = "Invalid Year Value"
+[LivaCfgInvalidYearReason]
+other = "The <span class='liva-mono'>%s</span> key has the invalid value: <span class='liva-mono'>%q</span>"
+[LivaCfgInvalidYearSolution]
+other = "Add a valid year as value of the <span class='liva-mono'>%s</span> key."
+[LivaCfgInvalidYearExample]
+other = "<span class='liva-mono'>established_year = %q</span>"
+
+### Console 
+[LivaCfgInvalidYearSolutionConsole]
+other = "Add a valid year as value of the <span class='liva-mono'>%s</span> key, in <span class='liva-mono'>%s</span>"
+[LivaCfgInvalidYearExampleConsole]
+other = "<span class='liva-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'># Footer Settings</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-cfg-122
+[LivaCfgFutureYear]
+other = "Future Year Value"
+[LivaCfgFutureYearReason]
+other = "The <span class='liva-mono'>%s</span> value for the key <span class='liva-mono'>%q</span> is a future year."
+[LivaCfgFutureYearSolution]
+other = "Add the current or a past year as value of the <span class='liva-mono'>%s</span> key."
+[LivaCfgFutureYearExample]
+other = "<span class='liva-mono'>established_year = %q</span>"
+
+### Console 
+[LivaCfgFutureYearSolutionConsole]
+other = "Add the current or a past year as value of the <span class='liva-mono'>%s</span> key in %s."
+[LivaCfgFutureYearExampleConsole]
+other = "<span class='liva-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'># Footer Settings</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-cfg-132
+[LivaCfgMissingSeoImage]
+other = "Missing Seo Image"
+[LivaCfgMissingSeoImageReason]
+other = "The SEO image <span class='liva-mono'>%q</span> in <span class='liva-mono'>%s</span> could not be found."
+[LivaCfgMissingSeoImageSolution]
+other = "Ensure the image exists at the exact path: <span class='liva-mono'>assets/%s</span>"
+[LivaCfgMissingSeoImageExample]
+other = "<span class='liva-mono'>%s = %q</span>"
+
+### Console
+[LivaCfgMissingSeoImageExampleConsole]
+other = "<span class='liva-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'># SEO</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-cfg-133
+[LivaCfgBadSeoImage]
+other = "Bad Quality SEO Image"
+[LivaCfgBadSeoImageReason]
+other = "The SEO image <span class='liva-mono'>%q</span> defined in <span class='liva-mono'>%s</span> does not meet quality standards.<br> (<span class='liva-mono'>min-width: 1000px, aspect-ratio: ~1.91</span>)"
+[LivaCfgBadSeoImageSolution]
+other = "Use a image that meet the recommended criteria:<br> <span class='liva-mono'>width: 1200px, height: 630px</span>."
+[LivaCfgBadSeoImageExample]
+other = "<span class='liva-mono'>%s = %q</span>"
+
+### Console
+[LivaCfgBadSeoImageReasonConsole]
+other = "The SEO image <span class='liva-mono'>%q</span> in <span class='liva-mono'>%s</span> does not meet quality standards. (<span class='liva-mono'>min-width: 1000px, aspect-ratio: ~1.91</span>)"
+[LivaCfgBadSeoImageSolutionConsole]
+other = "The provided image will not be resized and will be used as is.<br> For best results use an image that meet the recommended criteria for a SEO image: <span class='liva-mono'>width: 1200px, height: 630px</span>."
+[LivaCfgBadSeoImageExampleConsole]
+other = "<span class='liva-mono-comment'># %s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'># SEO</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+# LiVa fm errors
+## liva-fm-102
+[LivaFmInvalidLastmod]
+other = "Invalid Modification Date"
+[LivaFmInvalidLastmodReason]
+other = "Ensure the <span class='liva-mono'>%s</span> is set to a date and time on or after the publish date."
+[LivaFmInvalidLastmodSolution]
+other = "Change the <span class='liva-mono'>%s</span> value to a date after the published date: <span class='liva-mono'>%s</span>."
+[LivaFmInvalidLastmodExample]
+other = "<span class='liva-mono'>lastmod = %q</span>"
+
+### Console
+[LivaFmInvalidLastmodExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>date = %q</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-fm-111
+[LivaFmInvalidLayout]
+other = "Unknown Layout Specified"
+[LivaFmInvalidLayoutReason]
+other = "The <span class='liva-mono'>%s</span> parameter contains an invalid value: <span class='liva-mono'>%q</span>."
+[LivaFmInvalidLayoutSolution]
+other = "Use one of the following valid layout values:<br> <span class='liva-mono'>%s</span> "
+[LivaFmInvalidLayoutExample]
+other = "<span class='liva-mono'>layout = \"page\"</span>"
+
+### Console
+[LivaFmInvalidLayoutExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = \"page\"</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-fm-122
+[LivaFmMissingTitle]
+other = "Missing Page Title"
+[LivaFmMissingTitleReason]
+other = "The <span class='liva-mono'>%s</span> parameter is missing or empty."
+[LivaFmMissingTitleSolution]
+other = "Add a non-empty <span class='liva-mono'>%s</span> to the frontmatter of the page."
+[LivaFmMissingTitleExample]
+other = "<span class='liva-mono'>title = \"A Page Title\"</span>"
+
+### Console
+[LivaFmMissingTitleExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = \"An intriguing page title\"</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-fm-131
+[LivaFmInvalidLicense]
+other = "Invalid License Value"
+[LivaFmInvalidLicenseReason]
+other = "The <span class='liva-mono'>%s</span> parameter contains an invalid value: <span class='liva-mono'>%q</span>."
+[LivaFmInvalidLicenseSolution]
+other = "Check for typos or use one of the supported values:<br> <span class='liva-mono'>%s</span>"
+[LivaFmInvalidLicenseExample]
+other = "<span class='liva-mono'>license = \"CC-BY\"</span>"
+
+### Console
+[LivaFmInvalidLicenseExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = \"CC-BY\"</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-fm-141
+[LivaFmInvalidRecommended]
+other = "Invalid Recommended Value"
+[LivaFmInvalidRecommendedReason]
+other = "The value of <span class='liva-mono'>%s</span> is invalid: <span class='liva-mono'>%q</span>."
+[LivaFmInvalidRecommendedSolution]
+other = "The <span class='liva-mono'>%s</span> key accepts only boolean values (unquoted <span class='liva-mono'>true</span> or <span class='liva-mono'>false</span>)."
+[LivaFmInvalidRecommendedExample]
+other = "<span class='liva-mono'>recommended = true</span>"
+
+### Console
+[LivaFmInvalidRecommendedExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = true</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-fm-151
+[LivaFmInvalidFeatured]
+other = "Invalid Featured Value"
+[LivaFmInvalidFeaturedReason]
+other = "The value of <span class='liva-mono'>%s</span> is invalid: <span class='liva-mono'>%q</span>."
+[LivaFmInvalidFeaturedSolution]
+other = "The <span class='liva-mono'>%s</span> key accepts only boolean values (unquoted <span class='liva-mono'>true</span> or <span class='liva-mono'>false</span>)."
+[LivaFmInvalidFeaturedExample]
+other = "<span class='liva-mono'>featured = true</span>"
+
+### Console
+[LivaFmInvalidFeaturedExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = true</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-fm-161
+[LivaFmMissingDescription]
+other = "Missing Page Description"
+[LivaFmMissingDescriptionReason]
+other = "The <span class='liva-mono'>%s</span> parameter is missing or empty."
+[LivaFmMissingDescriptionSolution]
+other = "Add a non-empty <span class='liva-mono'>%s</span> to the frontmatter of the page."
+[LivaFmMissingDescriptionExample]
+other = "<span class='liva-mono'>description = \"A ~150ch page description\"</span>"
+
+### Console
+[LivaFmMissingDescriptionExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = \"A ~150ch page description\"</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-fm-171
+[LivaFmMissingSeoImage]
+other = "Missing SEO Image"
+[LivaFmMissingSeoImageReason]
+other = "The SEO image <span class='liva-mono'>%q</span> defined in frontmatter could not be found."
+[LivaFmMissingSeoImageSolution]
+other = "Ensure the image exists in the page bundle or at the exact path: <span class='liva-mono'>assets/%s</span>"
+[LivaFmMissingSeoImageExample]
+other = "<span class='liva-mono'>%s = %q</span>"
+
+
+### Console
+[LivaFmMissingSeoImageExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'># SEO</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
+## liva-fm-172
+[LivaFmBadSeoImage]
+other = "Bad Quality SEO Image"
+[LivaFmBadSeoImageReason]
+other = "The SEO image (<span class='liva-mono'>%q</span>) defined in frontmatter does not meet quality standards. (<span class='liva-mono'>min-width: 1000px, aspect-ratio: ~1.91</span>)"
+[LivaFmBadSeoImageSolution]
+other = "Use an image that meet the recommended criteria:<br> <span class='liva-mono'>width: 1200px, height: 630px</span>."
+[LivaFmBadSeoImageExample]
+other = "<span class='liva-mono'>%s = %q</span>"
+
+## LiVa sc Errors
+[LivaSolution]
+other = "Solution:"
+[LivaDoc]
+other = "documentation"
+## Shortcode invalid parameter  (console)
+[LivaScInvParamTitle]
+one = "Shortcode Parameter Error"
+other = "Shortcode Parameters Error"
+
+[LivaScTheParam]
+one = "The parameter"
+other = "The parameters"
+
+[LivaScUsedConsole]
+other = "used in the shortcode"
+[LivaScInvParamConsole]
+one = "is invalid."
+other = "are invalid."
+
+[LivaScValidParamConsole]
+one = "Valid parameter for the shortcode is:"
+other = "Valid parameters for the shortcode are:"
+
+## Shortcode invalid values (Console)
+[LivaScInvValueTitleConsole]
+one = "Shortcode Invalid Value"
+other = "Shortcode Invalid Values"
+
+[LivaScValidValuesConsole]
+one = "Valid value for the shortcode is:"
+other = "Valid values for the shortcode are:"
+
+## liva-sc-100
+[LivaScHelpExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; help TYPE=\"markdown\" &gt;&rbrace;&rbrace;"
+
+## liva-sc-110
+[LivaScHeroExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; hero<br />&nbsp;&nbsp;TITLE=\"Thoughts & Code\"<br />&nbsp;&nbsp;SUBTITLE=\"A minimal blog about web, tech, and ideas.\"<br />&nbsp;&nbsp;BTN-TEXT=\"Read the Blog\"<br />&nbsp;&nbsp;BTN-LINK=\"/blog\"<br />&nbsp;&nbsp;BTN-LABEL=\"Go to blog posts\"<br />&nbsp;&nbsp;LINK-TEXT=\"About Me\"<br />&nbsp;&nbsp;LINK=\"/about\"<br />&nbsp;&nbsp;LINK-LABEL=\"Learn more about the author\"<br />&gt;&rbrace;&rbrace;"
+
+## liva-sc-120
+[LivaScFeatExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; featured STYLE=\"banner\" &gt;&rbrace;&rbrace;"
+
+## liva-sc-130
+[LivaScTxtSnippetExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; text_snippet TITLE=\"Example title\" &gt;&rbrace;&rbrace;<br><br><span class='liva-mono-comment'>/... Markdown .../</span><br><br>&lbrace;&lbrace;&lt; /text_snippet &gt;&rbrace;&rbrace;"
+
+## liva-sc-140
+[LivaScRecExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; recommended TITLE=\"Suggestions\" LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+
+## liva-sc-160
+[LivaScRecentExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; recent TITLE=\"Latest Posts\" LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+
+## liva-sc-170
+[LivaScCtaExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; cta<br />&nbsp;&nbsp;TITLE=\"Enjoying the posts?\"<br />&nbsp;&nbsp;BTN-TEXT=\"Subscribe\"<br />&nbsp;&nbsp;BTN-LINK=\"/subscribe\"<br />&nbsp;&nbsp;BTN-LABEL=\"Go to subscription page\"<br />&gt;&rbrace;&rbrace;<br />&nbsp;&nbsp;<span class='liva-mono-comment'>Get new posts delivered **straight** to your inbox.</span><br />&lbrace;&lbrace;&lt; /cta &gt;&rbrace;&rbrace;"
+
+## liva-sc-180
+[LivaScNumExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; num_list TITLE=\"Chapters\" STYLE=\"card\" LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+## liva-sc-190
+[LivaScFaqExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; faq<br />&nbsp;&nbsp;TITLE=\"Frequently Asked Questions\"<br>&nbsp;&nbsp;SUBTITLE=\"You Asked, We Answered.\"<br />&gt;&rbrace;&rbrace;<br>&nbsp;&nbsp;<span class='liva-mono-comment'>## First Question<br />&nbsp;&nbsp;Answer for the first question<br>&nbsp;&nbsp;## Second Question<br />&nbsp;&nbsp;Answer for the second question</span><br>&lbrace;&lbrace;&lt; /faq &gt;&rbrace;&rbrace;"
+
+## liva-sc-200
+[LivaScAboutExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; about<br />&nbsp;&nbsp;AUTHOR=\"John Smith\"<br />&nbsp;&nbsp;AVATAR=\"my-picture.jpg\"<br />&gt;&rbrace;&rbrace;<br />&nbsp;&nbsp;<span class='liva-mono-comment'>Author of the series...<br />&nbsp;&nbsp;&nbsp;(Markdown text)<br />&nbsp;&nbsp;...here for you.</span><br />&lbrace;&lbrace;&lt; /about &gt;&rbrace;&rbrace;"
+
+## liva-sc-210
+[LivaScStatusCardExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; status_card<br />&nbsp;&nbsp;TITLE=\"Disclaimer\"<br />&nbsp;&nbsp;TYPE=\"warning\"<br />&gt;&rbrace;&rbrace;<br />&nbsp;&nbsp; <span class='liva-mono-comment'>I write *code* and *words*. Neither is guaranteed bug-free</span><br />&lbrace;&lbrace;&lt; /status_card &gt;&rbrace;&rbrace;"
+
+## liva-sc-220
+[LivaScSocialExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; social LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+# Fallback
+[LivaUnknownTitle]
+other = "Unknown Error Code"
+
+[LivaUnknownReason]
+other = "Invalid or undefined error code!"
+
+[LivaUnknownSolution]
+other = "To resolve it please open a <a href='https://github.com/oxypteros/alpha/issues' target='_blank' rel='noopener noreferrer'>GitHub Issue</a> or retrace your steps.<br>Because either I forgot to <span class='liva-mono'>define it</span>, or <em>\"someone\"</em> got <span class='liva-mono'>creative</span> with the inputs."
+
+[LivaUnknownExample]
+other = "<span class='liva-mono'><em>&ldquo;Magic only works when the <strong>spell(ing)</strong> is real.&rdquo;</em></span>"
+
+[LivaUnknownDocURL]
+other = "https://github.com/oxypteros/alpha/issues/"
+
+# DO NOT REMOVE
+[LivaI18nSelfCheck]
+other = "LivaI18nSelfCheck"

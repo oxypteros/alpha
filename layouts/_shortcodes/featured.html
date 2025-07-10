@@ -1,139 +1,130 @@
 {{- /*
-  Shortcode: featured.html 
-  Purpose: Renders the latest post with `featured = true`.
+  Shortcode: featured.html
+  Purpose: Renders the latest post with `featured = true`. The featured post is
+  retrieved by the `hugo.Store` set by `init-global-data` partial
 
-  Target: _index.md
+  Target: homepage, sections (_index.md)
 
-  Example:
-  {{< featured TYPE="" >}}
+  Example:{{< featured STYLE="" >}}
 
-  Params: 
-  - TYPE (string, optional): Visual style of the featured article. Values:
-banner, simple, plain. Default: plain
-  
-  Error handler: 
-  - warnf (To-do)
-  - OCD (To-do) 
-  
-  To-do: 
-  1. Docs: https://alpha.oxypteros.com/docs/shortcodes/featured (Issue oxypteros/alpha-docs#1)
-  2. Add OCD error checks (Issue #1)
+  Params:
+  - STYLE (string, optional): Visual style of the featured article.
+  Values: banner, simple, plain (default)
 
+  Error handler:
+  - livaWarn (global)
+  - LiVa (scoped)
+
+  Docs: https://alpha.oxypteros.com/docs/shortcodes/featured
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- $type := .Get "TYPE" | default (.Get "Type") | default (.Get "type") | default "plain" }}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
-{{- /* Allow case-insensitive matching */}}
-{{- $type = lower $type }}
-{{- /* Retrieve featured post from the global store */}}
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
+
+
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
+
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* - Retrieve featured post from the global store */}}
 {{- $lang := .Page.Language.Lang -}}
 {{- $featuredKey := printf "featured_%s" $lang -}}
 {{- $featuredPosts := hugo.Store.Get $featuredKey -}}
 
-{{- $title := "" -}}
-{{- $dateMachine := "" -}}
-{{- $summary := "" -}}
-{{- $link := "" -}}
+{{- /* *** Featured post validation */}}
+{{- $validFeatured := $featuredPosts -}}
 
-{{- with first 1 $featuredPosts -}}
-  {{- range . }}
-    {{- /* Access data from page obj */}}
-    {{- $title = .Title -}}
-    {{- $summary = .Summary -}}
-    {{- $link = .RelPermalink -}}
-    {{- $dateMachine = or .Date (now) | time.Format "2006-01-02T15:04:05-07:00" -}}
-    {{- $modDateMachine := or .Lastmod $dateMachine | time.Format "2006-01-02T15:04:05-07:00" -}}
-
-    {{- /* Check if the post is updated */}}
-    {{- $isUpdated := ne $modDateMachine $dateMachine -}}
-    {{- if $isUpdated }}
-      {{- $dateMachine = $modDateMachine }}
-    {{- end }}
+{{- /* - On failed featured post retrieval show LiVa shortcode unique warning */}}
+{{- if and (not $validFeatured) ($validInput) }}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) }}
+    {{- $errorData := dict
+      "context"     .
+      "scName"      .Name
+      "errorCode"   "liva-sc-122"
+      "frontmatter" "featured = true"
+      "title"       (i18n "OcdScFeatTitle")
+      "consLine1"   (i18n "OcdScFeatEnableFm")
+    -}}
+    {{- partial "liva/dispatchers/legacy/global-data.html" $errorData }}
   {{- end }}
 {{- end }}
 
-{{- /* Shortcode Rendering */}}
-{{- /* Create unique id's for aria-labels in case of multiple shortcodes */}}
-{{- $base := .Page.File.BaseFileName | urlize }}
-{{- $ordinal := .Ordinal | default (now.UnixNano) }}
-{{- $uid := printf "%s-%v" $base $ordinal }}
-{{- if eq $type "banner" }}
-  <section
-    class="sc-featured bg-menu dark:bg-menu-d mt-8 mb-32 flex w-full flex-col items-center justify-center px-4"
-    aria-labelledby="featured-heading-{{- $uid -}}"
-  >
-    <h2 id="featured-heading-{{- $uid -}}" class="sr-only">
-      {{- i18n "FeaturedArticle" | default "Featured Article" -}}
-    </h2>
-    <article class="text-on-menu dark:text-on-menu-d my-20 w-full max-w-3xl">
-      <header>
-        <h2
-          class="text-on-menu-var dark:text-on-menu-var-d font-300 text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
-        >
-          {{- $title -}}
-        </h2>
-        <time datetime="{{- $dateMachine -}}"></time>
-      </header>
-      {{- with $summary }}
-        <div class="my-16 text-lg">{{ . }}</div>
+{{- /* * On successful validations render shortcode */}}
+{{- if and $validInput $validFeatured }}
+  {{- $data := $validationResult.data -}}
+
+  {{- $title := "" -}}
+  {{- $dateMachine := "" -}}
+  {{- $summary := "" -}}
+  {{- $link := "" -}}
+
+  {{- with first 1 $featuredPosts -}}
+    {{- range . }}
+      {{- /* - Access data from page obj */}}
+      {{- $title = .Title -}}
+      {{- $summary = .Summary -}}
+      {{- $link = .RelPermalink -}}
+      {{- $dateMachine = or .Date (now) | time.Format "2006-01-02T15:04:05-07:00" -}}
+      {{- $modDateMachine := or .Lastmod $dateMachine | time.Format "2006-01-02T15:04:05-07:00" -}}
+
+      {{- /* - Check if the post is updated */}}
+      {{- $isUpdated := ne $modDateMachine $dateMachine -}}
+      {{- if $isUpdated }}
+        {{- $dateMachine = $modDateMachine }}
       {{- end }}
-      <footer class="flex items-center justify-end">
-        <a
-          class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-sur-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex items-center justify-center rounded-full border px-4 py-3 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
-          href="{{- $link -}}"
-          aria-label="{{- i18n "ReadTheRest" . |default "Read the rest of the post titled as:" }} {{ $title }}"
-          data-prefetch="true"
-        >
-          <div class="flex items-center justify-center">
-            <div class="px-4 text-center">
-              {{ i18n "ReadNow" . | default "Read Now " }}
-            </div>
-            <svg
-              class="fill-on-sur-var dark:group-hover:fill-on-sur-d group-hover:fill-on-sur dark:fill-on-sur-var-d size-6 shrink-0 transition-all duration-400 ease-in-out group-hover:translate-x-1"
-              aria-hidden="true"
-            >
-              <use href="#icon-forward"></use>
-            </svg>
-          </div>
-        </a>
-      </footer>
-    </article>
-  </section>
-{{- else if eq $type "simple" }}
-  <section
-    class="sc-featured mt-8 mb-32 flex w-full flex-col items-center justify-center"
-    aria-labelledby="featured-heading-{{- $uid -}}"
-  >
-    <h2 id="featured-heading-{{- $uid -}}" class="sr-only">
-      {{- i18n "FeaturedArticle" | default "Featured Article" -}}
-    </h2>
-    <article class="flex w-full flex-col items-center">
-      <header
-        class="bg-menu dark:bg-menu-d text-on-menu-var dark:text-on-menu-var-d flex w-full items-center justify-center gap-10 py-8"
-      >
-        <h2
-          class="font-300 w-full max-w-3xl px-4 text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
-        >
-          {{- $title -}}
-        </h2>
-        <time datetime="{{- $dateMachine -}}"></time>
-      </header>
-      {{- with $summary }}
-        <div
-          class="text-on-bg dark:text-on-bg-d mt-8 mb-16 w-full max-w-3xl px-3 text-lg"
-        >
-          {{ . }}
-        </div>
-      {{- end }}
-      <footer
-        class="bg-menu dark:bg-menu-d flex w-full items-center justify-center py-8"
-      >
-        <div class="flex w-full max-w-3xl items-center justify-end px-4">
+    {{- end }}
+  {{- end }}
+
+  {{- /* - Create unique id's for aria-labels in case of multiple shortcodes */}}
+  {{- $base := .Page.File.BaseFileName | urlize -}}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) -}}
+  {{- $uid := printf "%s-%v" $base $ordinal -}}
+
+  {{- /* ** Style Conditional Shortcode Rendering */}}
+  {{- if eq $data.style "banner" }}
+    <section
+      class="sc-featured bg-menu dark:bg-menu-d mt-8 mb-32 flex w-full flex-col items-center justify-center px-4"
+      aria-labelledby="featured-heading-{{- $uid -}}"
+    >
+      <h2 id="featured-heading-{{- $uid -}}" class="sr-only">
+        {{- i18n "FeaturedArticle" | default "Featured Article" -}}
+      </h2>
+      <article class="text-on-menu dark:text-on-menu-d my-20 w-full max-w-3xl">
+        <header>
+          <h2
+            class="text-on-menu-var dark:text-on-menu-var-d font-300 text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
+          >
+            {{- $title -}}
+          </h2>
+          <time datetime="{{- $dateMachine -}}"></time>
+        </header>
+        {{- with $summary }}
+          <div class="my-16 text-lg">{{ . }}</div>
+        {{- end }}
+        <footer class="flex items-center justify-end">
           <a
-            class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-sur-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex w-fit items-center justify-center rounded-full border px-4 py-3 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
+            class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-sur-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex items-center justify-center rounded-full border px-4 py-3 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
             href="{{- $link -}}"
             aria-label="{{- i18n "ReadTheRest" . |default "Read the rest of the post titled as:" }} {{ $title }}"
-            data-prerender="true"
+            data-prefetch="true"
           >
             <div class="flex items-center justify-center">
               <div class="px-4 text-center">
@@ -147,50 +138,102 @@ banner, simple, plain. Default: plain
               </svg>
             </div>
           </a>
-        </div>
-      </footer>
-    </article>
-  </section>
-{{- else if eq $type "plain" }}
-  <section
-    class="sc-featured mt-8 mb-32 flex w-full flex-col items-center justify-center px-4 pt-8 pb-20"
-    aria-labelledby="featured-heading-{{- $uid -}}"
-  >
-    <h2 id="featured-heading-{{- $uid -}}" class="sr-only">
-      {{- i18n "FeaturedArticle" | default "Featured Article" -}}
-    </h2>
-    <article class="w-full max-w-3xl">
-      <header>
-        <h2
-          class="text-on-sur-var dark:text-on-sur-var-d font-300 text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
+        </footer>
+      </article>
+    </section>
+  {{- else if eq $data.style "simple" }}
+    <section
+      class="sc-featured mt-8 mb-32 flex w-full flex-col items-center justify-center"
+      aria-labelledby="featured-heading-{{- $uid -}}"
+    >
+      <h2 id="featured-heading-{{- $uid -}}" class="sr-only">
+        {{- i18n "FeaturedArticle" | default "Featured Article" -}}
+      </h2>
+      <article class="flex w-full flex-col items-center">
+        <header
+          class="bg-menu dark:bg-menu-d text-on-menu-var dark:text-on-menu-var-d flex w-full items-center justify-center gap-10 py-8"
         >
-          {{- $title -}}
-        </h2>
-        <time datetime="{{- $dateMachine -}}"></time>
-      </header>
-      {{- with $summary }}
-        <div class="my-16 text-lg">{{ . }}</div>
-      {{- end }}
-      <footer class="flex items-center justify-end">
-        <a
-          class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex items-center justify-center rounded-full border px-4 py-3 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
-          href="{{- $link -}}"
-          aria-label="{{- i18n "ReadTheRest" . |default "Read the rest of the post titled as:" }} {{ $title }}"
-          data-prerender="true"
-        >
-          <div class="flex items-center justify-center">
-            <div class="px-4 text-center">
-              {{- i18n "ReadNow" . | default "Read Now " -}}
-            </div>
-            <svg
-              class="fill-on-sur-var dark:group-hover:fill-on-sur-d group-hover:fill-on-sur dark:fill-on-sur-var-d size-6 shrink-0 transition-all duration-400 ease-in-out group-hover:translate-x-1"
-              aria-hidden="true"
-            >
-              <use href="#icon-forward"></use>
-            </svg>
+          <h2
+            class="font-300 w-full max-w-3xl px-4 text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
+          >
+            {{- $title -}}
+          </h2>
+          <time datetime="{{- $dateMachine -}}"></time>
+        </header>
+        {{- with $summary }}
+          <div
+            class="text-on-bg dark:text-on-bg-d mt-8 mb-16 w-full max-w-3xl px-3 text-lg"
+          >
+            {{ . }}
           </div>
-        </a>
-      </footer>
-    </article>
-  </section>
-{{- end }}
+        {{- end }}
+        <footer
+          class="bg-menu dark:bg-menu-d flex w-full items-center justify-center py-8"
+        >
+          <div class="flex w-full max-w-3xl items-center justify-end px-4">
+            <a
+              class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-sur-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex w-fit items-center justify-center rounded-full border px-4 py-3 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
+              href="{{- $link -}}"
+              aria-label="{{- i18n "ReadTheRest" . |default "Read the rest of the post titled as:" }} {{ $title }}"
+              data-prerender="true"
+            >
+              <div class="flex items-center justify-center">
+                <div class="px-4 text-center">
+                  {{ i18n "ReadNow" . | default "Read Now " }}
+                </div>
+                <svg
+                  class="fill-on-sur-var dark:group-hover:fill-on-sur-d group-hover:fill-on-sur dark:fill-on-sur-var-d size-6 shrink-0 transition-all duration-400 ease-in-out group-hover:translate-x-1"
+                  aria-hidden="true"
+                >
+                  <use href="#icon-forward"></use>
+                </svg>
+              </div>
+            </a>
+          </div>
+        </footer>
+      </article>
+    </section>
+  {{- else if eq $data.style "plain" }}
+    <section
+      class="sc-featured mt-8 mb-32 flex w-full flex-col items-center justify-center px-4 pt-8 pb-20"
+      aria-labelledby="featured-heading-{{- $uid -}}"
+    >
+      <h2 id="featured-heading-{{- $uid -}}" class="sr-only">
+        {{- i18n "FeaturedArticle" | default "Featured Article" -}}
+      </h2>
+      <article class="w-full max-w-3xl">
+        <header>
+          <h2
+            class="text-on-sur-var dark:text-on-sur-var-d font-300 text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
+          >
+            {{- $title -}}
+          </h2>
+          <time datetime="{{- $dateMachine -}}"></time>
+        </header>
+        {{- with $summary }}
+          <div class="my-16 text-lg">{{ . }}</div>
+        {{- end }}
+        <footer class="flex items-center justify-end">
+          <a
+            class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur group flex items-center justify-center rounded-full border px-4 py-3 text-base transition-colors duration-400 ease-in-out hover:shadow-md"
+            href="{{- $link -}}"
+            aria-label="{{- i18n "ReadTheRest" . |default "Read the rest of the post titled as:" }} {{ $title }}"
+            data-prerender="true"
+          >
+            <div class="flex items-center justify-center">
+              <div class="px-4 text-center">
+                {{- i18n "ReadNow" . | default "Read Now " -}}
+              </div>
+              <svg
+                class="fill-on-sur-var dark:group-hover:fill-on-sur-d group-hover:fill-on-sur dark:fill-on-sur-var-d size-6 shrink-0 transition-all duration-400 ease-in-out group-hover:translate-x-1"
+                aria-hidden="true"
+              >
+                <use href="#icon-forward"></use>
+              </svg>
+            </div>
+          </a>
+        </footer>
+      </article>
+    </section>
+  {{- end }}
+{{- end -}}

@@ -1,153 +1,115 @@
 {{- /*
   render-image.html (markup):
-  
+
   Features:
   - Pass images on page bundles through Hugo pipes
   - Style them according to Alpha's design
-  - OCD error reporting enabled
+  - LiVa error reporting enabled
 
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- $destination := .Destination }}
-{{- $image := .Page.Resources.GetMatch (printf "*%s*" $destination) }}
+{{- $destination := .Destination -}}
+{{- $plainText := .PlainText }}
 
-{{- if $image }}
-  {{- $originalWidth := $image.Width }}
+{{- $image := "" -}}
+{{- $imageType := "" -}}
+{{- /* Check if it is a remote image */}}
+{{- if hasPrefix $destination "http" -}}
+  {{- $image = resources.GetRemote $destination -}}
+  {{- $imageType = "remote" -}}
+{{- else -}}
+  {{- /* It's a local image. Try the bundle first. */}}
+  {{- $bundleImage := .Page.Resources.GetMatch (printf "*%s" $destination) -}}
+  {{- if $bundleImage -}}
+    {{- $image = $bundleImage -}}
+  {{- else -}}
+    {{- /* Not in bundle. Try assets. */}}
+    {{- $matches := resources.Match (printf "img/*%s" $destination) -}}
+    {{- if gt (len $matches) 0 -}}
+      {{- $image = index $matches 0 -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 
-  {{- $small := cond (ge $originalWidth 286) ($image.Resize "286x webp q90") ($image) }}
-  {{- $small2x := cond (ge $originalWidth 572) ($image.Resize "572x webp q90") ($image) }}
-  {{- $medium := cond (ge $originalWidth 710) ($image.Resize "710x webp q90") ($image) }}
-  {{- $medium2x := cond (ge $originalWidth 1420) ($image.Resize "1420x webp q90") ($image) }}
+{{- /* Validate input and report errors to LiVa system */}}
+{{- $livaWarnEnabled := .Page.Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Page.Site.Params.liva_enabled | default true) -}}
 
-  {{- /* Generate the srcset dynamically based on available sizes */}}
-  {{- $srcset := slice }}
-  {{- if ge $originalWidth 286 }}
-    {{ $srcset = $srcset | append (printf "%s 286w" $small.RelPermalink) }}
-  {{ end }}
-  {{- if ge $originalWidth 572 }}
-    {{ $srcset = $srcset | append (printf "%s 572w" $small2x.RelPermalink) }}
-  {{ end }}
-  {{- if ge $originalWidth 710 }}
-    {{ $srcset = $srcset | append (printf "%s 710w" $medium.RelPermalink) }}
-  {{ end }}
-  {{- if ge $originalWidth 1420 }}
-    {{ $srcset = $srcset | append (printf "%s 1420w" $medium2x.RelPermalink) }}
-  {{ end }}
+{{- /* Determine LiVa error code based on input */}}
+{{- $errorCode := "" }}
+{{- if not $image -}}
+  {{- if eq $imageType "remote" -}}
+    {{- $errorCode = "liva-md-103" -}} 
+  {{- else -}}
+    {{- $errorCode = "liva-md-101" -}}
+  {{- end -}}
+{{- end }}
+{{- if and ($image) (not $plainText) -}}
+  {{- $errorCode = "liva-md-104" -}}
+{{- end -}}
 
-  {{- $finalSrcset := delimit $srcset ", " }}
-
-  {{- /* Adjust sizes dynamically */}}
-  {{- $sizes := "(min-width: 800px) 708px, 92.08vw" }}
-
-  {{- if lt $originalWidth 286 }}
-    {{- $sizes = printf "%dpx" $originalWidth }}
-  {{- else if lt $originalWidth 572 }}
-    {{- $sizes = printf "(min-width: 580px) %dpx, calc(93.85vw - 16px)" $originalWidth }}
-  {{- else if lt $originalWidth 710 }}
-    {{- $sizes = printf "(min-width: 680px) %dpx, 92.22vw" $originalWidth }}
+{{- if $errorCode }}
+  {{- $pagePath := .Page.File.Path -}}
+  {{- $pageDir := .Page.File.Dir -}}
+  {{- $permalink := .Page.Permalink }}
+  {{- $isBundle := or (eq .Page.File.BaseFileName "index") (eq .Page.File.BaseFileName "_index") -}} 
+  {{- if or $livaEnabled $livaWarnEnabled }}
+    {{- partial "liva/core/markdown/handler.logic.html" (dict
+      "code"        $errorCode
+      "destination" $destination
+      "path"        $pagePath
+      "permalink"   $permalink
+      "dir"         $pageDir
+      "alt"         $plainText
+      "isBundle"    $isBundle
+      )
+    -}}
   {{- end }}
+{{- end }}
 
-  {{- /* OCD error reporting for missing image alt */}}
-  {{- if eq .PlainText "" }}
-    {{ $errorCode := "ocd-md-101" }}
-    {{ $page := .Page.RelPermalink }}
-    {{ $errorMessage := printf "Missing alt from image - %s" $destination }}
-    {{ $logMessage := printf "OcdError:%s (%s: %s)" $errorCode   $page $errorMessage }}
+{{- /* Process image and render figure element */}}
+{{- if $image }}
+  {{- $widths := slice 320 572 710 823 1420 1646 }}
+  {{- $srcset := slice }}
+  {{- $resizedImages := slice }}
 
-    {{ warnf "%s" $logMessage }}
-
-    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-      <div
-        class="ocd ocd-card ocd-card-error ocd-shadow"
-        data-error="{{ $errorCode }}"
-      >
-        <header class="ocd-card-header">
-          <div class="ocd-title">{{ i18n "OcdImageAltMissing" }}</div>
-          <svg aria-hidden="true" focusable="false">
-            <use href="#icon-error"></use>
-          </svg>
-        </header>
-        <div class="ocd-card-content">
-          <div>
-            <p>
-              {{ i18n "OcdImageAltText" . | default "Alternative text is missing from image" }}
-              <span class="ocd-mono ocd-mono-error">{{ $destination }}</span>
-              {{ i18n "OcdOn" . | default "on:" }}
-              <a href="{{ $page }}">{{ .Page.Title }}</a>
-            </p>
-          </div>
-          <hr />
-          <p class="ocd-card-solution">
-            <sup class="ocd-mono-solution">*</sup
-            >{{ i18n "OcdImageAltMissingSolution" . | default "Enter an image description in the markdown image instruction." }}
-          </p>
-        </div>
-        <footer class="ocd-card-footer">
-          <a href="https://alpha.oxypteros.com/ocd/error-codes"
-            >{{ $errorCode }}</a
-          >
-        </footer>
-      </div>
+  {{- range $widths }}
+    {{- if ge $image.Width . }}
+      {{- $resized := $image.Resize (printf "%dx webp q90" .) }}
+      {{- $srcset = $srcset | append (printf "%s %dw" $resized.RelPermalink .) }}
+      {{- $resizedImages = $resizedImages | append $resized }}
     {{- end }}
   {{- end }}
+
+  {{- /* Always include the original as the largest option */}}
+  {{- $srcset = $srcset | append (printf "%s %dw" $image.RelPermalink $image.Width) }}
+  {{- $finalSrcset := delimit (uniq $srcset) ", " }}
+
+  {{- $fallbackSrc := $image.Resize "710x webp q90" }}
+  {{- if not (in $resizedImages $fallbackSrc) }}
+    {{- $fallbackSrc = index ($resizedImages | last 1) 0 | default $image }}
+  {{- end }}
+
+  {{- $sizes := "(min-width: 800px) 706px, 92.08vw" -}}
+
+
   <figure class="mx-auto my-8 w-fit max-w-full">
     <img
       class="border-out-var dark:border-out-var-d mx-auto rounded-md border-2 shadow-md"
-      src="{{- $medium.RelPermalink -}}"
-      srcset="{{- $finalSrcset -}}"
-      sizes="{{- $sizes -}}"
+      src="{{- $fallbackSrc.RelPermalink }}"
+      srcset="{{- $finalSrcset }}"
+      sizes="{{- $sizes }}"
       loading="lazy"
       decoding="async"
-      width="{{ $medium.Width }}"
-      height="{{ $medium.Height }}"
-      {{ with .PlainText }}alt="{{ . }}"{{ end -}}
+      width="{{- $fallbackSrc.Width }}"
+      height="{{- $fallbackSrc.Height }}"
+      {{- with $plainText }}alt="{{- . -}}"{{- end }}
     />
 
     {{- with .Title }}
       <figcaption class="text-on-sur-var dark:text-on-sur-var-d py-2 text-sm">
-        {{ . }}
+        {{- . -}}
       </figcaption>
-    {{ end }}
+    {{- end }}
   </figure>
-{{- else }}
-{{- /* OCD error reporting for image not found */}}
-  {{ $errorCode := "ocd-md-100" }}
-  {{ $page := .Page.RelPermalink }}
-  {{ $errorMessage := printf "Image not found - %s" $destination }}
-  {{ $logMessage := printf "OcdError:%s (%s: %s)" $errorCode   $page $errorMessage }}
-
-  {{ warnf "%s" $logMessage }}
-
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">{{ i18n "OcdImageError" }}</div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{ i18n "OcdImageNotFound" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a> (
-            <span class="ocd-mono ocd-mono-error">{{ $destination }}</span> )
-          </p>
-        </div>
-        <hr />
-        <p class="ocd-card-solution">
-          <sup class="ocd-mono-solution">*</sup
-          >{{ i18n "OcdImageMissingSolution" . | default "Confirm the image exists and the name in the markdown matches perfectly." }}
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
-  {{- end }}
-{{- end }}
+{{- end -}}

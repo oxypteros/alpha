@@ -100,7 +100,7 @@ export const initPrefetch = () => {
   const isDataSaverEnabled = connection.saveData === true;
 
   if (isSlowConnection || isDataSaverEnabled) {
-    console.warn(
+    console.log(
       "Prefetch/prerender disabled due to slow connection or Data Saver mode.",
     );
     return;

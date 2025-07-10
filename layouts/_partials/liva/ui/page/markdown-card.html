@@ -1,0 +1,25 @@
+{{- $severity := .severity | default "ocd-card-error" -}}
+{{- $ocdIcon := cond (eq $severity "ocd-card-error") "#ocd-error-icon" "#ocd-warning-icon" -}}
+{{- $code := .code -}}
+
+<div class="ocd ocd-card {{ $severity }} ocd-shadow">
+  <header class="ocd-card-header">
+    <h2 class="ocd-title">{{ .title | markdownify }}</h2>
+    <svg aria-hidden="true" focusable="false" width="24" height="24">
+      <use href="{{ $ocdIcon }}"></use>
+    </svg>
+  </header>
+  <div class="ocd-card-content">
+    <div class="ocd-card-content-reason">{{ .reason | markdownify }}</div>
+    {{- with .solution }}<hr />
+    <div class="ocd-card-content-solution">{{ .solution | markdownify }}</div>{{ end -}}
+  </div>
+  <footer class="ocd-card-footer">
+    <div class="ocd-card-footer-meta">
+      {{- with .example }}{{ . | markdownify }}{{ end }}
+      {{- with .docURL }}
+        <a class="ocd-mono" href="{{ . }}">{{ $code | safeHTML }}</a>
+      {{- end }}
+    </div>
+  </footer>
+</div>

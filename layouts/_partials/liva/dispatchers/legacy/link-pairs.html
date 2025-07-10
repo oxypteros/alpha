@@ -1,0 +1,235 @@
+{{- /*
+  Partial: liva/dispatchers/legacy/hero-sc.html
+  Purpose: Render the `LiVa warn`, `LiVa on page`, and `LiVa console` warning
+  message for incomplete link/text pairs.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+
+{{- $context := .context -}}
+
+{{- $errorCode := .errorCode -}}
+{{- $scName := .scName -}}
+{{- $isBtnPairValid := .isBtnPairValid -}}
+{{- $isLinkPairValid := .isLinkPairValid -}}
+{{- $btnLink  := .btnLink -}}
+{{- $btnTxt := .btnTxt -}}
+{{- $link  := .link -}}
+{{- $linkTxt := .linkTxt -}}
+
+{{- /* - Counter for pluralization */}}
+{{- $countPairs := 0 -}}
+
+{{- if and (not $isBtnPairValid) (or $btnLink $btnTxt) -}}
+  {{- $countPairs = add $countPairs 1 -}}
+{{- end -}}
+
+{{- if and (not $isLinkPairValid) (or $link $linkTxt) }}
+  {{- $countPairs = add $countPairs 1 -}}
+{{- end }}
+
+{{- /* ** livaWarn */}}
+{{- if  $livaWarnEnabled }}
+  {{- /* *** livaWarn messages */}}
+  {{- $errorDetails := slice -}}
+
+  {{- if not $isBtnPairValid | and (or $btnLink $btnTxt) }}
+    {{- $detail := "The 'Button' pair is incomplete." -}}
+    {{- if $btnTxt -}}
+      {{- $detail = printf "The 'Button' pair is missing an URL for its text '%s'." $btnTxt -}}
+    {{- else if $btnLink -}}
+      {{- $detail = printf "The 'Button' pair is missing text for its URL '%s'." $btnLink -}}
+    {{- end -}}
+    {{- $errorDetails = $errorDetails | append $detail -}}
+  {{- end -}}
+
+  {{- if not $isLinkPairValid | and (or $link $linkTxt) }}
+    {{- $detail := "The 'Link' pair is incomplete." -}}
+    {{- if $linkTxt -}}
+      {{- $detail = printf "The 'Link' pair is missing an URL for its text '%s'." $linkTxt -}}
+    {{- else if $link -}}
+      {{- $detail = printf "The 'Link' pair is missing text for its URL '%s'." $link -}}
+    {{- end -}}
+    {{- $errorDetails = $errorDetails | append $detail -}}
+  {{- end -}}
+
+  {{- $solution := "Provide both the URL and the text, or remove both\nattributes." }}
+  {{- if gt $countPairs 1 }}
+    {{- $solution = "For each link, provide both the URL and the text,\nor remove both attributes." }}
+  {{- end }}
+  {{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $context.Position -}}
+  {{- /* *** Final livaWarn for terminal */}}
+  <!-- prettier-ignore -->
+  {{- warnf `
+[LiVa] Invalid Link Pair
+─────────────────────────────────────────────────
+Code      : %s
+Shortcode : %s
+Reason    : %s
+Page      : %s
+File      : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$errorCode
+$scName
+(delimit $errorDetails "\n            ")
+$context.Page.Permalink
+$relPosition
+$solution
+  -}}
+{{- end }}
+
+{{- if $livaEnabled }}
+  {{- /* ** LiVa Page */}}
+  <div
+    class="liva liva liva-card liva-card-warning liva-shadow"
+    data-error="{{ $errorCode }}"
+  >
+    <header class="liva-card-header">
+      <h2 class="liva-title">
+        {{- i18n "LivaScPairsTitle" $countPairs | default "Incomplete Link/Text Pairs" -}}
+      </h2>
+      <svg aria-hidden="true" focusable="false" width="24" height="24">
+        <use href="#liva-warning-icon"></use>
+      </svg>
+    </header>
+    <div class="liva-card-content">
+      <div>
+        <p>
+          {{- i18n "The" . |default "The" }}
+          <span class="liva-mono"
+            >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+          >
+          {{ i18n "LivaScPairsReason" $countPairs | default "shortcode has one or more incomplete" }}
+          <span class="liva-mono"
+            >{{ i18n "LivaScPairsLinkText" . | default "link/text" }}</span
+          >
+          {{ i18n "LivaScPairsPairs" $countPairs | default "pairs." }}<br />
+          {{ i18n "LivaScPairsExplain" . | default "This will cause usability and accessibility issues." }}
+        </p>
+        <ul>
+          {{- if not $isBtnPairValid | and (or $btnLink $btnTxt) }}
+            <li>
+              <strong>{{ i18n "LivaScPairsBtnPair" }}:</strong>
+              {{ if $btnTxt -}}
+                {{ i18n "LivaScPairsProvided" . | default "You provided" }}
+                <span class="liva-mono">BTN-TEXT="{{ $btnTxt }}"</span>
+                {{- i18n "LivaScPairsMissingLink" . | default ", but the corresponding link" }}
+                (<span class="liva-mono">BTN-LINK</span>)
+                {{ i18n "LivaScPairsIsMissing" . | default "is missing." }}
+              {{- else -}}
+                {{ i18n "LivaScPairsProvided" . | default "You provided" }}
+                <span class="liva-mono">BTN-LINK="{{ $btnLink }}"</span>
+                {{- i18n "LivaScPairsMissingText" . | default ", but the corresponding text" }}
+                (<span class="liva-mono">BTN-TEXT</span>)
+                {{ i18n "LivaScPairsIsMissing" . | default "is missing." }}
+              {{- end -}}
+            </li>
+          {{- end }}
+          {{- if not $isLinkPairValid | and (or $link $linkTxt) }}
+            <li>
+              <strong>{{ i18n "LivaScPairsLinkPair" }}:</strong>
+              {{ if $linkTxt }}
+                {{ i18n "LivaScPairsProvided" . | default "You provided" }}
+                <span class="liva-mono">LINK-TEXT="{{ $linkTxt }}"</span>
+                {{- i18n "LivaScPairsMissingLink" . | default ", but the corresponding link" }}
+                (<span class="liva-mono">LINK</span>)
+                {{ i18n "LivaScPairsIsMissing" . | default "is missing." }}
+              {{- else -}}
+                {{ i18n "LivaScPairsProvided" . | default "You provided" }}
+                <span class="liva-mono">LINK="{{ $link }}"</span>
+                {{- i18n "LivaScPairsMissingText" . | default ", but the corresponding text" }}
+                (<span class="liva-mono">LINK-TEXT</span>)
+                {{ i18n "LivaScPairsIsMissing" . | default "is missing." }}
+              {{- end -}}
+            </li>
+          {{- end }}
+        </ul>
+      </div>
+      <hr />
+      <div class="liva-card-content-solution">
+        <p>
+          <span class="liva-mono">
+            {{- i18n "LivaScPairsSolution" $countPairs | default "Provide both the URL and the text, or remove both attributes." }}</span
+          >
+        </p>
+      </div>
+    </div>
+    <footer class="liva-card-footer">
+      <div class="liva-card-footer-meta">
+        <p></p>
+        <a class="liva-mono" href="https://alpha.oxypteros.com/docs/liva"
+          >{{ $errorCode }}</a
+        >
+      </div>
+    </footer>
+  </div>
+  {{- /* ** LiVa Console */}}
+  <template data-alpha="{{ $errorCode }}-template">
+    <div class="liva-console-explanation liva-console-warning">
+      <h2>
+        {{- i18n "LivaScPairsTitle" $countPairs | default "Incomplete Link/Text Pairs" -}}
+      </h2>
+      <p>
+        {{- i18n "The" . |default "The" }}
+        <span class="liva-mono"
+          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
+        >
+        {{ i18n "LivaScPairsReason" $countPairs | default "shortcode has one or more incomplete" }}
+        <span class="liva-mono"
+          >{{ i18n "LivaScPairsLinkText" . | default "link/text" }}</span
+        >
+        {{ i18n "LivaScPairsPairs" $countPairs | default "pairs." }}
+      </p>
+      <p>
+        {{ i18n "LivaScPairsExplain" . | default "This will cause usability and accessibility issues." }}
+      </p>
+      <ul>
+        {{- if not $isBtnPairValid | and (or $btnLink $btnTxt) }}
+          <li>
+            <strong>{{ i18n "LivaScPairsBtnPair" }}:</strong>
+            {{ if $btnTxt -}}
+              {{ i18n "LivaScPairsProvided" . | default "You provided" }}
+              <span class="liva-mono">BTN-TEXT="{{ $btnTxt }}"</span>
+              {{- i18n "LivaScPairsMissingLink" . | default ", but the corresponding link" }}
+              (<span class="liva-mono">BTN-LINK</span>)
+              {{ i18n "LivaScPairsIsMissing" . | default "is missing." }}
+            {{- else -}}
+              {{ i18n "LivaScPairsProvided" . | default "You provided" }}
+              <span class="liva-mono">BTN-LINK="{{ $btnLink }}"</span>
+              {{- i18n "LivaScPairsMissingText" . | default ", but the corresponding text" }}
+              (<span class="liva-mono">BTN-TEXT</span>)
+              {{ i18n "LivaScPairsIsMissing" . | default "is missing." }}
+            {{- end -}}
+          </li>
+        {{- end }}
+        {{- if not $isLinkPairValid | and (or $link $linkTxt) }}
+          <li>
+            <strong>{{ i18n "LivaScPairsLinkPair" }}:</strong>
+            {{ if $linkTxt }}
+              {{ i18n "LivaScPairsProvided" . | default "You provided" }}
+              <span class="liva-mono">LINK-TEXT="{{ $linkTxt }}"</span>
+              {{- i18n "LivaScPairsMissingLink" . | default ", but the corresponding link" }}
+              (<span class="liva-mono">LINK</span>)
+              {{ i18n "LivaScPairsIsMissing" . | default "is missing." }}
+            {{- else -}}
+              {{ i18n "LivaScPairsProvided" . | default "You provided" }}
+              <span class="liva-mono">LINK="{{ $link }}"</span>
+              {{- i18n "LivaScPairsMissingText" . | default ", but the corresponding text" }}
+              (<span class="liva-mono">LINK-TEXT</span>)
+              {{ i18n "LivaScPairsIsMissing" . | default "is missing." }}
+            {{- end -}}
+          </li>
+        {{- end }}
+      </ul>
+      <div class="liva-console-example"></div>
+    </div>
+    <div class="liva-console-doc">
+      <div class="hr hr-right"></div>
+    </div>
+  </template>
+{{- end }}

@@ -1,0 +1,9 @@
+/***
+ * This stylesheet will be loaded right before </head>.
+ * 
+ *  !!! IMPORTANT !!!
+ * If this comment is present or the file is completely empty
+ * the stylesheet will NOT be loaded to avoid unnecessary requests.
+ * 
+ * Add CSS rules below to enable the stylesheet.
+ */

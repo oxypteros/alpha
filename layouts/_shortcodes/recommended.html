@@ -1,236 +1,112 @@
 {{- /*
-  Shortcode: recommended.html 
-  Purpose: Renders a list of posts with `recommended = true`.
+  Shortcode: recommended.html
+  Purpose: Renders a list of posts with `recommended = true`. The recommended
+  post is retrieved by the `hugo.Store` set by `init-global-data` partial
 
-  Target: _index.md
+  Target: homepage, sections (_index.md)
 
   Example:
   {{< recommended TITLE="" LIMIT="" >}}
 
-  Params: 
-  - TITLE (string, optional): H2 heading. 
-  - LIMIT (integer, optional): Number of items to show (Default: 4). 
-  
-  Error handler: 
-  - warnf 
-  - OCD 
-  
-  Repo: https://github.com/oxypteros/alpha 
+  Params:
+  - TITLE (string, optional): H2 heading.
+  - LIMIT (integer, optional): Number of items to show (Default: 4).
+
+  Error handler:
+  - livaWarn (global)
+  - LiVa (scoped)
+
+  Docs: https://alpha.oxypteros.com/docs/shortcodes/recommended
+  Repo: https://github.com/oxypteros/alpha
 */}}
-{{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
-{{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
-{{- /* Context for error reporting (warnf, OCD) */}}
-{{- $page := .Page.RelPermalink }}
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
 
-{{- /* OCD: Validate params manually against an allowlist. */}}
-{{- $allowedKeys := slice "title" "limit" }}
-{{- $invalidKeys := slice }}
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
 
-{{- /* Validate limit value */}}
-{{- $isNumber := (printf "%v" $limit | findRE "^[1-9][0-9]*$") }}
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
 
-{{- $intNumber := 4 }}
-{{- $warnNumber := false }}
+{{- /* - Retrieve recommended pages from the global store */}}
+{{- $lang := .Page.Language.Lang | default .Site.Language.Lang -}}
+{{- $recommendedKey := printf "recommended_%s" $lang -}}
+{{- $recommendedPages := hugo.Store.Get $recommendedKey -}}
 
-{{- if $isNumber }}
-  {{- $intNumber = (index $isNumber 0 | int) }}
-{{- else if $limit }}
-  {{- $warnNumber = true }}
-{{- end }}
-{{- /* Invalid Parameter Error Handling (OCD) */}}
+{{- /* *** Recommended post validation */}}
+{{- $validRecommended := $recommendedPages }}
 
-{{- range $key, $value := .Params }}
-  {{- if not (in $allowedKeys (lower $key)) }}
-    {{- $invalidKeys = $invalidKeys | append $key }}
+{{- /* - On failed recommended post retrieval show LiVa shortcode unique warning */}}
+{{- if and (not $validRecommended) ($validInput) }}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) }}
+    {{- $errorData := dict
+      "context"     .
+      "scName"      .Name
+      "errorCode"   "liva-sc-142"
+      "frontmatter" "recommended=true"
+      "title"       (i18n "OcdScRecTitle")
+      "consLine1"   (i18n "OcdScRecEnableFm")
+    -}}
+    {{- partial "liva/dispatchers/legacy/global-data.html" $errorData }}
   {{- end }}
 {{- end }}
 
-{{- if gt (len $invalidKeys) 0 }}
-  {{- /* Warnf for error: ocd-sc-181 */}}
-  {{- $errorCode := "ocd-sc-181" }}
-  {{- $invalidKeysString := delimit $invalidKeys ", " }}
-  {{- $errorMessage := printf "Invalid parameters: %s" $invalidKeysString }}
-  {{- $logMessage := printf "OcdError [%s] Page: %s | %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
+{{- /* * On successful validations render the shortcode */}}
+{{- if and $validInput $validRecommended }}
+  {{- $data := $validationResult.data -}}
+  {{- $intLimit := $data.limit | default 4 -}}
 
-  {{- /* OCD error card for: odc-sc-181 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
+  {{- /* Get a sample, but don’t exceed the $intLimit */}}
+  {{- $sampleSize := math.Min (len $recommendedPages) $intLimit }}
+
+  {{- /* Respect the limit */}}
+  {{- $actualPages := first $sampleSize ($recommendedPages) }}
+
+  {{- if gt (len $actualPages) 0 }}
+    {{- /* Create unique id's for aria-labels in case of multiple shortcodes */}}
+    {{- $base := .Page.File.BaseFileName | urlize }}
+    {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+    {{- $uid := printf "%s-%v" $base $ordinal }}
+    <section
+      class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4"
+      aria-labelledby="recommended-heading-{{- $uid -}}"
     >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScParamError" . | default "Shortcode Parameter Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- $count := len $invalidKeys }}
-            {{- i18n "OcdScNumList181" $count | default "Invalid parameter in the  recommended shortcode on this page:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScParameter" $count  | default "The parameters," }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $invalidKeysString }}</span
-            >&nbsp;
-            {{ i18n "OcdScNotRecognized"  $count  | default "are not recognized." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
-          <span class="ocd-mono-solution">TITLE</span>,
-          <span class="ocd-mono-solution">LIMIT</span>
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
+      {{- /* - Optional title rendering. */}}
+      {{- with $data.title }}
+        <h2
+          id="recommended-heading-{{- $uid -}}"
+          class="font-200 text-on-sur-var dark:text-on-sur-var-d w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
         >
-      </footer>
-    </div>
-  {{- end }}
-{{- end }}
-{{- /* Wrong Limit Value Error Handling (warnf, OCD) */}}
-
-{{- if $warnNumber }}
-  {{- /* Warnf for error: ocd-sc-182 */}}
-  {{- $errorCode := "ocd-sc-182" }}
-  {{- $errorMessage := printf "The value of the LIMIT parameter is not an integer: %s." $limit }}
-  {{- $logMessage := printf "OcdError [%s] - Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: odc-sc-182 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScValueError" . | default "Shortcode Value Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- i18n "OcdScRecommended182" . | default "Invalid parameter value for the recommended shortcode on:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScThe" . | default "The" }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">LIMIT</span>&nbsp;
-            {{- i18n "OcdScParameterValue" . | default "parameter value" }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $limit }}</span>&nbsp;
-            {{ i18n "OcdScIsInvalid" . | default "is invalid." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{- i18n "OcdSc" . | default "" }}
-          <span class="ocd-mono-solution">LIMIT</span>
-          {{ i18n "OcdSc" . | default "must be an integer." }}
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
-  {{- end }}
-{{- end }}
-
-{{- /* The pages marked as recommended */}}
-{{- $recommendedPages := where site.RegularPages "Params.recommended" true }}
-{{- /* Number of random pages to pick */}}
-{{- $numPages := $intNumber }}
-
-{{- /* Get a sample, but don’t exceed the $numPages */}}
-{{- $sampleSize := math.Min (len $recommendedPages) $numPages }}
-
-{{- /* Respect the limit */}}
-{{- $actualPages := first $sampleSize ($recommendedPages) }}
-
-{{- if gt (len $actualPages) 0 }}
-  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
-  {{- $base := .Page.File.BaseFileName | urlize }}
-  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
-  {{- $uid := printf "%s-%v" $base $ordinal }}
-  <section 
-    class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4"
-    aria-labelledby="recommended-heading-{{- $uid -}}"
-  >
-  {{- /* Optional title rendering. */}}
-  {{- with $title }}
-  <h2
-    id="recommended-heading-{{- $uid -}}"
-    class="font-200 text-on-sur-var dark:text-on-sur-var-d w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual sm:text-5xl"
-  >
-    {{- . -}}
-  </h2>
-  {{- else }}
-  <h2 
-    id="recommended-heading-{{- $uid -}}" 
-    class="sr-only"
-  >
-  {{- i18n "RecommendedArticles" | default "Recommended Articles" -}}
-  </h2>
-  {{- end }}
-    <div class="mt-24 flex w-full flex-wrap items-center justify-center gap-25">
-      {{- range $actualPages }}
-        {{- partial "components/card-post.html" . }}
+          {{- . -}}
+        </h2>
+      {{- else }}
+        <h2 id="recommended-heading-{{- $uid -}}" class="sr-only">
+          {{- i18n "RecommendedArticles" | default "Recommended Articles" -}}
+        </h2>
       {{- end }}
-    </div>
-  </section>
-{{- else }}
-  {{- /* Warnf for error: ocd-sc-183 */}}
-  {{- $errorCode := "ocd-sc-183" }}
-  {{- $errorMessage := printf "No page is marked as recommended" }}
-  {{- $logMessage := printf "OcdError [%s] - Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: odc-sc-183 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScContentError" . | default "Shortcode Content Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- i18n "OcdScRecommended183" . | default "No page is marked as recommended, the shortcode recommended is disabled" }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          Add to the frontmatter of at least one page:
-          <span class="ocd-mono-solution">recommended = true</span>
-        </p>
+      <div
+        class="mt-24 flex w-full flex-wrap items-center justify-center gap-25"
+      >
+        {{- range $actualPages }}
+          {{- partial "components/card-post.html" . }}
+        {{- end }}
       </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
+    </section>
   {{- end }}
-{{- end }}
+{{- end -}}

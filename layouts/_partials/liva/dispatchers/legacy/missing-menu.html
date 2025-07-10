@@ -1,0 +1,116 @@
+{{- /*
+  Partial: liva/dispatchers/legacy/missing-menu.html
+  Purpose: Render the `LiVa warn`, `LiVa on page`, and `LiVa console` warning
+  message for missing menu.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+
+{{- $context := .context -}}
+{{- $errorCode := .errorCode -}}
+{{- $name := .name -}}
+{{- $menuName := .menu }}       
+{{- $menuFile := .menuFile }}
+
+
+{{- /* ** livaWarn */}}
+{{- if  $livaWarnEnabled }}
+  {{- /* *** livaWarn messages */}}
+  {{ $reason := printf "Menu %s cannot be found." $menuName}}
+
+  {{- $solution := printf "Define the %s menu in the file\n'%s'." $menuName $menuFile }}
+  {{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $context.Position -}}
+
+  {{- /* *** Final livaWarn for terminal */}}
+  <!-- prettier-ignore -->
+  {{- warnf `
+[LiVa] Not Defined Menu
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+Page   : %s
+File   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$errorCode
+$reason
+$context.Page.Permalink
+$relPosition
+$solution
+  -}}
+{{- end }}
+
+{{- if $livaEnabled }}
+  {{- /* ** LiVa Page */}}
+  <div
+    class="liva liva-card liva-card-warning liva-shadow"
+    data-error="{{ $errorCode }}"
+  >
+    <header class="liva-card-header">
+      <h2 class="liva-title">
+        {{- i18n "LivaMenu404Title" . | default "Menu Not Defined" -}}
+      </h2>
+      <svg aria-hidden="true" focusable="false" width="24" height="24">
+        <use href="#liva-warning-icon"></use>
+      </svg>
+    </header>
+    <div class="liva-card-content">
+      <div>
+        <p>
+          {{ i18n "LivaMenuTheMenu" . | default "The menu" }} 
+          <span class="liva-mono"
+            > {{ $menuName }} </span
+          > {{ i18n "LivaMenuNotDefined" . | default "is not defined." }}
+        </p>
+      </div>
+      <hr />
+      <p>
+        {{ i18n "LivaMenuDefine" . | default "Define and populate the menu"}}
+        <span class="liva-mono">{{ $menuName }}</span
+        > {{ i18n "LivaMenuInFile" . | default "in the file"}} <span class="liva-mono">{{ $menuFile }}</span
+        >.</p>
+    </div>
+    <footer class="liva-card-footer">
+      <div class="liva-card-footer-meta">
+       <p></p>
+        <a
+          class="liva-mono liva-mono-warning"
+          href="https://alpha.oxypteros.com/docs/liva"
+          >{{ $errorCode }}</a
+        >
+      </div>
+    </footer>
+  </div>
+  {{- /* ** LiVa Console */}}
+  <template data-alpha="{{ $errorCode }}-template">
+    <div class="liva-console-explanation liva-console-warning">
+      <h2>
+        {{- i18n "LivaMenu404Title" . | default "Menu Not Defined" -}}
+      </h2>
+      <p>
+        {{ i18n "LivaMenuTheMenu" . | default "The menu" }} 
+          <span class="liva-mono"
+            > {{ $menuName }} </span
+          > {{ i18n "LivaMenuNotDefined" . | default "is not defined." }}
+      </p>
+      
+      <div class="liva-console-example">
+       <strong>{{ i18n "LivaSolution" . | default "Solution:" }}</strong>
+        <p>
+           {{ i18n "LivaMenuDefine" . | default "Define and populate the menu"}}
+        <span class="liva-mono">{{ $menuName }}</span
+        > {{ i18n "LivaMenuInFile" . | default "in the file"}} <span class="liva-mono">{{ $menuFile }}</span
+        >.</p>
+        </p>
+      </div>
+    
+    <div class="liva-console-doc">
+      <div class="hr hr-right"></div>
+    </div>
+  </div>
+  </template>
+{{- end -}}

@@ -1,0 +1,246 @@
+footer_desc= "Shortcode cheat sheet rendered by the shortcode **help**.\n To view **help** about different topics use the **TYPE** parameter."
+footer_URL = "https://alpha.oxypteros.com/docs/docs/shortcodes"
+
+# Help Shortcode
+[shortcodes.help]
+order = 1
+  title = "Help Shortcode"
+  description = "Use it to get quick info on different topics locally."
+  syntax = "&lbrace;&lbrace;&lt; help TYPE=\"\" &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; help TYPE=\"markdown\" &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/help/"
+  
+  [[shortcodes.help.parameters]]
+    name = "TYPE"
+    optional = true
+    description = "The topic you want help for."
+    values = ["shortcodes (*default*)", "markdown", "frontmatter"]
+
+# Hero Shortcode
+[shortcodes.hero]
+  order = 2
+  title = "Hero Shortcode"
+  description = "Renders a Hero section with optional links."
+  syntax = "&lbrace;&lbrace;&lt; hero \n TITLE=\"\" SUBTITLE=\"\"\n BTN-TEXT=\"\" BTN-LINK=\"\" BTN-LABEL=\"\"\n LINK-TEXT=\"\" LINK=\"\" LINK-LABEL=\"\" &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/hero/"
+  
+  [[shortcodes.hero.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "Heading."
+  [[shortcodes.hero.parameters]]
+    name = "SUBTITLE"
+    optional = true
+    description = "Sub-heading."
+  [[shortcodes.hero.parameters]]
+    name = "BTN-TEXT"
+    optional = true
+    description = "Text for the button."
+ [[shortcodes.hero.parameters]]
+    name = "BTN-LINK"
+    optional = true
+    description = "URL for the button."
+  [[shortcodes.hero.parameters]]
+    name = "BTN-LABEL"
+    optional = true
+    description = "Accessible text for the button."
+  [[shortcodes.hero.parameters]]
+    name = "LINK-TEXT"
+    optional = true
+    description = "Text for the link."
+  [[shortcodes.hero.parameters]]
+    name = "LINK"
+    optional = true
+    description = "URL for the link."
+  [[shortcodes.hero.parameters]]
+    name = "LINK-LABEL"
+    optional = true
+    description = "Accessible text for the link."
+
+# Featured Shortcode
+[shortcodes.featured]
+  order = 3
+  title = "Featured Shortcode"
+  description = "Display a featured post with summary and **Read Now** link."
+  syntax = "&lbrace;&lbrace;&lt; featured STYLE=\"\" &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; featured STYLE=\"banner\" &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/featured/"
+  
+  [[shortcodes.featured.parameters]]
+    name = "STYLE"
+    optional = true
+    description = "Change the visual style of the featured section."
+    values = ["plain (*default*)", "simple", "banner"]
+
+# Text Snippet Shortcode
+[shortcodes.text_snippet]
+  order = 4
+  title = "Text Snippet Shortcode"
+  description = "Closed shortcode for attention grabbing text."
+  syntax = "&lbrace;&lbrace;&lt; text_snippet TITLE=\"\" &gt;&rbrace;&rbrace;\n  Mardown Content\n&lbrace;&lbrace;&lt; /text_snippet &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; text_snippet TITLE=\"Welcome\"&gt;&rbrace;&rbrace;\n This site was *created*...\n ... \n **Enjoy yous stay!**\n&lbrace;&lbrace;&lt; /text_snippet &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/text-snippet/"
+  
+  [[shortcodes.text_snippet.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "A heading"
+
+# Recommended Shortcode
+[shortcodes.recommended]
+  order = 5
+  title = "Recommended Shortcode"
+  description = "Renders a list of recommended posts with summary"
+  syntax = "&lbrace;&lbrace;&lt; recommended TITLE=\"\" LIMIT=\"\" &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; recommended TITLE=\"You Should Read\" LIMIT=\"4\"  &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/recommended/"
+  
+  [[shortcodes.recommended.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "A heading."
+  [[shortcodes.recommended.parameters]]
+    name = "LIMIT"
+    optional = true
+    description = "Number of posts to display."
+
+# Text Content Shortcode
+[shortcodes.text_content]
+  order = 6
+  title = "Text Content Shortcode"
+  description = "Closed shortcode for content text."
+  syntax = "&lbrace;&lbrace;&lt; text_content &gt;&rbrace;&rbrace;\n  Mardown Content\n&lbrace;&lbrace;&lt; /text_content &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; text_content &gt;&rbrace;&rbrace;\n ## Behind the Scenes\n At this point let tell you that...\n&lbrace;&lbrace;&lt; /text_content &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/text-content/"
+
+# Recent Shortcode
+[shortcodes.recent]
+  order = 7
+  title = "Recent Posts Shortcode"
+  description = "Renders a link list of recent posts"
+  syntax = "&lbrace;&lbrace;&lt; recent TITLE=\"\" LIMIT=\"\" &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; recent TITLE=\"Latest Thoughts\" LIMIT=\"4\"  &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/recent/"
+  
+  [[shortcodes.recommended.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "A heading."
+  [[shortcodes.recommended.parameters]]
+    name = "LIMIT"
+    optional = true
+    description = "Number of posts to display."
+
+# CTA Shortcode
+[shortcodes.cta]
+  order = 8
+  title = "Call-to-Action Shortcode"
+  description = "Closed shortcode that renders a CTA section."
+  syntax = "&lbrace;&lbrace;&lt; cta\n TITLE=\"\" BTN-TEXT=\"\"\n BTN-LINK=\"\" BTN-LABEL=\"\"\n&gt;&rbrace;&rbrace;\n  Mardown Content\n&lbrace;&lbrace;&lt; /cta &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/cta/"
+  
+  [[shortcodes.cta.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "A heading"
+  [[shortcodes.cta.parameters]]
+    name = "BTN-TEXT"
+    optional = true
+    description = "Text for the button."
+  [[shortcodes.cta.parameters]]
+    name = "BTN-LINK"
+    optional = true
+    description = "URL for the button."
+   [[shortcodes.cta.parameters]]
+    name = "BTN-LABEL"
+    optional = true
+    description = "Accessible text for the button."
+
+# Num-LIST Shortcode
+[shortcodes.num_list]
+  order = 9
+  title = "Numbered List Shortcode"
+  description = "Renders a list of a sections child pages."
+  syntax = "&lbrace;&lbrace;&lt; num_list TITLE=\"\" STYLE=\"\" LIMIT=\"\" &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; num_list TITLE=\"Step by Step\" STYLE=\"pill\" LIMIT=\"4\"  &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/num-list/"
+  
+  [[shortcodes.num_list.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "A heading."
+  [[shortcodes.num_list.parameters]]
+    name = "STYLE"
+    optional = true
+    description = "Rendering visual style."
+    values = ["card (*default*)", "pill", "list", "card-list"]
+  [[shortcodes.num_list.parameters]]
+    name = "LIMIT"
+    optional = true
+    description = "Number of posts to display."
+
+# FAQ Shortcode
+[shortcodes.faq]
+  order = 10
+  title = "FAQ Shortcode"
+  description = "Closed shortcode that renders a FAQ."
+  syntax = "&lbrace;&lbrace;&lt; faq TITLE=\"\" SUBTITLE=\"\" &gt;&rbrace;&rbrace;\n ## Question 1\n Answer 1\n ## Question 2\n Answer 2  \n&lbrace;&lbrace;&lt; /faq &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/faq/"
+  
+  [[shortcodes.faq.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "A heading"
+  [[shortcodes.faq.parameters]]
+    name = "SUBTITLE"
+    optional = true
+    description = "A sub-heading"
+
+# About Shortcode
+[shortcodes.about]
+  order = 11
+  title = "FAQ Shortcode"
+  description = "Closed shortcode that renders an about section."
+  syntax = "&lbrace;&lbrace;&lt; about AUTHOR=\"\" AVATAR=\"\" &gt;&rbrace;&rbrace;\n Markdown Content  \n&lbrace;&lbrace;&lt; /about &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/about/"
+  
+  [[shortcodes.about.parameters]]
+    name = "AUTHOR"
+    optional = true
+    description = "The name of which the about section is refering"
+  [[shortcodes.about.parameters]]
+    name = "AVATAR"
+    optional = true
+    description = "Filename with extension of an image placed at `/assets/img`."
+
+# Status Card Shortcode
+[shortcodes.status_card]
+  order = 12
+  title = "Status Card Shortcode"
+  description = "Closed shortcode that renders a status card."
+  syntax = "&lbrace;&lbrace;&lt; status_card TITLE=\"\" TYPE=\"\" &gt;&rbrace;&rbrace;\n Markdown Content  \n&lbrace;&lbrace;&lt; /status_card &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/status-card/"
+  
+  [[shortcodes.status_card.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "A heading"
+  [[shortcodes.status_card.parameters]]
+    name = "TYPE"
+    optional = true
+    description = "The type or card to display"
+    values = ["info (*default*)", "error", "warning", "success"]
+
+# Social Shortcode
+[shortcodes.social]
+  order = 15
+  title = "Social Shortcode"
+  description = "Shows a list of social network links with icons."
+  syntax = "&lbrace;&lbrace;&lt; social LIMIT=\"\" &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; social LIMIT=\"5\" &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/social/"
+  
+  [[shortcodes.social.parameters]]
+    name = "LIMIT"
+    optional = true
+    description = "Number of items to display"

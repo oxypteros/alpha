@@ -1,0 +1,28 @@
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+
+{{- /* * Frontmatter Errors */}}
+{{- $frontmatterErrors := partial "liva/core/frontmatter/check.logic.html" . -}}
+
+{{- /* * Unreachable Errors */}}
+{{- /* ** Head Errors */}}
+{{- $livaHeadFmErrors := .Store.Get "livaHeadFmErrors" | default (slice) -}}
+
+{{- /* All errors */}}
+{{- $allFrontmatterErrors := $frontmatterErrors | append $livaHeadFmErrors -}}
+
+{{- /* livaWarn to terminal */}}
+{{- if $livaWarnEnabled }}
+  {{- if gt (len $allFrontmatterErrors) 0 -}}
+    {{- partial "liva/dispatchers/terminal/frontmatter.html" (dict "frontmatterErrors" $allFrontmatterErrors) -}}
+  {{- end -}}
+{{- end }}
+
+{{- /* LiVa to console */}}
+{{- if $livaEnabled }}
+  {{- if gt (len $allFrontmatterErrors) 0 -}}
+    {{- partial "liva/dispatchers/console/frontmatter.html" (dict "frontmatterErrors" $allFrontmatterErrors) -}}
+    {{- /* Disabled page config error render. Still undecided if it's too intrusive for UX */}}
+    {{- /*partial "liva/dispatchers/page/frontmatter.html" (dict "frontmatterErrors" $allFrontmatterErrors) */}}
+  {{- end -}}
+{{- end }}

@@ -1,0 +1,130 @@
+{{- /*
+  Partial: liva/dispatchers/console/markdown.html
+  Purpose: Renders the console warnings for markdown errors.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /* Input data from core/markdown/handler.logic */}}
+{{- $mdErrors := . -}}
+
+{{- /* Input data from 'data/liva/console/markdown.toml' */}}
+{{- $mdErrorDefs := site.Data.liva.console.markdown -}}
+
+{{- range $mdErrors }}
+  {{- /*
+    Dictionary keys provided by:
+    '_markup/render-image.html'
+  */}}
+  {{- $code := .code | default "liva-md-000" -}}
+  {{- $path := .path -}}
+  {{- $permalink := .permalink -}}
+  {{- $destination := .destination -}}
+  {{- $dir := .dir -}}
+  {{- $alt := .alt -}}
+
+  {{- /* Get markdown error values from data for console */}}
+  {{- $entry := (index $mdErrorDefs $code) | default dict -}}
+
+  {{- /* Define severity for console (css) */}}
+  {{- $severity := $entry.severity | default "warning" -}}
+  {{- $severityClass := cond (eq $severity "error") "liva-console-error" "liva-console-warning" -}}
+
+  {{- /* Format values for default use */}}
+  {{- $titleKey := $entry.title | default "LivaUnknownTitle" -}}
+  {{- $title := i18n $titleKey | safeHTML -}}
+
+  {{- $key := $entry.key -}}
+
+  {{- $file := $entry.file -}}
+
+  {{- $reasonKey := $entry.reason | default "LivaUnknownReason" -}}
+  {{- $reason := i18n $reasonKey | safeHTML -}}
+
+  {{- $solutionKey := $entry.solution | default "LivaUnknownSolution" -}}
+  {{- $solution := i18n $solutionKey | safeHTML -}}
+
+  {{- $preExample := i18n ($entry.preExample | default "Example:") | safeHTML -}}
+  {{- $example := i18n ($entry.example | default "LivaUnknownExample") | safeHTML -}}
+
+  {{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+  {{- $preDoc := $entry.preDoc | default "" -}}
+
+  {{- /*
+    Markdown local image not found (in bundle or assets)
+    Code: liva-md-101
+  */}}
+  {{- if eq $code "liva-md-101" -}}
+    {{- $reason = printf (i18n $reasonKey) $destination | safeHTML -}}
+    {{- $example = printf (i18n $entry.example) $path $alt $destination | safeHTML -}}
+
+    {{- /*
+      Markdown remote image not found
+      Code: liva-md-103
+    */}}
+  {{- else if eq $code "liva-md-103" -}}
+    {{- $reason = printf (i18n $reasonKey) $destination | safeHTML -}}
+       {{- $solution =  printf (i18n $solutionKey) $destination | safeHTML -}}
+
+    {{- /*
+      Missing alt from markdown image
+      Code: liva-md-104
+    */}}
+  {{- else if eq $code "liva-md-104" -}}
+    {{- $reason = printf (i18n $reasonKey) $destination | safeHTML -}}
+    {{- $example = printf (i18n $entry.example) $path $destination | safeHTML -}}
+    
+    {{- /*
+      Fallback for missing or undefined code
+      Code: liva-cfg-000 or undefined
+    */}}
+  {{- else }}
+    {{- $reason = printf (i18n $reasonKey)  | safeHTML -}}
+  {{- end -}}
+
+  {{- /* Render the console template and the Js trigger */}}
+  <div data-error="{{ $code }}"></div>
+  <template data-alpha="{{ $code }}-template">
+    <div class="liva-console-explanation {{ $severityClass }}">
+      {{- with $title }}
+        <h2>
+          {{- . -}}
+        </h2>
+      {{- end }}
+      {{- with $reason }}
+        <p>
+          {{- . | safeHTML -}}
+        </p>
+      {{- end }}
+      <br />
+      {{- with $solution }}
+        <div class="liva-console-solution">
+          <h3 class="liva-console-h3">
+           <strong>{{ i18n "LivaSolution" . | default "Solution:" }}</strong>
+          </h3>
+          <p>{{ . | safeHTML }}</p>
+        </div>
+      {{- end }}
+      {{- with $example }}
+        <div class="liva-console-example">
+          <h3><strong>{{ $preExample }}</strong></h3>
+          <p class="liva-mono liva-mono-con-solution">
+            {{- $example | safeHTML }}
+          </p>
+        </div>
+      {{- end }}
+    </div>
+    <div class="liva-console-doc">
+      {{- if $preDoc }}
+        <div class="hr hr-left"></div>
+        {{- with $docURL }}
+          <a href="{{ . }}"
+            ><span class="liva-mono"></span> {{ $preDoc }}
+            {{ i18n "LivaDoc" . }}</a
+          >
+        {{- end }}
+      {{- end }}
+      <div class="hr hr-right"></div>
+    </div>
+  </template>
+{{- end -}}

@@ -74,4 +74,4 @@ enableEmoji = true
 [module]
   [module.hugoVersion]
     min = "0.146.1"
-    max = "0.147.8"
+    max = "0.148.0"

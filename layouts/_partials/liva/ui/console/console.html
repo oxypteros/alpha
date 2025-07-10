@@ -1,0 +1,60 @@
+<div
+  class="liva liva-console-container liva-hidden"
+  aria-expanded="false"
+  data-alpha="liva-console-container"
+  inert
+>
+  <div class="liva-console liva-shadow" data-alpha="liva-console">
+    <header>
+      <div class="liva-console-title">
+        <svg aria-hidden="true" width="32" height="32">
+          <use href="#liva-logo"></use>
+        </svg>
+        <h2>{{ i18n "LivaConsole" . | default "Console" }}</h2>
+      </div>
+      <button
+        class="liva-close-button"
+        aria-label="{{ i18n "LivaConsoleCloseBtnAria" . | default "Close settings modal" }}"
+        data-alpha="liva-close-console"
+      >
+        <svg aria-hidden="true" width="22" heigh="22">
+          <use href="#icon-close"></use>
+        </svg>
+      </button>
+    </header>
+    <div class="liva-utility-bar">
+      <button
+        title="{{ i18n "LivaConsoleHelpBtnTitle" . | default "LiVa help" }}"
+        aria-label="{{ i18n "LivaConsoleHelpBtnAria" . | default "Show help about LiVa" }}"
+        data-alpha="liva-console-help-button"
+      >
+        <svg aria-hidden="true" width="22" heigh="22">
+          <use href="#liva-icon-support"></use>
+        </svg>
+      </button>
+      <a
+        href="https://github.com/oxypteros/alpha/issue"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="{{ i18n "LivaConsoleIssueTitle" . | default "Report an Alpha theme issue on GitHub" }}"
+        aria-label="{{ i18n "LivaConsoleIssueAria" . | default "Report an issue with the Alpha theme on GitHub (opens in a new tab)" }}"
+      >
+        <svg aria-hidden="true" width="22" heigh="22">
+          <use href="#icon-error"></use></svg
+      ></a>
+      <button
+      title="{{ i18n "LivaConsoleResetBtnTitle" . | default "LiVa reset errors" }}"
+      aria-label="{{ i18n "LivaConsoleResetBtnAria" . | default "Reset the current LiVa error list" }}"
+      data-alpha="liva-console-reset-button"
+    >
+      <svg aria-hidden="true" width="22" heigh="22">
+        <use href="#liva-icon-reset"></use>
+      </svg>
+    </button>
+    </div>
+    <div class="liva-console-content" data-alpha="liva-console-content"></div>
+    <footer>
+      {{- partial "liva/ui/console/version-display.html" }}
+    </footer>
+  </div>
+</div>

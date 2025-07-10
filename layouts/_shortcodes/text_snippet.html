@@ -1,0 +1,64 @@
+{{- /*
+  Shortcode: text_snippet.html
+  Purpose: Renders centered text content provided within the shortcode. Best used for short text blocks like introductions or as a text separator between sections.
+
+  Target: Global
+
+  Example:
+  {{< text_snippet TITLE="" >}}
+  /... Markdown .../
+  {{< /text_snippet >}}
+
+  Params:
+  - TITLE (string, optional): H2 heading.
+
+  Error handler:
+  - livaWarn (global)
+  - LiVa (scoped)
+
+  Docs: https://alpha.oxypteros.com/shortcodes/text-snippet
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
+
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
+
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* * On successful validations render the shortcode */}}
+{{- if $validInput }}
+  {{- $data := $validationResult.data -}}
+  {{- $content := .Inner | markdownify }}
+  {{- /* Shortcode Rendering */}}
+  <div class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4">
+    {{- with $data.title }}
+      <h2
+        class="font-200 text-on-sur-var dark:text-on-sur-var-d mb-16 w-full text-center text-4xl leading-normal wrap-break-word hyphens-manual"
+      >
+        {{- . -}}
+      </h2>
+    {{- end }}
+    <div class="font-300 max-w-story text-center text-xl leading-relaxed">
+      {{ $content }}
+    </div>
+  </div>
+{{- end -}}

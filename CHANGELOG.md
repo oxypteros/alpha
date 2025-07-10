@@ -6,14 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+<!--## [Unreleased] -->
 
-<!-- ## [Unreleased] -->
+## [1.0.0-rc] — 2025-07-10
+
+### [BREAKING CHANGE]
+- **Standardized Shortcode Naming:** To ensure system stability and future compatibility, all shortcodes with hyphens in their names have been renamed to use `snake_case`. If you are upgrading, you **must** update your shortcode calls in your content files (e.g., `{{< status-card >}}` must be changed to `{{< status_card >}}`).
+
+### Changed
+- **Project OCD Rebranded to `LiVa`:** The entire validation system, has been rebranded to `LiVa` (Linting Validator) for clarity.
+- **Overhauled LiVa System (1.0.0-rc):** Completely refactored the error detection and reporting system for significantly improved accuracy, performance, and maintainability.
+    - All shortcode validation rules have been moved from shortcode files into a centralized `data/shortcodes/rules.toml` file, making the system dramatically easier to use and maintain.
+    - The shortcode input error reporting use also `data/liva/` toml files improving the modularity of LiVa
+    - Separated functionality into distinct contexts: a global terminal scope for build-time errors and on-page UI components for content creators.
+    - Ensured a complete separation of concerns, decoupling the LiVa from the Alpha theme for better portability and future development.
+    - Resolves issues [1](https://github.com/oxypteros/alpha/issues/1), [5](https://github.com/oxypteros/alpha/issues/5), [6](https://github.com/oxypteros/alpha/issues/6)
+- **Example Site:** Updated all demo and example site content to align with the new shortcode names and validation system.
+- **Dependency Updates:** Upgraded Tailwind CSS and `tailwind/cli` to their latest versions for improved performance and access to new features.
+
 ## [0.3.0-beta] — 2025-06-16
 ### Added
 - **SEO Image Support:** 
     - Automatically control and optimizes social sharing images (Open Graph, Twitter Cards, Schema.org) for all page types.
     - Intelligently sources images from page bundles or a global `assets/img` directory.
-    - OCD warnings for missing or improperly sized images for best practices.
+    - LiVa warnings for missing or improperly sized images for best practices.
 
 ### Changed
 - **Refactored Schema.org metadata** to include images on all page types and minor changes to JSON-LD structure to meet current Google and Schema.org best practices.

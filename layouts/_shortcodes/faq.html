@@ -1,5 +1,6 @@
 {{- /*
-  faq.html (shortcode): Renders a collapsible Frequently Asked Questions type element.
+  Shortcode: faq.html 
+  Purpose: Renders a collapsible Frequently Asked Questions type element.
   
   Target: Global
 
@@ -14,91 +15,46 @@
     - SUBTITLE (string, optional): H3 heading.
 
   Error handler:
-    - warnf
-    - OCD
+  - livaWarn (global)
+  - LiVa (scoped)
 
   Docs: https://alpha.oxypteros.com/docs/shortcodes/faq 
   Repo: https://github.com/oxypteros/alpha
 */}}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
-{{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
-{{- $subtitle := .Get "SUBTITLE" | default (.Get "Subtitle") | default (.Get "subtitle") }}
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
+
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
+
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* * On successful validations render the shortcode */}}
+{{- if $validInput }}
+  {{- $data := $validationResult.data -}}
 {{- $content := .Inner | markdownify }} 
-
-{{- /* `h2` headings (Question) and `p` elements (Answer) detection */}}
+{{- /* ** H2 headings (Question) and p elements (Answer) detection */}}
 {{- $headings := findRE "(?s)<h2[^>]*>(.*?)</h2>" $content }} 
 {{- $paragraphs := findRE "(?s)<p>(.*?)</p>" $content }}
 
-{{- /* Context for error reporting (warnf, OCD)*/}}
-{{ $page := .Page.RelPermalink }}
-
-{{- /* warnf, OCD: Validate params manually against an allowlist. */}}
-{{- $allowedKeys := slice "title" "subtitle" }}
-{{- $invalidKeys := slice }}
-
-
-{{- /* Invalid Parameter Error Handling (warnf, OCD) */}}
-
-{{- range $key, $value := .Params }}
-  {{- if not (in $allowedKeys (lower $key)) }}
-    {{- $invalidKeys = $invalidKeys | append $key }}
-  {{- end }}
-{{- end }}
-{{- if gt (len $invalidKeys) 0 }}
-  {{- /* Warnf for error: ocd-sc-151 */}}
-  {{- $errorCode := "ocd-sc-151" }}
-  {{- $invalidKeysString := delimit $invalidKeys ", " }}
-  {{- $errorMessage := printf "Invalid parameters: %s" $invalidKeysString }}
-  {{- $logMessage := printf "OcdError [%s] Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
-
-  {{- /* OCD error card for: odc-sc-151 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
-    >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScParamError" . | default "Shortcode Parameter Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- $count := len $invalidKeys }}
-            {{- i18n "OcdScFaq151" $count | default "Invalid parameter detected in the faq shortcode, on:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScParameter" $count  | default "The parameters," }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $invalidKeysString }}</span
-            >&nbsp;
-            {{ i18n "OcdScNotRecognized"  $count  | default "are not recognized." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
-          <span class="ocd-mono-solution">TITLE</span>,
-          <span class="ocd-mono-solution">SUBTITLE</span>
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
-  {{- end }}
-{{- end }}
-
-{{- /* Shortcode Rendering */}}
-{{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
+{{- /* - Create unique id's for aria-labels in case of multiple shortcodes*/}}
 {{- $base := .Page.File.BaseFileName | urlize }}
 {{- $ordinal := .Ordinal | default (now.UnixNano) }}
 {{- $uid := printf "%s-%v" $base $ordinal }}
@@ -107,11 +63,11 @@
   aria-labelledby="faq-heading-{{- $uid -}}"
 >
   <div class="flex w-full flex-wrap justify-center gap-16">
-    {{- if or $title $subtitle }}
+    {{- if or $data.title $data.subtitle }}
     <div class="w-full md:w-fit text-center break-words hyphens-manual lg:text-left">
-      {{- with $title }}
+      {{- with $data.title }}
       <h2 id="faq-heading-{{- $uid -}}">
-        {{ . | safeHTML | markdownify }}
+        {{ . | markdownify | safeHTML }}
       </h2>
       {{- else }}
       <h2
@@ -121,8 +77,8 @@
       {{- i18n "Faq" . | default " Frequently Asked Questions"}}
       </h2>
       {{- end }} 
-      {{- with $subtitle }}
-      <h3>{{ . | safeHTML | markdownify }}</h3>
+      {{- with $data.subtitle }}
+      <h3>{{ .  | markdownify | safeHTML }}</h3>
       {{- end }}
       {{- end }}
     </div>
@@ -158,3 +114,4 @@
     <path d="m480-236 93-93q12-12 29-12t29 12q12 12 12 29t-12 29L508-148q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L329-271q-12-12-12-29t12-29q12-12 29-12t29 12l93 93Zm0-484-93 93q-12 12-29 12t-29-12q-12-12-12-29t12-29l123-123q6-6 13-8.5t15-2.5q8 0 15 2.5t13 8.5l123 123q12 12 12 29t-12 29q-12 12-29 12t-29-12l-93-93Z"></path>
   </symbol>
 </svg>
+{{- end -}}

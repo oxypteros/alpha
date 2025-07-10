@@ -1,0 +1,174 @@
+# About Shortcode
+[about]
+validParams = ["AUTHOR", "AVATAR"]
+
+  [about.params.AUTHOR]
+  validation = "any_string"
+  [about.params.AVATAR]
+  validation = "any_string"
+
+  [about.errorCodes]
+  invalidParam = "liva-sc-200"
+  missingImg   = "liva-sc-209"
+
+# CTA Shortcode
+[cta]
+validParams = ["TITLE", "BTN-TEXT", "BTN-LINK", "BTN-LABEL"]
+
+  [cta.params.TITLE]
+  validation = "any_string"
+  [cta.params.BTN-TEXT]
+  validation = "any_string"
+  [cta.params.BTN-LINK]
+  validation = "any_string"
+  [cta.params.BTN-LABEL]
+  validation = "any_string"
+
+  [cta.errorCodes]
+  invalidParam = "liva-sc-170"
+  invalidPairs = "liva-sc-172"
+
+#FAQ Shortcode
+[faq]
+validParams = ["TITLE", "SUBTITLE"]
+
+  [faq.params.TITLE]
+  validation = "any_string"
+  [faq.params.SUBTITLE]
+  validation = "any_string"
+
+  [faq.errorCodes]
+  invalidParam = "liva-sc-190"
+
+# Featured Shortcode
+[featured]
+validParams = ["STYLE"]
+
+  [featured.params.STYLE]
+  validation = "in_list"
+  list       = ["banner", "simple", "plain"]
+  default    = "plain"
+
+  [featured.errorCodes]
+  invalidParam = "liva-sc-120"
+  invalidValue = "liva-sc-121"
+  featNotFound = "liva-sc-122"
+
+# Help Shortcodes
+[help]
+validParams = ["TYPE"]
+
+  [help.params.TYPE]
+  validation = "in_list"
+  list       = ["markdown", "shortcodes"]
+  default    = "shortcodes"
+
+  [help.errorCodes]
+  invalidParam = "liva-sc-100"
+  invalidValue = "liva-sc-101"
+
+# Hero Shortcode 
+[hero]
+validParams = ["TITLE", "SUBTITLE", "BTN-TEXT", "BTN-LINK", "BTN-LABEL", "LINK-TEXT", "LINK", "LINK-LABEL" ]
+
+  [hero.params.TITLE]
+  validation = "any_string"
+  [hero.params.SUBTITLE]
+  validation = "any_string"
+  [hero.params.BTN-TEXT]
+  validation = "any_string"
+  [hero.params.BTN-LINK]
+  validation = "any_string"
+  [hero.params.BTN-LABEL]
+  validation = "any_string"
+  [hero.params.LINK-TEXT]
+  validation = "any_string"
+  [hero.params.LINK]
+  validation = "any_string"
+  [hero.params.LINK-LABEL]
+  validation = "any_string"
+
+  [hero.errorCodes]
+  invalidParam = "liva-sc-110"
+  invalidPairs = "liva-sc-112"
+
+# Num. List Shortcode
+[num_list]
+validParams = ["TITLE", "STYLE", "LIMIT"]
+
+  [num_list.params.TITLE]
+  validation = "any_string"
+  [num_list.params.STYLE]
+  validation = "in_list"
+  list       = ["card", "pill", "list", "card-list"]
+  default    = "card-list"
+  [num_list.params.LIMIT]
+  validation = "is_positive_integer"
+
+  [num_list.errorCodes]
+  invalidParam = "liva-sc-180"
+  invalidValue = "liva-sc-181"
+
+# Recent Shortcode
+[recent]
+validParams = ["TITLE", "LIMIT"]
+
+  [recent.params.TITLE]
+  validation = "any_string"
+  [recent.params.LIMIT]
+  validation = "is_positive_integer"
+
+  [recent.errorCodes]
+  invalidParam = "liva-sc-160"
+  invalidValue = "liva-sc-161"
+
+# Recommended Shortcode
+[recommended]
+validParams = ["TITLE", "LIMIT"]
+
+  [recommended.params.TITLE]
+  validation = "any_string"
+  [recommended.params.LIMIT]
+  validation = "is_positive_integer"
+
+  [recommended.errorCodes]
+  invalidParam = "liva-sc-140"
+  invalidValue = "liva-sc-141"
+  recNotFound  = "liva-sc-142"
+
+# Social Shortcode
+[social]
+validParams = ["LIMIT"]
+
+  [social.params.LIMIT]
+  validation = "is_positive_integer"
+
+  [social.errorCodes]
+  invalidParam = "liva-sc-220"
+  invalidValue = "liva-sc-221"
+  missingMenu  = "liva-sc-228"
+
+# Status Card Shortcode
+[status_card]
+validParams = ["TITLE", "TYPE"]
+
+  [status_card.params.TITLE]
+  validation = "any_string"
+  [status_card.params.TYPE]
+  validation = "in_list"
+  list       = ["error", "warning", "success", "info"]
+  default    = "info"
+
+  [status_card.errorCodes]
+  invalidParam = "liva-sc-210"
+  invalidValue = "liva-sc-211"
+
+# Text Snippet Shortcode
+[text_snippet]
+validParams = ["TITLE"]
+
+  [text_snippet.params.TITLE]
+  validation = "any_string"
+
+  [text_snippet.errorCodes]
+  invalidParam = "liva-sc-130"

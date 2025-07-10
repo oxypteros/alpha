@@ -1,0 +1,173 @@
+{{- /*
+  Partial: liva/dispatchers/page/frontmatter.html
+  Purpose: Renders the page warnings for frontmatter errors.
+
+    Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- /* Input data from 'core/frontmatter/handler.logic' */}}
+{{- $fmErrors := .frontmatterErrors -}}
+
+{{- /* Input data from 'data/liva/page/frontmatter.toml' */}}
+{{- $fmErrorDefs := site.Data.liva.page.frontmatter -}}
+
+{{- range first 1 $fmErrors -}}
+  {{- /*
+    Dictionary keys provided by the partials:
+    'liva/core/frontmatter/check.logic.html'
+    'head/seo/images.html'
+  */}}
+  {{- $code := .code | default "liva-fm-000" -}}
+  {{- $page := .page -}}
+  {{- $file := .file -}}
+  {{- $path := .path -}}
+  {{- $keyValue := .keyValue -}}
+  {{- $date := .date -}}
+  {{- $lastmod := .lastmod -}}
+  {{- $validValues := .validValues -}}
+  {{- $validLicenses := .validValues -}}
+
+  {{- /* Get frontmatter error values from data for page */}}
+  {{- $entry := (index $fmErrorDefs $code) | default dict -}}
+
+  {{- /* Define severity for page card (css) */}}
+  {{- $severity := $entry.severity | default "warning" -}}
+  {{- $severityClass := cond (eq $severity "error") "liva-card-error" "liva-card-warning" -}}
+  {{- $livaIcon := cond (eq $severity "error") "#liva-error-icon" "#liva-warning-icon" -}}
+
+  {{- /* Format values for default use */}}
+  {{- $titleKey := $entry.title | default "LivaUnknownTitle" -}}
+  {{- $title := i18n $titleKey | safeHTML -}}
+
+  {{- $key := $entry.key -}}
+
+  {{- $reasonKey := $entry.reason | default "LivaUnknownReason" -}}
+  {{- $reason := i18n $reasonKey | safeHTML -}}
+
+  {{- $solutionKey := $entry.solution | default "LivaUnknownSolution" -}}
+  {{- $solution := i18n $solutionKey | safeHTML -}}
+
+  {{- $preExample := i18n ($entry.preExample | default "") | safeHTML -}}
+  {{- $example := i18n ($entry.example | default "LivaUnknownExample") | safeHTML -}}
+
+  {{- $docURL := $entry.docURL | default "https://alpha.oxypteros.com/docs/" | safeHTML -}}
+
+  {{- /*
+    Check that lastmod is not before date
+    Code: liva-fm-102
+  */}}
+  {{- if eq $code "liva-fm-102" -}}
+    {{- $formattedDate := $date.Format "2006-01-02T15:04:05-07:00" }}
+    {{- $reason = printf (i18n $reasonKey) $key | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key $date | safeHTML -}}
+    {{- $example = printf (i18n $entry.example )  $formattedDate | safeHTML -}}
+
+    {{- /*
+      Check that layout is valid
+      Code: liva-fm-111
+    */}}
+  {{- else if eq $code "liva-fm-111" -}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $valuesList | safeHTML -}}
+
+    {{- /*
+      Check Page.Title
+      Code: liva-fm-122
+    */}}
+  {{- else if eq $code "liva-fm-122" -}}
+    {{- $reason = printf (i18n $reasonKey) $key  | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+
+    {{- /*
+      Check for a valid license
+      Code: liva-fm-131
+    */}}
+  {{- else if eq $code "liva-fm-131" -}}
+    {{- $valuesList := delimit $validValues ", " -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $valuesList | safeHTML -}}
+
+    {{- /*
+      Check for non boolean recommended value
+      Code: liva-fm-141
+    */}}
+  {{- else if eq $code "liva-fm-141" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue| safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+
+    {{- /*
+      Check for non boolean featured value
+      Code: liva-fm-151
+    */}}
+  {{- else if eq $code "liva-fm-151" -}}
+    {{- $reason = printf (i18n $reasonKey) $key $keyValue| safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+
+    {{- /*
+      Check Page.Params.description only for pages that have a file
+      Code: liva-fm-161
+    */}}
+  {{- else if eq $code "liva-fm-161" -}}
+    {{- $reason = printf (i18n $reasonKey) $key | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
+
+    {{- /*
+      Check for missing SEO image
+      Code: liva-fm-171
+    */}}
+  {{- else if eq $code "liva-fm-171" -}}
+    {{- $reason = printf (i18n $reasonKey) $keyValue | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey)  $path | safeHTML -}}
+    {{- $example = printf (i18n $entry.example )  $key $keyValue | safeHTML -}}
+
+    {{- /*
+      Check for bad qualitySEO image
+      Code: liva-fm-172
+    */}}
+  {{- else if eq $code "liva-fm-172" -}}
+    {{- $reason = printf (i18n $reasonKey) $keyValue | safeHTML -}}
+    {{- $example = printf (i18n $entry.example )  $key $keyValue | safeHTML -}}
+    
+    {{- /*
+      Generic fallback for missing or undefined code
+      Code: liva-fm-000 or undefined
+    */}}
+  {{- else }}
+    {{- $reason = printf (i18n $reasonKey) | safeHTML -}}
+  {{- end }}
+
+  <div class="liva liva-card-container">
+    <div class="liva liva-card {{ $severityClass }} liva-shadow">
+      <header class="liva-card-header">
+        <h2 class="liva-title">{{- with $title }}{{ . }}{{- end }}</h2>
+        <svg aria-hidden="true" focusable="false" width="24" height="24">
+          <use href="{{- $livaIcon -}}"></use>
+        </svg>
+      </header>
+
+      <div class="liva-card-content">
+        <div class="liva-card-content-reason">{{- with $reason }}{{ . }}{{- end }}</div>
+        <hr />
+        <div class="liva-card-content-solution">{{- with $solution }}{{ . }}{{- end }}</div>
+      </div>
+
+      <footer class="liva-card-footer">
+        <div class="liva-card-footer-meta">
+          <p>
+            {{ with $preExample }}
+              <strong>{{ . }}</strong>
+            {{- end }}
+            {{ with $example }}{{ . | safeHTML }}{{- end }}
+          </p>
+          <a
+            class="liva-mono"
+            href="{{ $docURL }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            >{{ $code }}</a
+          >
+        </div>
+      </footer>
+    </div>
+  </div>
+{{- end -}}

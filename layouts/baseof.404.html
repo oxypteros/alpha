@@ -16,7 +16,10 @@
     <meta name="robots" content="noindex, nofollow" />
     {{- /* Main meta tags partial */}}
     {{ partial "head/base.html" . }}
-
+    <meta
+      name="description"
+      content="{{ i18n "Default404Description" . | default "Vanished in a puff of logic. Nothing up our sleeves—except more content" }}"
+    />
     {{- /* Anti-flicker inline script */}}
     {{ partialCached "head/anti-flicker.html" . }}
 
@@ -42,20 +45,20 @@
       <script src="/pagefind/pagefind-ui.js" defer></script>
     {{- end }}
 
-    {{- /* Conditionally append OCD assets */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-      {{- partialCached "head/ocd.html" . }}
+    {{- /* Conditionally append LiVa assets */}}
+    {{- if and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
+      {{- partialCached "head/liva.html" . }}
     {{- end }}
   </head>
   <body
     class="bg-sur dark:bg-sur-d text-on-sur dark:text-on-sur-d flex min-h-dvh flex-col items-center justify-between font-sans"
   >
-    {{ partialCached "header.html" . .Site.Language.Lang}}
+    {{ partial "header.html" . }}
     <main class="pt-header dark:bg-sur-d z-10 w-full grow">
       {{- block "main" . }}{{ end }}
     </main>
-     {{- partialCached "footer.html" . .Site.Language.Lang -}}
-    
+    {{- partialCached "footer.html" . .Site.Language.Lang -}}
+
     {{- /* Conditional snackbar container for cookie notice */}}
     {{- if eq .Site.Params.noCookies_snackbar true }}
       <div
@@ -63,7 +66,7 @@
         data-alpha="snackbar-container"
       ></div>
     {{- end }}
-    
+
     {{- /* Conditional container for visitor settings/preferences */}}
     {{- if eq .Site.Params.visitor_settings true }}
       <div
@@ -73,12 +76,13 @@
     {{- end }}
     {{- /* Live region for screen reader announcements */}}
     <div class="sr-only" aria-live="polite" data-alpha="announcer"></div>
-    
+
     {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
+    {{- /* Scripts */}}
     {{- partial "tail/js.html" . }}
-    {{- partial "tail/custom-js.html" . }}
-    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang -}}
-    
+    {{- /* Icons */}}
+    {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang .Page.Params.layout .Page.Params.author -}}
+
     {{- /* Templates */}}
     {{- /* Search Modal */}}
     {{- if eq .Site.Params.pagefind_enabled true }}
@@ -98,9 +102,9 @@
       {{- partialCached "tail/settings-template.html" . .Site.Language.Lang -}}
     {{- end }}
 
-    {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-      {{- partial "ocd/main.html" . -}}
+    {{- /* LiVa partial, loaded strictly for dev. mode and locally */}}
+    {{- if and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
+      {{- partial "liva/main.html" . -}}
     {{- end -}}
   </body>
 </html>

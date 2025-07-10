@@ -1,0 +1,171 @@
+{{- /*
+  Shortcode: num_list.html
+  Purpose: Renders a numbered list of weighted child pages
+
+  Target: sections (_index.md )
+
+  Example:
+  {{< num_list STYLE="" TITLE="" LIMIT="" >}}
+
+  Params:
+  - TITLE (string, optional): H2 heading.
+  - STYLE (string, optional): Visual style of the list
+  Values: pill, list, card-list, card (default)
+  - LIMIT (int, optional): Maximum number of items.
+
+  Error handler:
+  - livaWarn (global)
+  - LiVa (scoped)
+
+  Docs: https://alpha.oxypteros.com/shortcodes/num-list
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
+
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
+
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* * On successful validations render the shortcode */}}
+{{- if $validInput }}
+  {{- $data := $validationResult.data -}}
+  {{- $pages := .Page.Pages.ByWeight }}
+  {{- /* - Apply limit if specified */}}
+  {{- if $data.limit }}
+    {{- $pages = first (int $data.limit) $pages }}
+  {{- end }}
+  {{- /* - Create unique id's for aria-labels in case of multiple shortcodes */}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
+  <section
+    class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4"
+    aria-labelledby="list-heading-{{- $uid -}}"
+  >
+    {{- /* - Optional title rendering. */}}
+    {{- with $data.title }}
+      <div
+        class="flex w-full min-w-0 items-center justify-center gap-4 sm:justify-normal"
+      >
+        <div
+          class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
+        ></div>
+        <h2
+          id="list-heading-{{- $uid -}}"
+          class="text-on-sur-var dark:text-on-sur-var-d font-300 min-w-0 text-3xl break-words hyphens-manual"
+        >
+          {{- . -}}
+        </h2>
+        <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
+      </div>
+    {{- else }}
+      <h2 id="list-heading-{{- $uid -}}" class="sr-only">
+        {{- i18n "NumListHeading" | default "Ordered Article List" -}}
+      </h2>
+    {{- end }}
+
+    {{- /* - Style-based rendering. */}}
+    {{- if eq $data.style "card" }}
+      <nav
+        class="sc-num-list my-16 flex w-full flex-wrap justify-center gap-10"
+      >
+        {{- range  $index, $page := $pages }}
+          {{- /* - Style different first page */}}
+          {{ $first := eq $index 0 }}
+          <a
+            class="{{- cond $first "first" "rest" }} group relative flex h-36 w-72 flex-col items-center justify-center overflow-hidden rounded-md border p-4 transition-all duration-400 hover:shadow-md lg:w-80"
+            href="{{ .RelPermalink }}"
+          >
+            <div
+              class="font-800 text-pri dark:text-pri-d absolute inset-x-0 inset-y-0 flex items-center justify-center text-9xl opacity-0 transition-opacity duration-300 group-hover:opacity-20"
+              aria-hidden="true"
+            >
+              {{ add $index 1 }}
+            </div>
+            <h2 class="font-500 line-clamp-3 w-full text-center text-xl">
+              {{ .Title }}
+            </h2>
+          </a>
+        {{- end }}
+      </nav>
+    {{- else if eq $data.style "pill" }}
+      <nav class="my-16 flex w-full flex-wrap justify-center gap-10">
+        {{- range $index, $page := $pages }}
+          <a
+            class="border-out-var dark:border-out-var-d bg-sur dark:bg-sur-var-d text-on-sur-var dark:text-on-sur-var-d hover:bg-sur-var dark:hover:bg-out-d hover:text-on-sur dark:hover:text-on-sur-d group relative flex h-24 w-72 flex-col items-center justify-center rounded-md border p-4 transition-all duration-300 hover:shadow-md lg:w-80"
+            href="{{ .RelPermalink }}"
+          >
+            <div class="font-800 absolute -top-3 -left-3" aria-hidden="true">
+              <div
+                class="border-out-var dark:border-out-var-d bg-sur-var dark:bg-out-var-d text-on-sur dark:text-on-sur-d group-hover:text-pri dark:group-hover:text-pri-d flex size-6 items-center justify-center rounded-full border text-sm transition-colors duration-300"
+              >
+                {{ add $index 1 }}
+              </div>
+            </div>
+            <h2
+              class="font-300 line-clamp-2 w-full text-center text-2xl transition-colors duration-300"
+            >
+              {{ .Title }}
+            </h2>
+          </a>
+        {{- end }}
+      </nav>
+    {{- else if eq $data.style "list" }}
+      <nav class="my-16 flex w-full flex-wrap justify-center gap-8">
+        {{- range $index, $page := $pages }}
+          <div class="flex gap-2">
+            <span class="font-300 text-pri dark:text-pri-d text-xl"
+              >{{ printf "%02d" (add $index 1) }}.</span
+            >
+            <a href="{{ .RelPermalink }}">
+              <h2
+                class="font-600 text-on-sur-var dark:text-on-sur-var-d hover:text-pri dark:hover:text-pri-d text-xl transition-colors duration-300"
+              >
+                {{ $page.Title }}
+              </h2>
+            </a>
+          </div>
+        {{- end }}
+      </nav>
+    {{- else if eq $data.style "card-list" }}
+      <nav class="my-16 flex w-full flex-wrap justify-center gap-10">
+        {{- range $index, $page := $pages }}
+          <a
+            class="border-out-var dark:border-out-var-d hover:bg-sur-var dark:hover:bg-out-d dark:bg-sur-var-d text-on-sur-var dark:text-on-sur-var-d group flex h-42 w-72 flex-col gap-4 rounded-md border p-4 transition-all duration-300 hover:shadow-md lg:w-96"
+            href="{{ .RelPermalink }}"
+          >
+            <div
+              class="font-700 group-hover:text-pri dark:group-hover:text-pri-d text-lg transition-colors duration-300"
+            >
+              {{ printf "%02d" (add $index 1) }}.
+            </div>
+            <h2
+              class="line-clamp-3 text-center text-xl transition-colors duration-400"
+            >
+              {{ .Title }}
+            </h2>
+          </a>
+        {{- end }}
+      </nav>
+    {{- end }}
+  </section>
+{{- end -}}

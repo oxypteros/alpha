@@ -1,0 +1,121 @@
+{{- /*
+  Partial: liva/checks/frontmatter.logic.html
+  Purpose: Performs diagnostic checks on the frontmatter and returns error
+  objects.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- $errors := slice -}}
+{{- $context := . -}}
+{{- $filePath := "" -}}
+{{- if .Page.File -}}
+  {{- $filePath = .Page.File.Path -}}
+{{- end -}}
+
+{{- $permalink := .Page.Permalink -}}
+{{- $params := .Page.Params -}}
+
+{{- /*
+  Check that lastmod is not before date
+  Code: liva-fm-102
+*/}}
+{{- if and .Page.Lastmod .Page.Date -}}
+  {{- if .Page.Lastmod.Before .Page.Date -}}
+    {{- $errorObject := dict
+      "code" "liva-fm-102"
+      "page" $permalink
+      "file" $filePath
+      "date" .Page.Date
+      "lastmod" .Page.Lastmod
+    -}}
+    {{- $errors = $errors | append $errorObject -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /*
+  Check that layout is valid
+  Code: liva-fm-111
+*/}}
+{{- with $params.layout -}}
+  {{- $layoutValue := . -}}
+  {{- $validLayouts := slice
+    "home" "list" "page" "story" "utility" "taxonomy" "terms"
+  -}}
+  {{- if not (in $validLayouts $layoutValue) -}}
+    {{- $errorObject := dict
+      "code"         "liva-fm-111"
+      "page"         $permalink
+      "file"         $filePath
+      "keyValue"     $layoutValue
+      "validValues"  $validLayouts
+    -}}
+    {{- $errors = $errors | append $errorObject -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /*
+  Check Page.Title
+  Code: liva-fm-122
+*/}}
+{{- if not (strings.TrimSpace .Page.Title) }}
+  {{- $errorObject := dict
+    "code" "liva-fm-122"
+    "page" $permalink
+    "file" $filePath
+  -}}
+  {{- $errors = $errors | append $errorObject -}}
+{{- end -}}
+
+{{- /*
+  Check for a valid license
+  Code: liva-fm-131
+*/}}
+{{- $validLicenses := slice "copyright" "CC0" "CC-BY" "CC-BY-SA" "CC-BY-ND" "CC-BY-NC" "CC-BY-NC-SA" "CC-BY-NC-ND" -}}
+{{- if and (isset $params "license") (and (ne $params.license "") (not (in $validLicenses $params.license))) -}}
+  {{- $errorObject := dict
+    "code"        "liva-fm-131"
+    "page"        $permalink
+    "file"        $filePath
+    "keyValue"    $params.license
+    "validValues" $validLicenses
+  -}}
+  {{- $errors = $errors | append $errorObject -}}
+{{- end -}}
+
+{{- /*
+  Check Page.Params.description only for pages that have a file
+  Code: liva-fm-161
+*/}}
+{{- if $filePath }}
+  {{- if not (strings.TrimSpace .Page.Params.description) -}}
+    {{- $errorObject := dict
+      "code" "liva-fm-161"
+      "page" $permalink
+      "file" $filePath
+    -}}
+    {{- $errors = $errors | append $errorObject -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /*
+  Check for all keys that should have booleans.
+  Code: cod-fm-141 (recommended), liva-fm-151 (featured)
+*/}}
+{{- $booleanChecks := dict
+  "featured"    "liva-fm-151"
+  "recommended" "liva-fm-141"
+-}}
+{{- range $key, $errorCode := $booleanChecks -}}
+  {{- if and (isset $params $key) (not (in (slice true false) (index $params $key))) -}}
+    {{- $errorObject := dict
+      "code"     $errorCode
+      "page"     $permalink
+      "file"     $filePath
+      "key"      $key
+      "keyValue" (index $params $key)
+    -}}
+    {{- $errors = $errors | append $errorObject -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $errors -}}

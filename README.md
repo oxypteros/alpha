@@ -43,7 +43,7 @@ Alpha is a **shortcode based theme** that lets you customize content and layout 
 - Multilingual suport
 - Accessible-first markup
 - Performance optimized
-- OCD (a discreet helper)
+- LiVa (a discreet helper)
 - Optional Tailwind development mode
 - Optional search with Pagefind
 - Optional analytics with GoatCounter

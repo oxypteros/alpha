@@ -4,44 +4,49 @@
 
   Repo: https://github.com/oxypteros/alpha
 */}}
+{{- $filename := "" -}}
+{{- $path := "" -}}
 {{- $seoImage := "" -}}
 {{- $processedImage := "" -}}
 {{- $imageQualityError := false -}}
 {{- $imageNotFoundError := false -}}
 {{- $globalImageNotFoundError := false -}}
+{{- $globalImageQualityError := false -}}
 
+{{- /* Define Quality Parameters */ -}}
+{{- $targetWidth := 1200 -}}
+{{- $targetHeight := 630 -}}
+{{- $targetRatio := 1.91 -}}
+{{- $tolerance := 0.1 -}}
 {{- /* Image Discovery */}}
-{{- /* Frontmatter SEO image ( mainly for _index.md) */}}
-{{- with .Page.Params.seo_image }}
-  {{- $path := printf "img/%s" . -}}
-  {{- with resources.Get $path }}
-    {{- $seoImage = . -}}
-  {{- else }}
-    {{- $imageNotFoundError = $path -}}
-  {{- end }}
-{{- end }}
 
-{{- /* Page Bundle SEO image (should be used as Default) */}}
-{{- if not $seoImage }}
-  {{- $seoImage = .Page.Resources.GetMatch "*-seo.{jpg,jpeg,png,webp}" -}}
+{{- with .Page.Params.seo_image }}
+  {{- $filename = . -}}
+
+  {{- /* SEO image in assets ( mainly for _index.md) */}}
+  {{- $path = printf "img/%s" $filename -}}
+  {{- $seoImage = resources.Get $path -}}
+
+  {{- /* Page Bundle SEO image (should be used as Default) */}}
+  {{- if not $seoImage }}
+    {{- $seoImage = $.Page.Resources.GetMatch $filename -}}
+  {{- end }}
+
+  {{- /* Image not found. Inform OCD */}}
+  {{- if not $seoImage -}}
+    {{- $imageNotFoundError = $filename -}}
+  {{- end -}}
 {{- end }}
 
 {{- /* Image Processing */}}
 {{- if $seoImage }}
-  {{- /* Define Quality Parameters */ -}}
-  {{- $targetWidth := 1200 -}}
-  {{- $targetHeight := 630 -}}
-  {{- $targetRatio := 1.91 -}}
-  {{- $tolerance := 0.1 -}}
-
   {{- /* Image quality check */}}
 
   {{- /* Promoted */}}
   {{- if and (eq $seoImage.Width $targetWidth) (eq $seoImage.Height $targetHeight) }}
     {{- $processedImage = $seoImage -}}
-
   {{- else }}
-  {{- /* Good enough fix it */}}
+    {{- /* Good enough fix it */}}
     {{- $currentRatio := div (float $seoImage.Width) $seoImage.Height -}}
     {{- $ratioDiff := sub $currentRatio $targetRatio -}}
     {{- $absRatioDiff := cond (lt $ratioDiff 0) (mul $ratioDiff -1) $ratioDiff -}}
@@ -59,9 +64,26 @@
 {{- /* Global Param Fallback */}}
 {{- if not $processedImage }}
   {{- with .Site.Params.seo_default_image }}
-    {{- $path := printf "img/%s" . -}}
+    {{- $path = printf "img/%s" . -}}
     {{- with resources.Get $path }}
-      {{- $processedImage = .Fill "1200x630" -}}
+      {{- $fallbackImage := . -}}
+      {{- /* Promoted */}}
+      {{- if and (eq $fallbackImage.Width $targetWidth) (eq $fallbackImage.Height $targetHeight) }}
+        {{- $processedImage = $fallbackImage -}}
+      {{- else }}
+        {{- /* Good enough fix it */}}
+        {{- $currentRatio := div (float $fallbackImage.Width) $fallbackImage.Height -}}
+        {{- $ratioDiff := sub $currentRatio $targetRatio -}}
+        {{- $absRatioDiff := cond (lt $ratioDiff 0) (mul $ratioDiff -1) $ratioDiff -}}
+
+        {{- if and (ge $fallbackImage.Width $targetWidth) (le $absRatioDiff $tolerance) }}
+          {{- $processedImage = $fallbackImage.Fill "1200x630" -}}
+        {{- else -}}
+          {{- /* Failed. bad image flag it and use original */}}
+          {{- $processedImage = $fallbackImage -}}
+          {{- $globalImageQualityError = true -}}
+        {{- end }}
+      {{- end }}
     {{- else }}
       {{- $globalImageNotFoundError = $path -}}
     {{- end }}
@@ -69,29 +91,64 @@
 {{- end }}
 
 {{- /* OCD Error Reporting */}}
-{{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
-  {{- $ocdHeadErrors := .Page.Scratch.Get "ocdHeadErrors" | default (slice) -}}
-  {{- $ocdErrorCode := ""}}
-
-  {{- if $imageNotFoundError -}}
-    {{- $ocdErrorCode = "ocd-seo-200"}}
-    {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
-    {{- warnf "OCD Error [%s] Page: %s | SEO image path in front matter not found: '%s'" $ocdErrorCode .Page.RelPermalink $imageNotFoundError -}}
+{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
+{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
+{{- if or $ocdWarnEnabled $ocdEnabled -}}
+  {{- $ocdHeadFmErrors := slice -}}
+  {{- $ocdHeadConfigErrors := slice -}}
+  {{- $page := .Page.Permalink -}}
+  {{- $ocdErrorCode := "" }}
+  {{- $filePath := "" -}}
+  {{- if .Page.File -}}
+    {{- $filePath = .Page.File.Path -}}
   {{- end -}}
 
-  {{- if $globalImageNotFoundError -}}
-     {{- $ocdErrorCode = "ocd-seo-300"}}
-    {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
-    {{- warnf "OCD Error [%s] Page: %s | Global SEO image in params.toml not found: '%s'" $ocdErrorCode .Page.RelPermalink $globalImageNotFoundError -}}
+  {{- /* Image Not Found */}}
+  {{- if $imageNotFoundError -}}
+    {{- $ocdErrorCode = "ocd-fm-171" }}
+    {{- $seoImage404Error := dict
+      "code" $ocdErrorCode
+      "page" $page
+      "file" $filePath
+      "path" $path
+      "keyValue" $imageNotFoundError
+    -}}
+    {{- $ocdHeadFmErrors = $ocdHeadFmErrors | append $seoImage404Error -}}
   {{- end -}}
 
   {{- if $imageQualityError -}}
-    {{- $ocdErrorCode = "ocd-seo-100"}}
-    {{- $ocdHeadErrors = $ocdHeadErrors | append $ocdErrorCode -}}
-    {{- warnf "OCD Error [%s] Page: %s | SEO image does not meet quality standards (min-width: 1000px, aspect-ratio: ~1.91)." $ocdErrorCode .Page.RelPermalink -}}
+    {{- $ocdErrorCode = "ocd-fm-172" }}
+    {{- $seoBadImageError := dict
+      "code" $ocdErrorCode
+      "page" $page
+      "file" $filePath
+      "path" $path
+      "keyValue" $filename
+    -}}
+    {{- $ocdHeadFmErrors =  $ocdHeadFmErrors | append $seoBadImageError -}}
   {{- end -}}
 
-  {{- .Page.Scratch.Set "ocdHeadErrors" $ocdHeadErrors -}}
+  {{- if $globalImageNotFoundError -}}
+    {{- $ocdErrorCode = "ocd-cfg-132" }}
+    {{- $configSeoImage404Error := dict
+      "code" $ocdErrorCode
+      "path" $globalImageNotFoundError
+      "keyValue" .Site.Params.seo_default_image
+    -}}
+    {{- $ocdHeadConfigErrors = $ocdHeadConfigErrors | append $configSeoImage404Error -}}
+  {{- end -}}
+
+  {{- if $globalImageQualityError -}}
+    {{- $ocdErrorCode = "ocd-cfg-133" }}
+    {{- $configBadSeoImageError := dict
+      "code" $ocdErrorCode
+      "path" $path
+      "keyValue" .Site.Params.seo_default_image
+    -}}
+    {{- $ocdHeadConfigErrors = $ocdHeadConfigErrors | append $configBadSeoImageError -}}
+  {{- end -}}
+  {{- .Store.Set "ocdHeadFmErrors"  $ocdHeadFmErrors -}}
+  {{- .Store.Set "ocdHeadConfigErrors" $ocdHeadConfigErrors -}}
 {{- end -}}
 
 {{- /* Data Population */}}

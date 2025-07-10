@@ -1,0 +1,83 @@
+{{- /*
+  Partial: liva/dispatchers/terminal/sc-invalid-values.html
+  Purpose: Renders the terminal warnings for invalid parameters value in shortcodes.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /*
+  Dictionary keys from the handler originated by:
+  'liva/core/shortcodes/validator.logic.html'
+  'data/shortcodes/rules.toml'
+*/}}
+{{- $code := .code -}}
+{{- $scName := .scName -}}
+{{- $invalidValues := .invalidValues -}}
+{{- $page := .page -}}
+{{- $position := .position -}}
+{{- $paramsRules := .rules.params -}} 
+
+{{- /* Format $position for html render */}}
+{{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $position -}}
+
+{{- /* Count for pluralization */}}
+{{- $invalidCount := len $invalidValues -}}
+
+{{- $errorDetails := slice -}}
+{{- range $paramName, $badValue := $invalidValues }}
+  {{- $detailString := printf `> %s="%s"` (upper $paramName) $badValue -}}
+  {{- $errorDetails = $errorDetails | append $detailString -}}
+{{- end }}
+{{- $formattedErrorDetails := delimit $errorDetails "\n        " -}}
+
+{{- $helpBlock := "" -}}
+{{- if .invalidValues }}
+  {{- $helpSnippets := slice -}}
+  {{- range $paramName, $badValue := .invalidValues }}
+    {{- $snippet := "" -}}
+    {{- $rule := index $paramsRules (upper $paramName) -}}
+    {{- if $rule }}
+      {{- if eq $rule.validation "in_list" }}
+        {{- $formattedValidValues := delimit $rule.list ", " -}}
+        {{- $snippet = printf "> %s : %s" (upper $paramName) $formattedValidValues -}}
+      {{- else if eq $rule.validation "is_positive_integer" }}
+        {{- $snippet = printf "> %s : Must be a positive integer" (upper $paramName) -}}
+      {{- else }}
+        {{- $snippet = printf "> %s : See documentation" (upper $paramName) -}}
+      {{- end }}
+    {{- else }}
+      {{- $snippet = printf "> %s : (Rule definition not found)" (upper $paramName) -}}
+    {{- end }}
+    {{- $helpSnippets = $helpSnippets | append $snippet -}}
+  {{- end }}
+
+  {{- $helpHeader := "Valid values:" -}}
+  {{- $formattedSnippets := delimit $helpSnippets "\n             " -}}
+  {{- $helpBlock = printf "%s\n   %s" $helpHeader $formattedSnippets -}}
+{{- end -}}
+
+{{- $title := cond (eq $invalidCount 1) "Shortcode Invalid Value" "Shortcode Invalid Values" -}}
+{{- $reason := cond (eq $invalidCount 1) "value was" "values were" -}}
+
+<!-- prettier-ignore -->
+{{- warnf `
+[LiVa] %s 
+──────────────────────────────────────────────
+ Code      : %s
+ Shortcode : {{< %s >}}
+ Reason    : The following invalid %s used:
+             %s
+ Page      : %s
+ File      : %s
+──────────────────────────────────────────────
+ %s
+──────────────────────────────────────────────`
+  $title 
+  $code
+  $scName
+  $reason
+  $formattedErrorDetails
+  $page.Permalink
+  $relPosition
+  $helpBlock
+-}}

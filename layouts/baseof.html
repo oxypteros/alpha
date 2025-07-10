@@ -44,9 +44,9 @@
       <script src="/pagefind/pagefind-ui.js" defer></script>
     {{- end }}
 
-    {{- /* Conditionally append OCD assets */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-      {{- partial "head/ocd.html" . }}
+    {{- /* Conditionally append LiVa assets */}}
+    {{- if and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
+      {{- partial "head/liva.html" . }}
     {{- end }}
   </head>
   <body
@@ -76,7 +76,6 @@
     {{- /* Tail partials: scripts, icons and templates loaded at the end of the body */}}
     {{- /* Scripts */}}
     {{- partial "tail/js.html" . }}
-    {{- partial "tail/custom-js.html" . }}
     {{- /* Icons */}}
     {{- partialCached "tail/icons.html" . .Kind .Site.Language.Lang .Page.Params.layout .Page.Params.author }}
 
@@ -99,9 +98,9 @@
       {{- partialCached "tail/settings-template.html" . .Site.Language.Lang -}}
     {{- end }}
 
-    {{- /* OCD partial, loaded strictly for dev. mode and locally */}}
-    {{- if and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) }}
-      {{- partial "ocd/main.html" . -}}
+    {{- /* LiVa partial, loaded strictly for dev. mode and locally */}}
+    {{- if or (.Site.Params.liva_enabled | default true) (.Site.Params.livaWarn_enabled | default true) }}
+      {{- partial "liva/main.html" . -}}
     {{- end -}}
   </body>
 </html>

@@ -1,0 +1,94 @@
+{{- $data := .context -}}
+{{- $shortcodesData := $data.shortcodes -}}
+{{- with $shortcodesData }}
+  <div class="liva liva liva-card liva-card-help liva-shadow">
+    <header class="liva-card-header liva-card-header-help">
+      <h2 class="liva-title">
+        {{ i18n "LivaScHelpShortcodes" . | default "Shortcodes Help" }}
+      </h2>
+      <svg aria-hidden="true" focusable="false" width="24" height="24">
+        <use href="#liva-icon-support"></use>
+      </svg>
+    </header>
+    <div class="liva-card-content liva-card-content-help">
+      {{- /* Range the shortcodes defined in the  `data/help/shortcodes.[lang].toml` file */}}
+      {{ range sort $shortcodesData "order" "asc"
+      }}
+        <div class="liva-help-entry">
+          <h3>{{ .title  }}</h3>
+          <p class="liva-help-description">{{ .description | markdownify }}</p>
+
+          <dl class="liva-help-details">
+            <dt>{{ i18n "LivaHelpSyntax" | default "Syntax" }}</dt>
+            <dd>
+              <!-- prettier-ignore-->
+              <code class="liva-mono">{{ .syntax | safeHTML }}</code>
+            </dd>
+
+            {{ with .parameters }}
+              <dt>{{ i18n "LivaHelpParameters" | default "Parameters" }}</dt>
+              {{ range . }}
+                <dd>
+                  <strong>{{ .name }}</strong>
+                  {{- if .optional }}
+                    (<em>{{ i18n "LivaHelpOptional" | default "optional" }}</em>)
+                  {{ else }}
+                    (<strong>{{ i18n "LivaHelpRequired" | default "required" }}</strong>)
+                  {{ end -}}:
+                  {{ .description | markdownify }}
+                  {{- with .values }}
+                    <br />
+                    <em>{{ i18n "LivaHelpValues" | default "Values" }}</em>:
+                    {{- /* Range through parameters values */}}
+                    <span class="liva-mono">
+                      {{- range $index, $value := . -}}
+                        {{- /* Delimit with comma */}}
+                        {{- if gt $index 0 }}, {{ end -}}
+                        <code>{{ $value | markdownify }}</code>
+                      {{- end }}</span
+                    >.
+                  {{ end }}
+                </dd>
+              {{ end }}
+            {{ end }}
+            {{- with  .example }}
+              <dt>{{ i18n "LivaHelpExample" | default "Example" }}</dt>
+              <dd>
+                <!-- prettier-ignore-->
+                <code class="liva-mono">{{ . | safeHTML }}</code>
+              </dd>
+            {{- end }}
+            <strong>{{ i18n "LivaHelpDocumentation" | default "Documentation" }}</strong>:
+            <a href="{{ .docLink | safeHTML }}"
+              >{{ .title }}</a
+            >
+          </dl>
+        </div>
+      {{- end }}
+    </div>
+    <footer class="liva-card-footer liva-card-footer-help">
+      <div class="liva-help-meta">
+        <p>
+          <strong>{{ i18n "LivaHelpAbout" | default "About" }}:</strong> {{ $data.footer_desc | markdownify }}
+          </p>
+          <div class="liva-help-footnote">
+            <p>
+          <em>{{ i18n "LivaHelpExample" | default "Example" }}:</em>
+          <!-- prettier-ignore -->
+          <code class="liva-mono liva-mono-help">&lbrace;&lbrace;&lt; help TYPE="markdown" &gt;&rbrace;&rbrace;</code>
+          </p>
+          <a class="liva" href="{{ $data.footer_URL }}">{{ i18n "LivaHelpScDocs" | default "Shortcodes Documentation" }}</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+{{- else }}
+  {{- /* Invalid data checker */}}
+  <div class="liva liva liva-card liva-card-error liva-shadow">
+    <p>
+      <strong>Partial Error: </strong> The 'shortcodes' data passed to
+      <code class="liva-mono liva-mono-help">liva/components/help/shortcodes.html</code> was
+      invalid or empty.
+    </p>
+  </div>
+{{ end }}

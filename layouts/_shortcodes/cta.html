@@ -1,199 +1,130 @@
 {{- /*
-  cta.html (shortcode): Renders a Call To Action element with a button styled link.
+  Shortcode: cta.html
+  Purpose: Renders a Call To Action element with a button styled link.
 
-  Target: _index.md files.
+  Target: homepage, sections (_index.md)
 
   Example:
-    {{< cta TITLE="" BTN-TEXT="" BTN-LINK="" BTN-LABEL="">}}
-  
-  Params: 
-    - TITLE (string, optional): H2 heading. 
-    - BTN-TEXT (string, optional): link text for link 1 (button styled) 
-    - BTN-LINK (string, optional): href attribute for link 1 
-    - BTN-LABEL (string, optional): aria-label attribute for link 1 
-  
-  Error handler: 
-    - warnf 
-    - OCD 
-  
-  Docs: https://alpha.oxypteros.com/docs/shortcodes/cta 
-  Repo: https://github.com/oxypteros/alpha 
+  {{< cta TITLE="" BTN-TEXT="" BTN-LINK="" BTN-LABEL="" >}}
+  /... Markdown .../
+  {{< /cta >}}
+
+  Params:
+  - TITLE (string, optional): H2 heading.
+  - BTN-TEXT (string, optional): Link text for link (button styled)
+  - BTN-LINK (string, optional): `href` attribute for link
+  - BTN-LABEL (string, optional):`aria-label` attribute for link
+
+  Error handler:
+  - livaWarn (global)
+  - LiVa (scoped)
+
+  Docs: https://alpha.oxypteros.com/docs/shortcodes/cta
+  Repo: https://github.com/oxypteros/alpha
 */}}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
-{{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
-{{- $btnLink := .Get "BTN-LINK" | default (.Get "Btn-Link") | default (.Get "btn-link") }}
-{{- $btnTxt := .Get "BTN-TEXT" | default (.Get "Btn-Title") | default (.Get "btn-title")}}
-{{- $btnAria := .Get "BTN-LABEL" | default (.Get "Btn-Label") | default (.Get "btn-label") }}
-{{- $content := .Inner | markdownify }} 
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
 
-{{- /* Context for error reporting (warnf, OCD)*/}}
-{{ $page := .Page.RelPermalink }}
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
 
-{{- /* warnf, OCD: Validate params manually against an allowlist. */}}
-{{- $allowedKeys := slice "title" "btn-link" "btn-text" "btn-label" }}
-{{- $invalidKeys := slice }}
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
 
+{{- /* On successful validations render the shortcode */}}
+{{- if $validInput }}
+  {{- $data := $validationResult.data -}}
 
-{{- /* Invalid Parameter Error Handling (warnf, OCD) */}}
+  {{- /* - Reassign the validator returned data to the vars used by the shortcode. */}}
+  {{- $title := $data.title -}}
+  {{- $subtitle := $data.subtitle -}}
+  {{- $btnLink := (index $data "btn-link") -}}
+  {{- $btnTxt := (index $data "btn-text") -}}
+  {{- $btnAria := (index $data "btn-label") -}}
 
-{{- range $key, $value := .Params }}
-  {{- if not (in $allowedKeys (lower $key)) }}
-    {{- $invalidKeys = $invalidKeys | append $key }}
-  {{- end }}
-{{- end }}
-{{- if gt (len $invalidKeys) 0 }}
-  {{- /* Warnf for error: ocd-sc-141 */}}
-  {{- $errorCode := "ocd-sc-141" }}
-  {{- $invalidKeysString := delimit $invalidKeys ", " }}
-  {{- $errorMessage := printf "Invalid parameters: %s" $invalidKeysString }}
-  {{- $logMessage := printf "OcdError [%s] Page: %s |  %s" $errorCode $page $errorMessage }}
-  {{- warnf "%s" $logMessage }}
+  {{- /* *** A pair is considered valid if: Both its parts (link and text)
+    are defined. OR NEITHER of its parts are defined. The only "invalid" state is
+    when one part is defined but the other is not.
+  */}}
+  {{- $isBtnPairValid := or (and $btnLink $btnTxt) (and (not $btnLink) (not $btnTxt)) -}}
 
-  {{- /* OCD error card for: odc-sc-141 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
-    <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
-      data-error="{{ $errorCode }}"
+  {{- if not $isBtnPairValid }}
+    {{- /* - At least one pair is incomplete show LiVa link pairs unique warning */}}
+    {{- if or ($livaWarnEnabled) ($livaEnabled) }}
+      {{- $errorData := dict
+        "context"         .
+        "scName"          .Name
+        "errorCode"       "liva-sc-172"
+        "scExample"       "$errorMeta.example"
+        "isBtnPairValid"  $isBtnPairValid
+        "btnLink"         $btnLink
+        "btnTxt"          $btnTxt
+      -}}
+      {{- partial "liva/dispatchers/legacy/link-pairs.html" $errorData }}
+    {{- end }}
+  {{- else }}
+
+    {{- /* Shortcode Rendering */}}
+    {{- $content := .Inner | markdownify }}
+    {{- /* Create unique id's for aria-labels in case of multiple shortcodes */}}
+    {{- $base := .Page.File.BaseFileName | urlize }}
+    {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+    {{- $uid := printf "%s-%v" $base $ordinal }}
+    <section
+      class="mb-32 flex w-full max-w-7xl flex-col items-center px-4 text-center"
+      aria-labelledby="cta-heading-{{- $uid -}}"
     >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdScParamError" . | default "Shortcode Parameter Error" }}
-        </div>
-        <svg aria-hidden="true" focusable="false">
-          <use href="#icon-error"></use>
-        </svg>
-      </header>
-      <div class="ocd-card-content">
-        <div>
-          <p>
-            {{- $count := len $invalidKeys }}
-            {{- i18n "OcdScCta141" $count | default "Invalid parameter detected in the status card shortcode, on:" }}
-            <a href="{{ $page }}">{{ .Page.Title }}</a>
-          </p>
-          <p>
-            {{- i18n "OcdScParameter" $count  | default "The parameters," }}&nbsp;
-            <span class="ocd-mono ocd-mono-error">{{ $invalidKeysString }}</span
-            >&nbsp;
-            {{ i18n "OcdScNotRecognized"  $count  | default "are not recognized." }}
-          </p>
-        </div>
-        <hr />
-        <p>
-          {{ i18n "OcdScAcceptedParameters" . | default "Accepted parameters:" }}
-          <span class="ocd-mono-solution">TITLE</span>,
-          <span class="ocd-mono-solution">BTN-TEXT</span>,
-          <span class="ocd-mono-solution">BTN-LINK</span>,
-          <span class="ocd-mono-solution">BTN-LABEL</span>,
-        </p>
-      </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
-          >{{ $errorCode }}</a
-        >
-      </footer>
-    </div>
-  {{- end }}
-{{- end }}
+      <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-2xl"></div>
 
-
-{{- /* Missing Link Text Error Handling (warnf, OCD) */}}
-
-  {{- if and $btnLink (eq $btnTxt "") }}
-    {{- /* Warnf for error: ocd-sc-142 */}}
-    {{- $errorCode := "ocd-sc-142" }}
-    {{- $errorMessage := printf "Missing text for BTN-LINK with href: %s" $btnLink }}
-    {{- $logMessage := printf "OcdError [%s] - Page: %s |  %s" $errorCode $page $errorMessage }}
-    {{- warnf "%s" $logMessage }}
-
-    {{- /* OCD error card for: odc-sc-142 */}}
-    {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
       <div
-        class="ocd ocd-card ocd-card-error ocd-shadow"
-        data-error="{{ $errorCode }}"
+        class="my-16 flex w-full flex-col items-center justify-center gap-16"
       >
-        <header class="ocd-card-header">
-          <div class="ocd-title">
-            {{- i18n "OcdScContentError" . | default "Shortcode Content Error" }}
-          </div>
-          <svg aria-hidden="true" focusable="false">
-            <use href="#icon-error"></use>
-          </svg>
-        </header>
-        <div class="ocd-card-content">
-          <div>
-            <p>
-              {{- i18n "OcdScCta142" . | default "Missing link text in the cta shortcode on:" }}
-              <a href="{{ $page }}">{{ .Page.Title }}</a>
-            </p>
-            <p>
-              {{- i18n "OcdScTheParameter" . | default "The parameter" }}&nbsp;
-              <span class="ocd-mono ocd-mono-error">BTN-TEXT</span>&nbsp;
-              {{ i18n "OcdScLinkNotRendered" . | default "is missing, so the link will not be rendered." }}
-            </p>
-          </div>
-          <hr />
-          <p>
-            {{- i18n "OcdScFillParameter" . | default "Provide a value for the parameter" }}
-            <span class="ocd-mono-solution">BTN-TEXT="Your Button Text"</span>
-            {{ i18n "OcdScOrDeleteParameter" . | default "or delete the" }}
-            <span class="ocd-mono ocd-mono-error"
-              >BTN-LINK="{{ $btnLink }}"</span
-            >
-          </p>
-        </div>
-        <footer class="ocd-card-footer">
-          <a href="https://alpha.oxypteros.com/ocd/error-codes"
-            >{{ $errorCode }}</a
+        {{- with $title }}
+          <h2
+            id="cta-heading-{{- $uid -}}"
+            class="font-200 text-on-sur-var dark:text-on-sur-var-d w-full text-4xl leading-normal wrap-break-word hyphens-manual"
           >
-        </footer>
+            {{- . -}}
+          </h2>
+        {{- else }}
+          <h2 id="cta-heading-{{- $uid -}}" class="sr-only">
+            {{- i18n "CtaHeading" | default "What's Next?" -}}
+          </h2>
+        {{- end }}
+        <div
+          class="sc-cta-text font-300 max-w-[82ch] text-xl leading-relaxed [&>p]:mb-3"
+        >
+          {{ $content }}
+        </div>
+        {{- if and $btnLink $btnTxt }}
+          <a
+            class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur rounded-full border px-5 py-3 text-center font-sans shadow-lg transition-all duration-400 ease-in-out hover:shadow-md"
+            href="{{- $btnLink -}}"
+            {{- with $btnAria }}
+              aria-label="{{ . }}"
+            {{- end }}
+            data-prefetch="true"
+            >{{- $btnTxt -}}</a
+          >
+        {{- end }}
       </div>
-    {{- end }}
-{{- end }}
-
-
-{{- /* Shortcode Rendering */}}
-  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
-  {{- $base := .Page.File.BaseFileName | urlize }}
-  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
-  {{- $uid := printf "%s-%v" $base $ordinal }}
-<section 
-  class="mb-32 flex w-full max-w-7xl flex-col items-center px-4 text-center"
-  aria-labelledby="cta-heading-{{- $uid -}}"    
->
-  <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-2xl"></div>
-
-  <div class="my-16 flex w-full flex-col items-center justify-center gap-16">
-    {{- with $title }}
-      <h2
-        id="cta-heading-{{- $uid -}}" 
-      class="font-200 text-on-sur-var dark:text-on-sur-var-d text-4xl leading-normal wrap-break-word hyphens-manual w-full">
-        {{- . -}}
-      </h2>
-    {{- else }}
-      <h2
-        id="cta-heading-{{- $uid -}}"
-        class="sr-only"
-      >
-      {{- i18n "CtaHeading" | default "What's Next?" -}}
-      </h2>
-    {{- end }}
-    <div
-      class="sc-cta-text font-300 max-w-[82ch] text-xl leading-relaxed [&>p]:mb-3"
-    >
-      {{ $content }}
-    </div>
-    {{- if and $btnLink $btnTxt }}
-    <a 
-      class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur rounded-full border px-5 py-3 text-center font-sans shadow-lg transition-all duration-400 ease-in-out hover:shadow-md"
-      href="{{- $btnLink -}}"
-      {{- with $btnAria }}
-        aria-label="{{ . }}"
-      {{- end }}
-      data-prefetch="true"
-      >{{- $btnTxt -}}</a
-    >
-    {{- end }}
-  </div>
-  <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-2xl"></div>
-</section>
+      <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-2xl"></div>
+    </section>
+  {{- end }}
+{{- end -}}

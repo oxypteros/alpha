@@ -1,0 +1,124 @@
+{{- /*
+  Partial: liva/dispatchers/terminal/config.html
+  Purpose: Renders the terminal warnings for config errors.
+  
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /* Input data from core/config/handler.logic */}}
+{{- $cfgErrors := .configErrors -}}
+
+{{- /* Input data from 'data/liva/console/config.toml' */}}
+{{- $cfgErrorDefs := site.Data.liva.console.config -}}
+
+{{- range $cfgErrors -}}
+  {{- /*
+    Dictionary keys provided by the partials:
+    'liva/core/config/check.logic.html'
+    'head/seo/images.html'
+  */}}
+  {{- $code := .code | default "liva-cfg-000" -}}
+  {{- $path := .path -}}
+  {{- $keyValue := .keyValue -}}
+  {{- $lang := .lang -}}
+  {{- $currentYear := .currentYear -}}
+  {{- $title := "" -}}
+  {{- $reason := "" -}}
+  {{- $solution := "" -}}
+
+  {{- /* Get config error values from data */}}
+  {{- $entry := (index $cfgErrorDefs $code) | default dict -}}
+
+  {{- /* Format values for default use */}}
+  {{- $key := printf ($entry.key | default "") -}}
+  {{- $file := printf ($entry.file | default "¯\\_(ツ)_/¯") -}}
+
+  {{- /*
+    hugo.toml: Missing .Site.Title
+    Code: liva-cfg-102
+  */}}
+  {{- if eq $code "liva-cfg-102" -}}
+    {{- $title = printf "Missing Site Title" }}
+    {{- $reason = printf "The '%s' key is missing or empty." $key -}}
+    {{- $solution = printf "Add the website name as '%s' in the %s\nEx. %s = \"My Website\"" $key $file $key -}}
+
+    {{- /*
+      languages.toml: Missing Lang weight
+      Codes: liva-cfg-112
+    */}}
+  {{- else if eq $code "liva-cfg-112" -}}
+    {{- $title = printf "Missing Language Weight" -}}
+    {{- $reason = printf "The '%s' key for language [%s] is missing or invalid." $key $lang -}}
+    {{- $solution = printf "Add a '%s' value for the language [%s].\nEx. %s = 2" $key $lang $key }}
+
+    {{- /*
+      languages.toml: Missing languageName
+      Codes: liva-cfg-113
+    */}}
+  {{- else if eq $code "liva-cfg-113" -}}
+    {{- $title = printf "Missing Language Name" -}}
+    {{- $reason = printf "The '%s' key for language [%s] is missing or empty." $key $lang -}}
+    {{- $solution = printf "Add a '%s' for the language [%s].\nEx. %s = \"English\"" $key $lang $key -}}
+
+    {{- /*
+      params.toml: Invalid established_year
+      Codes: liva-cfg-121
+    */}}
+  {{- else if eq $code "liva-cfg-121" -}}
+    {{- $title = printf "Invalid Year Value" -}}
+    {{- $reason = printf "The '%s' key has the invalid value: %q." $key $keyValue -}}
+    {{- $solution = printf "Add a valid year as value of '%s'.\nEx. %s = %q" $key $key $currentYear }}
+
+    {{- /*
+      params.toml: Future established_year
+      Codes: liva-cfg-122
+    */}}
+  {{- else if eq $code "liva-cfg-122" -}}
+    {{- $title = printf "Future Year Value" -}}
+    {{- $reason = printf "The %q value for the key '%s' is a future year"  $keyValue $key -}}
+    {{- $solution = printf "Add the current or a past year as value of '%s'.\nEx. %s = %q" $key $key $currentYear -}}
+
+    {{- /*
+      params.toml: Missing SEO image seo_default_image
+      Codes: liva-cfg-132
+    */}}
+  {{- else if eq $code "liva-cfg-132" -}}
+    {{- $title = printf "Missing SEO Image" }}
+    {{- $reason = printf "The SEO image %q could not be found." $keyValue -}}
+    {{- $solution =  printf "Ensure the image exists at: 'assets/%s'."  $path -}}
+
+    {{- /*
+      params.toml: Bad quality SEO image seo_default_image
+      Codes: liva-cfg-132
+    */}}
+  {{- else if eq $code "liva-cfg-133" -}}
+    {{- $title = printf "Bad Quality SEO Image" -}}
+    {{- $reason = printf "The defined SEO image %q does not meet quality standards." $keyValue -}}
+    {{- $solution =  printf "Recommended dimensions are 1200x630px." -}}
+
+    {{- /*
+      Fallback for missing or undefined code
+      Code: liva-cfg-000 or undefined
+    */}}
+  {{- else }}
+    {{- $title = printf "Unknown Error Code" -}}
+    {{- $reason = printf "Invalid or undefined error code!" -}}
+    {{- $solution =  printf "Magic only works when the spell(ing) is real" -}}
+  {{- end -}}
+  <!-- prettier-ignore -->
+  {{- warnf `
+[LiVa] %s 
+─────────────────────────────────────────────────
+Code   : %s
+Reason : %s
+File   : %s
+─────────────────────────────────────────────────
+%s
+─────────────────────────────────────────────────`
+$title 
+$code
+$reason
+$file
+$solution
+-}}
+{{- end -}}

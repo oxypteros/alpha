@@ -1,4 +1,4 @@
-# English translations for the Alpha theme
+# English others for the Alpha theme
 [Homepage]
 other = "Homepage"
 
@@ -15,7 +15,7 @@ other = "See our latest thoughts turned into words, in the"
 other = "Revisit a selected piece that still echoes through time,"
 
 [PostFeatLinkText]
-other = ""
+other = "" 
 
 [AllRights]
 other = "All rights reserved."
@@ -71,8 +71,8 @@ other = "Tagged as:"
 [EditOnGithub]
 other = "Edit this page on Github"
 
-[AnomymousStats]
-other = "Anomymous statistics"
+[AnonymousStats]
+other = "Anonymous statistics"
 
 [CollectedStats]
 other = "We collect anonymous stats to refine functionality."
@@ -106,7 +106,7 @@ other = "Activate search"
 [ColorSchemeBtn]
 other = "Toggle color scheme"
 
-[NoTranslation]
+[Noother]
 other = "Not translated"
 
 [ChangeLanguage]
@@ -137,10 +137,10 @@ other = "Settings modal is open"
 other = "Settings modal is closed"
 
 [TrackingDisabled]
-other = "Anomymous tracking is disabled"
+other = "Anonymous tracking is disabled"
 
 [TrackingEnabled]
-other = "Anomymous tracking is enabled"
+other = "Anonymous tracking is enabled"
 
 [PrefetchDisabled]
 other = "Prefetch function is disabled"
@@ -183,101 +183,18 @@ other = "Info"
 
 [SocialHeading]
 other = "Social media links"
-# Ocd
-[OcdOn]
-other = "on:"
-[OcdImageError]
-other = "Image Error"
-[OcdImageNotFound]
-other = "Image not found on page"
-[OcdImageMissingSolution]
-other = "Confirm the image exists and the name in the markdown image instruction matches perfectly."
-[OcdImageAltMissing]
-other = "Image Alt Missing"
-[OcdImageAltText]
-other = "Alternative text is missing from image"
-[OcdImageAltMissingSolution]
-other = "Enter an image description in the markdown image instruction."
-[OcdScInputError]
-other = "Shortcode Input Error"
-[OcdScNumList100]
-other = "Invalid style value in the numbered list shortcode, on:"
-[OcdScSpecifiedStyle]
-other = "The specified style,"
-[OcdScNotRecognized]
-other = "is not recognized."
-[OcdScAvailableStyles]
-other = "Available Styles:"
-[OcdScParamError]
-other = "Shortcode Parameter Error"
-[OcdScNumList101]
-one = "Invalid parameter detected in the numbered list shortcode, on:"
-other = "Invalid parameters detected in the numbered list shortcode, on:"
-[OcdScParameter]
-one = "The parameter"
-other = "The parameters"
-[OcdScAcceptedParameters]
-other = "Accepted parameters: "
-[OcdScTextSnippet111]
-one = "Invalid parameter in the text snippet shortcode on this page:"
-other = "Invalid parameters in the text snippet shortcode on this page:"
-[OcdScHero121]
-one = "Invalid parameter detected in the hero shortcode, on:"
-other = "Invalid parameters detected in the hero shortcode, on:"
-[OcdScContentError]
-other = "Shortcode Content Error"
-[OcdScHero122-3]
-other = "Missing link text in the hero shortcode on page:"
-[OcdScLinkNotRendered]
-other = "is missing, so the link will not be rendered."
-[OcdScFillParameter]
-other = "Provide a value for the parameter"
-[OcdScOrDeleteParameter]
-other = "or remove"
-[OcdScStatusCard130]
-other = "Invalid type value in the status card shortcode, on:"
-[OcdScSpecifiedType]
-other = "The specified type,"
-[OcdScStatusCard131]
-one = "Invalid parameter detected in the status card shortcode, on:"
-other = "Invalid parameters detected in the status card shortcode, on:"
-[OcdScCta141]
-one = "Invalid parameter detected in the cta shortcode, on:"
-other = "Invalid parameters detected in the cta shortcode, on:"
-[OcdScCta142]
-other = "Missing link text in the cta shortcode on:"
-[OcdScFaq151]
-one = "Invalid parameter detected in the faq shortcode, on:"
-other = "Invalid parameters detected in the faq shortcode, on:"
-[OcdScAbout161]
-one = "Invalid parameter detected in the about shortcode, on:"
-other = "Invalid parameters detected in the about shortcode, on:"
-[OcdScAbout162]
-other = "Missing image for shortcode about on:"
-[OcdScIsSetButTheFile]
-other = "is set, but the file"
-[OcdScWasNotFound]
-other = "was not found."
-[OcdScValidValue]
-other = "Provide a valid value for the parameter"
-[OcdScOrEnsureThat]
-other = "or ensure that"
-[OcdScExistsAt]
-other = "exists at" 
-[OcdScSocial171]
-one = "Invalid parameter detected in the social shortcode, on:"
-other = "Invalid parameters detected in the social shortcode, on:"
-[OcdScSocial172]
-other = "Missing menu for the social shortcode on page:"
-[OcdScCreatePopulate]
-other = "Create or populate a"
-[OcdScMenuOn]
-other = "menu on"
-[OcdScSocial173]
-other = "Invalid parameter value for the social shortcode on:"
-[OcdScThe]
-other = "The"
-[OcdScParameterValue]
-other = "parameter value"
-[OcdScIsInvalid]
-other = "is invalid."
+
+[FollowUsOn]
+other= "Follow us on:"
+
+# SEO
+[DefaultTaxonomyDescription]
+other = "Browse all %s on %s—an overview of available %s for easy discovery."
+
+[DefaultTermsDescription]
+other = "Explore all pages related to %q on %s—discover related content and topics."
+
+[Default404Description]
+other = "Vanished in a puff of logic. Nothing up our sleeves—except more content"
+
+

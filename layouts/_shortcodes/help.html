@@ -1,0 +1,76 @@
+{{- /*
+  Shortcode: help.html
+  Purpose: Show helpful information about Alpha theme and some components only in
+  dev. environment.
+
+  Target: Global
+
+  Example: {{< help TYPE="" >}}
+
+  Params:
+  - TYPE (string, optional): Help subject type to show
+  Values: markdown, shortcodes (default)
+
+  Error handler:
+  - livaWarn (global)
+  - LiVa (scoped)
+
+  Docs: https://alpha.oxypteros.com/shortcodes/help
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+{{- if  and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
+  {{- /* Shortcode rules */}}
+  {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+
+  {{- /* Vars */}}
+  {{- $validInput := "" -}}
+  {{- $validationResult := "" -}}
+
+  {{- /* Get shortcodes rules and validate input */}}
+  {{- if $rules -}}
+    {{- $rules = merge $rules (dict "scName" .Name) -}}
+    {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+    {{- $validInput = $validationResult.isValid }}
+  {{- else -}}
+    {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+  {{- end -}}
+
+  {{- /* On failed input validation call the LiVa handler */}}
+  {{- if not $validInput -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+
+  {{- /* * Render the shortcode on successful validation */}}
+  {{- if $validInput }}
+    {{- $data := $validationResult.data -}}
+
+    {{- /* - `data/help/*.[lang].toml files` */}}
+    {{- if site.Data.help }}
+      {{- $lang := .Site.Language.Lang -}}
+      {{- $helpData := index site.Data.help (printf "%s.%s" $data.type $lang) -}}
+      {{- $dataFileKey := printf "help/%s.%s" $data.type $lang -}}
+      {{/* - Check if the data was actually loaded */}}
+      {{- if $helpData }}
+        {{- if eq $data.type "shortcodes" }}
+          {{- partial "liva/lib/help/shortcodes.html" (dict "context" $helpData) -}}
+        {{- else if eq $data.type "markdown" }}
+          {{- partial "liva/lib/help/markdown.html" (dict "context" $helpData) -}}
+        {{- end }}
+      {{- else }}
+        {{- /* - Error message if the data file is missing */}}
+        <div class="liva-error-card">
+          <strong>Help Error:</strong> Data file not found for type
+          '{{ $data.type }}' and language '{{ $lang }}'.
+          <br />
+          Expected at: <code>data/{{ $dataFileKey }}.toml</code>
+        </div>
+      {{- end }}
+    {{- else }}
+      {{- /* - Error message for missing folder */}}
+      <div class="liva-error-card">
+        <strong>Help Error:</strong> The <code>data/help</code> directory seems
+        to be missing.
+      </div>
+    {{- end }}
+  {{- end }}
+{{- end -}}

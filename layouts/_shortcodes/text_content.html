@@ -1,0 +1,21 @@
+{{- /*
+  Shortcode: text_content.html 
+  Purpose : Mimics how layout page style text content for pages with diverse 
+  design and layout.
+
+  Target: homepage, sections (_index.md)
+
+  Example:
+  {{< text-content >}}
+    /... Markdown.../
+  {{< /text-content >}}
+
+  Docs: https://alpha.oxypteros.com/shortcodes/text-content 
+  Repo: https://github.com/oxypteros/alpha
+  Error code placeholder: liva-sc-15X
+*/}}
+<article
+  class="article-content max-w-article mx-auto mb-32 w-full px-4 text-lg leading-normal"
+>
+  {{ .Inner | markdownify }}
+</article>

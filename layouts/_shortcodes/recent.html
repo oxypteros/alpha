@@ -1,75 +1,110 @@
 {{- /*
   Shortcode: recent.html
-  Purpose: Renders a list of the latest posts.
+  Purpose: Renders a list of the latest posts. The latest post is retrieved by
+  the init-global-data partial. The results
 
-  Target: _index.md
+  Target: homepage, sections (_index.md)
 
-  Example:
-  {{< recent TITLE="" LIMIT="">}}
+  Example: {{< recent TITLE="" LIMIT="" >}}
 
-  Params: 
-  - TITLE (string, optional): H2 heading. 
-  - LIMIT (integer, optional): Number of items to show (Default: 4). 
-  
-  Error handler: 
-  - warnf (To-Do) 
-  - OCD (To-Do) 
-  To-do: 1. Enable OCD 
-  
-  Repo: https://github.com/oxypteros/alpha 
+  Params:
+  - TITLE (string, optional): H2 heading.
+  - LIMIT (integer, optional): Number of items to show (Default: 4).
+
+  Error handler:
+  - livaWarn (global)
+  - LiVa (scoped)
+
+  Docs: https://alpha.oxypteros.com/docs/shortcodes/recent/
+  Repo: https://github.com/oxypteros/alpha
 */}}
-{{- /* Case-insensitive parameter retrieval (default chaining) */}}
-{{- $title := .Get "TITLE" | default (.Get "Title") | default (.Get "title") }}
-{{- $limit := .Get "LIMIT" | default (.Get "Limit") | default (.Get "limit") }}
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
-{{- /* Validate limit value */}}
-{{- $isNumber := (printf "%v" $limit | findRE "^[1-9][0-9]*$") }}
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
 
-{{- $intNumber := 4 }}
-{{- $warnNumber := false }}
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
 
-{{- if $isNumber }}
-  {{- $intNumber = (index $isNumber 0 | int) }}
-{{- else if $limit }}
-  {{- $warnNumber = true }}
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Retrieve latest pages from the global store */}}
+{{- $lang := .Page.Language.Lang | default .Site.Language.Lang -}}
+{{- $allLatestKey := printf "all_latest_%s" $lang -}}
+{{- $latestPages := hugo.Store.Get $allLatestKey -}}
+
+{{- /* Latest post list validation */}}
+{{- $validLatest := false }}
+{{- if $latestPages }}
+  {{- $validLatest = true }}
 {{- end }}
 
-{{- /* Shortcode Rendering */}}
-  {{- /* Create unique id's for aria-labels in case of multiple shortcodes*/}}
-  {{- $base := .Page.File.BaseFileName | urlize }}
-  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
-  {{- $uid := printf "%s-%v" $base $ordinal }}
-<section 
-  class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4"
-  aria-labelledby="recent-heading-{{- $uid -}}"  
->
-  {{- /* Optional title rendering. */}}
-  {{- with $title }}
-  <div
-    class="flex w-full items-center justify-center gap-4 sm:justify-normal min-w-0"
-  >
-    <div
-      class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
-    ></div>
-    <h2
-      id="recent-heading-{{- $uid -}}"
-      class="text-on-sur-var dark:text-on-sur-var-d font-300 text-3xl min-w-0 break-words hyphens-manual"
+{{- /* On successful validations render the shortcode */}}
+{{- if and $validInput $validLatest }}
+  {{- $data := $validationResult.data -}}
+  {{- $intLimit := $data.limit | default 4 -}}
+
+  {{- /* Get a sample, but don’t exceed the $intLimit */}}
+  {{- $sampleSize := math.Min (len $latestPages) $intLimit }}
+
+  {{- /* Respect the limit */}}
+  {{- $actualPages := first $sampleSize ($latestPages) }}
+
+  {{- if gt (len $actualPages) 0 }}
+    {{- /* Shortcode Rendering */}}
+    {{- /* Create unique id's for aria-labels in case of multiple shortcodes */}}
+    {{- $base := .Page.File.BaseFileName | urlize }}
+    {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+    {{- $uid := printf "%s-%v" $base $ordinal }}
+    <section
+      class="mt-8 mb-32 flex w-full max-w-7xl flex-col items-center px-4"
+      aria-labelledby="recent-heading-{{- $uid -}}"
     >
-      {{- . -}}
-    </h2>
-    <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
-  </div>
-  {{- else }}
-  <h2 
-    id="recent-heading-{{- $uid -}}" 
-    class="sr-only"
-  >
-  {{- i18n "RecentArticles" | default "Latest Articles" -}}
-  </h2>
+      {{- /* Optional title rendering. */}}
+      {{- with $data.title }}
+        <div
+          class="flex w-full min-w-0 items-center justify-center gap-4 sm:justify-normal"
+        >
+          <div
+            class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
+          ></div>
+          <h2
+            id="recent-heading-{{- $uid -}}"
+            class="text-on-sur-var dark:text-on-sur-var-d font-300 min-w-0 text-3xl break-words hyphens-manual"
+          >
+            {{- . -}}
+          </h2>
+          <div
+            class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"
+          ></div>
+        </div>
+      {{- else }}
+        <h2 id="recent-heading-{{- $uid -}}" class="sr-only">
+          {{- i18n "RecentArticles" | default "Latest Articles" -}}
+        </h2>
+      {{- end }}
+      <div
+        class="mt-24 flex w-full flex-wrap items-center justify-center gap-25"
+      >
+        {{- range $actualPages }}
+          {{- partial "components/card-post.html" . }}
+        {{- end }}
+      </div>
+    </section>
   {{- end }}
-  <div class="mt-24 flex w-full flex-wrap items-center justify-center gap-25">
-    {{- range first $intNumber .Site.RegularPages.ByDate.Reverse }}
-      {{- partial "components/card-post.html" . }}
-    {{- end }}
-  </div>
-</section>
+{{- end -}}
