@@ -6,8 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-<!--## [1.0.0-rc] — 2025-07-10-->
-## [Unreleased] 
+<!--## [Unreleased] -->
+
+## [1.0.0-rc] — 2025-07-10
 
 ### [BREAKING CHANGE]
 - **Standardized Shortcode Naming:** To ensure system stability and future compatibility, all shortcodes with hyphens in their names have been renamed to use `snake_case`. If you are upgrading, you **must** update your shortcode calls in your content files (e.g., `{{< status-card >}}` must be changed to `{{< status_card >}}`).
