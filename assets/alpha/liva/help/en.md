@@ -2,7 +2,7 @@
 
 ### About the LiVa System
 
-**LiVa** (*Oxy's Content Diagnostics*) is a built-in system designed to help you, while you create content in your website, by catching common errors and configuration mistakes before your site goes live.
+**LiVa** (*Linting Validator*) is a built-in system designed to help you, while you create content in your website, by catching common errors and configuration mistakes before your site goes live.
 
 It acts like a helpful assistant, providing clear, actionable feedback directly within your development environment.
 
