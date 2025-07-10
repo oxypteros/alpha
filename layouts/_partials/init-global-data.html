@@ -27,7 +27,7 @@
 
 {{- if $nonFeaturedPosts -}}
   {{- /* - Sort the list */}}
-  {{- $sortedNonFeatured := $nonFeaturedPosts.ByDate.Reverse -}}
+  {{- $sortedNonFeatured := $nonFeaturedPosts.ByLastmod.Reverse -}}
 
   {{- /* - Store the single latest post */}}
   {{- hugo.Store.Set $latestKey (first 1 $sortedNonFeatured) -}}
@@ -45,7 +45,7 @@
 {{- $featuredKey := printf "featured_%s" $lang -}}
 {{- $latestFeatured := slice -}}
 
-{{- with first 1 (where .Site.RegularPages.ByDate.Reverse "Params.featured" true) }}
+{{- with first 1 (where .Site.RegularPages.ByLastmod.Reverse "Params.featured" true) }}
   {{- $latestFeatured = . -}}
 {{- end }}
 

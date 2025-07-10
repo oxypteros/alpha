@@ -1,7 +1,7 @@
 +++
-draft = true
+draft = false
 date = "2025-05-29T13:25:21+02:00"
-lastmod = "2025-06-18T13:42:17+02:00"
+lastmod = "2025-07-10T15:11:34+02:00"
 layout = "page"
 
 title = "How-to Alpha"
@@ -30,7 +30,7 @@ By now (at the final part of this little trilogy) I hope you have a clear sense 
 
 The second goal, let me tell you, is easier said than done. To achieve it, I needed to write simple, instructive, and non-technical documentation. But given the nature of the project, it’s also essential to cover technical topics, without making things tedious for those with some or even advanced experience.
 
-My solution? [A tested one](/blog/why-alpha/#first-steps)! A separate tutorial for Hugo and web novices that gently introduces more technical concepts and eventually points them to the main documentation, which is intended for users with some familiarity.
+My solution? [A tested one](/blog/why-alpha/#first-steps/)! A separate tutorial for Hugo and web novices that gently introduces more technical concepts and eventually points them to the main documentation, which is intended for users with some familiarity.
 
 ## For the Novices
 
@@ -38,14 +38,14 @@ By *"novices"*, I mean individuals who are comfortable using a PC, but may have 
 
 Alpha is designed to help you **write**, not to turn you into a developer.
 
-If this sounds like you, **start with** [From Zero with Zero](https://alpha.oxypteros.com/get-started). And if something’s unclear, feel free to [drop me a line](https://alpha.oxypteros.com/contact).
+If this sounds like you, **start with** [From Zero with Zero](https://alpha.oxypteros.com/get-started/). And if something’s unclear, feel free to [drop me a line](https://alpha.oxypteros.com/contact/).
 
 
 ## For the Intermediate Users
 
 Intermediate users are those who’ve used Hugo before, probably they already have a site and want or need a new theme. But they don’t necessarily tinker with theme files or write complex Hugo templates.
 
-For this group, the [Alpha documentation](https://alpha.oxypteros.com/docs) will be your main resource for *how-to’s*. Ironically, this might be the group that faces the most friction.
+For this group, the [Alpha documentation](https://alpha.oxypteros.com/docs/) will be the main resource for *how-to’s*. Ironically, this might be the group that faces the most friction.
 
 Why? They might already rely on certain Hugo features that Alpha doesn’t support out-of-the-box (like `{{ .ReadingTime }}`) or they're using an older Hugo version that isn’t compatible.
 

@@ -14,7 +14,7 @@
 #
 # Documentation:
 # - Menus: https://alpha.oxypteros.com/docs/config/menus-toml/
-# - Multilingual: https://alpha.oxypteros.com/docs/multilingual
+# - Multilingual: https://alpha.oxypteros.com/docs/multilingual/
 
 
 # Main Menu
@@ -36,7 +36,7 @@
 
 #[[main_social]]
 #  name = "Github"
-#  url = "https://github.com/oxypteros/alpha-theme"
+#  url = "https://github.com/oxypteros/alpha"
 #  pre = "#github"
 #  weight = 100
 
@@ -53,7 +53,7 @@
 
 #[[footer_social]]
 #  name = "Github"
-#  url = "https://github.com/oxypteros/alpha-theme"
+#  url = "https://github.com/oxypteros/alpha"
 #  pre = "#github"
 #  weight = 100
 
@@ -62,6 +62,6 @@
 
 #[[sc_social]]
 #  name = "Github"
-#  url = "https://github.com/oxypteros/alpha-theme"
+#  url = "https://github.com/oxypteros/alpha"
 #  pre = "#github"
 #  weight = 100

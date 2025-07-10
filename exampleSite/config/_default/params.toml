@@ -8,7 +8,7 @@ pseudologo_enabled = true
 
 # Footer Settings
 established_year = "2025"
-motto = "\"Unleash your words\""
+motto            = "\"Unleash your words\""
 
 # Performance Settings
 prefetch_enabled = true
@@ -22,7 +22,7 @@ noCookies_snackbar = true
 visitor_settings   = true
 
 # Development Settings
-tailwind_enabled = false
+tailwind_enabled  = false
 liva_enabled      = true
 livaWarn_enabled  = true
 

@@ -529,7 +529,7 @@
 .liva-fab-error {
   background-color: var(--liva-error);
   svg {
-    --liva-logo-dot-fill: #ffdad6;
+    --liva-logo-dot-fill: #ba1a1a;
     fill: var(--liva-on-error);
   }
 }
@@ -537,7 +537,7 @@
 .liva-fab-error:hover {
   background-color: var(--liva-error-sur);
   svg {
-    --liva-logo-dot-fill: #ba1a1a;
+    --liva-logo-dot-fill: #93000a;
     fill: var(--liva-on-error-sur);
   }
 }
