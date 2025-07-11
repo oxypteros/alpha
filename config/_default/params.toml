@@ -36,7 +36,7 @@ seo_default_image = "" # Overridden by `seo_image` in page frontmatter.
 seo_logo_url = "" 
 # Fill with a license URL. 
 # Ex. "https://creativecommons.org/licenses/by/4.0/"
-seo_license = "" # Overridden by `license` in page frontmatter. 
+seo_license_url = "" # Overridden by `license` in page frontmatter. 
 # Fill your organization/company name.
 seo_organization = "" # Defaults to site title.
 # Fill with a name

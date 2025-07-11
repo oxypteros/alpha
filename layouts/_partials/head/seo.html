@@ -51,8 +51,8 @@
 {{- $licenseID := "copyright" -}}
 {{- if $page.Params.license }}
   {{- $licenseID = $page.Params.license -}}
-{{- else if $site.Params.seo_license }}
-  {{- $licenseID = $site.Params.seo_license -}}
+{{- else if $site.Params.seo_license_url }}
+  {{- $licenseID = $site.Params.seo_license_url -}}
 {{- end }}
 
 {{- $licenseURL := "" -}}
