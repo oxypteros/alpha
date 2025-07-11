@@ -13,12 +13,6 @@ established_year = "2025"
 # quotes.
 motto = "\"Unleash your words\""
 
-# Privacy
-# ---------------------
-# Shows a settings modal for visitors to manage settings (tracking, prefetch).
-visitor_settings = true
-# Displays a banner about the site's privacy policy (cookies, etc.)
-noCookies_snackbar = true
 
 # Integrations
 # ---------------------
@@ -36,17 +30,17 @@ prefetch_enabled = true
 # ---------------------
 # Place the global image for sharing in `assets/img/`. Fill only the filename.
 # Ex. "sharing-default.jpg"
-seo_default_image = "" # Overridden by `seo_image` in page front matter.
-# Place the logo image in `assets/img/`. Fill only the filename. 
-# Ex: "logo.png"
-seo_logo_path = "" 
+seo_default_image = "" # Overridden by `seo_image` in page frontmatter.
+# The absolute URL of the logo image
+# Ex: "https://example.com/logo.svg"
+seo_logo_url = "" 
 # Fill with a license URL. 
 # Ex. "https://creativecommons.org/licenses/by/4.0/"
-seo_license = "" # Overridden by `license` in page front matter. 
+seo_license = "" # Overridden by `license` in page frontmatter. 
 # Fill your organization/company name.
 seo_organization = "" # Defaults to site title.
 # Fill with a name
-seo_author = ""  # Overridden by `author` in page front matter.
+seo_author = ""  # Overridden by `author` in page frontmatter.
 # URL to your author profile for open-graph (FB, Linkedin)
 seo_author_url = "" 
 # Your site's @handle for the `twitter:site` tag in Twitter Cards
@@ -54,14 +48,14 @@ seo_twitter_username = "" # Fills `twitter:site` in twitter-cards
 
 # PWA Manifest Settings
 # ---------------------
-seo_manifest_short_name  = "" # Short name for the PWA homescreen icon.
+seo_manifest_short_name  = "" # Short name for the PWA home screen icon.
 seo_manifest_theme_color = "" # UI color for PWA. Ex: "#ffffff"
 seo_manifest_bg_color    = "" # Splash screen background color. Ex: "#000000"
 
 # Development Settings
 # ---------------------
 # Run `npm install` from root to develop the theme
-tailwind_enabled = false # Enables full Tailwind CSS for development.
+tailwind_enabled = true # Enables full Tailwind CSS for development.
 
 # LiVa Settings (Linting Validator by Oxy)
 # ---------------------

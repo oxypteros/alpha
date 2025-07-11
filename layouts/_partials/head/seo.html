@@ -93,10 +93,10 @@
   "name"    $site.Title
   "url"     $site.BaseURL
 -}}
-{{- with $site.Params.seo_logo_path }}
+{{- with $site.Params.seo_logo_url }}
   {{- $logo := dict "logo" (dict
     "@type" "ImageObject"
-    "url" ( . | absURL )
+    "url"   . 
     )
   -}}
   {{- $publisherDict = merge $publisherDict $logo -}}
