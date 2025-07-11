@@ -20,7 +20,7 @@
  *      "slow-2g", "2g", "3g") or if the user has Data Saver mode enabled,
  *      leveraging the Network Information API where available.
  * 2. Speculation Rules API (Primary Method):
- *    - If the browser supports `HTMLScriptElement.supports('speculationrules')`,
+ *    - If the browser supports `HTMLScriptElement.supports('speculationrules')`
  *      a `<script type="speculationrules">` tag is dynamically appended to the
  *      document head. This script instructs the browser to prerender links
  *      with `data-prerender="true"` and prefetch links with
@@ -40,8 +40,10 @@
  *  CSP - Hash for speculation rules : 
  * 'sha256-7hU1nhtHxQh8ziW5xcD1HB2QhOc24LKd7TLXNfXSCcc='
  * 
- * @see {@link https://developer.chrome.com/blog/speculation-rules/} - For Speculation Rules API.
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation} - For Network Information API.
+ * @see {@link https://developer.chrome.com/blog/speculation-rules/} 
+ * - For Speculation Rules API.
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation} 
+ * - For Network Information API.
  */
 
 export const initPrefetch = () => {

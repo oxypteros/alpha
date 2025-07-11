@@ -34,9 +34,12 @@
  * Alpha theme that by default has a no cookies and privacy friendly policy.
  *
  * @param {object} i18n - An object containing localized strings.
- * @param {string} i18n.privacySbElemMiss - Error message if critical snackbar elements are missing.
- * @param {string} i18n.snackbarOpen - Screen reader announcement when the snackbar opens.
- * @param {string} i18n.snackbarClose - Screen reader announcement when the snackbar closes.
+ * @param {string} i18n.privacySbElemMiss - Error message if critical snackbar 
+ * elements are missing.
+ * @param {string} i18n.snackbarOpen - Screen reader announcement when the 
+ * snackbar opens.
+ * @param {string} i18n.snackbarClose - Screen reader announcement when the 
+ * snackbar closes.
  *
  * @requires ../utils.js - For `$` (selector) and `errorHandler` utilities.
  */

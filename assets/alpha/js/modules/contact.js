@@ -27,7 +27,8 @@
  * identify and interact with form elements, error message containers,
  * snackbar templates, and other UI components.
  *
- * @exports initContactForm - The function to initialize the contact form listeners and functionality.
+ * @exports initContactForm - The function to initialize the contact form 
+ * listeners and functionality.
  *
  * @requires ../utils.js - For the `$` DOM utility function.
  */

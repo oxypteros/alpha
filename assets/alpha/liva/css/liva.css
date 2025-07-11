@@ -1,3 +1,6 @@
+/**
+* LiVa CSS: Loaded only in dev. mode
+*/
 .liva {
   /** Fonts */
   --liva-mono: "JetBrains Mono", monospace;

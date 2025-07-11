@@ -31,11 +31,15 @@
  * i18n object.
  *
  * @param {object} i18n - An object containing localized strings.
- * @param {string} i18n.menuElemMiss - Error message for missing critical menu elements.
- * @param {string} i18n.menuOpen - Screen reader announcement when the menu is opened.
- * @param {string} i18n.menuClose - Screen reader announcement when the menu is closed.
+ * @param {string} i18n.menuElemMiss - Error message for missing critical menu 
+ * elements.
+ * @param {string} i18n.menuOpen - Screen reader announcement when the menu is 
+ * opened.
+ * @param {string} i18n.menuClose - Screen reader announcement when the menu is 
+ * closed.
  *
- * @requires ../utils.js - For `$` (selector), `errorHandler`, and `setAttributes` utilities.
+ * @requires ../utils.js - For `$` (selector), `errorHandler`, and 
+ * `setAttributes` utilities.
  */
 
 import { $, errorHandler, setAttributes } from "../utils.js";
@@ -145,7 +149,7 @@ export const initMenu = (i18n) => {
           event.propertyName === "height"
         ) {
           if (ELEMENTS.menuTemplateContainer.firstChild) {
-            ELEMENTS.menuTemplateContainer.innerHTML = ""; // More efficient than removeChild loop
+            ELEMENTS.menuTemplateContainer.innerHTML = "";
           }
         }
       },
