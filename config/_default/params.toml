@@ -41,21 +41,23 @@ seo_license_url = "" # Overridden by `license` in page frontmatter.
 seo_organization = "" # Defaults to site title.
 # Fill with a name
 seo_author = ""  # Overridden by `author` in page frontmatter.
-# URL to your author profile for open-graph (FB, Linkedin)
+# URL to your author profile for open-graph
 seo_author_url = "" 
 # Your site's @handle for the `twitter:site` tag in Twitter Cards
 seo_twitter_username = "" # Fills `twitter:site` in twitter-cards
 
-# PWA Manifest Settings
-# ---------------------
-seo_manifest_short_name  = "" # Short name for the PWA home screen icon.
-seo_manifest_theme_color = "" # UI color for PWA. Ex: "#ffffff"
-seo_manifest_bg_color    = "" # Splash screen background color. Ex: "#000000"
+# "Add to Home Screen" Settings
+# -----------------------------
+# Note: These settings control the Web App Manifest, which allows visitors to 
+#add your site to their mobile home screen with a custom icon and splash screen.
+seo_manifest_short_name  = "" # Short name for the home screen icon label.
+seo_manifest_theme_color = "" # Title bar color. Ex: "#ffffff"
+seo_manifest_bg_color    = "" # Splash screen background color. Ex: "#ffffff"
 
 # Development Settings
 # ---------------------
 # Run `npm install` from root to develop the theme
-tailwind_enabled = true # Enables full Tailwind CSS for development.
+tailwind_enabled = false # Enables full Tailwind CSS for development.
 
 # LiVa Settings (Linting Validator by Oxy)
 # ---------------------
