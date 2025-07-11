@@ -266,7 +266,7 @@ b {
     @apply my-8;
   }
   dt {
-    @apply font-500 my-2 after:content-[':'];
+    @apply font-500 mb-2 mt-8 after:content-[':'];
   }
   dd {
     @apply mb-2 ml-4 text-base italic;
