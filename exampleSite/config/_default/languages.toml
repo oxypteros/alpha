@@ -7,15 +7,16 @@
 #
 # Documentation:
 # - Language Settings: https://alpha.oxypteros.com/docs/config/languages-toml/
-# - Multilingual Setup: https://alpha.oxypteros.com/docs/multilingual
+# - Multilingual Setup: https://alpha.oxypteros.com/docs/multilingual/
 
-
+# Primary language. Edit for single-langauge site.
 [en]
-  weight = 1 # Lowest number set's the default language
-  languageName = "English"
+  languageName = "English" 
   languageCode = "en"
+  weight = 1 # Lowest number sets the default language
 
+# Uncomment and edit for multilingual
 #[fr]
-#  weight = 2
 #  languageName = "Français"
 #  languageCode = "fr"
+#  weight = 2
