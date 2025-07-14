@@ -7,6 +7,7 @@ description = ""
 author = ""
 date = "{{ .Date }}"
 lastmod = ""
+license = ""
 
 # Organization
 categories = []
@@ -17,9 +18,10 @@ parts = ""
 weight = 0
 
 # Display
+dropcap = true
 featured = false
 recommended = false
-license = ""
+
 
 # Publication Control
 draft = false
