@@ -21,7 +21,6 @@ weight = 0
 featured = false
 recommended = false
 
-
 # Publication Control
 draft = false
 layout = "page"

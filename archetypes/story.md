@@ -22,7 +22,6 @@ dropcap = true
 featured = false
 recommended = false
 
-
 # Publication Control
 draft = false
 layout = "story"
