@@ -1,12 +1,11 @@
-# ----------------------------------------------------------------------
 # SECURITY HEADERS
-#
+# ----------------
 # Read comments before changing.
 # Test your site thoroughly after implementing, especially if you embed
 # third-party content or use CDNs.
 #
 # Edit to fit your case.
-# ----------------------------------------------------------------------
+# ----------------------
 # Apply to all pages
 /*
 # Enforce HTTPS for 2 year, include subdomains.
@@ -38,7 +37,7 @@ Cross-Origin-Opener-Policy: same-origin-allow-popups
 #Access-Control-Allow-Origin: *
 
 # CROSS-ORIGIN EMBEDDING (COEP, CORP) - POTENTIALLY BREAKING
-# ----------------------------------------------------------------------
+# ----------------------------------------------------------
 # No default enabled due to the potential for breaking site functionality.
 # Use only if you fully understand the implications.
 # Example: 
@@ -46,7 +45,7 @@ Cross-Origin-Opener-Policy: same-origin-allow-popups
 # Cross-Origin-Resource-Policy: same-origin
 
 # CONTENT SECURITY POLICY (CSP) - Advanced
-# ----------------------------------------------------------------------
+# ----------------------------------------
 # CSP is very powerful but also complex and highly site-specific.
 # A generic CSP is hard to provide. Users should generate one for their
 # specific site needs if they want this extra layer of security.
