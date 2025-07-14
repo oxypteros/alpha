@@ -3,25 +3,27 @@
  *
  * This script serves as the primary JavaScript bundle for the Alpha theme.
  * It utilizes ES modules and is processed by Hugo Pipes, enabling conditional
- * loading of specific modules and associated translations based on site configuration.
+ * loading of specific modules and associated translations based on site 
+ * configuration.
  *
- * The theme supports multilingual sites by generating a distinct `alpha-head-[lang].js`
- * file for each configured language ensuring optimal localization.
+ * The theme supports multilingual sites by generating a distinct 
+ * `alpha-head-[lang].js` file for each configured language ensuring optimal 
+ * localization.
  *
  * IMPORTANT:
  * Direct modifications to this file (`themes/alpha/assets/js/alpha-head.js`)
  * will be overwritten during Alpha theme updates.
  * To customize JavaScript:
- *  1. For extensive modifications or to override specific theme JavaScript files:
+ *  1. For extensive modifications or to override specific theme JavaScript 
+ *     files:
  *     Copy the relevant files from the folder `themes/alpha/assets/js/` to your
  *     project's root `/assets/js/` directory.
  *     Files in your project's `/assets/js/` will take precedence.
  *  2. For adding supplementary JavaScript without altering theme files:
- *     - Use `assets/js/custom-head.js` (loaded in the HTML <head>).
  *     - Use `assets/js/custom-tail.js` (loaded before the closing </body> tag).
  */
 
-// --- Conditional Module Imports & Initialization ---
+// Conditional Module Imports & Initialization
 // Modules in this section are imported and initialized based on site
 // parameters defined in  `params.toml`
 
@@ -62,7 +64,6 @@ const privacySnackbarI18n = {
   // Alpha's modal for Pagefind client-side search functionality integration.
 {{- if eq .Site.Params.pagefind_enabled true }}
   import { initPagefindAlpha } from './modules/pagefind-alpha.js';
-
   // Pagefind Alpha i18n strings
 const pagefindAlphaI18n = {
   searchContMiss: {{ printf "%q" (i18n "SearchContainerMissing" . | default "Critical UI element missing: Search container (searchCont) not found. Search Modal disabled.") }},

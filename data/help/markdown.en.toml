@@ -1,3 +1,5 @@
+# Data for the markdown help shortcode
+# ------------------------------------
 footer_desc = "Markdown cheat sheet rendered by the shortcode **help**.\nTo view *help* about different topics, use the **TYPE** parameter."
 footer_URL = "https://alpha.oxypteros.com/docs/content-creation/page-markdown/"
 

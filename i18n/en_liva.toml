@@ -1,6 +1,4 @@
 # LiVa
-
-
 [LivaScInteger]
 other = "A positive integer (e.g. 1, 2, 3, ...)"
 [LivaShortcode]

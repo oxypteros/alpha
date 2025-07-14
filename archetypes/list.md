@@ -1,16 +1,24 @@
 +++
-draft = false
+# Content Identity
+title = "{{ replace .File.ContentBaseName `-` ` ` | title }}"
+description = ""
+
+# Dates
 date = "{{ .Date }}"
 lastmod = ""
-layout = "list"
+
+# Pagination
 paginate = true
 
-title = "{{ replace .File.ContentBaseName `-` ` ` | title }}"
+# Series
 series = ""
-  weight = 1000
+weight = 0
 
-# SEO
-description = ""
+# Publication Control
+draft = false
+layout = "list"
+
+# Advanced SEO
 seo_type = ""
 seo_image = ""
 twitter_username = ""

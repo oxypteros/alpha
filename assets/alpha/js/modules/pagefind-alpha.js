@@ -30,11 +30,14 @@
  * module runs.
  *
  * @param {object} i18n - An object containing localized strings.
- * @param {string} i18n.searchContMiss - Error message if the search container element is missing.
- * @param {string} i18n.searchBtnMiss - Error message if the search button element is missing.
+ * @param {string} i18n.searchContMiss - Error message if the search container 
+ * element is missing.
+ * @param {string} i18n.searchBtnMiss - Error message if the search button 
+ * element is missing.
  *
  * @requires ../utils.js - For the `$` DOM utility function.
- * @see {@link https://alpha.oxypteros.com/docs/integrations/search} - For Pagefind with Alpha theme documentation.
+ * @see {@link https://alpha.oxypteros.com/docs/integrations/search} 
+ * - For Pagefind with Alpha theme documentation.
  */
 
 import { $ } from "../utils.js";
@@ -74,7 +77,8 @@ export const initPagefindAlpha = (i18n) => {
         ".pagefind-ui__search-input",
       );
       if (searchInput) {
-        setTimeout(() => searchInput.focus(), 0); // Wait for DOM updates before focus
+        // Wait for DOM updates before focus
+        setTimeout(() => searchInput.focus(), 0); 
       }
 
       // Add event listener to the close button inside the modal

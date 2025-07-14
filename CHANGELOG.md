@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 <!--## [Unreleased]-->
+## [1.0.0] — 2025-07-14
+This marks the first stable, production-ready release of the Alpha theme. This version incorporates all features and fixes from the beta and release candidate phases into a polished, robust, and well-documented final product.
+
+### [BREAKING CHANGE]
+- **Standardized Shortcode Naming:** To ensure system stability and future compatibility, all shortcodes with hyphens in their names have been renamed to use `snake_case`. If you are upgrading from a beta version, you **must** update your shortcode calls (e.g., `{{< status-card >}}` must be changed to `{{< status_card >}}`).
+
+### Added
+- **LiVa (Linting Validator) Framework:** A unique, built-in tool that provides on-page and terminal feedback to help users avoid common configuration and content errors.
+- **Comprehensive SEO Features:** Includes dedicated partials for JSON-LD Schema, Open Graph, and Twitter Cards, with intelligent image handling for social sharing.
+- **Advanced Security:** Ships with default security headers and a Content Security Policy (CSP) for modern web standards.
+- **Full Documentation Site:** A complete guide covering all aspects of theme setup, configuration, and usage is now available.
+
+### Changed
+- **Major Code Refactor:** The entire theme has been refactored for improved performance, maintainability, and accessibility, using semantic HTML and efficient Hugo functions.
+- **Standardized Configuration:** All theme configuration files (`params.toml`, `menus.toml`, etc.) have been overhauled to be more logical, consistent, and self-documenting.
+- **Performance Optimizations:** Implemented caching and optimized logic for series navigation and recommended posts, leading to significantly faster build times.
+
+### Fixed
+- **Content Sorting:** Posts are now correctly sorted by their last modified date (`lastmod`) to ensure the most recently updated content appears first.
+- **Responsive & Styling Issues:** Resolved various minor CSS issues, including heading overflows on narrow viewports.
+
+### Quality Assurance
+- **Verified Standards Compliance:** The theme has passed extensive testing with excellent scores on Google PageSpeed Insights, Mozilla Observatory, and the W3C Nu HTML Checker.
+- **Validated Installation:** Ensured a smooth and reliable installation process across multiple environments (Hugo Modules, Git Submodule, direct download).
+- **Stress-Tested:** Verified theme stability and responsiveness with large content sets and in extreme edge-case scenarios.
 
 ## [1.0.0-rc.2] — 2025-07-10
 

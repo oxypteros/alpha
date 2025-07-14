@@ -1,7 +1,8 @@
 // assets/alpha/js/modules/ripple-buttons.js
 
 /**
- * @file Adds a Material Design-style ripple effect to buttons and designated link elements.
+ * @file Adds a Material Design-style ripple effect to buttons and designated 
+ * link elements.
  * @module modules/ripple-buttons
  *
  * @summary Enhances user interaction by providing visual feedback in the form 

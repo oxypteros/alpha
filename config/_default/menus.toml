@@ -2,12 +2,12 @@
 # This file defines menu entries for the site's default language.
 #
 # Menus supported:
-#   - `main`
-#   - `main_secondary`
-#   - `main_social`
-#   - `footer`
-#   - `footer_social`
-#   - `sc_social`
+#   - main
+#   - main_secondary
+#   - main_social
+#   - footer
+#   - footer_social
+#   - sc_social
 #
 # For multilingual setups, create equivalent files using the language code.
 # Example: `menus.fr.toml` for the French version.
@@ -15,53 +15,48 @@
 # Documentation:
 # - Menus: https://alpha.oxypteros.com/docs/config/menus-toml/
 # - Multilingual: https://alpha.oxypteros.com/docs/multilingual/
-
+# - Shortcodes: https://alpha.oxypteros.com/docs/shortcodes/social/
 
 # Main Menu
 [[main]]        
   name = "Home"
   url = "/"
-  weight = 100 
+  weight = 100
 
+#[[main]]        
+#  name = "Blog"
+#  url = "/blog/"
+#  weight = 110 
 
 # Main Secondary
-
 #[[main_secondary]]
-#  name = "Policy"
-#  url = "/policy"
+#  name = "About Me"
+#  url = "/about/"
 #  weight = 100
-
 
 # Main Social
-
 #[[main_social]]
 #  name = "Github"
-#  url = "https://github.com/oxypteros/alpha"
-#  pre = "#github"
+#  url = "https://github.com/oxypteros/alpha/"
+#  pre = "#github"  # Renders a specific icon. See docs for available icons.
 #  weight = 100
-
 
 # Footer Menu
-
 #[[footer]]
 #  name = "Policy"
-#  url = "/policy"
+#  url = "/policy/"
 #  weight = 100
-
 
 # Footer Social
-
 #[[footer_social]]
-#  name = "Github"
-#  url = "https://github.com/oxypteros/alpha"
-#  pre = "#github"
+#  name = "X"
+#  url = "https://x.com/your-username"
+#  pre = "#twitter" # Renders a specific icon. See docs for available icons.
 #  weight = 100
 
-
 # Shortcode Social
-
 #[[sc_social]]
-#  name = "Github"
-#  url = "https://github.com/oxypteros/alpha"
-#  pre = "#github"
+#  name = "LinkedIn"
+#  url = "https://linkedin.com/in/your-username"
+#  pre = "#linkedin" # Renders a specific icon. See docs for available icons.
 #  weight = 100

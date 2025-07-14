@@ -1,28 +1,35 @@
 +++
-draft = false
+# Content Identity
+title = "How-to Alpha"
+description = "Some thoughts on how to approach Alpha, what to expect, and where to start."
+
+# Authoring
+author = "oxypteros"
 date = "2025-05-29T13:25:21+02:00"
 lastmod = "2025-07-10T15:11:34+02:00"
-layout = "page"
-
-title = "How-to Alpha"
-author = "oxypteros"
 license = "CC-BY"
-series = "Two Why's and a How"
-  parts = "The How"
-  weight = 4
+
+# Organization
 categories = ["Blog Posts"]
 tags = ["Hugo", "Writing", "Alpha"]
+## Series
+series = "Two Why's and a How"
+parts = "The How"
+weight = 4
 
-recommended = true
+# Display
 featured = false
+recommended = true
 
-# SEO
-description = "Some thoughts on how to approach Alpha, what to expect, and where to start."
+# Publication Control
+draft = false
+layout = "page"
+
+# Advanced SEO
 seo_type = "BlogPosting"
 seo_image = ""
 twitter_username = ""
 +++
-
 By now (at the final part of this little trilogy) I hope you have a clear sense of what my goals with **Alpha** are:
 
 1. A clean, inclusive UI/UX focused on text.

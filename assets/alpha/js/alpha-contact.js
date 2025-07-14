@@ -20,7 +20,7 @@
  * imported module: `assets/js/modules/contact.js` in your project root.
  */
 
-// --- Conditional Module Import & Initialization ---
+// Conditional Module Import & Initialization
 // The contact form module is imported and initialized only if a Make.com
 // hook is defined in the site's parameters (`params.toml`).
 

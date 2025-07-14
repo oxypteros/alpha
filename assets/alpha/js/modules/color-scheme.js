@@ -19,7 +19,8 @@
  * element.
  *
  * @param {object} i18n - An object containing localized strings.
- * @param {string} i18n.colorSchemeElemMiss - Message for missing theme toggle elements.
+ * @param {string} i18n.colorSchemeElemMiss - Message for missing theme toggle 
+ * elements.
  *
  * @requires ../utils.js - For the `$` DOM utility function.
  */
@@ -60,10 +61,12 @@ export const initColorScheme = (i18n) => {
     document.documentElement.classList.toggle("dark", theme === "dark");
     applyIcon(theme);
   };
+
   // Apply the icon
   const applyIcon = (theme = getCurrentTheme()) => {
     ELEMENTS.btnIcon?.setAttribute("href", ICONS[theme] || ICONS.light);
   };
+
   //Listen for system theme changes and apply them
   window
     .matchMedia("(prefers-color-scheme: dark)")
@@ -71,6 +74,7 @@ export const initColorScheme = (i18n) => {
       localStorage.setItem("theme", e.matches ? "dark" : "light");
       applyTheme();
     });
+
   // Initialize theme on page load ans add listener
   applyIcon();
   ELEMENTS.themeToggleBtn.addEventListener("click", toggleTheme);

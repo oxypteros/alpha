@@ -1,75 +1,75 @@
 [liva-sc-100]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/help/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/help/#parameters-reference"
 
 [liva-sc-101]
 severity = "warning"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/help/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/help/#parameters-reference"
 
 [liva-sc-110]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/hero/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/hero/#parameters-reference"
 
 [liva-sc-120]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/featured/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/featured/#parameters-reference"
 
 [liva-sc-121]
 severity = "warning"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/featured/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/featured/#parameters-reference"
 
 [liva-sc-130]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/text-snippet/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/text-snippet/#parameters-reference"
 
 [liva-sc-140]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/recommended/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/recommended/#parameters-reference"
 
 [liva-sc-141]
 severity = "warning"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/recommended/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/recommended/#parameters-reference"
 
 [liva-sc-160]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/recent/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/recent/#parameters-reference"
 
 [liva-sc-161]
 severity = "warning"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/recent/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/recent/#parameters-reference"
 
 [liva-sc-170]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/cta/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/cta/#parameters-reference"
 
 [liva-sc-180]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/num-list/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/num-list/#parameters-reference"
 
 [liva-sc-181]
 severity = "warning"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/num-list/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/num-list/#parameters-reference"
 
 [liva-sc-190]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/faq/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/faq/#parameters-reference"
 
 [liva-sc-200]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/about/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/about/#parameters-reference"
 
 [liva-sc-210]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/status-card/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/status-card/#parameters-reference"
 
 [liva-sc-211]
 severity = "warning"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/status-card/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/status-card/#parameters-reference"
 
 [liva-sc-220]
 severity = "error"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/social/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/social/#parameters-reference"
 
 [liva-sc-221]
 severity = "warning"
-docURL   = "https://alpha.oxypteros.com/docs/shortcodes/social/"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/social/#parameters-reference"

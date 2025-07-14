@@ -266,7 +266,7 @@ b {
     @apply my-8;
   }
   dt {
-    @apply font-500 my-2 after:content-[':'];
+    @apply font-500 mb-2 mt-8 after:content-[':'];
   }
   dd {
     @apply mb-2 ml-4 text-base italic;
@@ -466,10 +466,11 @@ b {
 }
 .sc-social {
   a {
-    @apply after:content-none no-underline;
+    @apply no-underline after:content-none;
   }
-  ul, li {
-    @apply p-0 m-0;
+  ul,
+  li {
+    @apply m-0 p-0;
   }
   li {
     @apply list-none;

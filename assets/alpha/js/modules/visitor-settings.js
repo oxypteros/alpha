@@ -34,15 +34,23 @@
  * passed via an i18n object.
  *
  * @param {object} i18n - An object containing localized strings.
- * @param {string} i18n.settingsElementsMissing - Error message if critical settings elements are missing.
- * @param {string} i18n.settingsOpen - Screen reader announcement when the settings modal opens.
- * @param {string} i18n.settingsClose - Screen reader announcement when the settings modal closes.
- * @param {string} i18n.trackingDisabled - ARIA label/text indicating anonymous tracking is disabled by the user.
- * @param {string} i18n.trackingEnabled - ARIA label/text indicating anonymous tracking is enabled by the user.
- * @param {string} i18n.prefetchDisabled - ARIA label/text indicating prefetch functionality is disabled by the user.
- * @param {string} i18n.prefetchEnabled - ARIA label/text indicating prefetch functionality is enabled by the user.
+ * @param {string} i18n.settingsElementsMissing - Error message if critical 
+ * settings elements are missing.
+ * @param {string} i18n.settingsOpen - Screen reader announcement when the 
+ * settings modal opens.
+ * @param {string} i18n.settingsClose - Screen reader announcement when the 
+ * settings modal closes.
+ * @param {string} i18n.trackingDisabled - ARIA label/text indicating anonymous 
+ * tracking is disabled by the user.
+ * @param {string} i18n.trackingEnabled - ARIA label/text indicating anonymous 
+ * tracking is enabled by the user.
+ * @param {string} i18n.prefetchDisabled - ARIA label/text indicating prefetch 
+ * functionality is disabled by the user.
+ * @param {string} i18n.prefetchEnabled - ARIA label/text indicating prefetch 
+ * functionality is enabled by the user.
  *
- * @requires ../utils.js - For `$` (selector), `errorHandler`, and `setAttributes` utilities.
+ * @requires ../utils.js - For `$` (selector), `errorHandler`, and 
+ * `setAttributes` utilities.
  */
 
 import { $, errorHandler, setAttributes } from "../utils.js";
@@ -84,7 +92,8 @@ export const initVisitorSettings = (i18n) => {
    */
   const toggleTracking = () => {
     const currentTrackingValue = localStorage.getItem("tracking");
-    const newValue = currentTrackingValue === "true" ? "false" : "true"; // Determine next state
+    // Determine next state
+    const newValue = currentTrackingValue === "true" ? "false" : "true"; 
     localStorage.setItem("tracking", newValue);
 
     // Update Button UI immediately:

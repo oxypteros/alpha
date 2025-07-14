@@ -3,37 +3,63 @@
 #
 # Documentation: https://alpha.oxypteros.com/docs/config/params-toml/
 
-# Header Settings
+# Site Appearance
+# ---------------------
+# Displays a text-based logo from the first letter of the site's title.
 pseudologo_enabled = true
-
-# Footer Settings
+# The year your site was established, shown in the footer.
 established_year = "2025"
-motto            = "\"Unleash your words\""
+# A motto or tagline displayed in the footer. Use a backslash (\) to escape
+# quotes.
+motto = "\"Unleash your words\""
 
-# Performance Settings
-prefetch_enabled = true
 
 # Integrations
+# ---------------------
+# Enables Pagefind client-side search (requires installation).
 pagefind_enabled   = false
+# Enables GoatCounter analytics. Enter your site code here. (requires sign-up)
 goatcounter_prefix = ""
 
-# Visitor Settings
-noCookies_snackbar = true
-visitor_settings   = true
+# Performance
+# ---------------------
+# Preloads linked pages for faster navigation.
+prefetch_enabled = true
+
+# Global SEO 
+# ---------------------
+# Place the global image for sharing in `assets/img/`. Fill only the filename.
+# Ex. "sharing-default.jpg"
+seo_default_image = "" # Overridden by `seo_image` in page frontmatter.
+# The absolute URL of the logo image
+# Ex: "https://example.com/logo.svg"
+seo_logo_url = "" 
+# Fill with a license URL. 
+# Ex. "https://creativecommons.org/licenses/by/4.0/"
+seo_license_url = "" # Overridden by `license` in page frontmatter. 
+# Fill your organization/company name.
+seo_organization = "" # Defaults to site title.
+# Fill with a name
+seo_author = ""  # Overridden by `author` in page frontmatter.
+# URL to your author profile for open-graph
+seo_author_url = "" 
+# Your site's @handle for the `twitter:site` tag in Twitter Cards
+seo_twitter_username = "" # Fills `twitter:site` in twitter-cards
+
+# "Add to Home Screen" Settings
+# -----------------------------
+# Note: These settings control the Web App Manifest, which allows visitors to 
+#add your site to their mobile home screen with a custom icon and splash screen.
+seo_manifest_short_name  = "" # Short name for the home screen icon label.
+seo_manifest_theme_color = "" # Title bar color. Ex: "#ffffff"
+seo_manifest_bg_color    = "" # Splash screen background color. Ex: "#ffffff"
 
 # Development Settings
-tailwind_enabled  = false
-liva_enabled      = true
-livaWarn_enabled  = true
+# ---------------------
+# Run `npm install` from root to develop the theme
+tailwind_enabled = false # Enables full Tailwind CSS for development.
 
-# SEO
-seo_organization         = ""
-seo_author               = ""
-seo_logo_path            = ""
-seo_default_image        = "" # SEO Global Image: `/assets/img/image.jpg`
-seo_license              = ""
-seo_author_url           = "" # For FB or linkedin
-seo_twitter_username     = ""
-seo_manifest_short_name  = ""
-seo_manifest_theme_color = ""
-seo_manifest_bg_color    = ""
+# LiVa Settings (Linting Validator by Oxy)
+# ---------------------
+liva_enabled = true     # Enables on-page validation messages from LiVa.
+livaWarn_enabled = true # Enables terminal warning messages from LiVa.

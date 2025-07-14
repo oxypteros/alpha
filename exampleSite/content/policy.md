@@ -1,18 +1,22 @@
 +++
-draft = false
+# Content Identity
+title = "Policy"
+description = "A demo policy for a no cookies, privacy friendly website"
+# Dates
 date = "2025-05-24T10:23:36+02:00"
 lastmod = "2025-05-29T09:16:51+02:00"
-layout = "utility"
 show_date = true
 
-title = "Policy"
+# Publication Control
+draft = false
+layout = "utility"
 
-# SEO
-description = "A demo policy for a no cookies, privacy friendly website"
+# Advanced SEO
 seo_type = "WebPage"
 seo_image = ""
 twitter_username = ""
 +++
+
 ## Demo Privacy Policy
 
 This Privacy Policy describes our policies and procedures on the collection, use and disclosure of your information when you use the service and tells you about your privacy rights and how the law protects You.

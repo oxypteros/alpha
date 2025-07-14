@@ -51,8 +51,8 @@
 {{- $licenseID := "copyright" -}}
 {{- if $page.Params.license }}
   {{- $licenseID = $page.Params.license -}}
-{{- else if $site.Params.seo_license }}
-  {{- $licenseID = $site.Params.seo_license -}}
+{{- else if $site.Params.seo_license_url }}
+  {{- $licenseID = $site.Params.seo_license_url -}}
 {{- end }}
 
 {{- $licenseURL := "" -}}
@@ -93,10 +93,10 @@
   "name"    $site.Title
   "url"     $site.BaseURL
 -}}
-{{- with $site.Params.seo_logo_path }}
+{{- with $site.Params.seo_logo_url }}
   {{- $logo := dict "logo" (dict
     "@type" "ImageObject"
-    "url" ( . | absURL )
+    "url"   . 
     )
   -}}
   {{- $publisherDict = merge $publisherDict $logo -}}

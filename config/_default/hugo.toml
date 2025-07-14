@@ -6,17 +6,16 @@
 #
 # Documentation: https://alpha.oxypteros.com/docs/config/hugo-toml/
 
+# Global Settings
 enableEmoji = true
-# Pagination Settings
 
+# Pagination Settings
 [pagination]
   disableAliases = false
   pagerSize = 10 # Set the item number before pagination
   path = 'page'
 
-
-# Markdown Configuration
-
+# Content & Markup Configuration
 [markup.goldmark]
     [markup.goldmark.parser]
       autoHeadingIDType = 'github'
@@ -50,28 +49,23 @@ enableEmoji = true
 
 # Code Highlight Settings
 [markup.highlight]
-    anchorLineNos = true
-    codeFences = true
     guessSyntax = true
-    
-    hl_inline = false
-    lineAnchors = ''
-    lineNoStart = 1
-    lineNos = false
-    lineNumbersInTable = false
     noClasses = false
-    noHl = false
     tabWidth = 2
 
+# Content Organization
 [taxonomies]
   tag = "tags"
   category = "categories"
   series = "series"
 
+# Build Outputs
 [outputs]
   home = ["HTML", "RSS", "webappmanifest"]
 
+# Theme & Module Requirements
 [module]
+## Hugo versions this theme is tested and is compatible with.
   [module.hugoVersion]
     min = "0.146.1"
-    max = "0.148.0"
+    max = "0.148.1"

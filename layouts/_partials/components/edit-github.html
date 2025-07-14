@@ -19,42 +19,42 @@
   {{- end }}
   {{- else }}
   {{ $page := .Page.RelPermalink }}
-  {{- $errorCode := "ocd-fm-100" }}
+  {{- $errorCode := "liva-fm-999" }}
   {{- $errorMessage := printf "Incomplete frontmatter param - github_edit = true" }}
-  {{- $logMessage := printf "OcdError [%s] Page: %s | %s)" $errorCode $page $errorMessage }}
+  {{- $logMessage := printf "LivaError [%s] Page: %s | %s)" $errorCode $page $errorMessage }}
 
   {{- warnf "%s" $logMessage }}
   
-  {{- /* OCD error card for: odc-fm-100 */}}
-  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.ocd_enabled true) }}
+  {{- /* LiVa error card for: liva-fm-999 */}}
+  {{- if and (eq hugo.Environment "development") (hugo.IsServer) (eq .Page.Site.Params.liva_enabled true) }}
     <div
-      class="ocd ocd-card ocd-card-error ocd-shadow"
+      class="liva liva-card liva-card-error liva-shadow"
       data-error="{{ $errorCode }}"
     >
-      <header class="ocd-card-header">
-        <div class="ocd-title">
-          {{- i18n "OcdFmInputError" . |default "Frontmatter Incomplete Param" }}
+      <header class="liva-card-header">
+        <div class="liva-title">
+          {{- i18n "LivaFmInputError" . |default "Frontmatter Incomplete Param" }}
         </div>
         <svg aria-hidden="true" focusable="false">
           <use href="#icon-error"></use>
         </svg>
       </header>
-      <div class="ocd-card-content">
+      <div class="liva-card-content">
         <div>
           <p>
-            {{- i18n "OcdScNumist100" . | default "The Edit on Github function is enabled, on:" }}
+            {{- i18n "LivaScNumist100" . | default "The Edit on Github function is enabled, on:" }}
             <a href="{{ $page }}">{{ .Page.Title }}</a>
             but there are missing values in params.toml
           </p>
           <p>
-            {{ i18n "OcdScAvailableStyle" .  | default "Missing values:" }}
-            <span class="ocd-mono-error">github_username</span>,
-            <span class="ocd-mono-error">github_repository</span>
+            {{ i18n "LivaScAvailableStyle" .  | default "Missing values:" }}
+            <span class="liva-mono-error">github_username</span>,
+            <span class="liva-mono-error">github_repository</span>
           </p>
         </div>
       </div>
-      <footer class="ocd-card-footer">
-        <a href="https://alpha.oxypteros.com/ocd/error-codes"
+      <footer class="liva-card-footer">
+        <a href="https://alpha.oxypteros.com/liva/error-codes"
           >{{ $errorCode }}</a
         >
       </footer>

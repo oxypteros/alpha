@@ -1,20 +1,31 @@
 # Root Hugo Configuration
+# -----------------------
 # Place this file in the root of your Hugo site to define global settings.
 #
 # For theme-specific settings, see: `config/_default/`
 # Documentation: https://alpha.oxypteros.com/docs/config/hugo-toml
 
-baseURL = "http://localhost:1313" # Replace with production URL
-title = "Alpha Theme"
+# !!! IMPORTANT !!! 
+# Replace with your final domain before deploying.
+baseURL = "http://localhost:1313" # Public URL of your live site.
+
+# Replace with your website name
+title = "Alpha Theme" 
+
+# Uncomment if you are using a local copy of the Alpha theme.
 #theme = "alpha"
+
+# Uncomment and set your site's time zone.
 #timeZone = "Europe/Rome"
 
 
 # Tailwind Integration (Build Options) 
-# Note: Enable the following only if you are using Tailwind CSS with this 
-# project.
-# For setup instructions, see:
-# https://alpha.oxypteros.com/docs/developing-alpha/tailwind
+# ------------------------------------
+# Note: Enable the following only if you are developing with Tailwind CSS.
+#
+# 1. Uncomment all lines from "[build]" to the end of the file.
+# 2. Run `npm install` from root
+# 3. Edit `tailwind_enabled` to `true` in `config/_default/params.toml`
 
 #[build]
 #  [build.buildStats]

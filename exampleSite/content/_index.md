@@ -1,13 +1,17 @@
 +++
-draft = false
+# Content Identity
+title = "Home Page"
+description = "Home page description, a must for SEO and social shares"
+
+# Dates
 date = "2025-05-20T21:32:02+02:00"
 lastmod = ""
+
+# Publication Control
+draft = false
 layout = "home"
 
-title = "Home Page"
-
-# SEO
-description = "Home page description, a must for SEO and social shares"
+# Advanced SEO
 seo_type = ""
 seo_image = ""
 twitter_username = ""

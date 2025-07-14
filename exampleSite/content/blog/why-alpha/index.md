@@ -1,26 +1,33 @@
 +++
-draft = false
-date = "2025-05-20T22:41:47+02:00"
-lastmod = "2025-06-18T13:19:03+02:00"
-layout = "story"
-
+# Content Identity
 title = "Why Alpha"
-author = "oxypteros"
-license = "CC-BY"
-series = "Two Why's and a How"
-  parts = "Second Why"
-  weight = 3
-dropcap = true
-categories = ["Blog Posts"]
-tags = ["Writing", "Alpha"]
-
-recommended = true
-featured = true
-
+description = "A personal take on why I created the Alpha Hugo theme, not to sell, but to share."
 summary = "Learn why I created **Alpha**, a theme for *writers* and *readers*. A beginner-friendly theme built from scratch with a clear focus on simplicity. From its initial concept to its first public release, Alpha has evolved from a simple idea into a more refined system, without ever compromising its core values of accessibility and ease of use.<br> *No clutter*, *no distractions*. ***Just your words.***"
 
-# SEO
-description = "A personal take on why I created the Alpha Hugo theme, not to sell, but to share."
+# Authoring
+author = "oxypteros"
+date = "2025-05-20T22:41:47+02:00"
+lastmod = "2025-06-18T13:19:03+02:00"
+license = "CC-BY"
+
+# Organization
+categories = ["Blog Posts"]
+tags = ["Writing", "Alpha"]
+## Series
+series = "Two Why's and a How"
+parts = "Second Why"
+weight = 3
+
+# Display
+dropcap = true
+featured = true
+recommended = true
+
+# Publication Control
+draft = false
+layout = "story"
+
+# Advanced SEO
 seo_type = "BlogPosting"
 seo_image = ""
 twitter_username = ""

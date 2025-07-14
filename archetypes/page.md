@@ -1,23 +1,31 @@
 +++
-draft = false
+# Content Identity
+title = "{{ replace .File.ContentBaseName `-` ` ` | title }}"
+description = ""
+
+# Authoring
+author = ""
 date = "{{ .Date }}"
 lastmod = ""
-layout = "page"
-
-title = "{{ replace .File.ContentBaseName `-` ` ` | title }}"
-author = ""
 license = ""
-series = ""
-  parts = ""
-  weight = 1000
+
+# Organization
 categories = []
 tags = []
+## Series
+series = ""
+parts = ""
+weight = 0
 
-recommended = false
+# Display
 featured = false
+recommended = false
 
-# SEO
-description = ""
+# Publication Control
+draft = false
+layout = "page"
+
+# Advanced SEO
 seo_type = ""
 seo_image = ""
 twitter_username = ""

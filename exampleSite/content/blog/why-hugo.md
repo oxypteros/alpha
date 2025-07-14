@@ -1,28 +1,35 @@
 +++
-draft = false
+# Content Identity
+title = "Why Hugo"
+description = "A personal take on why Hugo won and not other static site generators or blogging platforms."
+# Authoring
+author = "oxypteros"
 date = "2025-05-20T22:11:52+02:00"
 lastmod = "2025-06-18T13:05:41+02:00"
-layout = "page"
-
-title = "Why Hugo"
-author = "oxypteros"
 license = "CC-BY"
-series = "Two Why's and a How"
-  parts = "First Why"
-  weight = 2
+
+# Organization
 categories = ["Blog Posts"]
 tags = ["Hugo", "Writing"]
+## Series
+series = "Two Why's and a How"
+parts = "First Why"
+weight = 2
 
-recommended = true
+# Display
 featured = false
+recommended = true
 
-# SEO
-description = "A personal take on why Hugo won and not other static site generators or blogging platforms."
+
+# Publication Control
+draft = false
+layout = "page"
+
+# Advanced SEO
 seo_type = "BlogPosting"
 seo_image = ""
 twitter_username = ""
 +++
-
 {{< status_card TITLE="Disclaimer" TYPE="info" >}}
 
 This post series reflects my **personal experience**. Your mileage may vary!

@@ -45,7 +45,7 @@
 # Footer Menu
 [[footer]]
   name = "Policy"
-  url = "/policy"
+  url = "/policy/"
   weight = 100
 
 

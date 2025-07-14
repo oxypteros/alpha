@@ -7,7 +7,7 @@ solution   = "LivaFmInvalidLastmodSolution"
 preExample = "LivaCardExample"
 example    = "LivaFmInvalidLastmodExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#authoring" 
 
 [liva-fm-111]
 title      = "LivaFmInvalidLayout"
@@ -18,7 +18,7 @@ solution   = "LivaFmInvalidLayoutSolution"
 preExample = "LivaCardExample"
 example    = "LivaFmInvalidLayoutExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#publication-control"
 
 [liva-fm-122]
 title      = "LivaFmMissingTitle"
@@ -29,7 +29,7 @@ solution   = "LivaFmMissingTitleSolution"
 preExample = "LivaCardExample"
 example    = "LivaFmMissingTitleExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#content-identity"
 
 [liva-fm-131]
 title      = "LivaFmInvalidLicense"
@@ -40,7 +40,7 @@ solution   = "LivaFmInvalidLicenseSolution"
 preExample = "LivaCardExample"
 example    = "LivaFmInvalidLicenseExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#authoring"
 
 [liva-fm-141]
 title      = "LivaFmInvalidRecommended"
@@ -51,7 +51,7 @@ solution   = "LivaFmInvalidRecommendedSolution"
 preExample = "LivaCardExample"
 example    = "LivaFmInvalidRecommendedExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#display"
 
 [liva-fm-151]
 title      = "LivaFmInvalidFeatured"
@@ -62,7 +62,7 @@ solution   = "LivaFmInvalidFeaturedSolution"
 preExample = "LivaCardExample"
 example    = "LivaFmInvalidFeaturedExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#display"
 
 [liva-fm-161]
 title      = "LivaFmMissingDescription"
@@ -73,7 +73,7 @@ solution   = "LivaFmMissingDescriptionSolution"
 preExample = "LivaCardExample"
 example    = "LivaFmMissingDescriptionExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#content-identity"
 
 [liva-fm-171]
 title      = "LivaFmMissingSeoImage"
@@ -84,7 +84,7 @@ solution   = "LivaFmMissingSeoImageSolution"
 preExample = "LivaCardInput"
 example    = "LivaFmMissingSeoImageExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#advanced-seo"
 
 [liva-fm-172]
 title      = "LivaFmBadSeoImage"
@@ -95,4 +95,4 @@ solution   = "LivaFmBadSeoImageSolution"
 preExample = "LivaCardInput"
 example    = "LivaFmMissingSeoImageExampleConsole"
 preDoc     = "frontmatter"
-docURL     = ""
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#advanced-seo"
