@@ -32,7 +32,7 @@
     {{- $seoImage = $.Page.Resources.GetMatch $filename -}}
   {{- end }}
 
-  {{- /* Image not found. Inform OCD */}}
+  {{- /* Image not found. Inform LiVa */}}
   {{- if not $seoImage -}}
     {{- $imageNotFoundError = $filename -}}
   {{- end -}}
@@ -90,14 +90,14 @@
   {{- end }}
 {{- end }}
 
-{{- /* OCD Error Reporting */}}
-{{- $ocdWarnEnabled := .Site.Params.ocdWarn_enabled | default true -}}
-{{- $ocdEnabled := and hugo.IsDevelopment (.Site.Params.ocd_enabled | default true) -}}
-{{- if or $ocdWarnEnabled $ocdEnabled -}}
-  {{- $ocdHeadFmErrors := slice -}}
-  {{- $ocdHeadConfigErrors := slice -}}
+{{- /* LiVa Error Reporting */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- if or $livaWarnEnabled $livaEnabled -}}
+  {{- $livaHeadFmErrors := slice -}}
+  {{- $livaHeadConfigErrors := slice -}}
   {{- $page := .Page.Permalink -}}
-  {{- $ocdErrorCode := "" }}
+  {{- $livaErrorCode := "" }}
   {{- $filePath := "" -}}
   {{- if .Page.File -}}
     {{- $filePath = .Page.File.Path -}}
@@ -105,50 +105,50 @@
 
   {{- /* Image Not Found */}}
   {{- if $imageNotFoundError -}}
-    {{- $ocdErrorCode = "ocd-fm-171" }}
+    {{- $livaErrorCode = "liva-fm-171" }}
     {{- $seoImage404Error := dict
-      "code" $ocdErrorCode
+      "code" $livaErrorCode
       "page" $page
       "file" $filePath
       "path" $path
       "keyValue" $imageNotFoundError
     -}}
-    {{- $ocdHeadFmErrors = $ocdHeadFmErrors | append $seoImage404Error -}}
+    {{- $livaHeadFmErrors = $livaHeadFmErrors | append $seoImage404Error -}}
   {{- end -}}
 
   {{- if $imageQualityError -}}
-    {{- $ocdErrorCode = "ocd-fm-172" }}
+    {{- $livaErrorCode = "liva-fm-172" }}
     {{- $seoBadImageError := dict
-      "code" $ocdErrorCode
+      "code" $livaErrorCode
       "page" $page
       "file" $filePath
       "path" $path
       "keyValue" $filename
     -}}
-    {{- $ocdHeadFmErrors =  $ocdHeadFmErrors | append $seoBadImageError -}}
+    {{- $livaHeadFmErrors =  $livaHeadFmErrors | append $seoBadImageError -}}
   {{- end -}}
 
   {{- if $globalImageNotFoundError -}}
-    {{- $ocdErrorCode = "ocd-cfg-132" }}
+    {{- $livaErrorCode = "liva-cfg-132" }}
     {{- $configSeoImage404Error := dict
-      "code" $ocdErrorCode
+      "code" $livaErrorCode
       "path" $globalImageNotFoundError
       "keyValue" .Site.Params.seo_default_image
     -}}
-    {{- $ocdHeadConfigErrors = $ocdHeadConfigErrors | append $configSeoImage404Error -}}
+    {{- $livaHeadConfigErrors = $livaHeadConfigErrors | append $configSeoImage404Error -}}
   {{- end -}}
 
   {{- if $globalImageQualityError -}}
-    {{- $ocdErrorCode = "ocd-cfg-133" }}
+    {{- $livaErrorCode = "liva-cfg-133" }}
     {{- $configBadSeoImageError := dict
-      "code" $ocdErrorCode
+      "code" $livaErrorCode
       "path" $path
       "keyValue" .Site.Params.seo_default_image
     -}}
-    {{- $ocdHeadConfigErrors = $ocdHeadConfigErrors | append $configBadSeoImageError -}}
+    {{- $livaHeadConfigErrors = $livaHeadConfigErrors | append $configBadSeoImageError -}}
   {{- end -}}
-  {{- .Store.Set "ocdHeadFmErrors"  $ocdHeadFmErrors -}}
-  {{- .Store.Set "ocdHeadConfigErrors" $ocdHeadConfigErrors -}}
+  {{- .Store.Set "livaHeadFmErrors"  $livaHeadFmErrors -}}
+  {{- .Store.Set "livaHeadConfigErrors" $livaHeadConfigErrors -}}
 {{- end -}}
 
 {{- /* Data Population */}}
