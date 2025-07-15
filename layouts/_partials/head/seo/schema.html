@@ -95,7 +95,7 @@
       "@type"       "Article"
       "headline"    $item.Title
       "url"         $item.Permalink
-      "description" ($item.Summary | plainify | truncate 160)
+      "description" ($item.Description | plainify | truncate 160)
       "author" (dict "@type" "Person" "name" ($item.Params.author | default $site.Params.seo_author | default $site.Title))
       "datePublished" ($item.PublishDate.Format "2006-01-02T15:04:05-07:00")
     -}}
