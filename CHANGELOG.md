@@ -6,7 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-<!--## [Unreleased]-->
+## [Unreleased]
+### Fixed
+- **Image Processing for Text-Based Images:** Introduced a dual-path image processing pipeline to resolve a critical issue where resizing would blur text in screenshots and diagrams ([#16](https://github.com/oxypteros/alpha/issues/16)).
+    - Photos are processed with full responsive resizing as before.
+    - Images marked with a `#text` suffix in Markdown (e.g. image.png#text) now bypass resizing entirely, ensuring clarity and readability. ***This is a temporary solution that trades responsive image sizes for guaranteed sharpness.***
+- **LiVa Issues :**
+    - **SEO Images:** Refactored the `seo/image.html` partial to eliminate legacy code, ensuring LiVa error codes `liva-fm-171` and `liva-fm-172` are reported.
+    - **Markdown On-Page Card:** Fix the `solution` and the `example` rendered for `liva-md-101` if the page is a page bundle or not.
+
+### Changed
+- **Enhanced SEO for Collection Pages:** The `CollectionPage` schema now generates its description by teh actual description from each child page's frontmatter. This provides more accurate and keyword-rich metadata for search engines compared to the previous method of using the auto-generated summaries.
+
+
 ## [1.0.0] — 2025-07-14
 This marks the first stable, production-ready release of the Alpha theme. This version incorporates all features and fixes from the beta and release candidate phases into a polished, robust, and well-documented final product.
 
