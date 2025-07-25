@@ -8,108 +8,142 @@
 
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- $destination := .Destination -}}
-{{- $plainText := .PlainText }}
+{{- if .Destination }}
+  {{- $destination := .Destination -}}
+  {{- $plainText := .PlainText }}
 
-{{- $image := "" -}}
-{{- $imageType := "" -}}
-{{- /* Check if it is a remote image */}}
-{{- if hasPrefix $destination "http" -}}
-  {{- $image = resources.GetRemote $destination -}}
-  {{- $imageType = "remote" -}}
-{{- else -}}
-  {{- /* It's a local image. Try the bundle first. */}}
-  {{- $bundleImage := .Page.Resources.GetMatch (printf "*%s" $destination) -}}
-  {{- if $bundleImage -}}
-    {{- $image = $bundleImage -}}
+  {{- /* Check for #text trigger */}}
+  {{- $isTextImage := false -}}
+  {{- if strings.HasSuffix $destination "#text" -}}
+    {{- $isTextImage = true -}}
+    {{- $destination = strings.TrimSuffix "#text" $destination -}}
+  {{- end -}}
+
+  {{- $image := "" -}}
+  {{- $imageType := "" -}}
+  {{- /* Check if it is a remote image */}}
+  {{- if hasPrefix $destination "http" -}}
+    {{- $image = resources.GetRemote $destination -}}
+    {{- $imageType = "remote" -}}
   {{- else -}}
-    {{- /* Not in bundle. Try assets. */}}
-    {{- $matches := resources.Match (printf "img/*%s" $destination) -}}
-    {{- if gt (len $matches) 0 -}}
-      {{- $image = index $matches 0 -}}
+    {{- /* It's a local image. Try the bundle first. */}}
+    {{- $bundleImage := .Page.Resources.GetMatch (printf "*%s" $destination) -}}
+    {{- if $bundleImage -}}
+      {{- $image = $bundleImage -}}
+    {{- else -}}
+      {{- /* Not in bundle. Try assets. */}}
+      {{- $matches := resources.Match (printf "img/*%s" $destination) -}}
+      {{- if gt (len $matches) 0 -}}
+        {{- $image = index $matches 0 -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
-{{- end -}}
 
-{{- /* Validate input and report errors to LiVa system */}}
-{{- $livaWarnEnabled := .Page.Site.Params.livaWarn_enabled | default true -}}
-{{- $livaEnabled := and hugo.IsDevelopment (.Page.Site.Params.liva_enabled | default true) -}}
-
-{{- /* Determine LiVa error code based on input */}}
-{{- $errorCode := "" }}
-{{- if not $image -}}
-  {{- if eq $imageType "remote" -}}
-    {{- $errorCode = "liva-md-103" -}} 
-  {{- else -}}
-    {{- $errorCode = "liva-md-101" -}}
+  {{- /* LiVa Error Handling */}}
+  {{- if not $image -}}
+    {{- $livaWarnEnabled := .Page.Site.Params.livaWarn_enabled | default true -}}
+    {{- $livaEnabled := and hugo.IsDevelopment (.Page.Site.Params.liva_enabled | default true) -}}
+    {{- $errorCode := "" }}
+    {{- if eq $imageType "remote" -}}
+      {{- $errorCode = "liva-md-103" -}}
+    {{- else -}}
+      {{- $errorCode = "liva-md-101" -}}
+    {{- end -}}
+    {{- if and ($image) (not $plainText) -}}
+      {{- $errorCode = "liva-md-104" -}}
+    {{- end -}}
+    {{- if $errorCode }}
+      {{- $pagePath := .Page.File.Path -}}
+      {{- $pageDir := .Page.File.Dir -}}
+      {{- $permalink := .Page.Permalink }}
+      {{- $isBundle := or (hasPrefix .Page.File.BaseFileName "index") (hasPrefix .Page.File.BaseFileName "_index") -}}
+      {{- if or $livaEnabled $livaWarnEnabled }}
+        {{- partial "liva/core/markdown/handler.logic.html" (dict "code" $errorCode "destination" $destination "path" $pagePath "permalink" $permalink "dir" $pageDir "alt" $plainText "isBundle" $isBundle) -}}
+      {{- end }}
+    {{- end }}
   {{- end -}}
-{{- end }}
-{{- if and ($image) (not $plainText) -}}
-  {{- $errorCode = "liva-md-104" -}}
-{{- end -}}
 
-{{- if $errorCode }}
-  {{- $pagePath := .Page.File.Path -}}
-  {{- $pageDir := .Page.File.Dir -}}
-  {{- $permalink := .Page.Permalink }}
-  {{- $isBundle := or (eq .Page.File.BaseFileName "index") (eq .Page.File.BaseFileName "_index") -}} 
-  {{- if or $livaEnabled $livaWarnEnabled }}
-    {{- partial "liva/core/markdown/handler.logic.html" (dict
-      "code"        $errorCode
-      "destination" $destination
-      "path"        $pagePath
-      "permalink"   $permalink
-      "dir"         $pageDir
-      "alt"         $plainText
-      "isBundle"    $isBundle
-      )
-    -}}
+  {{- /* Image found */}}
+  {{- if $image }}
+    <figure class="mx-auto my-8 w-fit max-w-full">
+      {{- if $isTextImage -}}
+        {{- /*
+          Text images (#text):
+          Never resized. If not WebP, convert. If WebP, serve as is.
+        */}}
+        {{- $finalImage := $image -}}
+        {{- if ne $image.MediaType.SubType "webp" -}}
+          {{- $finalImage = $image.Resize (printf "%dx webp text" $image.Width) -}}
+        {{- end -}}
+        <img
+          class="border-out-var dark:border-out-var-d mx-auto rounded-md border-2 shadow-md"
+          src="{{- $finalImage.RelPermalink -}}"
+          loading="lazy"
+          decoding="async"
+          width="{{- $finalImage.Width -}}"
+          height="{{- $finalImage.Height -}}"
+          {{- with $plainText }}alt="{{- . -}}"{{- end }}
+        />
+      {{- else -}}
+        {{- /*
+          Photos (default):
+          Generate responsive srcset, avoiding re-encoding.
+        */}}
+        {{- $isSourceWebP := eq $image.MediaType.SubType "webp" -}}
+        {{- $widths := slice 320 572 710 823 1420 1646 }}
+        {{- $srcset := slice }}
+        {{- $resizedImages := slice }}
+
+        {{- range $widths }}
+          {{- if ge $image.Width . }}
+            {{- $resized := "" -}}
+            {{- if $isSourceWebP -}}
+              {{- /* If source is WebP, ONLY resize */}}
+              {{- $resized = $image.Resize (printf "%dx" .) -}}
+            {{- else -}}
+              {{- /* Otherwise, resize AND convert */}}
+              {{- $resized = $image.Resize (printf "%dx webp photo q90" .) -}}
+            {{- end -}}
+            {{- $srcset = $srcset | append (printf "%s %dw" $resized.RelPermalink .) }}
+            {{- $resizedImages = $resizedImages | append $resized }}
+          {{- end }}
+        {{- end }}
+
+        {{- /* Always include the original as the largest option */}}
+        {{- $srcset = $srcset | append (printf "%s %dw" $image.RelPermalink $image.Width) }}
+        {{- $finalSrcset := delimit (uniq $srcset) ", " }}
+
+        {{- $fallbackSrc := "" -}}
+        {{- if $isSourceWebP -}}
+          {{- $fallbackSrc = $image.Resize "710x" -}}
+        {{- else -}}
+          {{- $fallbackSrc = $image.Resize "710x webp photo q90" -}}
+        {{- end -}}
+        {{- if not (in $resizedImages $fallbackSrc) -}}
+          {{- $fallbackSrc = index ($resizedImages | last 1) 0 | default $image -}}
+        {{- end -}}
+
+        {{- $sizes := "(min-width: 800px) 706px, 92.08vw" -}}
+
+
+        <img
+          class="border-out-var dark:border-out-var-d mx-auto rounded-md border-2 shadow-md"
+          src="{{- $fallbackSrc.RelPermalink }}"
+          srcset="{{- $finalSrcset }}"
+          sizes="{{- $sizes }}"
+          loading="lazy"
+          decoding="async"
+          width="{{- $fallbackSrc.Width }}"
+          height="{{- $fallbackSrc.Height }}"
+          {{- with $plainText }}alt="{{- . -}}"{{- end }}
+        />
+      {{- end -}}
+
+      {{- with .Title }}
+        <figcaption class="text-on-sur-var dark:text-on-sur-var-d py-2 text-sm">
+          {{- . -}}
+        </figcaption>
+      {{- end }}
+    </figure>
   {{- end }}
-{{- end }}
-
-{{- /* Process image and render figure element */}}
-{{- if $image }}
-  {{- $widths := slice 320 572 710 823 1420 1646 }}
-  {{- $srcset := slice }}
-  {{- $resizedImages := slice }}
-
-  {{- range $widths }}
-    {{- if ge $image.Width . }}
-      {{- $resized := $image.Resize (printf "%dx webp q90" .) }}
-      {{- $srcset = $srcset | append (printf "%s %dw" $resized.RelPermalink .) }}
-      {{- $resizedImages = $resizedImages | append $resized }}
-    {{- end }}
-  {{- end }}
-
-  {{- /* Always include the original as the largest option */}}
-  {{- $srcset = $srcset | append (printf "%s %dw" $image.RelPermalink $image.Width) }}
-  {{- $finalSrcset := delimit (uniq $srcset) ", " }}
-
-  {{- $fallbackSrc := $image.Resize "710x webp q90" }}
-  {{- if not (in $resizedImages $fallbackSrc) }}
-    {{- $fallbackSrc = index ($resizedImages | last 1) 0 | default $image }}
-  {{- end }}
-
-  {{- $sizes := "(min-width: 800px) 706px, 92.08vw" -}}
-
-
-  <figure class="mx-auto my-8 w-fit max-w-full">
-    <img
-      class="border-out-var dark:border-out-var-d mx-auto rounded-md border-2 shadow-md"
-      src="{{- $fallbackSrc.RelPermalink }}"
-      srcset="{{- $finalSrcset }}"
-      sizes="{{- $sizes }}"
-      loading="lazy"
-      decoding="async"
-      width="{{- $fallbackSrc.Width }}"
-      height="{{- $fallbackSrc.Height }}"
-      {{- with $plainText }}alt="{{- . -}}"{{- end }}
-    />
-
-    {{- with .Title }}
-      <figcaption class="text-on-sur-var dark:text-on-sur-var-d py-2 text-sm">
-        {{- . -}}
-      </figcaption>
-    {{- end }}
-  </figure>
 {{- end -}}

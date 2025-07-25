@@ -53,13 +53,12 @@
     Code: liva-md-101
   */}}
   {{ if eq $code "liva-md-101" }}
-    {{- if $isBundle }}
-      {{- $example = printf (i18n $entry.example) $alt $destination | safeHTML -}}
-    {{- else }}
+        {{- $example = printf (i18n $entry.example) $alt $destination | safeHTML -}}
+    {{- if not $isBundle }} 
+
       {{- $solutionAssetsKey := $entry.solutionAssets -}}
-      {{- $solution = printf (i18n $solutionAssetsKey) $destination | safeHTML -}}
-      {{- $exampleAssetsKey := $entry.exampleAssets -}}
-      {{- $example = printf (i18n $exampleAssetsKey) $destination | safeHTML -}}
+      {{- $solution = printf (i18n $solutionAssetsKey) | safeHTML -}}
+
     {{- end }}
 
     {{- /*
