@@ -118,7 +118,7 @@ theme = ["github.com/oxypteros/alpha"]
 
 ## Need help?
 - [Documentation](https://alpha.oxypteros.com/docs)
-- [Developing Alpha (Tailwind setup)](https://alpha.oxypteros.com/docs/developing-alpha)
+<!-- - [Developing Alpha (Tailwind setup)](https://alpha.oxypteros.com/docs/developing-alpha) -->
 
 ## Feedback or Questions?
 - [Open an issue](https://github.com/oxypteros/alpha/issues) 
