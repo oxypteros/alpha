@@ -21,8 +21,6 @@
 ![Vercel Deploy](https://deploy-badge.vercel.app/vercel/alpha-build?color=4cc61e&logoColor=ffffff)
 ![Cloudflare Pages](https://img.shields.io/badge/Cloudflare%20Pages-live-4cc61e?style=flat&logo=cloudflarepages&logoColor=ffffff)
 
----
-
 ## Write Freely. Publish Beautifully. Alpha Does the Rest.
 **Alpha** is a Hugo theme designed for *personal*, *text-first* websites. It gives you a **zero-distraction canvas** while providing a professional, flexible engine that automatically handles SEO, social sharing, and layout details.  
 
@@ -40,8 +38,6 @@ Alpha isn’t just another Hugo theme. It’s built around three core principles
 3. **Guidance, Not Just Templates**:
    Alpha includes a [step-by-step Beginner’s Guide](https://alpha.oxypteros.com/get-started/) and [comprehensive Reference Docs](https://alpha.oxypteros.com/docs/), so you always know what to do next.
 
----
-
 ## Key Features That Matter
 - **Flexible Layouts** — Build pages easily using shortcodes without touching the theme code.  
 - **Automated SEO Engine** — Schema.org, Open Graph, and Twitter Cards handled automatically.  
@@ -51,7 +47,6 @@ Alpha isn’t just another Hugo theme. It’s built around three core principles
 - **Built-in Integrations** — Pagefind search and privacy-friendly GoatCounter analytics.  
 - **Multilingual Support** — Ready for content in multiple languages.  
 
----
 
 ## Get Started Quickly
 **New to Hugo?** Follow ["From Zero with Zero"](https://alpha.oxypteros.com/get-started) for step-by-step guidance.  
