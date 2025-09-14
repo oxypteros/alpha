@@ -68,4 +68,4 @@ enableEmoji = true
 ## Hugo versions this theme is tested and is compatible with.
   [module.hugoVersion]
     min = "0.146.1"
-    max = "0.148.1"
+    max = "0.150.0"

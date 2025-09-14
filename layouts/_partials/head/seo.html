@@ -122,9 +122,12 @@
   {{- $readingTime = printf "PT%dM" . -}}
 {{- end -}}
 
+{{- /* OG Author URL  */}}
+{{- $authorURL := $page.Params.seo_author_url | default $site.Params.seo_author_url -}}
+
 {{- /* X (ex. Twitter) */}}
-{{- $xCreator := $page.Params.twitter_username -}}
-{{- $xSite := $site.Params.twitter_username -}}
+{{- $xCreator := $page.Params.seo_twitter_username -}}
+{{- $xSite := $site.Params.seo_twitter_username -}}
 
 {{- /* Initial data collection */}}
 {{- $data := dict
@@ -143,6 +146,8 @@
   "readingTime"     $readingTime
   "licenseID"       $licenseID
   "licenseURL"      $licenseURL
+  "authorURL"       $authorURL           
+  "isHome"          $page.IsHome 
   "xSite"           $xSite
   "xCreator"        ($xCreator | default $xSite)
 }}
