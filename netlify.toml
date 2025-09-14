@@ -4,4 +4,4 @@
 # Security headers are set by the file `static/_headers`
 #
 [build.environment]
-    HUGO_VERSION = "0.148.1" 
+    HUGO_VERSION = "0.150.0" 
