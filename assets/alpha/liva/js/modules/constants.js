@@ -12,7 +12,7 @@ export const LivaStates = {
 
 export const ApiUrls = {
   HUGO_VERSION: "https://api.github.com/repos/gohugoio/hugo/tags",
-  THEME_VERSION: "https://alpha.oxypteros.com/alpha/version.json",
+  THEME_VERSION: "https://api.github.com/repos/oxypteros/alpha/tags",
 };
 
 export const DocUrls = {

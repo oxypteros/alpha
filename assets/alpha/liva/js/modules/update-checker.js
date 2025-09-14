@@ -95,7 +95,7 @@ export async function checkUpdates() {
     const response = await fetch(ApiUrls.THEME_VERSION);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const data = await response.json();
-    compareAlphaVersion(data.version);
+    compareAlphaVersion(data[0].name);
   } catch (error) {
     console.error("Error fetching Alpha Version URL:", error);
     compareAlphaVersion(null);
