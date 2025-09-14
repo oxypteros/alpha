@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 <!--## [Unreleased]-->
+## [1.0.2] — 2025-09-14
+
+This is a maintenance release that resolves a critical bug in the Open Graph implementation and updates core dependencies.
+
+### Fixed
+- **Open Graph Author & Date Generation:** Refactored the `open-graph.html` partial to resolve a critical context bug. This fixes issues where the `article:author` URL was not being populated and corrects an HTML escaping error that was breaking the format for article dates. ([#18](https://github.com/oxypteros/alpha/issues/18))
+
+### Added
+- **Open Graph Article Dates:** Added full support for `article:published_time` and `article:modified_time` meta tags, providing richer and more accurate context for social media platforms when content is shared.
+
+### Changed
+- **Hugo Compatibility:** Certified support for Hugo `v0.150.0` and updated the theme's `max_version` accordingly.
+
+### Updated
+- **Dependencies:** Upgraded key development dependencies to their latest stable versions for improved performance and security:
+    - Tailwind CSS to `v4.1.13`
+    - Pagefind to `v1.4.0`
+
 ## [1.0.1] — 2025-07-25
 ### Fixed
 - **Image Processing for Text-Based Images:** Introduced a dual-path image processing pipeline to resolve a critical issue where resizing would blur text in screenshots and diagrams ([#16](https://github.com/oxypteros/alpha/issues/16)).
