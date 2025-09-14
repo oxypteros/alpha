@@ -6,7 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-<!--## [Unreleased]-->
+## [Unreleased]
+### Changed
+- **LiVa Update Checks:** Migrate the version control to the GitHub tags
+
 ## [1.0.2] — 2025-09-14
 
 This is a maintenance release that resolves a critical bug in the Open Graph implementation and updates core dependencies.
