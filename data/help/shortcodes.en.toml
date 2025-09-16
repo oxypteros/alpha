@@ -235,7 +235,7 @@ order = 1
 
 # Social Shortcode
 [shortcodes.social]
-  order = 15
+  order = 13
   title = "Social Shortcode"
   description = "Shows a list of social network links with icons."
   syntax = "&lbrace;&lbrace;&lt; social LIMIT=\"\" &gt;&rbrace;&rbrace;"
@@ -246,3 +246,21 @@ order = 1
     name = "LIMIT"
     optional = true
     description = "Number of items to display"
+
+# YouTube Shortcode
+[shortcodes.youtube]
+  order = 14
+  title = "YouTube Shortcode"
+  description = "Embeds a privacy and performance friendly YouTube Video"
+  syntax = "&lbrace;&lbrace;&lt; youtube TITLE=\"\" VIDEO-ID=\"\" &gt;&rbrace;&rbrace;"
+  example = "&lbrace;&lbrace;&lt; youtube TITLE=\"Video Title\" VIDEO-ID=\"Zt4hP9kLmQ2\" &gt;&rbrace;&rbrace;"
+  docLink = "https://alpha.oxypteros.com/docs/shortcodes/youtube/"
+  
+  [[shortcodes.youtube.parameters]]
+    name = "TITLE"
+    optional = true
+    description = "The video title"
+  [[shortcodes.youtube.parameters]]
+    name = "VIDEO-ID"
+    optional = false
+    description = "The YouTube video ID (*The part after* `v=` *in the YouTube video URL*)"
