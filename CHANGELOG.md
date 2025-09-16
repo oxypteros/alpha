@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - **Validation:** Fully integrated with LiVa to provide guided, real-time feedback on shortcode parameters.
 
 ### Changed
+- **LiVa Validation Engine:** Significantly improved the validation engine. LiVa can now enforce that required parameters are not just present but also contain a non-empty value, powered by a new `required = true` flag and a `required_string` validation rule.
 - **LiVa Update Checks:** Refactored the theme's update notification logic. LiVa now checks for new versions directly against the official Alpha GitHub release tags, providing more accurate and reliable update information.
 
 ## [1.0.2] — 2025-09-14
