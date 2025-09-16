@@ -100,13 +100,7 @@
     {{- if eq .Site.Params.visitor_settings true }}
       {{- partialCached "tail/settings-template.html" . .Site.Language.Lang -}}
     {{- end }}
-    {{- /*  load lite-youtube css &js if shortcode is used */}}
-{{ if .HasShortcode "youtube" -}}
-{{- $ytCss := resources.Get "alpha/css/lite-yt-embed.css" | resources.Fingerprint -}}
-{{- $ytJs := resources.Get "alpha/js/lite-yt-embed.js" | resources.Fingerprint -}}
-<link rel="stylesheet" href="{{ $ytCss.RelPermalink }}">
-<script src="{{ $ytJs.RelPermalink }}" async></script>
-{{- end }}
+
     {{- /* LiVa partial, loaded strictly for dev. mode and locally */}}
     {{- if or (.Site.Params.liva_enabled | default true) (.Site.Params.livaWarn_enabled | default true) }}
       {{- partial "liva/main.html" . -}}
