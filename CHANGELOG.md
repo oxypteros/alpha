@@ -7,8 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 ## [Unreleased]
+### Added
+- **New `youtube` Shortcode:** Introduced a new shortcode for embedding YouTube videos with a strong focus on performance, privacy, and accessibility.
+    - **Performance:** Utilizes the lightweight [lite-youtube-embed](https://github.com/paulirish/lite-youtube-embed) facade, deferring the full player load until a user clicks play to ensure optimal page speed scores.
+    - **Privacy:** Defaults to using the `youtube-nocookie.com` domain to respect user privacy and align with GDPR best practices.
+    - **Accessibility & Semantics:** Renders as a semantic `<figure>` with an optional `<figcaption>`, and provides a fully internationalized (`i18n`) `aria-label` for screen reader users.
+    - **Validation:** Fully integrated with LiVa to provide guided, real-time feedback on shortcode parameters.
+
 ### Changed
-- **LiVa Update Checks:** Migrate the version control to the GitHub tags
+- **LiVa Update Checks:** Refactored the theme's update notification logic. LiVa now checks for new versions directly against the official Alpha GitHub release tags, providing more accurate and reliable update information.
 
 ## [1.0.2] — 2025-09-14
 
