@@ -657,6 +657,11 @@ other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt;
 ## liva-sc-220
 [LivaScSocialExample]
 other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; social LIMIT=\"6\" &gt;&rbrace;&rbrace;"
+
+## liva-sc-230
+[LivaScYouTubeExample]
+other = "<span class='liva-mono-comment'>File: %s</span><br>&lbrace;&lbrace;&lt; youtube TITLE=\"The Video Title\" VIDEO-ID=\"Zt4hP9kLmQ2\" &gt;&rbrace;&rbrace;"
+
 # Fallback
 [LivaUnknownTitle]
 other = "Unknown Error Code"
