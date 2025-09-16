@@ -172,3 +172,15 @@ validParams = ["TITLE"]
 
   [text_snippet.errorCodes]
   invalidParam = "liva-sc-130"
+
+# YouTube Shortcode
+[youtube]
+validParams = ["TITLE", "VIDEO-ID"]
+
+  [youtube.params.TITLE]
+  validation = "any_string"
+  [youtube.params.VIDEO-ID]
+  validation = "any_string"
+
+  [youtube.errorCodes]
+  invalidParam = "liva-sc-230"
