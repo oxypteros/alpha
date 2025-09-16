@@ -99,6 +99,7 @@ other = "But don't fret, there's plenty more that did."
 
 [KeepReading]
 other = "Keep Reading"
+
 # aria-labels
 [SearchBtn]
 other = "Activate search"
@@ -186,6 +187,9 @@ other = "Social media links"
 
 [FollowUsOn]
 other= "Follow us on:"
+
+[PlayYtVideo]
+other = "Play YouTube Video"
 
 # SEO
 [DefaultTaxonomyDescription]
