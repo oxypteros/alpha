@@ -111,3 +111,15 @@ severity   = "warning"
 preExample = "LivaCardExample"
 example    = "LivaScSocialExample"
 docURL     = "https://alpha.oxypteros.com/docs/shortcodes/social/"
+
+[liva-sc-230]
+severity   = "warning"
+preExample = "LivaCardExample"
+example    = "LivaScYouTubeExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/youtube/"
+
+[liva-sc-235]
+severity   = "error"
+preExample = "LivaCardExample"
+example    = "LivaScYouTubeExample"
+docURL     = "https://alpha.oxypteros.com/docs/shortcodes/youtube/"
