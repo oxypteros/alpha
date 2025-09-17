@@ -73,3 +73,11 @@ docURL   = "https://alpha.oxypteros.com/docs/shortcodes/social/#parameters-refer
 [liva-sc-221]
 severity = "warning"
 docURL   = "https://alpha.oxypteros.com/docs/shortcodes/social/#parameters-reference"
+
+[liva-sc-230]
+severity = "warning"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/youtube/#parameters-reference"
+
+[liva-sc-235]
+severity = "error"
+docURL   = "https://alpha.oxypteros.com/docs/shortcodes/youtube/#parameters-reference"

@@ -1,0 +1,74 @@
+{{- /*
+  Shortcode: youtube.html
+  Purpose: Embed a privacy and performance friendly YouTube video. Based on the code of https://github.com/paulirish/lite-youtube-embed.
+
+  Target: Global
+
+  Example:
+  {{< youtube TITLE="" ID="" >}}
+
+  Params: 
+  - TITLE (string, optional): The Video title. 
+  - ID (string, optional): The YouTube video id to embed. 
+  
+  Error handler: 
+  - livaWarn (global) 
+  - LiVa (scoped)
+  
+  Docs: https://alpha.oxypteros.com/docs/shortcodes/youtube Repo:
+  https://github.com/oxypteros/alpha 
+*/}}
+
+{{- /* Shortcode rules */}}
+{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+
+{{- /* Vars */}}
+{{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
+{{- $livaEnabled := and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) -}}
+{{- $validInput := "" -}}
+{{- $validationResult := "" -}}
+
+{{- /* Get shortcodes rules and validate input */}}
+{{- if $rules -}}
+  {{- $rules = merge $rules (dict "scName" .Name) -}}
+  {{- $validationResult = partial "liva/core/shortcodes/validator.logic.html" (dict "rules" $rules "userInput" .Params) -}}
+  {{- $validInput = $validationResult.isValid }}
+{{- else -}}
+  {{- warnf "LiVa: No rules found in 'data/shortcodes/rules.toml' for shortcode '%s'. Validation will be skipped." .Name -}}
+{{- end -}}
+
+{{- /* On failed input validation call the LiVa handler */}}
+{{- if not $validInput -}}
+  {{- if or ($livaWarnEnabled) ($livaEnabled) -}}
+    {{- partial "liva/core/shortcodes/handler.logic.html" (dict "errors" $validationResult.errors "rules" $rules "page" .Page "position" .Position) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* * On successful validations render shortcode */}}
+{{- if $validInput }}
+  {{- $data := $validationResult.data -}}
+  {{- $title := $data.title -}}
+  {{- $videoId := index $data "video-id" -}}
+  <figure class="sc-yt mt-6 mb-8 w-full">
+    <lite-youtube
+      videoid="{{ $videoId }}"
+      params="cc_lang_pref={{ .Page.Language.Lang }},hl={{ .Page.Language.Lang }}"
+      class="border-out-var dark:border-out-var-d bg-sur dark:bg-sur-d mx-auto rounded-md border-2 shadow-md"
+    >
+      <a
+        href="https://youtube-nocookie.com/watch?v={{ $videoId }}"
+        class="lyt-playbtn"
+        aria-label="{{- i18n "PlayYtVideo" . | default "Play YouTube Video" }}
+{{- with $title }}: {{ . }}{{- end }}"
+      >
+      </a>
+    </lite-youtube>
+    {{- with $title }}
+      <figcaption
+        class="text-on-sur-var dark:text-on-sur-var-d py-2 text-center text-sm"
+      >
+        {{ . }}
+      </figcaption>
+    {{- end }}
+  </figure>
+{{- end }}

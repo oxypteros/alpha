@@ -1,0 +1,35 @@
+{{- /*
+  Partial: head/shortcode-assets.html
+  Purpose: Builds and appends conditionally shortcode related assets in the `<head>`.
+
+  Repo: https://github.com/oxypteros/alpha
+*/}}
+
+{{- /*  YouTube Shortcode */}}
+{{ if .HasShortcode "youtube" -}}
+  {{- /*  Load lite-yt-embed.css */}}
+  {{- $ytCss := resources.Get "alpha/css/lite-yt-embed.css" -}}
+  {{- if hugo.IsProduction -}}
+    {{- $ytCss = $ytCss | minify | fingerprint -}}
+  {{- end -}}
+  <link
+    rel="stylesheet"
+    href="{{ $ytCss.RelPermalink }}"
+    {{- if hugo.IsProduction }}
+      integrity="{{ $ytCss.Data.Integrity }}" crossorigin="anonymous"
+    {{- end }}
+  />
+  
+  {{- /* Load lite-yt-embed.js. */}}
+  {{- $ytJs := resources.Get "alpha/js/lite-yt-embed.js" -}}
+  {{- if hugo.IsProduction -}}
+    {{- $ytJs = $ytJs | minify | fingerprint -}}
+  {{- end -}}
+  <script
+    src="{{ $ytJs.RelPermalink }}"
+    {{- if hugo.IsProduction }}
+      integrity="{{ $ytJs.Data.Integrity }}" crossorigin="anonymous"
+    {{- end }}
+    async
+  ></script>
+{{- end }}

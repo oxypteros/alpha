@@ -32,6 +32,9 @@
     {{- /* Append the alpha-head.js */}}
     {{- partial "head/alpha-js.html" . }}
 
+    {{- /* Conditionally append shortcode assets */}}
+    {{- partial "head/shortcode-assets.html" . }}
+    
     {{- /* Append meta tags schema.org open-graph x-cards */}}
     {{ partial "head/seo.html" . }}
 

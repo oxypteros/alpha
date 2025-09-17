@@ -18,69 +18,85 @@
   {{- $lowerUserInput = merge $lowerUserInput (dict (lower $key) $value) -}}
 {{- end }}
 
-{{- /* * Initialize the single result dictionary to return to the shortcode */}}
+{{- /* Initialize the single result dictionary to return to the shortcode */}}
 {{- $result := dict "isValid" true "errors" (dict) "data" (dict) "userInput" $lowerUserInput -}}
 
-{{- /* ** Initialize dictionaries to hold all data. */}}
+{{- /* Initialize dictionaries to hold all data. */}}
 {{- $invalidParams := dict -}}
 {{- $invalidValues := dict -}}
+{{- $missingRequiredParams := dict -}}
 {{- $cleanData := dict -}}
 
-{{- /* *** Check for unknown parameter keys */}}
+{{- /* Check for unknown parameter keys */}}
 {{- range $key, $value := $userInput }}
-  {{- /* - Check (upper $key) against the rules to maintain case-insensitivity */}}
+  {{- /* Check (upper $key) against the rules to maintain case-insensitivity */}}
   {{- if not (in $rules.validParams (upper $key)) }}
     {{- $invalidParams = merge $invalidParams (dict $key $value) -}}
   {{- end }}
 {{- end }}
 
 {{- if $invalidParams }}
-  {{- /* - Invalid params are found, fail fast and add them to the invalid params map */}}
   {{- $result = merge $result (dict "isValid" false "errors" (dict "invalidParams" $invalidParams)) -}}
 {{- else }}
-  {{- /* *** Unknown keys validation passed. Start values validation */}}
-  {{- range $key, $rule := $rules.params }}
-    {{- $lowerKey := lower $key -}}
-    {{- $userValue := index $lowerUserInput $lowerKey -}}
+  {{- /* Check for MISSING REQUIRED parameters */}}
+  {{- range $key, $rule := $rules.params -}}
+    {{- if and $rule.required (eq (index $lowerUserInput (lower $key)) nil) -}}
+      {{- $missingRequiredParams = merge $missingRequiredParams (dict $key true) -}}
+    {{- end -}}
+  {{- end -}}
 
-    {{- /* - Validate only provided parameters. */}}
-    {{- if ne $userValue nil }}
-      {{- $isValid := true -}}
-
-      {{- if eq $rule.validation "in_list" }}
-        {{- if not (in $rule.list (lower (printf "%v" $userValue))) }}
-          {{- $isValid = false -}}
-          {{- $invalidValues = merge $invalidValues (dict $key (dict "rule" "in_list" "value" $userValue "allowed" $rule.list)) -}}
-        {{- end }}
-        {{- /* - Validate numerical values (Only integers pass). */}}
-      {{- else if eq $rule.validation "is_positive_integer" }}
-        {{- if not (printf "%v" $userValue | findRE `^[1-9]\d*$`) }}
-          {{- $isValid = false -}}
-          {{- $invalidValues = merge $invalidValues (dict $key (dict "rule" "is_positive_integer" "value" $userValue)) -}}
-        {{- end }}
-      {{- end }}
-
-      {{- /* - Validated values go to the clean data map. */}}
-      {{- if $isValid }}
-        {{- $cleanData = merge $cleanData (dict $lowerKey $userValue) -}}
-      {{- end }}
-    {{- end }}
-  {{- end }}
-  {{- /* - Invalid values go to the invalidValues map. */}}
-  {{- if $invalidValues }}
-    {{- $result = merge $result (dict "isValid" false "errors" (dict "invalidValues" $invalidValues)) -}}
-  {{- else }}
-    {{- /* ** All validations passed. Populate defaults and return clean data. */}}
+  {{- if $missingRequiredParams -}}
+    {{- $result = merge $result (dict "isValid" false "errors" (dict "missingRequiredParams" $missingRequiredParams)) -}}
+  {{- else -}}
+    {{- /* All required params are present. Validate the VALUES */}}
     {{- range $key, $rule := $rules.params }}
       {{- $lowerKey := lower $key -}}
-      {{- /* For any NOT provided parameter, check if it has a default. */}}
-      {{- if not (isset $cleanData $lowerKey) }}
-        {{- with $rule.default }}
-          {{- $cleanData = merge $cleanData (dict $lowerKey .) -}}
+      {{- $userValue := index $lowerUserInput $lowerKey -}}
+      {{- /* - Validate only provided parameters. */}}
+      {{- if ne $userValue nil }}
+        {{- $isValid := true -}}
+        {{- /* - Validate in list values (Only listed values pass). */}}
+        {{- if eq $rule.validation "in_list" }}
+          {{- if not (in $rule.list (lower (printf "%v" $userValue))) }}
+            {{- $isValid = false -}}
+            {{- $invalidValues = merge $invalidValues (dict $key (dict "rule" "in_list" "value" $userValue "allowed" $rule.list)) -}}
+          {{- end }}
+          {{- /* - Validate numerical values (Only integers pass). */}}
+        {{- else if eq $rule.validation "is_positive_integer" }}
+          {{- if not (printf "%v" $userValue | findRE `^[1-9]\d*$`) }}
+            {{- $isValid = false -}}
+            {{- $invalidValues = merge $invalidValues (dict $key (dict "rule" "is_positive_integer" "value" $userValue)) -}}
+          {{- end }}
+          {{- /* - Validate for existing value (A value MUST be provided). */}}
+        {{- else if eq $rule.validation "required_string" }}
+          {{- if eq (printf "%v" $userValue) "" }}
+            {{- $isValid = false -}}
+            {{- $invalidValues = merge $invalidValues (dict $key (dict "rule" "required_string" "value" $userValue)) -}}
+          {{- end }}
+        {{- end }}
+
+        {{- /* - Validated values go to the clean data map. */}}
+        {{- if $isValid }}
+          {{- $cleanData = merge $cleanData (dict $lowerKey $userValue) -}}
         {{- end }}
       {{- end }}
     {{- end }}
-    {{- $result = merge $result (dict "data" $cleanData) -}}
+    {{- /* - Invalid values go to the invalidValues map. */}}
+    {{- if $invalidValues }}
+      {{- $result = merge $result (dict "isValid" false "errors" (dict "invalidValues" $invalidValues)) -}}
+    {{- else }}
+      {{- /* All validations passed. Populate defaults and return clean data. */}}
+      {{- range $key, $rule := $rules.params }}
+        {{- $lowerKey := lower $key -}}
+        {{- /* For any NOT provided parameter, check if it has a default. */}}
+        {{- if not (isset $cleanData $lowerKey) }}
+          {{- with $rule.default }}
+            {{- $cleanData = merge $cleanData (dict $lowerKey .) -}}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- $result = merge $result (dict "data" $cleanData) -}}
+    {{- end }}
   {{- end }}
 {{- end }}
 
