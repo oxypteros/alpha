@@ -6,7 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## [Unreleased]
+<!--## [Unreleased]-->
+## [v1.1.0] - 2025-09-17
 ### Added
 - **New `youtube` Shortcode:** Introduced a new shortcode for embedding YouTube videos with a strong focus on performance, privacy, and accessibility.
     - **Performance:** Utilizes the lightweight [lite-youtube-embed](https://github.com/paulirish/lite-youtube-embed) facade, deferring the full player load until a user clicks play to ensure optimal page speed scores.
