@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 <!--## [Unreleased]-->
+## [v1.1.1] — 2025-09-18
+
+This patch release resolves a critical bug affecting the playback of embedded YouTube videos on mobile devices.
+
+### Fixed
+- **YouTube Shortcode on Mobile:** Resolved a critical issue where YouTube videos would fail to load and play on mobile browsers. The vendored `lite-youtube-embed` script has been patched to use a more reliable iframe creation method, ensuring consistent playback across both desktop and mobile platforms. ([#21](https://github.com/oxypteros/alpha/issues/21))
+
+### Changed
+- **YouTube Shortcode Enhancement:** Updated the generated `<iframe>` to align with modern web standards. This includes adding the `referrerpolicy` attribute for enhanced privacy and enabling the `clipboard-write` permission to allow in-player features like the "copy link" button to function correctly.
+
 ## [v1.1.0] - 2025-09-17
 ### Added
 - **New `youtube` Shortcode:** Introduced a new shortcode for embedding YouTube videos with a strong focus on performance, privacy, and accessibility.

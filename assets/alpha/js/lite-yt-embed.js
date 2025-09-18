@@ -70,11 +70,8 @@ class LiteYTEmbed extends HTMLElement {
         //   We'd want to only do this for in-viewport or near-viewport ones: https://github.com/ampproject/amphtml/pull/5003
         this.addEventListener('click', this.activate);
 
-        // Chrome & Edge desktop have no problem with the basic YouTube Embed with ?autoplay=1
-        // However Safari desktop and most/all mobile browsers do not successfully track the user gesture of clicking through the creation/loading of the iframe,
-        // so they don't autoplay automatically. Instead we must load an additional 2 sequential JS files (1KB + 165KB) (un-br) for the YT Player API
-        // TODO: Try loading the the YT API in parallel with our iframe and then attaching/playing it. #82
-        this.needsYTApi = this.hasAttribute("js-api") || navigator.vendor.includes('Apple') || navigator.userAgent.includes('Mobi');
+        // Fix for #21 (alpha)
+        this.needsYTApi = this.hasAttribute("js-api");
     }
 
     /**
@@ -199,8 +196,11 @@ class LiteYTEmbed extends HTMLElement {
         iframeEl.height = 315;
         // No encoding necessary as [title] is safe. https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html#:~:text=Safe%20HTML%20Attributes%20include
         iframeEl.title = this.playLabel;
-        iframeEl.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+        // Add clipboard-write and web-share. (alpha PR #21)
+        iframeEl.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
         iframeEl.allowFullscreen = true;
+        // Add modern referrerpolicy. (alpha PR #21)
+         iframeEl.referrerPolicy = 'strict-origin-when-cross-origin';
         // AFAIK, the encoding here isn't necessary for XSS, but we'll do it only because this is a URL
         // https://stackoverflow.com/q/64959723/89484
         iframeEl.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(this.videoId)}?${this.getParams().toString()}`;
