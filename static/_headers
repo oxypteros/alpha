@@ -27,7 +27,7 @@ X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
 
 # Controls browser features:
-Permissions-Policy: geolocation=(), microphone=(), camera=(), usb=(), serial=(), hid=(), payment=(), autoplay=(self "https://www.youtube-nocookie.com") fullscreen=(self "https://www.youtube-nocookie.com"), interest-cohort=()
+Permissions-Policy: geolocation=(), microphone=(), camera=(), usb=(), serial=(), hid=(), payment=(), autoplay=(self "https://www.youtube-nocookie.com"), fullscreen=(self "https://www.youtube-nocookie.com"), interest-cohort=()
 
 # Cross-Origin-Opener-Policy (COOP)
 Cross-Origin-Opener-Policy: same-origin-allow-popups
