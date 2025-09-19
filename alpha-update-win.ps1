@@ -7,7 +7,7 @@
 .AUTHOR
     oxypteros
 .VERSION
-    1.0.0
+    1.1.0
 #>
 
 # Configuration
@@ -26,7 +26,7 @@ Write-Info "Checking PowerShell version and environment..."
 if ($PSVersionTable.PSVersion.Major -lt 7) {
     Write-Error "This script requires PowerShell 7 or newer. Please upgrade your PowerShell."
 }
-success "PowerShell version is compatible."
+Write-Success "PowerShell version is compatible."
 
 # Check current directory.
 Write-Info "Checking current directory..."
@@ -36,7 +36,7 @@ if (-not (Test-Path -Path "themes") -or -not (Test-Path -Path "content")) {
 if (-not (Test-Path -Path "themes/$ThemeDir")) {
     Write-Error "The theme directory 'themes/$ThemeDir' does not exist. This script is for updating, not installing."
 }
-success "Running in a valid Hugo project directory."
+Write-Success "Running in a valid Hugo project directory."
 
 # Fetch the latest release information.
 Write-Info "Fetching the latest release information for Alpha theme..."
@@ -53,19 +53,25 @@ $DownloadUrl = $ReleaseInfo.zipball_url
 if (-not $LatestVersion) {
     Write-Error "Could not determine the latest version from the API response."
 }
-Write-Info "Latest version found: $($LatestVersion | Out-String -NoNewline | Write-Host -NoNewline -ForegroundColor Green)"
+Write-Info "Latest version found: " -NoNewline
+Write-Host "$LatestVersion" -ForegroundColor Green
 
 # Verify theme and check current version.
 $ThemeTomlPath = "themes/$ThemeDir/theme.toml"
 if (Test-Path $ThemeTomlPath) {
-    $ThemeNameLine = Get-Content $ThemeTomlPath | Select-String -Pattern '^\s*name\s*=' | Select-Object -First 1
-    $ThemeName = $ThemeNameLine -replace "^\s*name\s*=\s*['""]?" -replace "['""]?\s*$"
+    # Corrected line for 'name' to handle both single and double quotes
+    # Using a double-quoted string for the pattern and escaping the internal double quote
+    $ThemeNameLine = Get-Content $ThemeTomlPath | Select-String -Pattern "^\s*name\s*=\s*['`"]?" | Select-Object -First 1
+    $ThemeName = $ThemeNameLine -replace "^\s*name\s*=\s*['`"]?" -replace "['`"]?\s*$"
+    
     if ($ThemeName -ne $ThemeDir) {
         Write-Error "The theme name in '$ThemeTomlPath' ('$ThemeName') does not match the directory name ('$ThemeDir'). Aborting."
     }
 
-    $VersionLine = Get-Content $ThemeTomlPath | Select-String -Pattern '^\s*version\s*=' | Select-Object -First 1
-    $CurrentVersion = $VersionLine -replace "^\s*version\s*=\s*['""]?" -replace "['""]?\s*$"
+    # Corrected line for 'version' to handle both single and double quotes
+    # Using a double-quoted string for the pattern and escaping the internal double quote
+    $VersionLine = Get-Content $ThemeTomlPath | Select-String -Pattern "^\s*version\s*=\s*['`"]?" | Select-Object -First 1
+    $CurrentVersion = $VersionLine -replace "^\s*version\s*=\s*['`"]?" -replace "['`"]?\s*$"
 
     if (-not $CurrentVersion) {
         Write-Warning "Verified Alpha theme, but could not read the 'version' field. Will attempt to update."
@@ -84,7 +90,7 @@ $Timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $BackupDir = "themes/${ThemeDir}_backup_${Timestamp}"
 Write-Info "Backing up current theme to '$BackupDir'..."
 Copy-Item -Path "themes/$ThemeDir" -Destination $BackupDir -Recurse -Force -ErrorAction Stop
-success "Backup created successfully."
+Write-Success "Backup created successfully."
 
 # Download latest release.
 Write-Info "Downloading the latest version..."
@@ -94,7 +100,7 @@ try {
 } catch {
     Write-Error "Download failed. Your original theme has been backed up. Please try again."
 }
-success "Download complete."
+Write-Success "Download complete."
 
 # Unzip and install.
 Write-Info "Unzipping and installing the new version..."
@@ -107,15 +113,15 @@ if (-not $UnzippedFolder) {
 # Remove the old theme and move the new one into place
 Remove-Item -Path "themes/$ThemeDir" -Recurse -Force
 Move-Item -Path $UnzippedFolder.FullName -Destination "themes/$ThemeDir" -ErrorAction Stop
-success "New version installed."
+Write-Success "New version installed."
 
 # Cleanup
 Write-Info "Cleaning up temporary files..."
 Remove-Item -Path $TempZipFile -Force
 Remove-Item -Path $TempUnzipDir -Recurse -Force
-success "Cleanup complete."
+Write-Success "Cleanup complete."
 
 Write-Host ""
 Write-Success "Alpha theme has been successfully updated to version $LatestVersion!"
-Write-Warning "Backup saved at: $BackupDir"
+Write-Info "Backup saved at: $BackupDir"
 Write-Warning "If you had custom edits in 'themes/alpha', merge them back from the backup."

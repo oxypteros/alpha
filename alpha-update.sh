@@ -6,7 +6,7 @@
 # version from the GitHub repository.
 #
 # Author: oxypteros
-# Version: 1.1.0
+# Version: 1.2.0
 # License: MIT
 
 
@@ -66,16 +66,24 @@ info "Latest version: ${C_GREEN}${LATEST_VERSION}${C_NC}"
 THEME_TOML_PATH="themes/$THEME_DIR/theme.toml"
 
 if [ -f "$THEME_TOML_PATH" ]; then
-  # This awk command will only look for 'name =' before the first TOML table (like '[author]').
-  # This prevents it from accidentally matching the author's name.
-  THEME_NAME=$(awk '/^\[/{exit} /^\s*name\s*=/ {print}' "$THEME_TOML_PATH" | cut -d'"' -f2)
+  # Look for 'name =' before the first TOML table (like '[author]').
+  NAME_LINE=$(awk '/^\[/{exit} /^\s*name\s*=/ {print}' "$THEME_TOML_PATH")
+
+  # Extract the value by first removing the key part, then stripping any surrounding quotes.
+  # Remove the key part, then strip quotes (backward compatibility)
+  THEME_NAME=$(echo "$NAME_LINE" | sed -E 's/^\s*name\s*=\s*//' | sed -E "s/^['\"]|['\"]$//g")
+
+  if [ -z "$THEME_NAME" ]; then
+      error "Could not parse the theme name from '$THEME_TOML_PATH'. Aborting for safety."
+  fi
 
   if [ "$THEME_NAME" != "$THEME_DIR" ]; then
     error "The theme name in '$THEME_TOML_PATH' ('$THEME_NAME') does not match the expected directory name ('$THEME_DIR'). Aborting for safety."
   fi
 
   # Read the version string.
-  CURRENT_VERSION=$(grep -E '^\s*version\s*=' "$THEME_TOML_PATH" | cut -d'"' -f2)
+  VERSION_LINE=$(grep -E '^\s*version\s*=' "$THEME_TOML_PATH")
+  CURRENT_VERSION=$(echo "$VERSION_LINE" | sed -E 's/^\s*version\s*=\s*//' | sed -E "s/^['\"]|['\"]$//g")
 
   # Handle all cases based on the version check.
   if [ -z "$CURRENT_VERSION" ]; then
@@ -125,5 +133,5 @@ success "Cleanup complete."
 
 echo ""
 success "Alpha has been successfully updated to version ${LATEST_VERSION}!"
-warn "Backup saved at: ${BACKUP_DIR}"
+info "Backup saved at: ${BACKUP_DIR}"
 warn "If you had custom edits in 'themes/alpha', merge them back from the backup."
