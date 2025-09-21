@@ -13,6 +13,12 @@ established_year = "2025"
 # quotes.
 motto = "\"Unleash your words\""
 
+# Privacy
+# ---------------------
+# Shows a settings modal for visitors to manage settings (tracking, prefetch).
+visitor_settings = true
+# Displays a banner about the site's privacy policy (cookies, etc.)
+noCookies_snackbar = true
 
 # Integrations
 # ---------------------
