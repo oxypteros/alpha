@@ -63,7 +63,7 @@ seo_manifest_bg_color    = "" # Splash screen background color. Ex: "#ffffff"
 # Development Settings
 # ---------------------
 # Run `npm install` from root to develop the theme
-tailwind_enabled = true # Enables full Tailwind CSS for development.
+tailwind_enabled = false # Enables full Tailwind CSS for development.
 
 # LiVa Settings (Linting Validator by Oxy)
 # ---------------------
