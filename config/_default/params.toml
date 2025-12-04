@@ -11,7 +11,7 @@ pseudologo_enabled = true
 established_year = "2025"
 # A motto or tagline displayed in the footer. Use a backslash (\) to escape
 # quotes.
-motto = "\"Unleash your words\""
+motto = "Unleash your words"
 
 # Privacy
 # ---------------------
@@ -63,7 +63,7 @@ seo_manifest_bg_color    = "" # Splash screen background color. Ex: "#ffffff"
 # Development Settings
 # ---------------------
 # Run `npm install` from root to develop the theme
-tailwind_enabled = false # Enables full Tailwind CSS for development.
+tailwind_enabled = true # Enables full Tailwind CSS for development.
 
 # LiVa Settings (Linting Validator by Oxy)
 # ---------------------
