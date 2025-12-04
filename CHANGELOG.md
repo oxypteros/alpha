@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 <!--## [Unreleased]-->
+## [v1.1.2] — 2025-12-04
+
+This release bring the theme up to date with the latest Hugo configuration standards, resolving deprecation warnings, and improving semantic HTML and accessibility.
+
+### Changed
+- **Hugo Configuration:** Updated `config/hugo.toml` to address deprecation warnings introduced in Hugo v0.148.0. Replaced `markup.goldmark.renderHooks.image.enableDefault` and `markup.goldmark.renderHooks.link.enableDefault` with the new `useEmbedded` configuration key.
+- **Hugo Version Support:** Bumped the minimum supported Hugo version to `0.148.0` and the maximum tested version to `1.52.2`.
+- **Semantic HTML:**
+    - **Hero Shortcode:** Changed the subtitle element from an `h3` to a `div`. This corrects the document outline, as the subtitle is visually part of the header but not a distinct structural subsection.
+    - **Footer Motto:** Changed the motto container from a generic `div` element to a `<q>` (quote) element for better semantic accuracy.
+
+### Fixed
+- **Footer Accessibility:** Added an `h2` heading and an associated `aria-labelledby` attribute to the footer navigation menu to improve landmark identification for screen reader users.
+- **Code Cleanup:** Removed empty class attributes from the Header `h1` and anchor tags.
+
 ## [v1.1.1] — 2025-09-18
 
 This patch release resolves a critical bug affecting the playback of embedded YouTube videos on mobile devices.
