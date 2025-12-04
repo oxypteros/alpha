@@ -191,6 +191,8 @@ other= "Follow us on:"
 [PlayYtVideo]
 other = "Play YouTube Video"
 
+[FooterMenu]
+other= "Footer utility menu"
 # SEO
 [DefaultTaxonomyDescription]
 other = "Browse all %s on %s—an overview of available %s for easy discovery."

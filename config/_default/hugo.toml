@@ -40,9 +40,9 @@ enableEmoji = true
           inline = [['\(', '\)']]
     [markup.goldmark.renderHooks]
       [markup.goldmark.renderHooks.image]
-        enableDefault = true
+        useEmbedded = "fallback"
       [markup.goldmark.renderHooks.link]
-        enableDefault = true
+        useEmbedded = "fallback"
     [markup.goldmark.renderer]
       hardWraps = true
       unsafe = true
@@ -67,5 +67,5 @@ enableEmoji = true
 [module]
 ## Hugo versions this theme is tested and is compatible with.
   [module.hugoVersion]
-    min = "0.146.1"
-    max = "0.150.0"
+    min = "0.148.0"
+    max = "0.152.2"

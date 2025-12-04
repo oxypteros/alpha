@@ -18,7 +18,7 @@
 
   Params:
   - TITLE (string, optional)      : H2 heading
-  - SUBTITLE (string, optional)   : H3 heading
+  - SUBTITLE (string, optional)   : Subtitle
   - BTN-TEXT (string, optional)   : Link text for link 1 (button styled)
   - BTN-LINK (string, optional)   : `href` attribute for link 1
   - BTN-LABEL (string, optional)  : `aria-label` attribute for link 1
@@ -123,7 +123,7 @@
             <h2 id="hero-heading-{{- $uid -}}" class="sr-only">{{- . -}}</h2>
           {{- end }}
           {{- with $fullSubtitle }}
-            <h3 class="sr-only">{{- . -}}</h3>
+            <div class="sr-only">{{- . -}}</div>
           {{- end }}
           {{- if and $title $titlePunctuation }}
             <h2
@@ -137,7 +137,7 @@
             </h2>
           {{- end }}
           {{- if and $subtitle $subtitlePunctuation }}
-            <h3
+            <div
               class="font-300 mt-15 mb-18 text-center text-2xl wrap-break-word hyphens-manual sm:text-3xl lg:text-4xl"
               aria-hidden="true"
             >
@@ -145,7 +145,7 @@
               <span class="text-pri dark:text-pri-d" aria-hidden="true"
                 >{{- $subtitlePunctuation }}</span
               >
-            </h3>
+          </div>
           {{- else }}
             <div class="mt-15"></div>
           {{- end }}
