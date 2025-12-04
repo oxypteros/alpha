@@ -37,9 +37,9 @@
 
           {{- /* Conditional rendering of site title */}}
           {{- if .IsHome }}
-            <h1 class="">{{ .Site.Title }}</h1>
+            <h1>{{ .Site.Title }}</h1>
           {{- else }}
-            <a class="" href="/">{{ .Site.Title }}</a>
+            <a href="/">{{ .Site.Title }}</a>
             {{- /* Breadcrumbs (pre-release)*/}}
             {{- if eq .Site.Params.breadcrumbs true }}
               <div class="hidden md:flex items-center">
