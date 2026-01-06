@@ -37,37 +37,37 @@
  * This script is typically loaded in the `<head>` and conditionally enabled
  * with `enable_prefetch` in `params.toml`).
  *
- *  CSP - Hash for speculation rules : 
+ *  CSP - Hash for speculation rules :
  * 'sha256-7hU1nhtHxQh8ziW5xcD1HB2QhOc24LKd7TLXNfXSCcc='
- * 
- * @see {@link https://developer.chrome.com/blog/speculation-rules/} 
+ *
+ * @see {@link https://developer.chrome.com/blog/speculation-rules/}
  * - For Speculation Rules API.
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation} 
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation}
  * - For Network Information API.
  */
 
 export const initPrefetch = () => {
   // Function to append Speculation Rules script
   const appendSpeculationScript = () => {
-    const speculationScript = document.createElement("script");
-    speculationScript.type = "speculationrules";
+    const speculationScript = document.createElement('script');
+    speculationScript.type = 'speculationrules';
     const speculationRules = {
       prerender: [
         {
-          source: "document",
+          source: 'document',
           where: {
-            selector_matches: "[data-prerender=true]",
+            selector_matches: '[data-prerender=true]',
           },
-          eagerness: "conservative",
+          eagerness: 'conservative',
         },
       ],
       prefetch: [
         {
-          source: "document",
+          source: 'document',
           where: {
-            selector_matches: "[data-prefetch=true]",
+            selector_matches: '[data-prefetch=true]',
           },
-          eagerness: "conservative",
+          eagerness: 'conservative',
         },
       ],
     };
@@ -77,14 +77,14 @@ export const initPrefetch = () => {
 
   // Fallback for prefetching & prerendering
   const enableFallback = () => {
-    ["prefetch", "prerender"].forEach((rel) => {
+    ['prefetch', 'prerender'].forEach((rel) => {
       document.querySelectorAll(`a[data-${rel}="true"]`).forEach((link) => {
         if (!link.dataset.resourceFetched) {
-          const resourceLink = document.createElement("link");
+          const resourceLink = document.createElement('link');
           resourceLink.rel = rel;
           resourceLink.href = link.href;
           document.head.appendChild(resourceLink);
-          link.dataset.resourceFetched = "true";
+          link.dataset.resourceFetched = 'true';
           //console.log(`${rel}ed:`, link.href);
         }
       });
@@ -92,21 +92,17 @@ export const initPrefetch = () => {
   };
 
   // Main logic
-  const getPrefetchStatus = localStorage.getItem("prefetch");
-  if (getPrefetchStatus === null) localStorage.setItem("prefetch", "true");
-  if (getPrefetchStatus === "false") return;
+  const getPrefetchStatus = localStorage.getItem('prefetch');
+  if (getPrefetchStatus === null) localStorage.setItem('prefetch', 'true');
+  if (getPrefetchStatus === 'false') return;
   const connection = navigator.connection || {};
-  const isSlowConnection = ["slow-2g", "2g", "3g"].includes(
-    connection.effectiveType,
-  );
+  const isSlowConnection = ['slow-2g', '2g', '3g'].includes(connection.effectiveType);
   const isDataSaverEnabled = connection.saveData === true;
 
   if (isSlowConnection || isDataSaverEnabled) {
-    console.log(
-      "Prefetch/prerender disabled due to slow connection or Data Saver mode.",
-    );
+    console.log('Prefetch/prerender disabled due to slow connection or Data Saver mode.');
     return;
-  } else if (HTMLScriptElement.supports?.("speculationrules")) {
+  } else if (HTMLScriptElement.supports?.('speculationrules')) {
     //console.log('Speculation rules appended');
     appendSpeculationScript();
   } else {

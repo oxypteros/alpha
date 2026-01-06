@@ -1,5 +1,5 @@
 {{- /*
-  Layout: story.html 
+  Layout: story.html
   Purpose: Defines the main HTML structure for Alpha's story layout.
 
   Repo: https://github.com/oxypteros/alpha
@@ -26,19 +26,13 @@
       >
         {{ .Content }}
       </div>
-      <footer
-        class="max-w-story mt-16 mb-56 flex w-full flex-col items-center gap-2 text-lg"
-      >
-        <div
-          class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"
-        ></div>
+      <footer class="max-w-story mt-16 mb-56 flex w-full flex-col items-center gap-2 text-lg">
+        <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"></div>
         <div class="flex w-full flex-wrap justify-between gap-4 px-2">
           {{ partial "components/metadata-license.html" . }}
           {{ partial "components/metadata-date.html" . }}
         </div>
-        <div
-          class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"
-        ></div>
+        <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"></div>
         <div class="flex w-full flex-4 flex-wrap justify-between gap-4 px-2">
           {{ partial "components/metadata-taxonomy.html" . }}
         </div>

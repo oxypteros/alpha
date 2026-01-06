@@ -5,22 +5,14 @@
   Target: Global
 
   Example:
-  {{< status_card TITLE="" TYPE="" >}}
-  /... Markdown.../
-  {{< /status_card > }}
+  {{< status_card TITLE="" TYPE=""
+>}}
+/... Markdown.../
+{{< /status_card > }}
 
-  Params:
-  - TITLE (string, optional): H2 heading.
-  - TYPE (string, optional): Rendering type card
-  Values: error, warning, success, info (default).
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/shortcodes/status-card
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - TITLE (string, optional): H2 heading. - TYPE (string, optional): Rendering type card Values: error, warning,
+success, info (default). Error handler: - livaWarn (global) - LiVa (scoped) Docs:
+https://alpha.oxypteros.com/shortcodes/status-card Repo: https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -62,9 +54,7 @@
       role="alert"
       aria-labelledby="status-heading-{{- $uid -}}"
     >
-      <div
-        class="dark:bg-sur-var-d w-full rounded-md border-2 border-red-700 shadow-md"
-      >
+      <div class="dark:bg-sur-var-d w-full rounded-md border-2 border-red-700 shadow-md">
         <header class="flex w-full items-center gap-2 px-4 pt-4">
           <svg
             class="size-7 fill-red-900 dark:fill-red-300"
@@ -79,10 +69,7 @@
             />
           </svg>
           {{- with $data.title }}
-            <h2
-              id="status-heading-{{- $uid -}}"
-              class="text-red-900 dark:text-red-300"
-            >
+            <h2 id="status-heading-{{- $uid -}}" class="text-red-900 dark:text-red-300">
               {{- . -}}
             </h2>
           {{- else }}
@@ -102,9 +89,7 @@
       role="alert"
       aria-labelledby="status-heading-{{- $uid -}}"
     >
-      <div
-        class="dark:bg-sur-var-d w-full rounded-md border-2 border-orange-600 shadow-md"
-      >
+      <div class="dark:bg-sur-var-d w-full rounded-md border-2 border-orange-600 shadow-md">
         <header class="flex w-full items-center gap-2 px-4 pt-4">
           <svg
             class="size-7 fill-orange-900 dark:fill-orange-300"
@@ -119,10 +104,7 @@
             />
           </svg>
           {{- with $data.title }}
-            <h2
-              id="status-heading-{{- $uid -}}"
-              class="text-orange-900 dark:text-orange-300"
-            >
+            <h2 id="status-heading-{{- $uid -}}" class="text-orange-900 dark:text-orange-300">
               {{- . -}}
             </h2>
           {{- else }}
@@ -142,9 +124,7 @@
       role="status"
       aria-labelledby="status-heading-{{- $uid -}}"
     >
-      <div
-        class="dark:bg-sur-var-d w-full rounded-md border-2 border-green-600 shadow-md"
-      >
+      <div class="dark:bg-sur-var-d w-full rounded-md border-2 border-green-600 shadow-md">
         <header class="flex w-full items-center gap-2 px-4 pt-4">
           <svg
             class="size-7 fill-green-900 dark:fill-green-300"
@@ -159,10 +139,7 @@
             />
           </svg>
           {{- with $data.title }}
-            <h2
-              id="status-heading-{{- $uid -}}"
-              class="text-green-900 dark:text-green-300"
-            >
+            <h2 id="status-heading-{{- $uid -}}" class="text-green-900 dark:text-green-300">
               {{- . -}}
             </h2>
           {{- else }}
@@ -182,9 +159,7 @@
       role="note"
       aria-labelledby="status-heading-{{- $uid -}}"
     >
-      <div
-        class="dark:bg-sur-var-d border-out-var dark:border-out-var-d w-full rounded-md border-2 shadow-md"
-      >
+      <div class="dark:bg-sur-var-d border-out-var dark:border-out-var-d w-full rounded-md border-2 shadow-md">
         <header class="flex w-full items-center gap-2 px-4 pt-4">
           <svg
             class="fill-on-sur-var dark:fill-on-sur-var-d size-7"
@@ -199,10 +174,7 @@
             />
           </svg>
           {{- with $data.title }}
-            <h2
-              id="status-heading-{{- $uid -}}"
-              class="text-on-sur-var dark:text-on-sur-var-d"
-            >
+            <h2 id="status-heading-{{- $uid -}}" class="text-on-sur-var dark:text-on-sur-var-d">
               {{- . -}}
             </h2>
           {{- else }}

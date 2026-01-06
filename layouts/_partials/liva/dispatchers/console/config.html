@@ -5,7 +5,7 @@
   Repo: https://github.com/oxypteros/alpha
 */}}
 
-{{- /* Input data from core/config/handler.logic */}} 
+{{- /* Input data from core/config/handler.logic */}}
 {{- $cfgErrors := .configErrors -}}
 
 {{- /* Input data from 'data/liva/console/config.toml' */}}
@@ -119,7 +119,7 @@
     {{- $reason = printf (i18n $reasonKey)  | safeHTML -}}
   {{- end }}
 
-{{- /* Render the console template and the Js trigger */}}
+  {{- /* Render the console template and the Js trigger */}}
   <div data-error="{{ $code }}"></div>
   <template data-alpha="{{ $code }}-template">
     <div class="liva-console-explanation {{ $severityClass }}">

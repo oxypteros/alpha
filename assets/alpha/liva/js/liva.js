@@ -12,16 +12,16 @@ import { restoreFabPosition, updateFabState } from './modules/fab-controller.js'
 import { initializeUiEventListeners } from './modules/ui-controller.js';
 
 function main() {
-  console.log("LiVa is active");
+  console.log('LiVa is active');
 
-  // UI event listeners 
+  // UI event listeners
   initializeUiEventListeners();
 
   // FAB position preference from localStorage
   restoreFabPosition();
 
-  // Initialize error tracking. 
-  // Pass `updateFabState` as a callback 
+  // Initialize error tracking.
+  // Pass `updateFabState` as a callback
   // so the FAB's error state is updated whenever errors change.
   initializeErrorTracking(updateFabState);
 }

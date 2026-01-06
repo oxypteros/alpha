@@ -1,7 +1,7 @@
 {{- /*
-  Partial: components/paginator.html 
+  Partial: components/paginator.html
   Purpose: Renders a paginated list of items as styled cards.
-  
+
   Features:
   - Custom sorting: Pages with 'weight' are prioritized, then all pages are sorted by date (descending). Pagination is applied to this final sorted list.
   - "New" indicator: Displayed if the item was published within 7 days of the site build.
@@ -9,19 +9,14 @@
   - Decorative Accent: Displays the first letter of the item's title as a large, stylized background element.
 
   Condition for Display:
-  - This partial is rendered if `paginate = true` is in the calling template's frontmatter, or if `paginate` is not defined (nil) in the current page's frontmatter. 
+  - This partial is rendered if `paginate = true` is in the calling template's frontmatter, or if `paginate` is not defined (nil) in the current page's frontmatter.
   - To disable, explicitly set `paginate = false` in the page's frontmatter.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
 {{- if or ( eq .Params.paginate true) (eq .Page.Params.paginate nil) }}
-  <div
-    id="paginate"
-    class="mt-20 mb-50 flex w-full flex-col items-center justify-center px-4"
-  >
-    <div
-      class="mt-22 flex w-full max-w-7xl flex-wrap items-center justify-center gap-25"
-    >
+  <div id="paginate" class="mt-20 mb-50 flex w-full flex-col items-center justify-center px-4">
+    <div class="mt-22 flex w-full max-w-7xl flex-wrap items-center justify-center gap-25">
       {{- /** Show first the weighted pages and after the unweighted */}}
       {{ $weightedPages := where .Pages "Weight" "gt" 0 }}
       {{ $unweightedPages := where .Pages "Weight" "eq" 0 }}
@@ -29,8 +24,21 @@
       {{ $sortedUnweighted := sort $unweightedPages ".Date" "desc" }}
       {{ $finalPages := $sortedWeighted }}
       {{ $finalPages = append $sortedUnweighted $finalPages }}
-      {{ range (.Paginate $finalPages).Pages }}
-        {{- partial "components/card-post.html" . }}
+      {{ range $index, $element := (.Paginate $finalPages).Pages }}
+
+        {{- $loadingMode := "lazy" -}}
+        {{- $fetchPriority := "auto" -}}
+
+        {{- /* If it is the first 2 items (Index 0 and 1), load eagerly */ -}}
+        {{- if lt $index 2 -}}
+          {{- $loadingMode = "eager" -}}
+          {{- /* Give the very first image High priority for LCP */ -}}
+          {{- if eq $index 0 -}}
+            {{- $fetchPriority = "high" -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- partial "components/card-post.html" (dict "page" $element "loading" $loadingMode "priority" $fetchPriority) }}
       {{- end }}
     </div>
     <div class="mt-30 flex w-full max-w-5xl items-center justify-center">

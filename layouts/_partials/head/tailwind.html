@@ -4,7 +4,7 @@
 
   Behavior:
   - Uses Hugo Pipes to process `alpha/css/main.css` with Tailwind CSS.
-  - In production, the output is minified, fingerprinted, and includes 
+  - In production, the output is minified, fingerprinted, and includes
   `crossorigin` and `integrity`.
 
   Note:
@@ -13,7 +13,7 @@
 
   Repo: https://github.com/oxypteros/alpha
 */}}
- {{- with (templates.Defer (dict "key" "global")) }}
+{{- with (templates.Defer (dict "key" "global")) }}
   {{- with resources.Get "alpha/css/main.css" }}
     {{- $opts := dict "minify" hugo.IsProduction "inlineImports" true -}}
     {{- with . | css.TailwindCSS $opts }}
@@ -30,4 +30,4 @@
       />
     {{- end }}
   {{- end }}
-{{- end -}} 
+{{- end -}}

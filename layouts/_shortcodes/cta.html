@@ -5,23 +5,15 @@
   Target: homepage, sections (_index.md)
 
   Example:
-  {{< cta TITLE="" BTN-TEXT="" BTN-LINK="" BTN-LABEL="" >}}
-  /... Markdown .../
-  {{< /cta >}}
+  {{< cta TITLE="" BTN-TEXT="" BTN-LINK="" BTN-LABEL=""
+>}}
+/... Markdown .../
+{{< /cta >}}
 
-  Params:
-  - TITLE (string, optional): H2 heading.
-  - BTN-TEXT (string, optional): Link text for link (button styled)
-  - BTN-LINK (string, optional): `href` attribute for link
-  - BTN-LABEL (string, optional):`aria-label` attribute for link
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/docs/shortcodes/cta
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - TITLE (string, optional): H2 heading. - BTN-TEXT (string, optional): Link text for link (button styled) -
+BTN-LINK (string, optional): `href` attribute for link - BTN-LABEL (string, optional):`aria-label` attribute for link
+Error handler: - livaWarn (global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/docs/shortcodes/cta Repo:
+https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -92,9 +84,7 @@
     >
       <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-2xl"></div>
 
-      <div
-        class="my-16 flex w-full flex-col items-center justify-center gap-16"
-      >
+      <div class="my-16 flex w-full flex-col items-center justify-center gap-16">
         {{- with $title }}
           <h2
             id="cta-heading-{{- $uid -}}"
@@ -107,9 +97,7 @@
             {{- i18n "CtaHeading" | default "What's Next?" -}}
           </h2>
         {{- end }}
-        <div
-          class="sc-cta-text font-300 max-w-[82ch] text-xl leading-relaxed [&>p]:mb-3"
-        >
+        <div class="sc-cta-text font-300 max-w-[82ch] text-xl leading-relaxed [&>p]:mb-3">
           {{ $content }}
         </div>
         {{- if and $btnLink $btnTxt }}

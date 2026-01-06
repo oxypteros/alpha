@@ -1,22 +1,20 @@
-@import "./fonts.css";
-@import "tailwindcss";
-@source "hugo_stats.json";
+@import './fonts.css';
+@import 'tailwindcss';
+@source 'hugo_stats.json';
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* Font Fallback Families */
   --font-sans-fallback:
-    system-ui, ui-sans-serif, Roboto, "Helvetica Neue", "Arial Nova", Arial,
-    sans-serif;
-  --font-serif-fallback:
-    ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    system-ui, ui-sans-serif, Roboto, 'Helvetica Neue', 'Arial Nova', Arial, sans-serif;
+  --font-serif-fallback: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
   --font-mono-fallback:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   /* Font Families */
-  --font-sans: "Noto Sans", var(--font-sans-fallback);
-  --font-serif: "Noto Serif", var(--font-serif-fallback);
-  --font-mono: "JetBrains Mono", var(--font-mono-fallback);
+  --font-sans: 'Noto Sans', var(--font-sans-fallback);
+  --font-serif: 'Noto Serif', var(--font-serif-fallback);
+  --font-mono: 'JetBrains Mono', var(--font-mono-fallback);
   /* Font Weights */
   --font-weight-100: 100;
   --font-weight-200: 200;
@@ -65,9 +63,7 @@
   --spacing-menu: calc(100dvh - (2 * var(--spacing-bar))); /* Menu container*/
   --spacing-calc-menu: calc(100dvh - var(--spacing-bar)); /* Menu expanded */
   --spacing-footer: 8rem;
-  --spacing-calc-dvh: calc(
-    100dvh - (var(--spacing-header) + var(--spacing-footer))
-  );
+  --spacing-calc-dvh: calc(100dvh - (var(--spacing-header) + var(--spacing-footer)));
   --spacing-story: 70ch;
   --spacing-article: 80ch;
 }
@@ -90,17 +86,17 @@ body {
   --alpha-on-menu-var: var(--color-on-menu-var);
   --alpha-black: var(--color-black);
   font-optical-sizing: auto;
-  font-variation-settings: "wdth" 100; /*Noto Sas: 62.5 - 100*/
+  font-variation-settings: 'wdth' 100; /*Noto Sas: 62.5 - 100*/
   font-feature-settings:
-    "liga" 1,
-    "calt" 1,
-    "zero" 1,
-    "ss01" 1,
-    "ss03" 1,
-    "cv06" 1,
-    "cv11" 1,
-    "cv12" 1,
-    "cv13" 1;
+    'liga' 1,
+    'calt' 1,
+    'zero' 1,
+    'ss01' 1,
+    'ss03' 1,
+    'cv06' 1,
+    'cv11' 1,
+    'cv12' 1,
+    'cv13' 1;
 }
 .dark body {
   --alpha-pri: var(--color-pri-d);
@@ -138,7 +134,7 @@ span.ripple {
   }
 }
 
-[data-alpha="menu-button"] svg {
+[data-alpha='menu-button'] svg {
   fill: var(--alpha-on-sur-var);
 }
 .on-menu svg {
@@ -233,7 +229,7 @@ b {
   ol {
     @apply list-decimal;
   }
-  ul:has(input[type="checkbox"]) {
+  ul:has(input[type='checkbox']) {
     @apply list-none;
     li {
       @apply pl-0;
@@ -266,7 +262,7 @@ b {
     @apply my-8;
   }
   dt {
-    @apply font-500 mb-2 mt-8 after:content-[':'];
+    @apply font-500 mt-8 mb-2 after:content-[':'];
   }
   dd {
     @apply mb-2 ml-4 text-base italic;
@@ -283,12 +279,12 @@ b {
   a.link-icon {
     @apply hover:text-pri dark:hover:text-pri-d hover:decoration-pri dark:hover:decoration-pri-d underline decoration-2 underline-offset-2 after:relative after:-top-0.5 after:left-px after:size-3.5 after:content-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235f6368%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M9%2015l6%20-6%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11%206l.463%20-.536a5%205%200%200%201%207.071%207.072l-.534%20.464%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M13%2018l-.397%20.534a5.068%205.068%200%200%201%20-7.127%200a4.972%204.972%200%200%201%200%20-7.071l.524%20-.463%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')] dark:after:content-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c6d0d1%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M9%2015l6%20-6%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11%206l.463%20-.536a5%205%200%200%201%207.071%207.072l-.534%20.464%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M13%2018l-.397%20.534a5.068%205.068%200%200%201%20-7.127%200a4.972%204.972%200%200%201%200%20-7.071l.524%20-.463%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')];
   }
-  a[target="_blank"] {
+  a[target='_blank'] {
     @apply after:content-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235f6368%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M12%206h-6a2%202%200%200%200%20-2%202v10a2%202%200%200%200%202%202h10a2%202%200%200%200%202%20-2v-6%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11%2013l9%20-9%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M15%204h5v5%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')] dark:after:content-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c6d0d1%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M12%206h-6a2%202%200%200%200%20-2%202v10a2%202%200%200%200%202%202h10a2%202%200%200%200%202%20-2v-6%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11%2013l9%20-9%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M15%204h5v5%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')];
   }
   /* Remove link icon from footnotes*/
-  a[href^="#fnref"],
-  a[href^="#fn:"] {
+  a[href^='#fnref'],
+  a[href^='#fn:'] {
     @apply after:content-none;
   }
   blockquote {

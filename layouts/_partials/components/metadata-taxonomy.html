@@ -1,12 +1,12 @@
 {{- /*
-  Partial: components/metadata-taxonomy.html 
+  Partial: components/metadata-taxonomy.html
   Purpose: Displays category and tag links sourced from the  page's frontmatter.
 
   Features:
-  - Displays a link for the first term from the 
-    'categories' taxonomy.
-  - Displays links for all terms from the 'tags' 
-    taxonomy.
+  - Displays a link for the first term from the
+  'categories' taxonomy.
+  - Displays links for all terms from the 'tags'
+  taxonomy.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
@@ -14,26 +14,21 @@
 {{- $tags := .GetTerms "tags" }}
 {{- if $categories }}
   <div class="flex shrink-0 items-center gap-1 text-sm">
-    <svg
-      class="fill-on-sur-var dark:fill-on-sur-var-d size-4"
-      aria-hidden="true"
-      width="16"
-      height="16"
-    >
+    <svg class="fill-on-sur-var dark:fill-on-sur-var-d size-4" aria-hidden="true" width="16" height="16">
       <use href="#icon-category"></use>
     </svg>
     {{- range first 1 $categories }}
       <a
         class="group hover:text-on-sur-var dark:hover:text-on-sur-var-d flex items-center truncate"
         href="{{ .Permalink }}"
-        title="{{ i18n "Category" . | default "Category:"}} {{ .LinkTitle }}"
+        title="{{ i18n "Category" . | default "Category:" }} {{ .LinkTitle }}"
       >
         {{ .LinkTitle }}
       </a>
     {{- end }}
   </div>
 {{- else }}
-   {{- /* Render an empty div if no categories to maintain layout consistency. */ -}}
+  {{- /* Render an empty div if no categories to maintain layout consistency. */ -}}
   <div></div>
 {{- end }}
 {{- if $tags }}

@@ -9,13 +9,9 @@
   Repo: https://github.com/oxypteros/alpha
 */}}
 <template data-alpha="search-template">
-  <div
-    class="blured bg-sur/90 dark:bg-sur-d/85 fixed top-0 right-0 left-0 z-50 flex min-h-full flex-col items-center"
-  >
+  <div class="blured bg-sur/90 dark:bg-sur-d/85 fixed top-0 right-0 left-0 z-50 flex min-h-full flex-col items-center">
     <div class="mt-14 flex w-full grow flex-col items-center">
-      <div
-        class="pointer-events-auto relative flex w-full max-w-prose flex-col items-center px-3 pb-5"
-      >
+      <div class="pointer-events-auto relative flex w-full max-w-prose flex-col items-center px-3 pb-5">
         <div class="flex w-full items-center justify-end py-1">
           <button
             class="group hover:bg-pri/10 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
@@ -38,13 +34,8 @@
           </button>
         </div>
 
-        <div
-          id="search"
-          class="border-out dark:border-out-d w-full max-w-prose rounded-md border-2"
-        ></div>
-        <div
-          class="absolute bottom-0 flex w-full items-center justify-end px-3"
-        >
+        <div id="search" class="border-out dark:border-out-d w-full max-w-prose rounded-md border-2"></div>
+        <div class="absolute bottom-0 flex w-full items-center justify-end px-3">
           <a
             class="pagefind-link flex w-fit items-center justify-end"
             href="https://pagefind.app/"
@@ -58,12 +49,7 @@
     </div>
   </div>
   <svg width="0" height="0" class="hidden">
-    <symbol
-      id="pagefind"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 594 112"
-    >
+    <symbol id="pagefind" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 594 112">
       <path
         class="fill-on-bg dark:fill-on-bg-d"
         d="M147.8 111.2H164V77.6h.6s6 9.6 18.6 9.6c13.8 0 26.4-12.6 26.4-30.6S197 26 183.2 26c-12.6 0-18.6 9.6-18.6 9.6h-.6v-8.4h-16.2v84Zm30.6-39c-8.4 0-15-6.6-15-15.6S170 41 178.4 41s15 6.6 15 15.6-6.6 15.6-15 15.6ZM230.628 87.2c11.4 0 17.4-8.4 17.4-8.4h.6V86h16.2V49.4c0-13.2-10.2-23.4-25.2-23.4-15.6 0-24 11.4-24 11.4l9.6 9.6s4.8-6.6 13.2-6.6c6 0 9.6 3.6 10.2 7.8l-18.6 3.36c-10.8 1.92-17.4 9.24-17.4 18.84s7.2 16.8 18 16.8Zm5.4-13.2c-4.8 0-7.2-2.4-7.2-6 0-3 2.4-5.28 6.6-6l13.2-2.4v1.2c0 7.8-5.4 13.2-12.6 13.2ZM299.033 111.2c18.6 0 31.8-13.2 31.8-31.2V27.2h-16.2v8.4h-.6s-5.4-9.6-18-9.6c-13.2 0-25.2 12-25.2 29.4s12 29.4 25.2 29.4c12.6 0 18-9.6 18-9.6h.6V80c0 9.6-6.6 16.2-15.6 16.2-9.6 0-15.6-7.2-15.6-7.2l-10.2 10.2s8.4 12 25.8 12Zm1.8-41.4c-7.8 0-13.8-6-13.8-14.4s6-14.4 13.8-14.4c7.8 0 13.8 6 13.8 14.4s-6 14.4-13.8 14.4ZM367.986 87.2c16.2 0 25.2-9.6 25.2-9.6l-8.4-11.4s-5.4 6.6-15.6 6.6c-9 0-13.8-4.8-15.6-10.2h42.6s.6-3 .6-7.2c0-16.2-13.2-29.4-29.4-29.4-16.8 0-30.6 13.8-30.6 30.6s13.8 30.6 31.2 30.6Zm-14.4-36.6c1.8-5.4 6.6-10.2 13.2-10.2s11.4 4.8 13.2 10.2h-26.4ZM406.423 86h16.201V43.4h21.6V86h16.199V28.4h-37.799v-3.6c0-5.4 3-8.4 7.799-8.4 3 0 5.4 1.2 5.4 1.2v-15S431.624.8 426.224.8c-12 0-19.801 7.8-19.801 21.6v6h-9v15h9V86Zm45.84-66.6c5.16 0 9.361-4.2 9.361-9s-4.2-9-9.24-9c-5.16 0-9.361 4.2-9.361 9s4.2 9 9.24 9ZM470.652 86h16.2V54.8c0-7.8 5.4-13.2 12.6-13.2 6.6 0 10.8 4.2 10.8 11.4v33h16.2V50.6c0-15-9.6-24.6-21.6-24.6-11.4 0-17.4 9.6-17.4 9.6h-.6v-8.4h-16.2V86ZM557.819 87.2c12.6 0 18.6-9.6 18.6-9.6h.6V86h16.2V2h-16.2v33.6h-.6s-6-9.6-18.6-9.6c-13.8 0-26.4 12.6-26.4 30.6s12.6 30.6 26.4 30.6Zm4.8-15c-8.4 0-15-6.6-15-15.6s6.6-15.6 15-15.6 15 6.6 15 15.6-6.6 15.6-15 15.6Z"

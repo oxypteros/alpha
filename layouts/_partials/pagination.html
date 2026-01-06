@@ -1,5 +1,5 @@
 {{- /*
-  Partial: pagination.html 
+  Partial: pagination.html
   Purpose: This file is Hugo's default pagination template styled for Alpha theme.
 
   Repo: https://github.com/oxypteros/alpha
@@ -7,7 +7,8 @@
 {{- $validFormats := slice "default" "terse" }}
 {{- $msg1 := "When passing a map to the internal pagination template, one of the elements must be named 'page', and it must be set to the context of the current page." }}
 {{- $msg2 := "The 'format' specified in the map passed to the internal pagination template is invalid. Valid choices are: %s." }}
-{{- $page := . }} {{- $format := "default" }}
+{{- $page := . }}
+{{- $format := "default" }}
 {{- if reflect.IsMap . }}
   {{- with .page }}{{- $page = . }}{{- else }}{{- errorf $msg1 }}{{- end }}
   {{- with .format }}{{- $format = lower . }}{{- end }}
@@ -32,9 +33,7 @@
     {{- with .First }}
       {{- /* First left-enabled */}}
       {{- if ne $currentPageNumber .PageNumber }}
-        <li
-          class="page-item border-out-var dark:border-out-var-d h-full w-11 list-none border-r"
-        >
+        <li class="page-item border-out-var dark:border-out-var-d h-full w-11 list-none border-r">
           <a
             href="{{ .URL }}#paginate"
             aria-label="{{ i18n "First" . }}"
@@ -51,9 +50,7 @@
         </li>
       {{- else }}
         {{- /* First left- disabled */}}
-        <li
-          class="page-item disabled border-out-var dark:border-out-var-d h-full w-11 list-none border-r"
-        >
+        <li class="page-item disabled border-out-var dark:border-out-var-d h-full w-11 list-none border-r">
           <a
             aria-disabled="true"
             aria-label="{{ i18n "First" . }}"
@@ -61,10 +58,7 @@
             role="button"
             tabindex="-1"
           >
-            <svg
-              class="fill-on-sur-var/50 dark:fill-on-sur-var-d/50 size-5"
-              aria-hidden="true"
-            >
+            <svg class="fill-on-sur-var/50 dark:fill-on-sur-var-d/50 size-5" aria-hidden="true">
               <use href="#icon-first-page"></use>
             </svg>
           </a>
@@ -73,9 +67,7 @@
     {{- end }}
     {{- with .Prev }}
       {{- /* Previous left - enabled */}}
-      <li
-        class="page-item border-out-var dark:border-out-var-d h-full w-10 border-r"
-      >
+      <li class="page-item border-out-var dark:border-out-var-d h-full w-10 border-r">
         <a
           href="{{ .URL }}#paginate"
           aria-label="{{ i18n "Previous" . }}"
@@ -92,9 +84,7 @@
       </li>
     {{- else }}
       {{- /* Previous left- disabled */}}
-      <li
-        class="page-item disabled border-out-var dark:border-out-var-d h-full w-10 border-r"
-      >
+      <li class="page-item disabled border-out-var dark:border-out-var-d h-full w-10 border-r">
         <a
           aria-disabled="true"
           aria-label="{{ i18n "Previous" . }}"
@@ -102,10 +92,7 @@
           role="button"
           tabindex="-1"
         >
-          <svg
-            class="fill-on-sur-var/50 dark:fill-on-sur-var-d/50 size-5"
-            aria-hidden="true"
-          >
+          <svg class="fill-on-sur-var/50 dark:fill-on-sur-var-d/50 size-5" aria-hidden="true">
             <use href="#icon-chevron-previous"></use>
           </svg>
         </a>
@@ -120,9 +107,7 @@
     {{- range $k := seq $start $end }}
       {{- if eq $.Paginator.PageNumber $k }}
         {{- /* Numbered Page - Active */}}
-        <li
-          class="page-item active border-out-var dark:border-out-var-d h-full w-10 border-r"
-        >
+        <li class="page-item active border-out-var dark:border-out-var-d h-full w-10 border-r">
           <a
             aria-current="page"
             aria-label="{{ i18n "Page" . }} {{ $k }}"
@@ -133,9 +118,7 @@
         </li>
       {{- else }}
         {{- /* Numbered Page - Not active */}}
-        <li
-          class="page-item border-out-var dark:border-out-var-d h-full w-10 border-r"
-        >
+        <li class="page-item border-out-var dark:border-out-var-d h-full w-10 border-r">
           <a
             href="{{ (index $.Paginator.Pagers (sub $k 1)).URL }}#paginate"
             aria-label="{{ i18n "Page" . }} {{ $k }}"
@@ -148,9 +131,7 @@
     {{- end }}
     {{- with .Next }}
       {{- /* Next right - enabled */}}
-      <li
-        class="page-item border-out-var dark:border-out-var-d flex h-full w-10 items-center justify-center border-r"
-      >
+      <li class="page-item border-out-var dark:border-out-var-d flex h-full w-10 items-center justify-center border-r">
         <a
           href="{{ .URL }}#paginate"
           aria-label="{{ i18n "Next" . }}"
@@ -167,9 +148,7 @@
       </li>
     {{- else }}
       {{- /* Next right - disabled */}}
-      <li
-        class="page-item disabled border-out-var dark:border-out-var-d h-full w-10 border-r"
-      >
+      <li class="page-item disabled border-out-var dark:border-out-var-d h-full w-10 border-r">
         <a
           aria-disabled="true"
           aria-label="{{ i18n "Next" . }}"
@@ -177,10 +156,7 @@
           role="button"
           tabindex="-1"
         >
-          <svg
-            class="fill-on-sur-var/50 dark:fill-on-sur-var-d/50 size-5"
-            aria-hidden="true"
-          >
+          <svg class="fill-on-sur-var/50 dark:fill-on-sur-var-d/50 size-5" aria-hidden="true">
             <use href="#icon-chevron-next"></use>
           </svg>
         </a>
@@ -214,10 +190,7 @@
             role="button"
             tabindex="-1"
           >
-            <svg
-              class="fill-on-sur-var/50 dark:fill-on-sur-var-d/50 size-5"
-              aria-hidden="true"
-            >
+            <svg class="fill-on-sur-var/50 dark:fill-on-sur-var-d/50 size-5" aria-hidden="true">
               <use href="#icon-last-page"></use>
             </svg>
           </a>
@@ -233,11 +206,7 @@
     {{- with .First }}
       {{- if ne $currentPageNumber .PageNumber }}
         <li class="page-item">
-          <a
-            href="{{ .URL }}"
-            aria-label="{{ i18n "First" . }}"
-            class="page-link"
-            role="button"
+          <a href="{{ .URL }}" aria-label="{{ i18n "First" . }}" class="page-link" role="button"
             ><span aria-hidden="true">&laquo;&laquo;</span></a
           >
         </li>
@@ -245,11 +214,7 @@
     {{- end }}
     {{- with .Prev }}
       <li class="page-item">
-        <a
-          href="{{ .URL }}"
-          aria-label="{{ i18n "Previous" . }}"
-          class="page-link"
-          role="button"
+        <a href="{{ .URL }}" aria-label="{{ i18n "Previous" . }}" class="page-link" role="button"
           ><span aria-hidden="true">&laquo;</span></a
         >
       </li>
@@ -271,13 +236,7 @@
     }}
       {{- if eq $.Paginator.PageNumber $k }}
         <li class="page-item active">
-          <a
-            aria-current="page"
-            aria-label="{{ i18n "Page" . }} {{ $k }}"
-            class="page-link"
-            role="button"
-            >{{ $k }}</a
-          >
+          <a aria-current="page" aria-label="{{ i18n "Page" . }} {{ $k }}" class="page-link" role="button">{{ $k }}</a>
         </li>
       {{- else }}
         <li class="page-item">
@@ -293,11 +252,7 @@
     {{- end }}
     {{- with .Next }}
       <li class="page-item">
-        <a
-          href="{{ .URL }}"
-          aria-label="{{ i18n "Next" . }}"
-          class="page-link"
-          role="button"
+        <a href="{{ .URL }}" aria-label="{{ i18n "Next" . }}" class="page-link" role="button"
           ><span aria-hidden="true">&raquo;</span></a
         >
       </li>
@@ -305,11 +260,7 @@
     {{- with .Last }}
       {{- if ne $currentPageNumber .PageNumber }}
         <li class="page-item">
-          <a
-            href="{{ .URL }}"
-            aria-label="{{ i18n "Last" . }}"
-            class="page-link"
-            role="button"
+          <a href="{{ .URL }}" aria-label="{{ i18n "Last" . }}" class="page-link" role="button"
             ><span aria-hidden="true">&raquo;&raquo;</span></a
           >
         </li>

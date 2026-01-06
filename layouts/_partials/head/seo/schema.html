@@ -1,6 +1,6 @@
 {{- /*
   Partial: head/seo/schema.html
-  Purpose: Accept initial values from `head/seo.html` and conditionally append a 
+  Purpose: Accept initial values from `head/seo.html` and conditionally append a
   page specific schema JSON-LD.
 
   Repo: https://github.com/oxypteros/alpha
@@ -27,10 +27,10 @@
 {{- /* Add images to base scheme */}}
 {{- with $data.image }}
   {{- $imageObject := dict "image" (dict
-      "@type"  "ImageObject"
-      "url"    .
-      "width"  $data.imageWidth
-      "height" $data.imageHeight
+    "@type"  "ImageObject"
+    "url"    .
+    "width"  $data.imageWidth
+    "height" $data.imageHeight
     )
   -}}
   {{- $schema = merge $schema $imageObject -}}
@@ -39,9 +39,9 @@
 {{- /* Conditional for copyright */ -}}
 {{- if ne $data.licenseID "CC0" -}}
   {{- $copyrightStuff := dict
-      "copyrightYear"   $data.year
-      "copyrightHolder" $schema.author 
-    -}}
+    "copyrightYear"   $data.year
+    "copyrightHolder" $schema.author
+  -}}
   {{- $schema = merge $schema $copyrightStuff -}}
 {{- end -}}
 
@@ -60,7 +60,7 @@
     "headline"        $data.title
   -}}
 
-  {{- /* Merge additional info*/}}
+  {{- /* Merge additional info */}}
   {{- with $data.datePublished }}
     {{- $articleSchema = merge $articleSchema (dict "datePublished" .) -}}
   {{- end }}

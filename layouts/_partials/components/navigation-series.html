@@ -16,7 +16,7 @@
 {{- $seriesKey := .Page.Params.series | lower -}}
 {{- $seriesPageGroup := index site.Taxonomies.series $seriesKey -}}
 
-  {{- if $seriesPageGroup }}
+{{- if $seriesPageGroup }}
   {{- /* Lighter page first */}}
   {{- $sortedPages := $seriesPageGroup.Pages.ByWeight.Reverse -}}
 
@@ -28,9 +28,7 @@
 
     {{- /* Render the nav */}}
     <div class="mt-24 w-full">
-      <nav
-        class="flex flex-wrap-reverse items-center justify-center gap-5 sm:justify-between"
-      >
+      <nav class="flex flex-wrap-reverse items-center justify-center gap-5 sm:justify-between">
         <div>
           {{- if $prevPost }}
             <a

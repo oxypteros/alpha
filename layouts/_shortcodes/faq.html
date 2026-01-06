@@ -1,25 +1,17 @@
 {{- /*
-  Shortcode: faq.html 
+  Shortcode: faq.html
   Purpose: Renders a collapsible Frequently Asked Questions type element.
-  
+
   Target: Global
 
   Example:
-    {{< faq TITLE="" SUBTITLE="" >}}
-      ## Question
-      Answer
-    {{< /faq >}}
-  
-  Params: 
-    - TITLE (string, optional): H2 heading. 
-    - SUBTITLE (string, optional): H3 heading.
+  {{< faq TITLE="" SUBTITLE=""
+>}}
+## Question Answer
+{{< /faq >}}
 
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/docs/shortcodes/faq 
-  Repo: https://github.com/oxypteros/alpha
+Params: - TITLE (string, optional): H2 heading. - SUBTITLE (string, optional): H3 heading. Error handler: - livaWarn
+(global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/docs/shortcodes/faq Repo: https://github.com/oxypteros/alpha
 */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
@@ -49,69 +41,69 @@
 {{- /* * On successful validations render the shortcode */}}
 {{- if $validInput }}
   {{- $data := $validationResult.data -}}
-{{- $content := .Inner | markdownify }} 
-{{- /* ** H2 headings (Question) and p elements (Answer) detection */}}
-{{- $headings := findRE "(?s)<h2[^>]*>(.*?)</h2>" $content }} 
-{{- $paragraphs := findRE "(?s)<p>(.*?)</p>" $content }}
+  {{- $content := .Inner | markdownify }}
+  {{- /* ** H2 headings (Question) and p elements (Answer) detection */}}
+  {{- $headings := findRE "(?s)<h2[^>]*>(.*?)</h2>" $content }}
+  {{- $paragraphs := findRE "(?s)<p>(.*?)</p>" $content }}
 
-{{- /* - Create unique id's for aria-labels in case of multiple shortcodes*/}}
-{{- $base := .Page.File.BaseFileName | urlize }}
-{{- $ordinal := .Ordinal | default (now.UnixNano) }}
-{{- $uid := printf "%s-%v" $base $ordinal }}
-<section 
-  class="sc-faq mb-32 flex w-full max-w-7xl flex-col items-center px-4"
-  aria-labelledby="faq-heading-{{- $uid -}}"
->
-  <div class="flex w-full flex-wrap justify-center gap-16">
-    {{- if or $data.title $data.subtitle }}
-    <div class="w-full md:w-fit text-center break-words hyphens-manual lg:text-left">
-      {{- with $data.title }}
-      <h2 id="faq-heading-{{- $uid -}}">
-        {{ . | markdownify | safeHTML }}
-      </h2>
-      {{- else }}
-      <h2
-        id="faq-heading-{{- $uid -}}"
-        class="sr-only"
-      >
-      {{- i18n "Faq" . | default " Frequently Asked Questions"}}
-      </h2>
-      {{- end }} 
-      {{- with $data.subtitle }}
-      <h3>{{ .  | markdownify | safeHTML }}</h3>
-      {{- end }}
-      {{- end }}
-    </div>
-    <div class="w-full max-w-2xl">
-      {{- range $index, $heading := $headings }}
-      <details
-        class="bg-sur-var dark:bg-sur-var-d border-out dark:border-out-d mb-4 flex grow flex-col rounded-md border px-4 py-3"
-      >
-        <summary
-          class="flex items-center justify-between gap-2 cursor-pointer group hover:text-on-sur dark:hover:text-on-sur-d text-lg"
-        >
-          {{ $heading | safeHTML }} 
-          <svg class="size-5 transition-colors duration-400 group-hover:fill-on-sur dark:group-hover:fill-on-sur-d fill-on-sur-var dark:fill-on-sur-var-d shrink-0"
-          width="20"
-          height="20"
-          aria-hidden="true"
-          >
-            <use href="#unfold_more"></use>
-          </svg>
-        </summary>
-        {{- if index $paragraphs $index }}
-        <div class="sc-faq-p text-on-sur dark:text-on-sur-d pt-4">
-          {{ index $paragraphs $index | safeHTML }}
+  {{- /* - Create unique id's for aria-labels in case of multiple shortcodes */}}
+  {{- $base := .Page.File.BaseFileName | urlize }}
+  {{- $ordinal := .Ordinal | default (now.UnixNano) }}
+  {{- $uid := printf "%s-%v" $base $ordinal }}
+  <section
+    class="sc-faq mb-32 flex w-full max-w-7xl flex-col items-center px-4"
+    aria-labelledby="faq-heading-{{- $uid -}}"
+  >
+    <div class="flex w-full flex-wrap justify-center gap-16">
+      {{- if or $data.title $data.subtitle }}
+        <div class="w-full text-center wrap-break-word hyphens-manual md:w-fit lg:text-left">
+          {{- with $data.title }}
+            <h2 id="faq-heading-{{- $uid -}}">
+              {{ . | markdownify | safeHTML }}
+            </h2>
+          {{- else }}
+            <h2 id="faq-heading-{{- $uid -}}" class="sr-only">
+              {{- i18n "Faq" . | default " Frequently Asked Questions" }}
+            </h2>
+          {{- end }}
+          {{- with $data.subtitle }}
+            <h3>{{ .  | markdownify | safeHTML }}</h3>
+          {{- end }}
         </div>
-        {{- end }}
-      </details>
       {{- end }}
+      <div class="w-full max-w-2xl">
+        {{- range $index, $heading := $headings }}
+          <details
+            class="bg-sur-var dark:bg-sur-var-d border-out dark:border-out-d mb-4 flex grow flex-col rounded-md border px-4 py-3"
+          >
+            <summary
+              class="group hover:text-on-sur dark:hover:text-on-sur-d flex cursor-pointer items-center justify-between gap-2 text-lg"
+            >
+              {{ $heading | safeHTML }}
+              <svg
+                class="group-hover:fill-on-sur dark:group-hover:fill-on-sur-d fill-on-sur-var dark:fill-on-sur-var-d size-5 shrink-0 transition-colors duration-400"
+                width="20"
+                height="20"
+                aria-hidden="true"
+              >
+                <use href="#unfold_more"></use>
+              </svg>
+            </summary>
+            {{- if index $paragraphs $index }}
+              <div class="sc-faq-p text-on-sur dark:text-on-sur-d pt-4">
+                {{ index $paragraphs $index | safeHTML }}
+              </div>
+            {{- end }}
+          </details>
+        {{- end }}
+      </div>
     </div>
-  </div>
-</section>
-<svg width="0" height="0" class="hidden">
-  <symbol id="unfold_more" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-    <path d="m480-236 93-93q12-12 29-12t29 12q12 12 12 29t-12 29L508-148q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L329-271q-12-12-12-29t12-29q12-12 29-12t29 12l93 93Zm0-484-93 93q-12 12-29 12t-29-12q-12-12-12-29t12-29l123-123q6-6 13-8.5t15-2.5q8 0 15 2.5t13 8.5l123 123q12 12 12 29t-12 29q-12 12-29 12t-29-12l-93-93Z"></path>
-  </symbol>
-</svg>
+  </section>
+  <svg width="0" height="0" class="hidden">
+    <symbol id="unfold_more" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+      <path
+        d="m480-236 93-93q12-12 29-12t29 12q12 12 12 29t-12 29L508-148q-6 6-13 8.5t-15 2.5q-8 0-15-2.5t-13-8.5L329-271q-12-12-12-29t12-29q12-12 29-12t29 12l93 93Zm0-484-93 93q-12 12-29 12t-29-12q-12-12-12-29t12-29l123-123q6-6 13-8.5t15-2.5q8 0 15 2.5t13 8.5l123 123q12 12 12 29t-12 29q-12 12-29 12t-29-12l-93-93Z"
+      ></path>
+    </symbol>
+  </svg>
 {{- end -}}

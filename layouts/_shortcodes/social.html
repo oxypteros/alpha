@@ -5,18 +5,11 @@
   Target: homepage, sections (_index.md)
 
   Example:
-  {{< social LIMIT="" >}}
+  {{< social LIMIT=""
+>}}
 
-  Params:
-  - LIMIT (integral, optional): Number of menu item to show
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/shortcodes/social
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - LIMIT (integral, optional): Number of menu item to show Error handler: - livaWarn (global) - LiVa (scoped)
+Docs: https://alpha.oxypteros.com/shortcodes/social Repo: https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -76,9 +69,7 @@
       <h2 id="social-heading-{{- $uid -}}" class="sr-only">
         {{- i18n "SocialHeading" . | default "Social media links" }}
       </h2>
-      <ul
-        class="flex w-full max-w-xl flex-wrap items-center justify-center gap-3"
-      >
+      <ul class="flex w-full max-w-xl flex-wrap items-center justify-center gap-3">
         {{- range $menuToRender }}
           <li>
             <a

@@ -1,23 +1,18 @@
 // /assets/alpha/liva/js/modules/update-checker.js
 
-import { ApiUrls, DocUrls } from "./constants.js";
-import {
-  localAlphaVersionEl,
-  localHugoVersionEl,
-  alphaBadge,
-  hugoBadge,
-} from "./dom.js";
-import { openConsole, appendTemplate } from "./ui-controller.js";
+import { ApiUrls, DocUrls } from './constants.js';
+import { localAlphaVersionEl, localHugoVersionEl, alphaBadge, hugoBadge } from './dom.js';
+import { openConsole, appendTemplate } from './ui-controller.js';
 
-const localAlphaVersion = localAlphaVersionEl?.textContent || "";
-const localHugoVersion = localHugoVersionEl?.textContent || "";
+const localAlphaVersion = localAlphaVersionEl?.textContent || '';
+const localHugoVersion = localHugoVersionEl?.textContent || '';
 
 const appendLink = (url, title, text, element, badgeEl, badge_class) => {
-  element.innerHTML = "";
-  const link = Object.assign(document.createElement("a"), {
+  element.innerHTML = '';
+  const link = Object.assign(document.createElement('a'), {
     href: url,
-    target: "_blank",
-    rel: "noopener noreferrer",
+    target: '_blank',
+    rel: 'noopener noreferrer',
     title: title,
     textContent: text,
   });
@@ -26,36 +21,28 @@ const appendLink = (url, title, text, element, badgeEl, badge_class) => {
 };
 
 const checkError = (element, title, badgeEl) => {
-  element.innerHTML = "Error";
+  element.innerHTML = 'Error';
   element.title = title;
-  badgeEl.classList.add("liva-check-error");
+  badgeEl.classList.add('liva-check-error');
 };
 
 const compareAlphaVersion = (remoteVersion) => {
   if (remoteVersion && remoteVersion !== localAlphaVersion) {
     appendLink(
       DocUrls.ALPHA_UPDATE,
-      "Update alpha to the latest version",
+      'Update alpha to the latest version',
       remoteVersion,
       localAlphaVersionEl,
       alphaBadge,
-      "liva-update",
+      'liva-update',
     );
-    appendTemplate(
-      document.querySelector('[data-alpha="liva-alpha-updates-template"]'),
-    );
+    appendTemplate(document.querySelector('[data-alpha="liva-alpha-updates-template"]'));
   } else if (remoteVersion) {
-    localAlphaVersionEl.title = "You have the latest version";
-    alphaBadge.classList.add("liva-no-update");
-    appendTemplate(
-      document.querySelector('[data-alpha="liva-no-alpha-updates-template"]'),
-    );
+    localAlphaVersionEl.title = 'You have the latest version';
+    alphaBadge.classList.add('liva-no-update');
+    appendTemplate(document.querySelector('[data-alpha="liva-no-alpha-updates-template"]'));
   } else {
-    checkError(
-      localAlphaVersionEl,
-      "Could not check for alpha updates",
-      alphaBadge,
-    );
+    checkError(localAlphaVersionEl, 'Could not check for alpha updates', alphaBadge);
   }
 };
 
@@ -63,27 +50,19 @@ const compareHugoVersion = (remoteVersion) => {
   if (remoteVersion && remoteVersion !== localHugoVersion) {
     appendLink(
       DocUrls.HUGO_UPDATE,
-      "Update Hugo to the latest version",
+      'Update Hugo to the latest version',
       remoteVersion,
       localHugoVersionEl,
       hugoBadge,
-      "liva-update",
+      'liva-update',
     );
-    appendTemplate(
-      document.querySelector('[data-alpha="liva-hugo-updates-template"]'),
-    );
+    appendTemplate(document.querySelector('[data-alpha="liva-hugo-updates-template"]'));
   } else if (remoteVersion) {
-    localHugoVersionEl.title = "You have the latest version";
-    hugoBadge.classList.add("liva-no-update");
-    appendTemplate(
-      document.querySelector('[data-alpha="liva-no-hugo-updates-template"]'),
-    );
+    localHugoVersionEl.title = 'You have the latest version';
+    hugoBadge.classList.add('liva-no-update');
+    appendTemplate(document.querySelector('[data-alpha="liva-no-hugo-updates-template"]'));
   } else {
-    checkError(
-      localHugoVersionEl,
-      "Could not check for Hugo updates",
-      hugoBadge,
-    );
+    checkError(localHugoVersionEl, 'Could not check for Hugo updates', hugoBadge);
   }
 };
 
@@ -97,7 +76,7 @@ export async function checkUpdates() {
     const data = await response.json();
     compareAlphaVersion(data[0].name);
   } catch (error) {
-    console.error("Error fetching Alpha Version URL:", error);
+    console.error('Error fetching Alpha Version URL:', error);
     compareAlphaVersion(null);
   }
 
@@ -108,7 +87,7 @@ export async function checkUpdates() {
     const data = await response.json();
     compareHugoVersion(data[0].name);
   } catch (error) {
-    console.error("Error fetching Hugo Version URL:", error);
+    console.error('Error fetching Hugo Version URL:', error);
     compareHugoVersion(null);
   }
 }

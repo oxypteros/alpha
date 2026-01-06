@@ -64,7 +64,7 @@
     */}}
   {{- else if eq $code "liva-md-103" -}}
     {{- $reason = printf (i18n $reasonKey) $destination | safeHTML -}}
-       {{- $solution =  printf (i18n $solutionKey) $destination | safeHTML -}}
+    {{- $solution =  printf (i18n $solutionKey) $destination | safeHTML -}}
 
     {{- /*
       Missing alt from markdown image
@@ -73,7 +73,7 @@
   {{- else if eq $code "liva-md-104" -}}
     {{- $reason = printf (i18n $reasonKey) $destination | safeHTML -}}
     {{- $example = printf (i18n $entry.example) $path $destination | safeHTML -}}
-    
+
     {{- /*
       Fallback for missing or undefined code
       Code: liva-cfg-000 or undefined
@@ -100,7 +100,7 @@
       {{- with $solution }}
         <div class="liva-console-solution">
           <h3 class="liva-console-h3">
-           <strong>{{ i18n "LivaSolution" . | default "Solution:" }}</strong>
+            <strong>{{ i18n "LivaSolution" . | default "Solution:" }}</strong>
           </h3>
           <p>{{ . | safeHTML }}</p>
         </div>

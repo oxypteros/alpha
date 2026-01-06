@@ -1,9 +1,9 @@
 // /assets/alpha/liva/js/modules/ui-controller.js
 
-import { LivaStates, StorageKeys } from "./constants.js";
-import * as Dom from "./dom.js";
-import { handlePositionChange } from "./fab-controller.js";
-import { checkUpdates } from "./update-checker.js";
+import { LivaStates, StorageKeys } from './constants.js';
+import * as Dom from './dom.js';
+import { handlePositionChange } from './fab-controller.js';
+import { checkUpdates } from './update-checker.js';
 
 const getTemplateNameForError = (error) => `${error}-template`;
 
@@ -15,19 +15,19 @@ export const appendTemplate = (template) => {
 };
 
 const consoleErrorEntry = (error, url) => {
-  const div = document.createElement("div");
-  div.className = "liva-console-entry";
-  div.textContent = "> ";
-  const span = Object.assign(document.createElement("span"), {
-    className: "liva-console-code",
+  const div = document.createElement('div');
+  div.className = 'liva-console-entry';
+  div.textContent = '> ';
+  const span = Object.assign(document.createElement('span'), {
+    className: 'liva-console-code',
     textContent: error,
   });
   div.append(span);
   if (url) {
     div.append(
-      " - ",
-      Object.assign(document.createElement("a"), {
-        className: "liva-console-error-link",
+      ' - ',
+      Object.assign(document.createElement('a'), {
+        className: 'liva-console-error-link',
         href: url,
         textContent: url,
       }),
@@ -37,22 +37,19 @@ const consoleErrorEntry = (error, url) => {
 };
 
 const showErrors = () => {
-  Dom.livaConsoleContent.innerHTML = "";
-  const storedData =
-    JSON.parse(localStorage.getItem(StorageKeys.ERROR_LIST)) || {};
+  Dom.livaConsoleContent.innerHTML = '';
+  const storedData = JSON.parse(localStorage.getItem(StorageKeys.ERROR_LIST)) || {};
   const uniqueConfigErrors = new Set();
 
   for (const [pageUrl, errorList] of Object.entries(storedData)) {
     errorList.forEach((error) => {
-      const isConfigError = error.startsWith("liva-config-");
+      const isConfigError = error.startsWith('liva-config-');
       if (!isConfigError || !uniqueConfigErrors.has(error)) {
         consoleErrorEntry(error, pageUrl);
 
         const templateName = getTemplateNameForError(error);
 
-        const template = document.querySelector(
-          `[data-alpha="${templateName}"]`,
-        );
+        const template = document.querySelector(`[data-alpha="${templateName}"]`);
 
         appendTemplate(template);
 
@@ -63,7 +60,7 @@ const showErrors = () => {
 };
 
 const showConsoleHelp = () => {
-  Dom.livaConsoleContent.innerHTML = "";
+  Dom.livaConsoleContent.innerHTML = '';
   appendTemplate(document.querySelector('[data-alpha="liva-help-template"]'));
 };
 
@@ -86,7 +83,7 @@ const openSettings = () => {
 const closeConsole = () => {
   Dom.livaConsoleContainer.classList.add(LivaStates.HIDDEN);
   Dom.livaConsoleContainer.inert = true;
-  Dom.livaConsoleContent.innerHTML = ""; // Clear on close
+  Dom.livaConsoleContent.innerHTML = ''; // Clear on close
 };
 
 export const openConsole = () => {
@@ -108,23 +105,21 @@ const handleFabClick = () => {
   if (Dom.livaFab.classList.contains(LivaStates.ERROR)) {
     toggleConsole();
   } else {
-    Dom.livaSettings.classList.contains(LivaStates.HIDDEN)
-      ? openSettings()
-      : closeSettings();
+    Dom.livaSettings.classList.contains(LivaStates.HIDDEN) ? openSettings() : closeSettings();
   }
 };
 
 // Event Listener Initialization
 export function initializeUiEventListeners() {
-  Dom.livaFab?.addEventListener("click", handleFabClick);
-  Dom.livaSettingsCloseBtn?.addEventListener("click", closeSettings);
-  Dom.selectPositionElement?.addEventListener("change", handlePositionChange);
-  Dom.livaOpenConsoleBtn?.addEventListener("click", toggleConsole);
-  Dom.livaUpdateBtn?.addEventListener("click", () => {
+  Dom.livaFab?.addEventListener('click', handleFabClick);
+  Dom.livaSettingsCloseBtn?.addEventListener('click', closeSettings);
+  Dom.selectPositionElement?.addEventListener('change', handlePositionChange);
+  Dom.livaOpenConsoleBtn?.addEventListener('click', toggleConsole);
+  Dom.livaUpdateBtn?.addEventListener('click', () => {
     closeSettings();
     checkUpdates();
   });
-  Dom.livaConsoleCloseBtn?.addEventListener("click", closeConsole);
-  Dom.livaConsoleHelpBtn?.addEventListener("click", showConsoleHelp);
-  Dom.livaConsoleResetBtn?.addEventListener("click", resetConsoleStorage);
+  Dom.livaConsoleCloseBtn?.addEventListener('click', closeConsole);
+  Dom.livaConsoleHelpBtn?.addEventListener('click', showConsoleHelp);
+  Dom.livaConsoleResetBtn?.addEventListener('click', resetConsoleStorage);
 }

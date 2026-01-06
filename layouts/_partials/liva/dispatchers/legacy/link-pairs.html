@@ -85,10 +85,7 @@ $solution
 
 {{- if $livaEnabled }}
   {{- /* ** LiVa Page */}}
-  <div
-    class="liva liva liva-card liva-card-warning liva-shadow"
-    data-error="{{ $errorCode }}"
-  >
+  <div class="liva liva liva-card liva-card-warning liva-shadow" data-error="{{ $errorCode }}">
     <header class="liva-card-header">
       <h2 class="liva-title">
         {{- i18n "LivaScPairsTitle" $countPairs | default "Incomplete Link/Text Pairs" -}}
@@ -101,13 +98,9 @@ $solution
       <div>
         <p>
           {{- i18n "The" . |default "The" }}
-          <span class="liva-mono"
-            >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
-          >
+          <span class="liva-mono">&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span>
           {{ i18n "LivaScPairsReason" $countPairs | default "shortcode has one or more incomplete" }}
-          <span class="liva-mono"
-            >{{ i18n "LivaScPairsLinkText" . | default "link/text" }}</span
-          >
+          <span class="liva-mono">{{ i18n "LivaScPairsLinkText" . | default "link/text" }}</span>
           {{ i18n "LivaScPairsPairs" $countPairs | default "pairs." }}<br />
           {{ i18n "LivaScPairsExplain" . | default "This will cause usability and accessibility issues." }}
         </p>
@@ -162,9 +155,7 @@ $solution
     <footer class="liva-card-footer">
       <div class="liva-card-footer-meta">
         <p></p>
-        <a class="liva-mono" href="https://alpha.oxypteros.com/docs/liva"
-          >{{ $errorCode }}</a
-        >
+        <a class="liva-mono" href="https://alpha.oxypteros.com/docs/liva">{{ $errorCode }}</a>
       </div>
     </footer>
   </div>
@@ -176,13 +167,9 @@ $solution
       </h2>
       <p>
         {{- i18n "The" . |default "The" }}
-        <span class="liva-mono"
-          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
-        >
+        <span class="liva-mono">&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span>
         {{ i18n "LivaScPairsReason" $countPairs | default "shortcode has one or more incomplete" }}
-        <span class="liva-mono"
-          >{{ i18n "LivaScPairsLinkText" . | default "link/text" }}</span
-        >
+        <span class="liva-mono">{{ i18n "LivaScPairsLinkText" . | default "link/text" }}</span>
         {{ i18n "LivaScPairsPairs" $countPairs | default "pairs." }}
       </p>
       <p>

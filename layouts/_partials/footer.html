@@ -1,5 +1,5 @@
 {{- /*
-  Partial: footer.html 
+  Partial: footer.html
   Purpose: Defines the footer HTML structure for Alpha.
 
   Repo: https://github.com/oxypteros/alpha
@@ -10,27 +10,20 @@
 {{- $shortYear := dateFormat "06" now }}
 {{- $yearDisplay := cond (eq $estYear $currentYear) (string $currentYear) (printf "%v-%v" $estYear $shortYear) }}
 <footer class="bg-sur dark:bg-sur-d z-15 w-full">
-  <div
-    class="h-footer mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center"
-  >
+  <div class="h-footer mx-auto flex w-full max-w-7xl flex-wrap items-center justify-center">
     {{- /* Footer and footer social menu */}}
     {{- $footerMenu := .Site.Menus.footer }}
     {{- $socialFooter := .Site.Menus.footer_social }}
 
     {{- if or $footerMenu $socialFooter }}
-    <h2 id="footer-utility-nav" class="sr-only
-    ">{{ i18n "FooterMenu" . | default "Footer utility menu"}}</h2>
+      <h2 id="footer-utility-nav" class="sr-only">{{ i18n "FooterMenu" . | default "Footer utility menu" }}</h2>
       <nav
-        class="text-on-sur-var dark:text-on-sur-var-d flex w-full max-w-7xl flex-wrap items-center justify-end gap-3 pr-1 pl-4 text-sm" aria-labelledby="footer-utility-nav"
+        class="text-on-sur-var dark:text-on-sur-var-d flex w-full max-w-7xl flex-wrap items-center justify-end gap-3 pr-1 pl-4 text-sm"
+        aria-labelledby="footer-utility-nav"
       >
         {{- if $footerMenu }}
           {{- range $footerMenu }}
-            <a
-              class="font-500 hover:text-pri dark:hover:text-pri-d"
-              href="{{ .URL | absLangURL }}"
-            >
-              {{ .Name }}</a
-            >
+            <a class="font-500 hover:text-pri dark:hover:text-pri-d" href="{{ .URL | absLangURL }}"> {{ .Name }}</a>
           {{- end }}
         {{- end }}
         {{- if and $footerMenu $socialFooter }}
@@ -66,17 +59,13 @@
   >
     {{- $motto := .Site.Params.motto }}
     {{- if $motto }}
-      <div
-        class="flex min-h-11 w-full items-center justify-center sm:w-1/2 sm:justify-start sm:text-base"
-      ><q>
-        {{- $motto | safeHTML -}}</q>
+      <div class="flex min-h-11 w-full items-center justify-center sm:w-1/2 sm:justify-start sm:text-base">
+        <q> {{- $motto | safeHTML -}}</q>
       </div>
     {{- else }}
       <div></div>
     {{- end }}
-    <div
-      class="flex w-full flex-wrap items-center justify-between gap-1 sm:w-1/2 sm:justify-end"
-    >
+    <div class="flex w-full flex-wrap items-center justify-between gap-1 sm:w-1/2 sm:justify-end">
       <div class="flex shrink-0 items-center">
         &copy; {{ $yearDisplay }}&nbsp;
         {{ .Site.Title }}

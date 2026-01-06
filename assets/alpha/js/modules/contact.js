@@ -15,7 +15,7 @@
  * required fields.
  * Upon successful validation, it sends the form data to the specified endpoint.
  *
- * The module updates the submit button's text to reflect the submission statsu. 
+ * The module updates the submit button's text to reflect the submission statsu.
  * It utilizes HTML templates for success and failure
  * snackbar messages. If a network error occurs display an alternative contact
  * method (email).
@@ -23,17 +23,17 @@
  * A cooldown period is enforced using `localStorage` to limit the frequency
  * of submissions from the same browser.
  *
- * The module relies on specific `data-alpha-*` attributes in the HTML to 
+ * The module relies on specific `data-alpha-*` attributes in the HTML to
  * identify and interact with form elements, error message containers,
  * snackbar templates, and other UI components.
  *
- * @exports initContactForm - The function to initialize the contact form 
+ * @exports initContactForm - The function to initialize the contact form
  * listeners and functionality.
  *
  * @requires ../utils.js - For the `$` DOM utility function.
  */
 
-import { $ } from "../utils.js";
+import { $ } from '../utils.js';
 
 /**
  * Initializes the contact form, setting up event listeners, validation,
@@ -58,7 +58,7 @@ export const initContactForm = (endpointURL) => {
   };
 
   const COOLDOWN_MS = 30000;
-  const COOLDOWN_KEY = "contactFormLastSubmission";
+  const COOLDOWN_KEY = 'contactFormLastSubmission';
   const ENDPOINT = endpointURL;
   //console.log("Make.com Endpoint from module:", ENDPOINT);
 
@@ -71,9 +71,9 @@ export const initContactForm = (endpointURL) => {
   const ALT_CONTACT = {
     container: $('[data-alpha="fail-container"]'),
     template: $('[data-alpha="alternative-contact-template"]'),
-    display: "contactEmailDisplay",
-    user: "alpha",
-    domain: "oxypteros.com",
+    display: 'contactEmailDisplay',
+    user: 'alpha',
+    domain: 'oxypteros.com',
   };
 
   let isSubmitting = false,
@@ -89,30 +89,30 @@ export const initContactForm = (endpointURL) => {
   function clearErrors() {
     Object.values(ERROR_IDS).forEach((id) => {
       const el = document.getElementById(id);
-      if (el) (el.textContent = ""), el.classList.add("hidden");
+      if (el) ((el.textContent = ''), el.classList.add('hidden'));
     });
   }
 
   function showError(field, msg) {
     const el = document.getElementById(ERROR_IDS[field]);
-    if (el) (el.textContent = msg), el.classList.remove("hidden");
+    if (el) ((el.textContent = msg), el.classList.remove('hidden'));
   }
 
   function showSnackbar(template) {
     if (SNACKBAR.container && template) {
-      SNACKBAR.container.innerHTML = "";
+      SNACKBAR.container.innerHTML = '';
       SNACKBAR.container.appendChild(template.content.cloneNode(true));
       SNACKBAR.container
-        .querySelector(".closeSnackbarBtn")
-        ?.addEventListener("click", () => (SNACKBAR.container.innerHTML = ""));
-      setTimeout(() => (SNACKBAR.container.innerHTML = ""), 7000);
+        .querySelector('.closeSnackbarBtn')
+        ?.addEventListener('click', () => (SNACKBAR.container.innerHTML = ''));
+      setTimeout(() => (SNACKBAR.container.innerHTML = ''), 7000);
     }
   }
 
   function showAltContact() {
     const { container, template, display, user, domain } = ALT_CONTACT;
     if (container && template) {
-      container.innerHTML = "";
+      container.innerHTML = '';
       const node = template.content.cloneNode(true);
       container.appendChild(node);
       const emailEl = container.querySelector(`#${display}`);
@@ -124,16 +124,15 @@ export const initContactForm = (endpointURL) => {
   function validate(data) {
     clearErrors();
     let valid = true;
-    if (!data.get("name")?.trim())
-      showError("name", "Name is required"), (valid = false);
-    const email = data.get("email")?.trim();
-    if (!email) showError("email", "Email is required"), (valid = false);
+    if (!data.get('name')?.trim()) (showError('name', 'Name is required'), (valid = false));
+    const email = data.get('email')?.trim();
+    if (!email) (showError('email', 'Email is required'), (valid = false));
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      showError("email", "Invalid email"), (valid = false);
-    if (!data.get("subject")?.trim())
-      showError("subject", "Subject is required"), (valid = false);
-    if (!data.get("message")?.trim())
-      showError("message", "Message is required"), (valid = false);
+      (showError('email', 'Invalid email'), (valid = false));
+    if (!data.get('subject')?.trim())
+      (showError('subject', 'Subject is required'), (valid = false));
+    if (!data.get('message')?.trim())
+      (showError('message', 'Message is required'), (valid = false));
     return valid;
   }
 
@@ -148,7 +147,7 @@ export const initContactForm = (endpointURL) => {
         remaining--;
         if (remaining <= 0) {
           clearInterval(cooldownTimer);
-          setButton(false, "Send Message");
+          setButton(false, 'Send Message');
         } else {
           setButton(true, `Wait ${remaining}s`);
         }
@@ -160,12 +159,12 @@ export const initContactForm = (endpointURL) => {
 
   function init() {
     const { form, btn, honeypot } = ELEMENTS;
-    if (!form || !btn) return console.warn("Missing form/button");
+    if (!form || !btn) return console.warn('Missing form/button');
 
     const last = localStorage.getItem(COOLDOWN_KEY);
     if (last) setCooldown(+last);
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (isSubmitting) return;
 
@@ -173,14 +172,13 @@ export const initContactForm = (endpointURL) => {
       const last = +localStorage.getItem(COOLDOWN_KEY);
       if (now - last < COOLDOWN_MS) return setCooldown(last);
 
-      if (honeypot?.value)
-        return localStorage.setItem(COOLDOWN_KEY, now), setCooldown(now);
+      if (honeypot?.value) return (localStorage.setItem(COOLDOWN_KEY, now), setCooldown(now));
 
       const data = new FormData(form);
       if (!validate(data)) return;
 
       isSubmitting = true;
-      setButton(true, "Sending...");
+      setButton(true, 'Sending...');
       const payload = new URLSearchParams();
       for (const [k, v] of data.entries()) {
         if (k !== honeypot?.name) payload.append(k, v);
@@ -188,8 +186,8 @@ export const initContactForm = (endpointURL) => {
 
       try {
         const res = await fetch(ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: payload.toString(),
         });
 
@@ -199,23 +197,21 @@ export const initContactForm = (endpointURL) => {
           localStorage.setItem(COOLDOWN_KEY, now.toString());
           setCooldown(now);
         } else {
-          console.error("Submit error", res.status);
+          console.error('Submit error', res.status);
           showSnackbar(SNACKBAR.failure);
-          setButton(false, "Send Message");
+          setButton(false, 'Send Message');
         }
       } catch (err) {
-        console.error("Network error", err);
+        console.error('Network error', err);
         showSnackbar(SNACKBAR.failure);
         showAltContact();
-        setButton(false, "Send Message");
+        setButton(false, 'Send Message');
       } finally {
         isSubmitting = false;
       }
     });
   }
 
-  document.readyState === "loading"
-    ? document.addEventListener("DOMContentLoaded", init)
-    : init();
+  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
   //console.log("contact.js imported");
 };

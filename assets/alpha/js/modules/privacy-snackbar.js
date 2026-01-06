@@ -13,7 +13,7 @@
  *
  * Key Functionality:
  * 1. Checks `localStorage`: On initialization, it checks `localStorage` for a
- *    `tracking` item. If this item exists, it assumes the user has already 
+ *    `tracking` item. If this item exists, it assumes the user has already
  *    interacted with a privacy notice, and the snackbar is not displayed.
  * 2. Displays Snackbar: If no `tracking` status is found in `localStorage`,
  *    the snackbar is displayed.
@@ -21,30 +21,30 @@
  *    - If the browser's "Do Not Track" setting is not on remembers the
  *    acknowledgment.
  *    - The snackbar content is removed from the DOM.
- * 4. Accessibility: Uses an announcer element to provide screen reader feedback 
+ * 4. Accessibility: Uses an announcer element to provide screen reader feedback
  *    when the snackbar opens and closes.
  *
- * Error handling is included to ensure critical DOM elements are present. 
+ * Error handling is included to ensure critical DOM elements are present.
  * Initialization is halted if they are missing.
  * Localized strings for error messages and ARIA announcements are passed via an
  * i18n object.
  *
  * This module provides a basic mechanism for informing users and is NOT a
- * comprehensive consent management platform. It's designed exclusively for 
+ * comprehensive consent management platform. It's designed exclusively for
  * Alpha theme that by default has a no cookies and privacy friendly policy.
  *
  * @param {object} i18n - An object containing localized strings.
- * @param {string} i18n.privacySbElemMiss - Error message if critical snackbar 
+ * @param {string} i18n.privacySbElemMiss - Error message if critical snackbar
  * elements are missing.
- * @param {string} i18n.snackbarOpen - Screen reader announcement when the 
+ * @param {string} i18n.snackbarOpen - Screen reader announcement when the
  * snackbar opens.
- * @param {string} i18n.snackbarClose - Screen reader announcement when the 
+ * @param {string} i18n.snackbarClose - Screen reader announcement when the
  * snackbar closes.
  *
  * @requires ../utils.js - For `$` (selector) and `errorHandler` utilities.
  */
 
-import { $, errorHandler } from "../utils.js";
+import { $, errorHandler } from '../utils.js';
 
 export const initPrivacySnackbar = (i18n) => {
   const ELEMENTS = {
@@ -54,19 +54,17 @@ export const initPrivacySnackbar = (i18n) => {
   };
   // Check if crucial elements exist
   if (!ELEMENTS.snackbarContainer || !ELEMENTS.privacyTemplate) {
-    errorHandler(i18n.privacySbElemMiss, "error", true);
+    errorHandler(i18n.privacySbElemMiss, 'error', true);
   }
   // Announce snackbar state
   const announceSnackbarState = (isOpen) => {
     if (!ELEMENTS.announcer) return;
-    ELEMENTS.announcer.textContent = isOpen
-      ? i18n.snackbarOpen
-      : i18n.snackbarClose;
+    ELEMENTS.announcer.textContent = isOpen ? i18n.snackbarOpen : i18n.snackbarClose;
   };
   // Check if privacy has been already accepted/decline
   const privacyAccepted = () => {
-    let status = localStorage.getItem("tracking");
-    if (status === "true" || status === "false") return;
+    let status = localStorage.getItem('tracking');
+    if (status === 'true' || status === 'false') return;
     togglePrivacySnackbar();
   };
 
@@ -74,7 +72,7 @@ export const initPrivacySnackbar = (i18n) => {
   const togglePrivacySnackbar = () => {
     const privacyContent = ELEMENTS.privacyTemplate.content.cloneNode(true);
 
-    ELEMENTS.snackbarContainer.innerHTML = "";
+    ELEMENTS.snackbarContainer.innerHTML = '';
 
     ELEMENTS.snackbarContainer.appendChild(privacyContent);
 
@@ -83,12 +81,12 @@ export const initPrivacySnackbar = (i18n) => {
 
       if (closeBtn) {
         closeBtn.addEventListener(
-          "click",
+          'click',
           () => {
-            if (navigator.doNotTrack !== "1") {
-              localStorage.setItem("tracking", "true");
+            if (navigator.doNotTrack !== '1') {
+              localStorage.setItem('tracking', 'true');
             }
-            ELEMENTS.snackbarContainer.innerHTML = "";
+            ELEMENTS.snackbarContainer.innerHTML = '';
             announceSnackbarState(false);
           },
           { once: true },

@@ -2,21 +2,17 @@
   Layout: 404.html
   Purpose: Defines the 404 HTML structure  for the Alpha theme (Page Not Found).
 
- Notes:
-  - For multilingual sites, create separate versions of this file named 
-  `404.[lang_code].html` (e.g. `404.en.html`, `404.fr.html`), placed in the same 
+  Notes:
+  - For multilingual sites, create separate versions of this file named
+  `404.[lang_code].html` (e.g. `404.en.html`, `404.fr.html`), placed in the same
   directory.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
 
 {{ define "main" }}
-  <div
-    class="text-on-sur-var dark:text-on-sur-var-d mt-24 mb-32 flex flex-col items-center px-4 text-center"
-  >
-    <h1 class="font-100 font-serif text-8xl/25 wrap-break-word hyphens-manual">
-      404
-    </h1>
+  <div class="text-on-sur-var dark:text-on-sur-var-d mt-24 mb-32 flex flex-col items-center px-4 text-center">
+    <h1 class="font-100 font-serif text-8xl/25 wrap-break-word hyphens-manual">404</h1>
     <p class="font-300 mt-8 font-serif text-2xl italic">
       {{ i18n "404FirstLine" . | default "\"Here lies a page that never made it.\"" }}
     </p>

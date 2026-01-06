@@ -15,8 +15,7 @@
 {{- $invalidValues := .invalidValues -}}
 {{- $page := .page -}}
 {{- $position := .position -}}
-{{- $paramsRules := .rules.params -}} 
-
+{{- $paramsRules := .rules.params -}}
 {{- /* Format $position for html render */}}
 {{- $relPosition := replaceRE `^.*?(content/.*:\d+:\d+).*$` "$1" $position -}}
 
@@ -58,6 +57,7 @@
 
 {{- $title := cond (eq $invalidCount 1) "Shortcode Invalid Value" "Shortcode Invalid Values" -}}
 {{- $reason := cond (eq $invalidCount 1) "value was" "values were" -}}
+
 
 <!-- prettier-ignore -->
 {{- warnf `

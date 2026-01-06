@@ -11,16 +11,16 @@
 {{- $alt := .alt -}}
 {{- $isBundle := .isBundle -}}
 
- {{- $mdErrorData := dict 
-    "code"        $code
-    "page"        $page
-    "destination" $destination
-    "path"        $path
-    "permalink"   $permalink
-    "dir"         $dir
-    "alt"         $alt
-    "isBundle"    $isBundle
-  -}}
+{{- $mdErrorData := dict
+  "code"        $code
+  "page"        $page
+  "destination" $destination
+  "path"        $path
+  "permalink"   $permalink
+  "dir"         $dir
+  "alt"         $alt
+  "isBundle"    $isBundle
+-}}
 {{ if $livaWarnEnabled }}
   {{- partial "liva/dispatchers/terminal/markdown.html" (slice $mdErrorData) }}
 {{- end }}

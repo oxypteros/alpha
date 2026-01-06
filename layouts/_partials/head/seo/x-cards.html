@@ -9,10 +9,10 @@
 {{- $data := . -}}
 
 {{- with $data.image }}
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="{{ . }}">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{{ . }}" />
 {{- else }}
-<meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary" />
 {{- end }}
 <meta name="twitter:url" content="{{- $data.permalink -}}" />
 <meta name="twitter:title" content="{{- $data.title -}}" />

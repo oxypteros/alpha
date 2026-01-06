@@ -6,19 +6,12 @@
   Target: homepage, sections (_index.md)
 
   Example:
-  {{< recommended TITLE="" LIMIT="" >}}
+  {{< recommended TITLE="" LIMIT=""
+>}}
 
-  Params:
-  - TITLE (string, optional): H2 heading.
-  - LIMIT (integer, optional): Number of items to show (Default: 4).
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/docs/shortcodes/recommended
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - TITLE (string, optional): H2 heading. - LIMIT (integer, optional): Number of items to show (Default: 4). Error
+handler: - livaWarn (global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/docs/shortcodes/recommended Repo:
+https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -100,9 +93,7 @@
           {{- i18n "RecommendedArticles" | default "Recommended Articles" -}}
         </h2>
       {{- end }}
-      <div
-        class="mt-24 flex w-full flex-wrap items-center justify-center gap-25"
-      >
+      <div class="mt-24 flex w-full flex-wrap items-center justify-center gap-25">
         {{- range $actualPages }}
           {{- partial "components/card-post.html" . }}
         {{- end }}

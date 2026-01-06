@@ -4,8 +4,8 @@
 
   Features:
   - Format dates as `DD/MM, YYYY`
-  - Populates `<time>` elements with machine-readable 
-    dates for SEO.
+  - Populates `<time>` elements with machine-readable
+  dates for SEO.
   - Show the `date` and `Lastmod`(conditional)
 
   Repo: https://github.com/oxypteros/alpha
@@ -16,6 +16,7 @@
 {{- $modDateMachine := $modDate | time.Format "2006-01-02T15:04:05-07:00" -}}
 {{- $publishDate := $date | time.Format "02/01, 2006" -}}
 {{- $modDate := $modDate | time.Format "02/01, 2006" -}}
+
 
 <div class="space-y-1 text-sm">
   <div>

@@ -4,6 +4,7 @@
   Repo: https://github.com/oxypteros/alpha
 */}}
 
+
 <div class="w-full overflow-x-auto">
   <table
     class=" "
@@ -13,15 +14,11 @@
       {{- end }}
     {{- end }}
   >
-    <thead
-      class="bg-out-var/70 dark:bg-sur-var-d font-500 text-black dark:text-white"
-    >
+    <thead class="bg-out-var/70 dark:bg-sur-var-d font-500 text-black dark:text-white">
       {{- range .THead }}
         <tr>
           {{- range . }}
-            <th
-              class="border-out-var dark:border-out-var-d border px-2 py-1.5 text-sm"
-            >
+            <th class="border-out-var dark:border-out-var-d border px-2 py-1.5 text-sm">
               {{- .Text -}}
             </th>
           {{- end }}
@@ -32,9 +29,7 @@
       {{- range .TBody }}
         <tr>
           {{- range . }}
-            <td
-              class="border-out-var dark:border-out-var-d border px-2 py-1.5 text-sm"
-            >
+            <td class="border-out-var dark:border-out-var-d border px-2 py-1.5 text-sm">
               {{- .Text -}}
             </td>
           {{- end }}

@@ -74,7 +74,6 @@
   {{- $solution = printf "LiVa UI has been automatically disabled.\n\nTo restore functionality, please add the original\n'%s' file from the theme repository:\n\n%s" $file $repoURL -}}
 {{- end }}
 
-
 {{- /* Missing console data config check */}}
 {{- if not site.Data.liva.console.config -}}
   {{- $livaSelfCheck = false -}}
@@ -88,8 +87,8 @@
 
 {{- /* Show livaWarn self check results */}}
 {{- if not $livaSelfCheck }}
-<!-- prettier-ignore -->
-{{- warnf `
+  <!-- prettier-ignore -->
+  {{- warnf `
 [LiVa] %s
 ─────────────────────────────────────────────────
 Code   : %s

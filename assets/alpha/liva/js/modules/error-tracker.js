@@ -1,6 +1,6 @@
 // /assets/alpha/liva/js/modules/error-tracker.js
 
-import { StorageKeys } from "./constants.js";
+import { StorageKeys } from './constants.js';
 
 const currentPage = window.location.href;
 
@@ -8,24 +8,22 @@ const currentPage = window.location.href;
 let onErrorsUpdatedCallback = () => {};
 
 const updateLocalStorage = () => {
-  const errorElements = document.querySelectorAll("[data-error]");
-  let errorData =
-    JSON.parse(localStorage.getItem(StorageKeys.ERROR_LIST)) || {};
+  const errorElements = document.querySelectorAll('[data-error]');
+  let errorData = JSON.parse(localStorage.getItem(StorageKeys.ERROR_LIST)) || {};
 
   if (errorElements.length > 0) {
-errorData[currentPage] = [...errorElements].map((el) => el.dataset.error);
-
+    errorData[currentPage] = [...errorElements].map((el) => el.dataset.error);
   } else {
     delete errorData[currentPage]; // Remove page from list if no errors
   }
 
   localStorage.setItem(StorageKeys.ERROR_LIST, JSON.stringify(errorData));
-  console.log("Updated error list:", errorData);
+  console.log('Updated error list:', errorData);
   onErrorsUpdatedCallback(); // Notify other modules that errors have changed
 };
 
 export function initializeErrorTracking(callback) {
-  if (typeof callback === "function") {
+  if (typeof callback === 'function') {
     onErrorsUpdatedCallback = callback;
   }
 
@@ -34,13 +32,13 @@ export function initializeErrorTracking(callback) {
   observer.observe(document.body, {
     subtree: true,
     attributes: true,
-    attributeFilter: ["data-error"],
+    attributeFilter: ['data-error'],
   });
 
   // Listen for changes from other tabs/windows
-  window.addEventListener("storage", (event) => {
+  window.addEventListener('storage', (event) => {
     if (event.key === StorageKeys.ERROR_LIST) {
-      console.log("LocalStorage changed in another tab.");
+      console.log('LocalStorage changed in another tab.');
       onErrorsUpdatedCallback();
     }
   });

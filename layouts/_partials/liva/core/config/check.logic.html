@@ -1,7 +1,7 @@
 {{- /*
   Partial: liva/checks/config.logic.html
   Purpose: Performs diagnostic checks on the Hugo config files and returns error
-  objects. 
+  objects.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
@@ -67,7 +67,6 @@
       "code"        "liva-cfg-121"
       "keyValue"    $paramYear
       "currentYear" $currentYear
-     
     -}}
     {{- $errors = $errors | append $errorObject -}}
   {{- else if gt $paramYear $currentYear -}}

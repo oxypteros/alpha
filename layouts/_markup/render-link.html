@@ -1,6 +1,6 @@
 {{- /*
   render-link.html (markup)
-  
+
   Features:
   - Absolute links opens in new tab with security enhancements.
   - Relative links maintain default behavior
@@ -10,13 +10,15 @@
   Repo: https://github.com/oxypteros/alpha
 */}}
 
-<a class="link-icon"
+
+<a
+  class="link-icon"
   href="{{ .Destination }}"
   {{- if eq .Title "alpha-download" }}
-  download
-{{- else if .Title }}
-  title="{{ .Title }}"
-{{- end }}
+    download
+  {{- else if .Title }}
+    title="{{ .Title }}"
+  {{- end }}
   {{- if strings.HasPrefix .Destination "http" }}
     target="_blank" rel="noopener noreferrer"
   {{- end }}

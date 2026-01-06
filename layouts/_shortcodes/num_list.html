@@ -5,21 +5,12 @@
   Target: sections (_index.md )
 
   Example:
-  {{< num_list STYLE="" TITLE="" LIMIT="" >}}
+  {{< num_list STYLE="" TITLE="" LIMIT=""
+>}}
 
-  Params:
-  - TITLE (string, optional): H2 heading.
-  - STYLE (string, optional): Visual style of the list
-  Values: pill, list, card-list, card (default)
-  - LIMIT (int, optional): Maximum number of items.
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/shortcodes/num-list
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - TITLE (string, optional): H2 heading. - STYLE (string, optional): Visual style of the list Values: pill, list,
+card-list, card (default) - LIMIT (int, optional): Maximum number of items. Error handler: - livaWarn (global) - LiVa
+(scoped) Docs: https://alpha.oxypteros.com/shortcodes/num-list Repo: https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -63,12 +54,8 @@
   >
     {{- /* - Optional title rendering. */}}
     {{- with $data.title }}
-      <div
-        class="flex w-full min-w-0 items-center justify-center gap-4 sm:justify-normal"
-      >
-        <div
-          class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
-        ></div>
+      <div class="flex w-full min-w-0 items-center justify-center gap-4 sm:justify-normal">
+        <div class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"></div>
         <h2
           id="list-heading-{{- $uid -}}"
           class="text-on-sur-var dark:text-on-sur-var-d font-300 min-w-0 text-3xl break-words hyphens-manual"
@@ -85,9 +72,7 @@
 
     {{- /* - Style-based rendering. */}}
     {{- if eq $data.style "card" }}
-      <nav
-        class="sc-num-list my-16 flex w-full flex-wrap justify-center gap-10"
-      >
+      <nav class="sc-num-list my-16 flex w-full flex-wrap justify-center gap-10">
         {{- range  $index, $page := $pages }}
           {{- /* - Style different first page */}}
           {{ $first := eq $index 0 }}
@@ -121,9 +106,7 @@
                 {{ add $index 1 }}
               </div>
             </div>
-            <h2
-              class="font-300 line-clamp-2 w-full text-center text-2xl transition-colors duration-300"
-            >
+            <h2 class="font-300 line-clamp-2 w-full text-center text-2xl transition-colors duration-300">
               {{ .Title }}
             </h2>
           </a>
@@ -133,9 +116,7 @@
       <nav class="my-16 flex w-full flex-wrap justify-center gap-8">
         {{- range $index, $page := $pages }}
           <div class="flex gap-2">
-            <span class="font-300 text-pri dark:text-pri-d text-xl"
-              >{{ printf "%02d" (add $index 1) }}.</span
-            >
+            <span class="font-300 text-pri dark:text-pri-d text-xl">{{ printf "%02d" (add $index 1) }}.</span>
             <a href="{{ .RelPermalink }}">
               <h2
                 class="font-600 text-on-sur-var dark:text-on-sur-var-d hover:text-pri dark:hover:text-pri-d text-xl transition-colors duration-300"
@@ -158,9 +139,7 @@
             >
               {{ printf "%02d" (add $index 1) }}.
             </div>
-            <h2
-              class="line-clamp-3 text-center text-xl transition-colors duration-400"
-            >
+            <h2 class="line-clamp-3 text-center text-xl transition-colors duration-400">
               {{ .Title }}
             </h2>
           </a>
