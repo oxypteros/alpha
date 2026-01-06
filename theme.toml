@@ -1,8 +1,8 @@
 name = "alpha"
-version = "v1.1.1"
+version = "v1.2.0"
 license = "MIT"
 licenselink = "https://github.com/oxypteros/alpha/LICENSE"
-min_version = "0.146.1"
+min_version = "0.148.0"
 description = "Alpha is an accessible Hugo theme built for content driven websites like blogs, and creative-writing type of sites. Designed with readability in mind, Alpha offers a distraction free experience, helping you to showcase your writing with style and clarity to everyone."
 
 homepage = "https://github.com/oxypteros/alpha"
