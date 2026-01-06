@@ -3,6 +3,7 @@ public/
 resources/
 
 # Alpha
+alpha.css
 home.webappmanifest.webmanifest
 alpha-contact.js
 alpha-head.js
