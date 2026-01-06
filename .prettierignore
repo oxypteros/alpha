@@ -1,0 +1,12 @@
+# Hugo
+public/
+resources/
+
+# Standard JS 
+node_modules/
+dist/
+build/
+coverage/
+
+# Lock files (auto-generated)
+package-lock.json
