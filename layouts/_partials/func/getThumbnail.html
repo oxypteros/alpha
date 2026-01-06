@@ -1,0 +1,24 @@
+{{/* layouts/partials/func/getThumbnail.html */}}
+{{- $page := . -}}
+{{- $thumbnail := "" -}}
+{{- $param := $page.Params.thumbnail -}}
+
+{{- /* Find thumbnail ONLY if is a STRING (Specific filename) */}}
+{{- if eq (printf "%T" $param) "string" }}
+  {{- $thumbnail = $page.Resources.GetMatch $param -}}
+{{- end }}
+
+{{- /* If param Boolean OR tried a string and found nothing (fallback) */}}
+{{- if or (eq $param true) (and (eq (printf "%T" $param) "string") (not $thumbnail)) }}
+  {{- /* Auto-discovery mode */}}
+  {{- $thumbnail = $page.Resources.GetMatch "*{thumbnail}*" -}}
+
+  {{- if not $thumbnail }}
+    {{- $images := $page.Resources.ByType "image" -}}
+    {{- if gt (len $images) 0 }}
+      {{- $thumbnail = index $images 0 -}}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
+{{- return $thumbnail }}
