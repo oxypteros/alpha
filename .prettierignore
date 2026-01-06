@@ -2,6 +2,12 @@
 public/
 resources/
 
+# Alpha
+home.webappmanifest.webmanifest
+alpha-contact.js
+alpha-head.js
+alpha-tail.js
+
 # Standard JS 
 node_modules/
 dist/
