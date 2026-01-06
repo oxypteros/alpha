@@ -1,8 +1,19 @@
-{{- /*
-  Partial: components/card-post.html
-  Purpose: Re-usable link card styled for post lists.
+{{- /* Partial: components/card-post.html
+  Usage:
+  {{ partial "components/card-post.html" (dict "page" . "loading" "eager")
+}}
+Backward compatible fallback:
+{{ partial "components/card-post.html" . }}
 */}}
 {{- $page := . }}
+{{- $loading := "lazy" }}
+{{- $priority := "auto" }}
+
+{{- if reflect.IsMap . }}
+  {{- $page = .page }}
+  {{- if .loading }}{{ $loading = .loading }}{{ end }}
+  {{- if .priority }}{{ $priority = .priority }}{{ end }}
+{{- end }}
 
 {{- $titleAccent := substr $page.Title 0 1 | upper -}}
 {{- $isNew := gt $page.Date (now.AddDate 0 0 -7) -}}
@@ -14,66 +25,112 @@
   {{- end }}
 {{- end -}}
 
+{{- $thumbnail := partial "func/getThumbnail.html" $page }}
+{{- $thumb := "" }}
+{{- $thumbStylesH2 := "" }}
+{{- $thumbStylesPill := "" }}
+{{- if $thumbnail }}
+  {{- $thumb = $thumbnail.Fill "768x448 webp q75 smart" }}
+  {{- $thumbStylesH2 = "backdrop-blur-sm bg-sur/50 dark:bg-sur-var-d/50 shadow-sm" }}
+  {{- $thumbStylesPill = "bg-sur/95 dark:bg-sur-var-d/95 shadow-sm" }}
+{{- end }}
+
+
 <a
   class="group transition-drop-shadow relative mt-20 flex w-full max-w-sm justify-center rounded-md drop-shadow-md duration-300 ease-out hover:drop-shadow-xl"
   href="{{ $page.Permalink }}"
   aria-label="{{ i18n "ReadThePost" $page }}"
 >
   <article
-    class="bg-sur/95 dark:bg-sur-var-d/95 border-out-var dark:border-out-var-d relative z-20 flex min-h-50 w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-md border p-4"
+    class="bg-sur dark:bg-sur-var-d border-out-var dark:border-out-var-d relative z-20 flex aspect-384/224 w-full flex-col items-center justify-center overflow-hidden rounded-md border"
   >
+    {{- /* Badge */}}
     {{- if $isNew }}
       <div
-        class="text-on-sur-var dark:text-on-sur-var-d font-400 font-inter border-out-var dark:border-out-var-d bg-sur dark:bg-out-var-d absolute top-2 -left-5 z-30 flex h-6 w-20 -rotate-45 transform items-center justify-center border text-center text-xs"
+        class="text-on-sur-var dark:text-on-sur-var-d font-400 font-inter border-out-var dark:border-out-var-d bg-sur dark:bg-out-var-d absolute top-2 -left-5 z-30 flex h-6 w-20 -rotate-45 transform items-center justify-center border text-center text-xs shadow-sm"
       >
         <span>{{ i18n "New" $page }}</span>
       </div>
     {{- end }}
-    <h2
-      class="dark:text-on-sur-var-d font-300 text-on-sur-var group-hover:text-on-sur dark:group-hover:text-on-sur-d flex max-h-full w-full grow items-center justify-center overflow-y-hidden text-center font-serif text-2xl"
-    >
-      {{ $page.Title }}
-    </h2>
+
+    {{- /* Image Layer */}}
+    {{- if $thumb }}
+      <div class="absolute inset-0 z-0 h-full w-full">
+        <img
+          src="{{ $thumb.RelPermalink }}"
+          width="{{ $thumb.Width }}"
+          height="{{ $thumb.Height }}"
+          alt=""
+          loading="{{ $loading }}"
+          fetchpriority="{{ $priority }}"
+          decoding="async"
+          class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          aria-hidden="true"
+        />
+      </div>
+    {{- end }}
+
+    <div class="flex max-h-full w-full grow items-center justify-center px-4 py-4">
+      <h2
+        class="text-on-sur-var dark:text-on-sur-var-d group-hover:text-on-sur dark:group-hover:text-on-sur-d {{ with $thumbStylesH2 }}
+          {{ . }}
+        {{- end }} z-20 overflow-y-hidden rounded-md px-3 py-2 text-center font-serif text-2xl"
+      >
+        {{ $page.Title }}
+      </h2>
+    </div>
+
+    {{- /* FOOTER (Series/Category) */}}
     {{- if or $series $category }}
       <footer
-        class="text-on-sur-var dark:text-on-sur-var-d flex w-full items-center justify-between text-xs"
+        class="text-on-sur-var dark:text-on-sur-var-d z-30 mb-3 flex w-full items-center justify-between px-4 font-sans text-xs"
       >
+        {{- /* Left: Series */}}
         <div class="flex w-1/2 shrink-0 items-center gap-1">
           {{- with $series }}
-            <svg
-              class="fill-on-sur-var dark:fill-on-sur-var-d size-4 shrink-0"
-              width="20"
-              height="20"
-              aria-hidden="true"
-            >
-              <use href="#icon-series"></use>
-            </svg>
-            <span class="truncate text-right">{{ . }}</span>
+            <div class="{{ with $thumbStylesPill }}{{ . }}{{- end }} flex items-center gap-1 rounded-md px-2 py-1">
+              <svg
+                class="fill-on-sur-var dark:fill-on-sur-var-d size-3 shrink-0"
+                width="20"
+                height="20"
+                aria-hidden="true"
+              >
+                <use href="#icon-series"></use>
+              </svg>
+              <span class="truncate text-left">{{ . }}</span>
+            </div>
           {{- end }}
         </div>
+
+        {{- /* Right: Category */}}
         <div class="flex w-1/2 shrink-0 items-center justify-end gap-1">
           {{- with $category }}
-            <svg
-              class="fill-on-sur-var dark:fill-on-sur-var-d size-4 shrink-0"
-              width="20"
-              height="20"
-              aria-hidden="true"
-            >
-              <use href="#icon-category"></use>
-            </svg>
-            <span class="truncate text-right">{{ . }}</span>
+            <div class="{{ with $thumbStylesPill }}{{ . }}{{- end }} flex items-center gap-1 rounded-md px-2 py-1">
+              <svg
+                class="fill-on-sur-var dark:fill-on-sur-var-d size-3 shrink-0"
+                width="20"
+                height="20"
+                aria-hidden="true"
+              >
+                <use href="#icon-category"></use>
+              </svg>
+              <span class="truncate text-right">{{ . }}</span>
+            </div>
           {{- end }}
         </div>
       </footer>
     {{- else }}
-      {{- /* Maintain the card layout if no series/category */}}
-      <div class="h-4 w-full"></div>
+      <div class="mb-4 h-4 w-full"></div>
     {{- end }}
   </article>
+
+  {{- /* Decorative Letter */}}
   <div
     class="text-shadow font-500 text-on-sur-var transition-top absolute top-0 z-10 font-serif text-[10rem]/1 duration-300 ease-out group-hover:-top-10 group-focus:-top-10"
     aria-hidden="true"
   >
-    {{ $titleAccent }}
+    {{- if not $thumb }}
+      {{ $titleAccent }}
+    {{- end }}
   </div>
 </a>
