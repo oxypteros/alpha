@@ -87,3 +87,13 @@ solution   = "LivaFmBadSeoImageSolution"
 preExample = "LivaCardExample"
 example    = "LivaFmBadSeoImageExample"
 docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#advanced-seo"
+
+[liva-fm-181]
+title      = "LivaFmMissingThumbnailImage"
+severity   = "warning"
+key        = "thumbnail"
+reason     = "LivaFmMissingThumbnailImageReason"
+solution   = "LivaFmMissingThumbnailSolution"
+preExample = "LivaCardInput"
+example    = "LivaFmMissingThumbnailExample"
+docURL     = "https://alpha.oxypteros.com/docs/content-creation/page/#thumbnail"
