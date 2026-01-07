@@ -27,36 +27,36 @@
   --font-weight-900: 900;
 
   /* Color Palette seed */
-
-  --color-pri: #1c71d8;
-  --color-pri-sur: #516164;
-  --color-on-pri-sur: #cadbdf;
-  --color-sur: #fff;
-  --color-on-sur: #020b15;
-  --color-on-sur-var: #3d5a7c;
-  --color-sur-var: #f5f9fd;
-  --color-out: #e1dfdd;
-  --color-out-var: #edefef;
-  --color-menu: #303a3c;
-  --color-on-menu: #fff;
-  --color-on-menu-var: #dcdfe0;
-  --color-error: #600004;
-  --color-on-error:;
-  --color-error-sur: #98000a;
-  --color-on-error-sur: #fff;
-
-  --color-pri-d: #aac7ff;
-  --color-pri-sur-d: #afc7cb;
-  --color-on-pri-sur-d: #000e10;
-  --color-sur-d: #1e2729;
-  --color-sur-var-d: #39494c;
-  --color-on-sur-d: #f8f8f8;
-  --color-on-sur-var-d: #dde8ff;
-  --color-out-d: #394a5d;
-  --color-out-var-d: #2f3d40;
-  --color-menu-d: #303a3c;
-  --color-on-menu-d: #fff;
-  --color-on-menu-var-d: #dcdfe0;
+  /** Light theme */
+  --color-pri: oklch(0.5582 0.1762 256.43);
+  --color-pri-sur: oklch(0.4802 0.0202 210.23);
+  --color-on-pri-sur: oklch(0.8798 0.0191 213.42);
+  --color-sur: oklch(1 0 0);
+  --color-on-sur: oklch(0.1447 0.0282 245.33);
+  --color-on-sur-var: oklch(0.4599 0.0657 253.07);
+  --color-sur-var: oklch(0.9802 0.0068 247.89);
+  --color-out: oklch(0.9046 0.0035 67.78);
+  --color-out-var: oklch(0.9506 0.0021 197.12);
+  --color-menu: oklch(0.3401 0.0138 211.1);
+  --color-on-menu: oklch(1 0 0);
+  --color-on-menu-var: oklch(0.9016 0.0035 219.54);
+  --color-error: oklch(0.3075 0.125465 27.3829);
+  --color-on-error: oklch(1 0 0);
+  --color-error-sur: oklch(0.4273 0.1744 27.51);
+  --color-on-error-sur: oklch(1 0 0);
+  /** Dark theme */
+  --color-pri-d: oklch(0.8281 0.0853 263.31);
+  --color-pri-sur-d: oklch(0.8129 0.0266 208.74);
+  --color-on-pri-sur-d: oklch(0.1494 0.0255 204.55);
+  --color-sur-d: oklch(0.2649 0.0132 212.69);
+  --color-sur-var-d: oklch(0.3927 0.0209 210.28);
+  --color-on-sur-d: oklch(0.9791 0 0);
+  --color-on-sur-var-d: oklch(0.9297 0.0334 265.23);
+  --color-out-d: oklch(0.4026 0.0388 251.58);
+  --color-out-var-d: oklch(0.3488 0.019 212.18);
+  --color-menu-d: oklch(0.3401 0.0138 211.1);
+  --color-on-menu-d: oklch(1 0 0);
+  --color-on-menu-var-d: oklch(0.9016 0.0035 219.54);
   /* spacing */
   --spacing-bar: 3.25rem;
   --spacing-header: 10rem;
@@ -67,12 +67,7 @@
   --spacing-story: 70ch;
   --spacing-article: 80ch;
 }
-.b1 {
-  border: 1px solid lime;
-}
-.b2 {
-  border: 1px solid red;
-}
+
 body {
   --alpha-pri: var(--color-pri);
   --alpha-sur: var(--color-sur);
