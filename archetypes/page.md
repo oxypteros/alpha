@@ -20,6 +20,7 @@ weight = 0
 # Display
 featured = false
 recommended = false
+thumbnail = true
 
 # Publication Control
 draft = false

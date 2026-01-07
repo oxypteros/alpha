@@ -21,6 +21,7 @@ weight = 0
 dropcap = true
 featured = false
 recommended = false
+thumbnail = true
 
 # Publication Control
 draft = false
