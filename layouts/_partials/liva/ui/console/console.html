@@ -1,9 +1,4 @@
-<div
-  class="liva liva-console-container liva-hidden"
-  aria-expanded="false"
-  data-alpha="liva-console-container"
-  inert
->
+<div class="liva liva-console-container liva-hidden" aria-expanded="false" data-alpha="liva-console-container" inert>
   <div class="liva-console liva-shadow" data-alpha="liva-console">
     <header>
       <div class="liva-console-title">
@@ -43,14 +38,14 @@
           <use href="#icon-error"></use></svg
       ></a>
       <button
-      title="{{ i18n "LivaConsoleResetBtnTitle" . | default "LiVa reset errors" }}"
-      aria-label="{{ i18n "LivaConsoleResetBtnAria" . | default "Reset the current LiVa error list" }}"
-      data-alpha="liva-console-reset-button"
-    >
-      <svg aria-hidden="true" width="22" heigh="22">
-        <use href="#liva-icon-reset"></use>
-      </svg>
-    </button>
+        title="{{ i18n "LivaConsoleResetBtnTitle" . | default "LiVa reset errors" }}"
+        aria-label="{{ i18n "LivaConsoleResetBtnAria" . | default "Reset the current LiVa error list" }}"
+        data-alpha="liva-console-reset-button"
+      >
+        <svg aria-hidden="true" width="22" heigh="22">
+          <use href="#liva-icon-reset"></use>
+        </svg>
+      </button>
     </div>
     <div class="liva-console-content" data-alpha="liva-console-content"></div>
     <footer>

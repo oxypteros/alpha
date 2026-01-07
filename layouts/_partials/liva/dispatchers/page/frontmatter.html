@@ -2,7 +2,7 @@
   Partial: liva/dispatchers/page/frontmatter.html
   Purpose: Renders the page warnings for frontmatter errors.
 
-    Repo: https://github.com/oxypteros/alpha
+  Repo: https://github.com/oxypteros/alpha
 */}}
 {{- /* Input data from 'core/frontmatter/handler.logic' */}}
 {{- $fmErrors := .frontmatterErrors -}}
@@ -127,7 +127,16 @@
   {{- else if eq $code "liva-fm-172" -}}
     {{- $reason = printf (i18n $reasonKey) $keyValue | safeHTML -}}
     {{- $example = printf (i18n $entry.example )  $key $keyValue | safeHTML -}}
-    
+
+    {{- /*
+      Check for missing thumbnail image
+      Code: liva-fm-181
+    */}}
+  {{- else if eq $code "liva-fm-181" -}}
+    {{- $reason = printf (i18n $reasonKey) $keyValue | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey)  $path | safeHTML -}}
+    {{- $example = printf (i18n $entry.example )  $key $keyValue | safeHTML -}}
+
     {{- /*
       Generic fallback for missing or undefined code
       Code: liva-fm-000 or undefined
@@ -135,6 +144,7 @@
   {{- else }}
     {{- $reason = printf (i18n $reasonKey) | safeHTML -}}
   {{- end }}
+
 
   <div class="liva liva-card-container">
     <div class="liva liva-card {{ $severityClass }} liva-shadow">
@@ -159,13 +169,7 @@
             {{- end }}
             {{ with $example }}{{ . | safeHTML }}{{- end }}
           </p>
-          <a
-            class="liva-mono"
-            href="{{ $docURL }}"
-            target="_blank"
-            rel="noopener noreferrer"
-            >{{ $code }}</a
-          >
+          <a class="liva-mono" href="{{ $docURL }}" target="_blank" rel="noopener noreferrer">{{ $code }}</a>
         </div>
       </footer>
     </div>

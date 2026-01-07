@@ -1,6 +1,6 @@
 {{- /*
-  Layout: page.html 
-  Purpose: Defines the main HTML structure  for the Alpha default content page 
+  Layout: page.html
+  Purpose: Defines the main HTML structure  for the Alpha default content page
   layout.
 
   Repo: https://github.com/oxypteros/alpha
@@ -15,9 +15,7 @@
         >
           {{- .Title | safeHTML -}}
         </h1>
-        <div
-          class="max-w-article my-16 flex w-full items-center justify-between text-lg"
-        >
+        <div class="max-w-article my-16 flex w-full items-center justify-between text-lg">
           <div class="flex items-center gap-1 text-sm sm:gap-2">
             {{- with .Page.Params.author }}
               <svg
@@ -37,28 +35,20 @@
           {{ partial "components/metadata-icon-date.html" . }}
         </div>
       </header>
-      <div
-        class="article-content max-w-article mx-auto w-full text-lg leading-normal"
-      >
+      <div class="article-content max-w-article mx-auto w-full text-lg leading-normal">
         {{ .Content }}
       </div>
       {{- if eq .Page.Params.github_edit true }}
         {{- partial "components/edit-github.html" . }}
       {{- end }}
-      <footer
-        class="max-w-article my-16 mb-56 flex w-full flex-col items-center gap-2 text-lg"
-      >
+      <footer class="max-w-article my-16 mb-56 flex w-full flex-col items-center gap-2 text-lg">
         {{- if isset .Page.Params "license" }}
           {{- if ne .Page.Params.license "" }}
-            <div
-              class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"
-            ></div>
+            <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"></div>
             <div class="flex w-full flex-wrap justify-between gap-4 px-2">
               {{ partial "components/metadata-license.html" . }}
             </div>
-            <div
-              class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"
-            ></div>
+            <div class="bg-out-var dark:bg-out-var-d h-0.5 w-full rounded-full"></div>
           {{- end }}
         {{- end }}
         <div class="flex w-full flex-4 flex-wrap justify-between gap-4 px-2">

@@ -52,21 +52,17 @@
   {{- if and $displaySection (gt (len $recommendedPages) 0) }}
     <section class="mb-32 flex w-full flex-col items-center">
       <div class="flex w-full grow items-center gap-4">
-        <div
-          class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
-        ></div>
+        <div class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"></div>
         <h2 class="font-300 text-on-sur-var dark:text-on-sur-var-d text-3xl">
           {{ i18n "RecommendedPosts" . }}
         </h2>
         <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
       </div>
-      <div
-        class="mt-24 flex w-full flex-wrap items-center justify-center gap-25"
-      >
+      <div class="mt-24 flex w-full flex-wrap items-center justify-center gap-25">
         {{- $numPages := 4 -}}
         {{- $sampleSize := math.Min (len $recommendedPages) $numPages -}}
         {{- range first $sampleSize ($recommendedPages | shuffle) }}
-          {{- partial "components/card-post.html" . }}
+          {{- partial "components/card-post.html" (dict "page" . "loading" "lazy") }}
         {{- end }}
       </div>
     </section>

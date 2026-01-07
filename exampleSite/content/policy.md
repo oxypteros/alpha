@@ -37,7 +37,7 @@ For the purposes of this Privacy Policy:
 - **Affiliate** means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.
 - **Company** (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to My Site.
 - **Cookies** are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.
-- **Country** refers to: Berlin,  Germany
+- **Country** refers to: Berlin, Germany
 - **Device** means any device that can access the Service such as a computer, a cellphone or a digital tablet.
 - **Personal Data** is any information that relates to an identified or identifiable individual.
 - **Service** refers to the Website.
@@ -50,7 +50,7 @@ For the purposes of this Privacy Policy:
 
 #### Personal Data
 
-While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. 
+While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You.
 
 #### Usage Data
 
@@ -75,25 +75,27 @@ We use both Session and Persistent Cookies for the purposes set out below:
 
 - **Necessary / Essential Cookies**
 
-	Type: Session Cookies
+  Type: Session Cookies
 
-	Administered by: Us
+  Administered by: Us
 
-	Purpose: These Cookies are essential to provide You with services available through the Website and to enable You to use some of its features. They help to authenticate users and prevent fraudulent use of user accounts. Without these Cookies, the services that You have asked for cannot be provided, and We only use these Cookies to provide You with those services.
+  Purpose: These Cookies are essential to provide You with services available through the Website and to enable You to use some of its features. They help to authenticate users and prevent fraudulent use of user accounts. Without these Cookies, the services that You have asked for cannot be provided, and We only use these Cookies to provide You with those services.
+
 - **Cookies Policy / Notice Acceptance Cookies**
 
-	Type: Persistent Cookies
+  Type: Persistent Cookies
 
-	Administered by: Us
+  Administered by: Us
 
-	Purpose: These Cookies identify if users have accepted the use of cookies on the Website.
+  Purpose: These Cookies identify if users have accepted the use of cookies on the Website.
+
 - **Functionality Cookies**
 
-	Type: Persistent Cookies
+  Type: Persistent Cookies
 
-	Administered by: Us
+  Administered by: Us
 
-	Purpose: These Cookies allow us to remember choices You make when You use the Website, such as remembering your login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter your preferences every time You use the Website.
+  Purpose: These Cookies allow us to remember choices You make when You use the Website, such as remembering your login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter your preferences every time You use the Website.
 
 For more information about the cookies we use and your choices regarding cookies, please visit our Cookies Policy or the Cookies section of our Privacy Policy.
 
@@ -109,15 +111,15 @@ The Company may use Personal Data for the following purposes:
 - **To manage Your requests:** To attend and manage Your requests to Us.
 
 - **For business transfers:** We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.
-- **For other purposes**: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience. 
+- **For other purposes**: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.
 
 We may share Your personal information in the following situations:
 
-- **With Service Providers:** We may share Your personal information with Service Providers to monitor and analyze the use of our Service,  to contact You.
+- **With Service Providers:** We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You.
 - **For business transfers:** We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.
 - **With Affiliates:** We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.
 - **With business partners:** We may share Your information with Our business partners to offer You certain products, services or promotions.
-- **With other users:** when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside. 
+- **With other users:** when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside.
 - **With Your consent**: We may disclose Your personal information for any other purpose with Your consent.
 
 ### Retention of Your Personal Data
@@ -191,6 +193,5 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
 ## Contact Us
 
 If you have any questions about this Privacy Policy, You can contact us:
-
 
 - By email: contact@example.com

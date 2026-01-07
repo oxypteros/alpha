@@ -5,21 +5,14 @@
   Target: Global
 
   Example:
-  {{< about AUTHOR="" AVATAR="">}}
-  /... Markdown Content ... /
-  {{< /about>}}
+  {{< about AUTHOR="" AVATAR=""
+>}}
+/... Markdown Content ... /
+{{< /about >}}
 
-  Params:
-  - AUTHOR (string, optional): H2 heading. Fall back to frontmatter author
-  - AVATAR (string, optional): Avatar filename placed inside '/assets/img/''
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/docs/shortcodes/about
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - AUTHOR (string, optional): H2 heading. Fall back to frontmatter author - AVATAR (string, optional): Avatar
+filename placed inside '/assets/img/'' Error handler: - livaWarn (global) - LiVa (scoped) Docs:
+https://alpha.oxypteros.com/docs/shortcodes/about Repo: https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -98,10 +91,7 @@
         />
       {{- end }}
       {{- with $data.author }}
-        <h2
-          id="about-heading-{{- $uid -}}"
-          class="text-on-sur-var dark:text-on-sur-var-d w-fit text-center text-2xl"
-        >
+        <h2 id="about-heading-{{- $uid -}}" class="text-on-sur-var dark:text-on-sur-var-d w-fit text-center text-2xl">
           {{- . -}}
         </h2>
       {{- else }}

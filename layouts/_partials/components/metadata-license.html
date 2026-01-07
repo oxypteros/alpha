@@ -1,52 +1,57 @@
 {{- /*
   Partial: components/metadata-license.html
-  Purpose: If set-up in the frontmatter displays a copyright/license notice applicable to the current page
-
-  Features:
-  - Displays a copyright notice with 'author, year' info or 'site title, year' if author is not defined.
-  - Displays a license notice, that can be fully copyrighted (All Rights) or one of the main Creative Commons Licenses (with link to the CC license page)
-
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- $year := .Date | time.Format "2006" -}} 
-{{- $author := .Page.Params.author | default .Site.Title -}} 
-{{- $license := .Page.Params.license -}} 
-{{- $validLicenses := dict 
-  "copyright" (dict "text" "AllRights" "url" "" "label" "Copyright") 
-  "CC0" (dict "text" "NoRights" "url" "https://creativecommons.org/publicdomain/zero/1.0/" "label" "CC0 1.0") 
-  "CC-BY" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by/4.0/" "label" "CC BY 4.0") 
-  "CC-BY-SA" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-sa/4.0/" "label" "CC BY-SA 4.0") 
-  "CC-BY-ND" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-nd/4.0/" "label" "CC BY-ND 4.0") 
-  "CC-BY-NC" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-nc/4.0/" "label" "CC BY-NC 4.0") 
-  "CC-BY-NC-SA" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-nc-sa/4.0/" "label" "CC BY-NC-SA 4.0") 
+{{- $year := .Date | time.Format "2006" -}}
+{{- $author := .Page.Params.author | default .Site.Title -}}
+{{- $license := .Page.Params.license -}}
+{{- $validLicenses := dict
+  "copyright" (dict "text" "AllRights" "url" "" "label" "Copyright")
+  "CC0" (dict "text" "NoRights" "url" "https://creativecommons.org/publicdomain/zero/1.0/" "label" "CC0 1.0")
+  "CC-BY" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by/4.0/" "label" "CC BY 4.0")
+  "CC-BY-SA" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-sa/4.0/" "label" "CC BY-SA 4.0")
+  "CC-BY-ND" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-nd/4.0/" "label" "CC BY-ND 4.0")
+  "CC-BY-NC" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-nc/4.0/" "label" "CC BY-NC 4.0")
+  "CC-BY-NC-SA" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-nc-sa/4.0/" "label" "CC BY-NC-SA 4.0")
   "CC-BY-NC-ND" (dict "text" "SomeRights" "url" "https://creativecommons.org/licenses/by-nc-nd/4.0/" "label" "CC BY-NC-ND 4.0")
--}} 
-{{- if and (eq .Kind "page") (ne .Page.Params.layout "story")}}
-<div class="flex w-full flex-wrap items-center justify-between gap-2 text-sm">
-  {{- else if eq .Page.Params.layout "story"}}
-  <div class="space-y-1 text-sm">
-{{- end }} 
-  {{- if $license }} 
-    {{- $licenseDetails := index $validLicenses $license -}} 
-      {{- if $licenseDetails }}
-    <div>
-      <span>&copy;</span>
-        {{ $year }}&nbsp;&mdash;&nbsp;{{ $author }},&nbsp;{{ i18n $licenseDetails.text . }}
-    </div>
-        {{- with $licenseDetails.url }}
-    <div>
-          {{ i18n "LicensedUnder" . | default "Licensed under" }}
-      <a
-        class="hover:decoration-on-sur-var hover:text-on-sur-var dark:text-on-sur-var-d dark:hover:decoration-on-sur-var--d underline underline-offset-2 hover:decoration-2"
-        href="{{ . }}"
-        target="_blank"
-        rel="license noopener noreferrer"
-      >
-        {{ $licenseDetails.label }}
-      </a>
-    </div>
-      {{- end }} 
-    {{- end }} 
-  {{- end }}
-</div>
+-}}
 
+{{- /*
+  FIX: Determine the wrapper class
+  Avoid breaking HTML stricture inside if/else blocks.
+  */
+-}}
+{{- $wrapperClass := "" -}}
+{{- if and (eq .Kind "page") (ne .Page.Params.layout "story") -}}
+  {{- $wrapperClass = "flex w-full flex-wrap items-center justify-between gap-2 text-sm" -}}
+{{- else if eq .Page.Params.layout "story" -}}
+  {{- $wrapperClass = "space-y-1 text-sm" -}}
+{{- end -}}
+
+{{- /* Only render if a valid layout class was determined */ -}}
+{{- if $wrapperClass }}
+  <div class="{{ $wrapperClass }}">
+    {{- if $license }}
+      {{- $licenseDetails := index $validLicenses $license -}}
+      {{- if $licenseDetails }}
+        <div>
+          <span>&copy;</span>
+          {{ $year }}&nbsp;&mdash;&nbsp;{{ $author }},&nbsp;{{ i18n $licenseDetails.text . }}
+        </div>
+        {{- with $licenseDetails.url }}
+          <div>
+            {{ i18n "LicensedUnder" . | default "Licensed under" }}
+            <a
+              class="hover:decoration-on-sur-var hover:text-on-sur-var dark:text-on-sur-var-d dark:hover:decoration-on-sur-var--d underline underline-offset-2 hover:decoration-2"
+              href="{{ . }}"
+              target="_blank"
+              rel="license noopener noreferrer"
+            >
+              {{ $licenseDetails.label }}
+            </a>
+          </div>
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  </div>
+{{- end }}

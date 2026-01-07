@@ -1,6 +1,6 @@
 {{- /*
   render-heading.html (markup)
-  
+
   Features:
   - All H1 in content are converted in H2
   - Add anchors for the headings
@@ -11,5 +11,5 @@
 {{- if or (eq .Level 1) (eq .Level 2) }}
   <h2 id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }}</h2>
 {{- else }}
-  <h{{ .Level }} id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }}</h{{ .Level }}>
+  {{- printf "<h%d id=%q>%s</h%d>" .Level (.Anchor | safeURL) (.Text | safeHTML) .Level | safeHTML -}}
 {{- end }}

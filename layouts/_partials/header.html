@@ -1,28 +1,24 @@
 {{- /*
-  Partial: header.html 
+  Partial: header.html
   Purpose: — Defines the header HTML structure for Alpha.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
 
+
 <header
   class="menu-collapsed bg-menu text-on-menu-var relative w-full transition-all duration-300 ease-in-out"
   data-alpha="header"
 >
-  <div
-    class="h-bar mx-auto flex max-w-7xl items-center justify-between py-1 pr-1 pl-3"
-  >
+  <div class="h-bar mx-auto flex max-w-7xl items-center justify-between py-1 pr-1 pl-3">
     {{ partial "components/utility-bar.html" . }}
   </div>
   <div
     class="title-bar h-header top-bar absolute inset-x-0 z-20 transition-colors duration-300 ease-in-out"
     data-alpha="title-bar"
   >
-    <div
-      class="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-4 pr-1 pl-4"
-    >
+    <div class="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-4 pr-1 pl-4">
       <div class="flex items-center gap-3">
-
         {{- /* Pseudo logo */}}
         {{- if eq .Site.Params.pseudologo_enabled true }}
           {{- $logo := substr .Site.Title 0 1 }}
@@ -33,25 +29,19 @@
             {{ $logo }}
           </div>
         {{- end }}
-        <div class="font-500 text-center text-lg items-center flex gap-1">
-
+        <div class="font-500 flex items-center gap-1 text-center text-lg">
           {{- /* Conditional rendering of site title */}}
           {{- if .IsHome }}
             <h1>{{ .Site.Title }}</h1>
           {{- else }}
             <a href="/">{{ .Site.Title }}</a>
-            {{- /* Breadcrumbs (pre-release)*/}}
+            {{- /* Breadcrumbs (pre-release) */}}
             {{- if eq .Site.Params.breadcrumbs true }}
-              <div class="hidden md:flex items-center">
+              <div class="hidden items-center md:flex">
                 {{ range .Ancestors.Reverse }}
                   {{ if not .IsHome }}
-                    <span class="font-500 text-pri text-xl pl-1 pr-0.5">/</span>
-                    <a
-                      class="font-400 text-base"
-                      aria-current="page"
-                      href="{{ .RelPermalink }}"
-                      >{{ .LinkTitle }}</a
-                    >
+                    <span class="font-500 text-pri pr-0.5 pl-1 text-xl">/</span>
+                    <a class="font-400 text-base" aria-current="page" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
                   {{- end }}
                 {{- end }}
               </div>
@@ -82,9 +72,6 @@
     </div>
   </div>
   {{- /* Containers for templates */}}
-  <div
-    class="pt-header h-menu absolute flex w-full"
-    data-alpha="menu-template-container"
-  ></div>
+  <div class="pt-header h-menu absolute flex w-full" data-alpha="menu-template-container"></div>
 </header>
 <div data-alpha="search-template-container"></div>

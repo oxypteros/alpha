@@ -1,9 +1,4 @@
-<div
-  class="liva liva-settings liva-shadow liva-hidden"
-  aria-expanded="false"
-  data-alpha="liva-settings"
-  inert
->
+<div class="liva liva-settings liva-shadow liva-hidden" aria-expanded="false" data-alpha="liva-settings" inert>
   <header>
     {{ i18n "LivaSettings" . |default "LiVa Settings" }}
     <button
@@ -20,16 +15,10 @@
     <div>
       <h2>{{ i18n "LivaSettingsPosition" . | default "Position" }}</h2>
       <p>
-        <label for="fab-position-select"
-          >{{ i18n "LivaSettingsPosLabel" . | default "Change the FAB position" }}</label
-        >
+        <label for="fab-position-select">{{ i18n "LivaSettingsPosLabel" . | default "Change the FAB position" }}</label>
       </p>
     </div>
-    <select
-      id="fab-position-select"
-      class="liva-position-select"
-      data-alpha="liva-select-position"
-    >
+    <select id="fab-position-select" class="liva-position-select" data-alpha="liva-select-position">
       <option value="liva-bottom-right">
         {{ i18n "LivaSettingsPosOptionBR" . | default "Bottom/Right" }}
       </option>
@@ -43,7 +32,10 @@
       <h2>{{ i18n "LivaSettingsCons" . | default "Console" }}</h2>
       <p>{{ i18n "LivaSettingsConsDesc" . | default "Open the LiVa console" }}</p>
     </div>
-    <button aria-label="{{ i18n "LivaSettingsConsOpenAria" . | default "Open the console" }}" data-alpha="liva-open-console-button">
+    <button
+      aria-label="{{ i18n "LivaSettingsConsOpenAria" . | default "Open the console" }}"
+      data-alpha="liva-open-console-button"
+    >
       {{ i18n "LivaSettingsConsOpen" . | default "Open" }}
     </button>
   </div>
@@ -54,7 +46,10 @@
         {{ i18n "LivaSettingsUpdDesc" . | default "Check for alpha and hugo updates" }}
       </p>
     </div>
-    <button aria-label="{{ i18n "LivaSettingsUpdCheckAria" . | default "Check for updates" }}" data-alpha="liva-updates-button">
+    <button
+      aria-label="{{ i18n "LivaSettingsUpdCheckAria" . | default "Check for updates" }}"
+      data-alpha="liva-updates-button"
+    >
       {{ i18n "LivaSettingsUpdCheck" . | default "Check" }}
     </button>
   </div>
@@ -71,10 +66,8 @@
     </div>
   </div>
   <footer>
-    <a href="https://alpha.oxypteros.com/docs/liva"
-      >{{ i18n "LivaSettingsDoc" . | default "LiVa Documentation" }}</a
-    >
-    <div class="liva-version" aria-label="LiVa {{ i18n "LivaVersion" .  | default "version"}}">
+    <a href="https://alpha.oxypteros.com/docs/liva">{{ i18n "LivaSettingsDoc" . | default "LiVa Documentation" }}</a>
+    <div class="liva-version" aria-label="LiVa {{ i18n "LivaVersion" .  | default "version" }}">
       <svg width="14" height="14" aria-hidden="true">
         <use href="#liva-logo"></use>
       </svg>

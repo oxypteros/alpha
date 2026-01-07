@@ -1,6 +1,6 @@
 {{- /*
-  Partial: components/breadcrumbs.html 
-  Purpose: Renders breadcrumbs links, intended for display inside the hamburger menu. 
+  Partial: components/breadcrumbs.html
+  Purpose: Renders breadcrumbs links, intended for display inside the hamburger menu.
 
   Features:
   - Home link represented by an icon.
@@ -16,11 +16,7 @@
         {{ range .Ancestors.Reverse }}
           {{- if .IsHome }}
             <li class="flex shrink-0 items-center">
-              <a
-                class="group"
-                href="{{ .RelPermalink }}"
-                aria-label="{{ i18n "Homepage" . | default "Homepage" }}"
-              >
+              <a class="group" href="{{ .RelPermalink }}" aria-label="{{ i18n "Homepage" . | default "Homepage" }}">
                 <svg
                   class="fill-on-menu-var group-hover:fill-on-menu dark:group-hover:fill-on-menu-d size-5"
                   width="16"
@@ -44,9 +40,7 @@
         {{- end }}
         <li class="active text-on-menu flex items-center gap-1 truncate">
           <span class="text-xl">/</span>
-          <a class="" aria-current="page" href="{{ .RelPermalink }}"
-            >{{ .LinkTitle }}</a
-          >
+          <a class="" aria-current="page" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
         </li>
       </ol>
     </nav>

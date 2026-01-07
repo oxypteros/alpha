@@ -118,4 +118,26 @@
   {{- end -}}
 {{- end -}}
 
+{{- /*
+  Check if the explicit thumbnail image exists in the bundle.
+  Ignore boolean values (thumbnail: true/false).
+  Code: liva-fm-181
+*/}}
+{{- if isset $params "thumbnail" -}}
+  {{- $val := index $params "thumbnail" -}}
+
+  {{- if eq (printf "%T" $val) "string" -}}
+    {{- /* Check if the file exists in the page bundle */ -}}
+    {{- if not (.Page.Resources.GetMatch $val) -}}
+      {{- $errorObject := dict
+        "code"     "liva-fm-181"
+        "page"     $permalink
+        "file"     $filePath
+        "keyValue" $val
+      -}}
+      {{- $errors = $errors | append $errorObject -}}
+    {{- end -}}
+
+  {{- end -}}
+{{- end -}}
 {{- return $errors -}}

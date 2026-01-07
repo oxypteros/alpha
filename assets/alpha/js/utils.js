@@ -15,13 +15,12 @@ export const $ = (selector, scope = document) => scope.querySelector(selector);
 /**
  * A shorthand for `document.querySelectorAll` or `scope.querySelectorAll`.
  */
-export const $$ = (selector, scope = document) =>
-  scope.querySelectorAll(selector);
+export const $$ = (selector, scope = document) => scope.querySelectorAll(selector);
 
 /**
  * Error handler: Logs errors or other message types to the console and optionally halts execution.
  */
-export const errorHandler = (message, type = "error", halt = false) => {
+export const errorHandler = (message, type = 'error', halt = false) => {
   console[type](message);
   if (halt) {
     throw new Error(message);

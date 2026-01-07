@@ -53,12 +53,10 @@
     Code: liva-md-101
   */}}
   {{ if eq $code "liva-md-101" }}
-        {{- $example = printf (i18n $entry.example) $alt $destination | safeHTML -}}
-    {{- if not $isBundle }} 
-
+    {{- $example = printf (i18n $entry.example) $alt $destination | safeHTML -}}
+    {{- if not $isBundle }}
       {{- $solutionAssetsKey := $entry.solutionAssets -}}
       {{- $solution = printf (i18n $solutionAssetsKey) | safeHTML -}}
-
     {{- end }}
 
     {{- /*
@@ -110,13 +108,7 @@
           {{- end }}
           {{ with $example }}{{ . | safeHTML }}{{- end }}
         </p>
-        <a
-          class="liva-mono"
-          href="{{ $docURL }}"
-          target="_blank"
-          rel="noopener noreferrer"
-          >{{ $code }}</a
-        >
+        <a class="liva-mono" href="{{ $docURL }}" target="_blank" rel="noopener noreferrer">{{ $code }}</a>
       </div>
     </footer>
   </div>

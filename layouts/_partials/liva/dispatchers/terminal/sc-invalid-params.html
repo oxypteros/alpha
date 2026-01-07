@@ -25,7 +25,7 @@
 {{- $validCount := len $validParams -}}
 
 {{- $title := cond (eq $invalidCount 1) "Shortcode Parameter Error" "Shortcode Parameters Error" -}}
-{{- $reason := cond (eq $invalidCount 1) "parameter was" "parameters were"}}
+{{- $reason := cond (eq $invalidCount 1) "parameter was" "parameters were" }}
 {{- $paramValid := cond (eq $validCount 1) "Parameter" "Parameters" -}}
 
 {{- /* - Separate invalid params from values */}}

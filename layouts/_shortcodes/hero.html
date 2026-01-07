@@ -6,33 +6,22 @@
 
   Example:
   {{< hero
-    TITLE=""
-    SUBTITLE=""
-    BTN-TEXT=""
-    BTN-LINK=""
-    BTN-LABEL=""
-    LINK-TEXT=""
-    LINK=""
-    LINK-LABEL=""
-  >}}
+  TITLE=""
+  SUBTITLE=""
+  BTN-TEXT=""
+  BTN-LINK=""
+  BTN-LABEL=""
+  LINK-TEXT=""
+  LINK=""
+  LINK-LABEL=""
+>}}
 
-  Params:
-  - TITLE (string, optional)      : H2 heading
-  - SUBTITLE (string, optional)   : Subtitle
-  - BTN-TEXT (string, optional)   : Link text for link 1 (button styled)
-  - BTN-LINK (string, optional)   : `href` attribute for link 1
-  - BTN-LABEL (string, optional)  : `aria-label` attribute for link 1
-  - LINK-TEXT (string, optional)  : Link text for link 2
-  - LINK (string, optional)       : `href` attribute for link 2
-  - LINK-LABEL (string, optional) : `aria-label` attribute for link 2
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/docs/shortcodes/hero
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - TITLE (string, optional) : H2 heading - SUBTITLE (string, optional) : Subtitle - BTN-TEXT (string, optional) :
+Link text for link 1 (button styled) - BTN-LINK (string, optional) : `href` attribute for link 1 - BTN-LABEL (string,
+optional) : `aria-label` attribute for link 1 - LINK-TEXT (string, optional) : Link text for link 2 - LINK (string,
+optional) : `href` attribute for link 2 - LINK-LABEL (string, optional) : `aria-label` attribute for link 2 Error
+handler: - livaWarn (global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/docs/shortcodes/hero Repo:
+https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -131,9 +120,7 @@
               aria-hidden="true"
             >
               {{- $title -}}
-              <span class="text-pri dark:text-pri-d fade-in" aria-hidden="true"
-                >{{ $titlePunctuation -}}</span
-              >
+              <span class="text-pri dark:text-pri-d fade-in" aria-hidden="true">{{ $titlePunctuation -}}</span>
             </h2>
           {{- end }}
           {{- if and $subtitle $subtitlePunctuation }}
@@ -142,18 +129,14 @@
               aria-hidden="true"
             >
               {{- $subtitle -}}
-              <span class="text-pri dark:text-pri-d" aria-hidden="true"
-                >{{- $subtitlePunctuation }}</span
-              >
-          </div>
+              <span class="text-pri dark:text-pri-d" aria-hidden="true">{{- $subtitlePunctuation }}</span>
+            </div>
           {{- else }}
             <div class="mt-15"></div>
           {{- end }}
         </div>
         {{- if or (and $btnLink $btnTxt) (and $link $linkTxt) }}
-          <nav
-            class="my-8 flex w-full max-w-5xl flex-wrap items-center justify-center gap-12"
-          >
+          <nav class="my-8 flex w-full max-w-5xl flex-wrap items-center justify-center gap-12">
             {{- if and $btnLink $btnTxt }}
               <a
                 class="btn-link bg-sur-var hover:bg-sur dark:bg-sur-var-d font-500 border-out-var dark:border-out-var-d hover:dark:bg-menu-d dark:text-on-sur-var-d text-on-sur-var dark:hover:text-on-sur-d hover:text-on-sur rounded-full border px-5 py-3 text-center font-sans shadow-lg transition-all duration-400 ease-in-out hover:shadow-md"

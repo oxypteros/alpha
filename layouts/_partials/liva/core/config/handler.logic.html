@@ -23,9 +23,8 @@
   {{- if $livaEnabled -}}
     {{- if gt (len $allConfigErrors) 0 -}}
       {{- partial "liva/dispatchers/console/config.html" (dict "configErrors" $allConfigErrors) -}}
-      {{- /* Disabled page config error render. Still undecided if it's too intrusive for UX  */}}
-       {{- /* partial "liva/dispatchers/page/config.html" (dict "configErrors" $allConfigErrors) */}}
+      {{- /* Disabled page config error render. Still undecided if it's too intrusive for UX */}}
+      {{- /* partial "liva/dispatchers/page/config.html" (dict "configErrors" $allConfigErrors) */}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
-

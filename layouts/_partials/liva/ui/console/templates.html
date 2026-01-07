@@ -1,7 +1,6 @@
 {{- /*
   Partial: liva/components/console/templates.html
   Purpose: Renders and caches all static <template> elements for the LiVa console.
-
 */}}
 
 {{- $lang := .Site.Language.Lang | default "en" -}}
@@ -17,10 +16,10 @@
   {{- $noHugoUpdates := printf `<template data-alpha="liva-no-hugo-updates-template"><div class="liva-console-explanation"><p class="liva-con-no-updates"><svg class="liva-logo-hugo" width="16" height="16" aria-hidden="true"><use href="#hugo-logo"></use></svg>%s</p></div></template>` (i18n "LivaConsHugoNoUpdate") -}}
   {{- $alphaUpdates := printf `<template data-alpha="liva-alpha-updates-template"><div class="liva-console-explanation"><p class="liva-con-no-updates"><svg class="liva-logo-alpha" width="16" height="16" aria-hidden="true"><use href="#alpha-logo"></use></svg>%s</p></div></template>` (i18n "LivaConsAlphaUpdate") -}}
   {{- $hugoUpdates := printf `<template data-alpha="liva-hugo-updates-template"><div class="liva-console-explanation"><p class="liva-con-no-updates"><svg class="liva-logo-hugo" width="16" height="16" aria-hidden="true"><use href="#hugo-logo"></use></svg>%s</p></div></template>` (i18n "LivaConsHugoUpdate") -}}
-  
+
   {{- /* - Concatenate them all */}}
   {{- $updatesHTML = printf "%s %s %s %s" $noAlphaUpdates $noHugoUpdates $alphaUpdates $hugoUpdates -}}
-  
+
   {{- /* - Store the entire block in the cache */}}
   {{- site.Store.Set $updatesCacheKey $updatesHTML -}}
 {{- end }}
@@ -44,6 +43,7 @@
 {{- /* ** Print the cached HTML blocks */}}
 
 {{- $updatesHTML | safeHTML -}}
+
 
 <template data-alpha="liva-help-template">
   {{- $helpHTML | safeHTML -}}

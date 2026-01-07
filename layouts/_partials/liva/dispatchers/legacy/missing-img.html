@@ -45,10 +45,7 @@ $solution
 
 {{- if $livaEnabled }}
   {{- /* ** LiVa Page */}}
-  <div
-    class="liva liva-card liva-card-error liva-shadow"
-    data-error="{{ $errorCode }}"
-  >
+  <div class="liva liva-card liva-card-error liva-shadow" data-error="{{ $errorCode }}">
     <header class="liva-card-header">
       <h2 class="liva-title">
         {{- i18n "LivaImg404Title" . | default "Image Not Found" -}}
@@ -77,11 +74,7 @@ $solution
     <footer class="liva-card-footer">
       <div class="liva-card-footer-meta">
         <p></p>
-        <a
-          class="liva-mono"
-          href="https://alpha.oxypteros.com/docs/liva"
-          >{{ $errorCode }}</a
-        >
+        <a class="liva-mono" href="https://alpha.oxypteros.com/docs/liva">{{ $errorCode }}</a>
       </div>
     </footer>
   </div>

@@ -578,6 +578,20 @@ other = "Use an image that meet the recommended criteria:<br> <span class='liva-
 [LivaFmBadSeoImageExample]
 other = "<span class='liva-mono'>%s = %q</span>"
 
+## liva-fm-181
+[LivaFmMissingThumbnailImage]
+other = "Missing Thumbnail Image"
+[LivaFmMissingThumbnailImageReason]
+other = "The thumbnail image <span class='liva-mono'>%q</span> defined in frontmatter could not be found."
+[LivaFmMissingThumbnailSolution]
+other = "Ensure the image exists in the page bundle"
+[LivaFmMissingThumbnailExample]
+other = "<span class='liva-mono'>%s = %q</span>"
+
+### Console
+[LivaFmMissingThumbnailExampleConsole]
+other = "<span class='liva-mono-comment'># content/%s</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span><br>&nbsp;&nbsp;<span class='liva-mono'>%s = %q</span><br>&nbsp;&nbsp;<span class='liva-mono-comment'>...</span>"
+
 ## LiVa sc Errors
 [LivaSolution]
 other = "Solution:"

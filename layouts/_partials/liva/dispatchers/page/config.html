@@ -2,7 +2,7 @@
   Partial: liva/dispatchers/page/config.html
   Purpose: Renders the page warnings for config errors.
 
-    Repo: https://github.com/oxypteros/alpha
+  Repo: https://github.com/oxypteros/alpha
 */}}
 {{- /* Input data from core/config/handler.logic */}}
 {{- $cfgErrors := .configErrors -}}
@@ -113,8 +113,9 @@
       Code: liva-cfg-000 or undefined
     */}}
   {{- else }}
-   {{- $reason = printf (i18n $reasonKey)  | safeHTML -}}
+    {{- $reason = printf (i18n $reasonKey)  | safeHTML -}}
   {{- end }}
+
 
   <div class="liva liva-card-container">
     <div class="liva liva-card {{ $severityClass }} liva-shadow">
@@ -139,13 +140,7 @@
             {{- end }}
             {{ with $example }}{{ . | safeHTML }}{{- end }}
           </p>
-          <a
-            class="liva-mono"
-            href="{{ $docURL }}"
-            target="_blank"
-            rel="noopener noreferrer"
-            >{{ $code }}</a
-          >
+          <a class="liva-mono" href="{{ $docURL }}" target="_blank" rel="noopener noreferrer">{{ $code }}</a>
         </div>
       </footer>
     </div>

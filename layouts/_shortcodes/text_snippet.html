@@ -5,20 +5,13 @@
   Target: Global
 
   Example:
-  {{< text_snippet TITLE="" >}}
-  /... Markdown .../
-  {{< /text_snippet >}}
+  {{< text_snippet TITLE=""
+>}}
+/... Markdown .../
+{{< /text_snippet >}}
 
-  Params:
-  - TITLE (string, optional): H2 heading.
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/shortcodes/text-snippet
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - TITLE (string, optional): H2 heading. Error handler: - livaWarn (global) - LiVa (scoped) Docs:
+https://alpha.oxypteros.com/shortcodes/text-snippet Repo: https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 

@@ -5,9 +5,9 @@
  * the Alpha theme.
  * @module modules/copy-code
  *
- * @summary Iterates over all highlighted code blocks (`.highlight`), adds a 
- * header containing a language label and a "Copy" button. Improves 
- * accessibility by removing the `tabindex` attribute from 
+ * @summary Iterates over all highlighted code blocks (`.highlight`), adds a
+ * header containing a language label and a "Copy" button. Improves
+ * accessibility by removing the `tabindex` attribute from
  * `<pre class="chroma">` elements.
  *
  * @description
@@ -15,14 +15,14 @@
  * highlighter. It extracts the language from `code[data-lang]`, creates a
  * header div, and appends the language label and copy button to it.
  *
- * An event listener is attached to handle clicks on any "copy-button". When 
- * clicked, it copies the text content of the code block to the clipboard and 
+ * An event listener is attached to handle clicks on any "copy-button". When
+ * clicked, it copies the text content of the code block to the clipboard and
  * provides visual feedback on the button
  *
  * The text for the button and feedback messages is provided via an i18n object.
  *
  * @param {object} i18n - An object containing localized strings for UI elements.
- * @param {string} i18n.copied - Text displayed on the button after successful 
+ * @param {string} i18n.copied - Text displayed on the button after successful
  * copy.
  * @param {string} i18n.copy - Default text for the copy button.
  * @param {string} i18n.failedCopy - Console error message if copying fails.
@@ -30,12 +30,12 @@
  */
 
 export const initCopyCode = (i18n) => {
-  document.addEventListener("click", (event) => {
-    const copyButton = event.target.closest(".copy-button");
+  document.addEventListener('click', (event) => {
+    const copyButton = event.target.closest('.copy-button');
     if (!copyButton) return;
 
-    const highlight = copyButton.closest(".highlight");
-    const codeBlock = highlight.querySelector("code");
+    const highlight = copyButton.closest('.highlight');
+    const codeBlock = highlight.querySelector('code');
     if (!codeBlock) return;
 
     navigator.clipboard
@@ -49,37 +49,37 @@ export const initCopyCode = (i18n) => {
       });
   });
 
-  document.querySelectorAll(".highlight").forEach((highlight) => {
-    const codeBlock = highlight.querySelector("code");
+  document.querySelectorAll('.highlight').forEach((highlight) => {
+    const codeBlock = highlight.querySelector('code');
     if (!codeBlock) return;
 
     // Remove tabindex from pre.chroma
-    const preElement = highlight.querySelector("pre.chroma");
+    const preElement = highlight.querySelector('pre.chroma');
     if (preElement) {
-      preElement.removeAttribute("tabindex");
+      preElement.removeAttribute('tabindex');
     }
 
     const lang = codeBlock.dataset.lang;
-    const highlightHeader = document.createElement("div");
-    highlightHeader.className = "highlight-header";
+    const highlightHeader = document.createElement('div');
+    highlightHeader.className = 'highlight-header';
 
-    if (lang !== "fallback") {
-      const langLabel = document.createElement("span");
+    if (lang !== 'fallback') {
+      const langLabel = document.createElement('span');
       langLabel.textContent = lang.toUpperCase();
-      langLabel.className = "language-label";
+      langLabel.className = 'language-label';
       highlightHeader.appendChild(langLabel);
     } else {
-      const langLabel = document.createElement("span");
+      const langLabel = document.createElement('span');
       highlightHeader.appendChild(langLabel);
     }
 
-    const copyButton = document.createElement("button");
+    const copyButton = document.createElement('button');
     copyButton.textContent = i18n.copy;
-    copyButton.className = "copy-button";
-    copyButton.setAttribute("aria-label", i18n.copyToClipboardAria);
+    copyButton.className = 'copy-button';
+    copyButton.setAttribute('aria-label', i18n.copyToClipboardAria);
     highlightHeader.appendChild(copyButton);
 
-    highlight.insertAdjacentElement("afterbegin", highlightHeader);
+    highlight.insertAdjacentElement('afterbegin', highlightHeader);
   });
   //console.log("copy-code.js imported")
 };

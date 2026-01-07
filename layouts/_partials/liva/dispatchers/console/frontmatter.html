@@ -98,7 +98,7 @@
   {{- else if eq $code "liva-fm-141" -}}
     {{- $reason = printf (i18n $reasonKey) $key $keyValue| safeHTML -}}
     {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
-     {{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
 
     {{- /*
       Check for non boolean featured value
@@ -107,7 +107,7 @@
   {{- else if eq $code "liva-fm-151" -}}
     {{- $reason = printf (i18n $reasonKey) $key $keyValue| safeHTML -}}
     {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
-{{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
 
     {{- /*
       Check Page.Params.description only for pages that have a file
@@ -116,7 +116,7 @@
   {{- else if eq $code "liva-fm-161" -}}
     {{- $reason = printf (i18n $reasonKey) $key | safeHTML -}}
     {{- $solution = printf (i18n $solutionKey) $key | safeHTML -}}
-{{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key  | safeHTML -}}
 
     {{- /*
       Check for missing SEO image
@@ -133,6 +133,14 @@
     */}}
   {{- else if eq $code "liva-fm-172" -}}
     {{- $reason = printf (i18n $reasonKey) $keyValue | safeHTML -}}
+    {{- $example = printf (i18n $entry.example ) $file  $key $keyValue | safeHTML -}}
+    {{- /*
+      Check for missing thumbnail image
+      Code: liva-fm-181
+    */}}
+  {{- else if eq $code "liva-fm-181" -}}
+    {{- $reason = printf (i18n $reasonKey) $keyValue | safeHTML -}}
+    {{- $solution = printf (i18n $solutionKey) -}}
     {{- $example = printf (i18n $entry.example ) $file  $key $keyValue | safeHTML -}}
     {{- /*
       Generic fallback for missing or undefined code

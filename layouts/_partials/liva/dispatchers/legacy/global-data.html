@@ -42,10 +42,7 @@ $frontmatter
 {{- end }}
 
 {{- if $livaEnabled }}
-  <div
-    class="liva liva liva-card liva-card-warning liva-shadow"
-    data-error="{{ $errorCode }}"
-  >
+  <div class="liva liva liva-card liva-card-warning liva-shadow" data-error="{{ $errorCode }}">
     <header class="liva-card-header">
       <h2 class="liva-title">
         {{- $title }}
@@ -58,9 +55,7 @@ $frontmatter
       <div>
         <p>
           {{- i18n "LivaThe" . |default "The" }}
-          <span class="liva-mono"
-            >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
-          >
+          <span class="liva-mono">&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span>
           {{ i18n "LivaScRequireOne" . | default "shortcode requires at least one post marked as" }}
           {{ $scName }}.
         </p>
@@ -77,9 +72,7 @@ $frontmatter
     <footer class="liva-card-footer">
       <div class="liva-card-footer-meta">
         <p></p>
-        <a class="liva-mono" href="https://alpha.oxypteros.com/docs/liva"
-          >{{ $errorCode }}</a
-        >
+        <a class="liva-mono" href="https://alpha.oxypteros.com/docs/liva">{{ $errorCode }}</a>
       </div>
     </footer>
   </div>
@@ -91,9 +84,7 @@ $frontmatter
       </h2>
       <p>
         {{- i18n "LivaShortcode" . | default "Shortcode" }}
-        <span class="liva-mono "
-          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
-        >
+        <span class="liva-mono">&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span>
         {{ i18n "LivaScIsDisabled" . | default "is disabled." }}
       </p>
       <p class="liva-my-1">
@@ -101,9 +92,8 @@ $frontmatter
         <span class="liva-mono">{{ $frontmatter }}</span>
         {{ $consLine1 }}
       </p>
-      <p> (You may need to restart the <span class="liva-mono">hugo server</span> to update the live preview.)</p>
-      <div class="liva-console-example">
-      </div>
+      <p>(You may need to restart the <span class="liva-mono">hugo server</span> to update the live preview.)</p>
+      <div class="liva-console-example"></div>
     </div>
     <div class="liva-console-doc">
       <div class="hr hr-right"></div>

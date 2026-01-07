@@ -30,6 +30,7 @@ seo_type = "BlogPosting"
 seo_image = ""
 twitter_username = ""
 +++
+
 By now (at the final part of this little trilogy) I hope you have a clear sense of what my goals with **Alpha** are:
 
 1. A clean, inclusive UI/UX focused on text.
@@ -41,18 +42,17 @@ My solution? [A tested one](/blog/why-alpha/#first-steps/)! A separate tutorial 
 
 ## For the Novices
 
-By *"novices"*, I mean individuals who are comfortable using a PC, but may have never opened a terminal. People whose web experience is mostly as visitors and terms like *HTML*, *CSS*, *JavaScript*, or *Hugo* might not mean much to them and that’s totally fine.
+By _"novices"_, I mean individuals who are comfortable using a PC, but may have never opened a terminal. People whose web experience is mostly as visitors and terms like _HTML_, _CSS_, _JavaScript_, or _Hugo_ might not mean much to them and that’s totally fine.
 
 Alpha is designed to help you **write**, not to turn you into a developer.
 
 If this sounds like you, **start with** [From Zero with Zero](https://alpha.oxypteros.com/get-started/). And if something’s unclear, feel free to [drop me a line](https://alpha.oxypteros.com/contact/).
 
-
 ## For the Intermediate Users
 
 Intermediate users are those who’ve used Hugo before, probably they already have a site and want or need a new theme. But they don’t necessarily tinker with theme files or write complex Hugo templates.
 
-For this group, the [Alpha documentation](https://alpha.oxypteros.com/docs/) will be the main resource for *how-to’s*. Ironically, this might be the group that faces the most friction.
+For this group, the [Alpha documentation](https://alpha.oxypteros.com/docs/) will be the main resource for _how-to’s_. Ironically, this might be the group that faces the most friction.
 
 Why? They might already rely on certain Hugo features that Alpha doesn’t support out-of-the-box (like `{{ .ReadingTime }}`) or they're using an older Hugo version that isn’t compatible.
 
@@ -60,12 +60,11 @@ Some of these issues can be resolved by checking the Alpha docs and the [officia
 
 > **Alpha’s documentation is a work in progress. It doesn’t cover every conceivable Hugo feature, but rather what I’ve personally tested and confirmed works smoothly.**
 
-
 ## For the Pros
 
-Pros or advanced users are essentially developers who use Hugo for their projects. 
+Pros or advanced users are essentially developers who use Hugo for their projects.
 
-If you’re in this group... send me your info.  
+If you’re in this group... send me your info.
 
 I’ll need **your help with Alpha**, not the other way around.
 
@@ -75,7 +74,7 @@ Whether you're a dev, a writer, both, or something entirely different, my ambiti
 
 Whether you’re here to write or tweak the theme into your own thing, Alpha should ideally stay out of your way and let you lead, undisturbed.
 
-So, that's the *How-to Alpha* from my perspective.
+So, that's the _How-to Alpha_ from my perspective.
 **Read. Write. Publish!**
 
 The rest is up to you.

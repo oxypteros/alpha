@@ -47,7 +47,7 @@
   {{- $authorType = "Organization" -}}
 {{- end }}
 
-{{- /* License Handler*/}}
+{{- /* License Handler */}}
 {{- $licenseID := "copyright" -}}
 {{- if $page.Params.license }}
   {{- $licenseID = $page.Params.license -}}
@@ -82,7 +82,7 @@
   {{- $rawDescription = printf $formatDescription .Data.Plural .Site.Title .Data.Plural -}}
 {{- else if eq .Kind "term" -}}
   {{- $formatDescription := i18n "DefaultTermsDescription" | default "Explore all pages related to %q on %s—discover related content and topics" }}
-{{- $rawDescription = printf $formatDescription .Title .Site.Title  -}}
+  {{- $rawDescription = printf $formatDescription .Title .Site.Title -}}
 {{- end -}}
 
 {{- $description := $rawDescription | plainify  | strings.TrimSpace -}}
@@ -96,7 +96,7 @@
 {{- with $site.Params.seo_logo_url }}
   {{- $logo := dict "logo" (dict
     "@type" "ImageObject"
-    "url"   . 
+    "url"   .
     )
   -}}
   {{- $publisherDict = merge $publisherDict $logo -}}
@@ -122,7 +122,7 @@
   {{- $readingTime = printf "PT%dM" . -}}
 {{- end -}}
 
-{{- /* OG Author URL  */}}
+{{- /* OG Author URL */}}
 {{- $authorURL := $page.Params.seo_author_url | default $site.Params.seo_author_url -}}
 
 {{- /* X (ex. Twitter) */}}
@@ -146,8 +146,8 @@
   "readingTime"     $readingTime
   "licenseID"       $licenseID
   "licenseURL"      $licenseURL
-  "authorURL"       $authorURL           
-  "isHome"          $page.IsHome 
+  "authorURL"       $authorURL
+  "isHome"          $page.IsHome
   "xSite"           $xSite
   "xCreator"        ($xCreator | default $xSite)
 }}
@@ -221,11 +221,7 @@
       {{- if eq .Language.Lang $defaultLang.Lang }}
         <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}" />
       {{- end }}
-      <link
-        rel="alternate"
-        hreflang="{{ .Language.Lang }}"
-        href="{{ .Permalink }}"
-      />
+      <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" />
     {{- end }}
   {{- end }}
 {{- end }}

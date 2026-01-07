@@ -4,7 +4,7 @@
  * @file Manages a visitor settings modal for user controlled preferences.
  * @module modules/visitor-settings
  *
- * @summary Provides a UI for users to control "tracking" and "prefetching." 
+ * @summary Provides a UI for users to control "tracking" and "prefetching."
  * Preferences are stored in `localStorage`.
  *
  * @description
@@ -14,7 +14,7 @@
  * Key functionalities within the modal include:
  * 1.  Anonymous Tracking Toggle:
  *     - A button allows users to toggle a preference stored at `localStorage.
- *     - The button's icon and ARIA attributes are updated to reflect the 
+ *     - The button's icon and ARIA attributes are updated to reflect the
  *       current state.
  * 2.  Prefetch Functionality Toggle:
  *     - A button allows users to toggle a preference stored at `localStorage.
@@ -34,26 +34,26 @@
  * passed via an i18n object.
  *
  * @param {object} i18n - An object containing localized strings.
- * @param {string} i18n.settingsElementsMissing - Error message if critical 
+ * @param {string} i18n.settingsElementsMissing - Error message if critical
  * settings elements are missing.
- * @param {string} i18n.settingsOpen - Screen reader announcement when the 
+ * @param {string} i18n.settingsOpen - Screen reader announcement when the
  * settings modal opens.
- * @param {string} i18n.settingsClose - Screen reader announcement when the 
+ * @param {string} i18n.settingsClose - Screen reader announcement when the
  * settings modal closes.
- * @param {string} i18n.trackingDisabled - ARIA label/text indicating anonymous 
+ * @param {string} i18n.trackingDisabled - ARIA label/text indicating anonymous
  * tracking is disabled by the user.
- * @param {string} i18n.trackingEnabled - ARIA label/text indicating anonymous 
+ * @param {string} i18n.trackingEnabled - ARIA label/text indicating anonymous
  * tracking is enabled by the user.
- * @param {string} i18n.prefetchDisabled - ARIA label/text indicating prefetch 
+ * @param {string} i18n.prefetchDisabled - ARIA label/text indicating prefetch
  * functionality is disabled by the user.
- * @param {string} i18n.prefetchEnabled - ARIA label/text indicating prefetch 
+ * @param {string} i18n.prefetchEnabled - ARIA label/text indicating prefetch
  * functionality is enabled by the user.
  *
- * @requires ../utils.js - For `$` (selector), `errorHandler`, and 
+ * @requires ../utils.js - For `$` (selector), `errorHandler`, and
  * `setAttributes` utilities.
  */
 
-import { $, errorHandler, setAttributes } from "../utils.js";
+import { $, errorHandler, setAttributes } from '../utils.js';
 
 export const initVisitorSettings = (i18n) => {
   const ELEMENTS = {
@@ -67,12 +67,8 @@ export const initVisitorSettings = (i18n) => {
   let prefetchBtn;
   let prefetchBtnIcon;
   // Check if crucial elements exist
-  if (
-    !ELEMENTS.settingsContainer ||
-    !ELEMENTS.settingsTemplate ||
-    !ELEMENTS.settingsBtn
-  ) {
-    errorHandler(i18n.settingsElementsMissing, "error", true);
+  if (!ELEMENTS.settingsContainer || !ELEMENTS.settingsTemplate || !ELEMENTS.settingsBtn) {
+    errorHandler(i18n.settingsElementsMissing, 'error', true);
     return;
   }
 
@@ -82,30 +78,27 @@ export const initVisitorSettings = (i18n) => {
    */
   const announceSettingsState = (isOpen) => {
     if (!ELEMENTS.announcer) return;
-    ELEMENTS.announcer.textContent = isOpen
-      ? i18n.settingsOpen
-      : i18n.settingsClose;
+    ELEMENTS.announcer.textContent = isOpen ? i18n.settingsOpen : i18n.settingsClose;
   };
 
   /**
    * Toggles anonymous tracking preference.
    */
   const toggleTracking = () => {
-    const currentTrackingValue = localStorage.getItem("tracking");
+    const currentTrackingValue = localStorage.getItem('tracking');
     // Determine next state
-    const newValue = currentTrackingValue === "true" ? "false" : "true"; 
-    localStorage.setItem("tracking", newValue);
+    const newValue = currentTrackingValue === 'true' ? 'false' : 'true';
+    localStorage.setItem('tracking', newValue);
 
     // Update Button UI immediately:
     setAttributes(trackBtnIcon, {
-      href: newValue === "false" ? "#icon-off" : "#icon-on",
+      href: newValue === 'false' ? '#icon-off' : '#icon-on',
     });
     setAttributes(trackBtn, {
-      "aria-pressed": newValue === "false" ? "true" : "false",
+      'aria-pressed': newValue === 'false' ? 'true' : 'false',
     });
     setAttributes(trackBtn, {
-      "aria-label":
-        newValue === "false" ? i18n.trackingDisabled : i18n.trackingEnabled,
+      'aria-label': newValue === 'false' ? i18n.trackingDisabled : i18n.trackingEnabled,
     });
   };
 
@@ -113,20 +106,19 @@ export const initVisitorSettings = (i18n) => {
    * Toggles prefetch functionality preference.
    */
   const togglePrefetch = () => {
-    const currentPrefetchValue = localStorage.getItem("prefetch");
+    const currentPrefetchValue = localStorage.getItem('prefetch');
 
-    const newValue = currentPrefetchValue === "true" ? "false" : "true";
-    localStorage.setItem("prefetch", newValue);
+    const newValue = currentPrefetchValue === 'true' ? 'false' : 'true';
+    localStorage.setItem('prefetch', newValue);
 
     setAttributes(prefetchBtnIcon, {
-      href: newValue === "false" ? "#icon-off" : "#icon-on",
+      href: newValue === 'false' ? '#icon-off' : '#icon-on',
     });
     setAttributes(prefetchBtn, {
-      "aria-pressed": newValue === "false" ? "true" : "false",
+      'aria-pressed': newValue === 'false' ? 'true' : 'false',
     });
     setAttributes(prefetchBtn, {
-      "aria-label":
-        newValue === "false" ? i18n.prefetchDisabled : i18n.prefetchEnabled,
+      'aria-label': newValue === 'false' ? i18n.prefetchDisabled : i18n.prefetchEnabled,
     });
   };
 
@@ -135,7 +127,7 @@ export const initVisitorSettings = (i18n) => {
    */
   const openSettings = () => {
     const settingsContent = ELEMENTS.settingsTemplate.content.cloneNode(true);
-    ELEMENTS.settingsContainer.innerHTML = "";
+    ELEMENTS.settingsContainer.innerHTML = '';
     ELEMENTS.settingsContainer.appendChild(settingsContent);
 
     const closeBtn = $('button[data-alpha="settings-close-button"]');
@@ -144,44 +136,40 @@ export const initVisitorSettings = (i18n) => {
     prefetchBtn = $('button[data-alpha="prefetch-button"]');
     prefetchBtnIcon = $('button[data-alpha="prefetch-button"] svg > use');
 
-    const initialTrackingState = localStorage.getItem("tracking") === "false";
-    const initialPrefetchState = localStorage.getItem("prefetch") === "false";
+    const initialTrackingState = localStorage.getItem('tracking') === 'false';
+    const initialPrefetchState = localStorage.getItem('prefetch') === 'false';
 
     if (trackBtn) {
       setAttributes(trackBtnIcon, {
-        href: initialTrackingState ? "#icon-off" : "#icon-on",
+        href: initialTrackingState ? '#icon-off' : '#icon-on',
       });
       setAttributes(trackBtn, {
-        "aria-pressed": initialTrackingState ? "true" : "false",
+        'aria-pressed': initialTrackingState ? 'true' : 'false',
       });
       setAttributes(trackBtn, {
-        "aria-label": initialTrackingState
-          ? i18n.trackingDisabled
-          : i18n.TrackingEnabled,
+        'aria-label': initialTrackingState ? i18n.trackingDisabled : i18n.TrackingEnabled,
       });
-      trackBtn.addEventListener("click", toggleTracking);
+      trackBtn.addEventListener('click', toggleTracking);
     }
 
     if (prefetchBtn) {
       setAttributes(prefetchBtnIcon, {
-        href: initialPrefetchState ? "#icon-off" : "#icon-on",
+        href: initialPrefetchState ? '#icon-off' : '#icon-on',
       });
       setAttributes(prefetchBtn, {
-        "aria-pressed": initialPrefetchState ? "true" : "false",
+        'aria-pressed': initialPrefetchState ? 'true' : 'false',
       });
       setAttributes(prefetchBtn, {
-        "aria-label": initialPrefetchState
-          ? i18n.prefetchDisabled
-          : i18n.prefetchEnabled,
+        'aria-label': initialPrefetchState ? i18n.prefetchDisabled : i18n.prefetchEnabled,
       });
-      prefetchBtn.addEventListener("click", togglePrefetch);
+      prefetchBtn.addEventListener('click', togglePrefetch);
     }
 
     if (closeBtn) {
       closeBtn.addEventListener(
-        "click",
+        'click',
         () => {
-          ELEMENTS.settingsContainer.innerHTML = "";
+          ELEMENTS.settingsContainer.innerHTML = '';
           announceSettingsState(false);
         },
         { once: true },
@@ -191,6 +179,6 @@ export const initVisitorSettings = (i18n) => {
     announceSettingsState(true);
   };
 
-  ELEMENTS.settingsBtn?.addEventListener("click", openSettings);
+  ELEMENTS.settingsBtn?.addEventListener('click', openSettings);
   //console.log("visitor-settings.js imported");
 };

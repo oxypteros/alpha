@@ -5,19 +5,12 @@
 
   Target: homepage, sections (_index.md)
 
-  Example: {{< recent TITLE="" LIMIT="" >}}
+  Example: {{< recent TITLE="" LIMIT=""
+>}}
 
-  Params:
-  - TITLE (string, optional): H2 heading.
-  - LIMIT (integer, optional): Number of items to show (Default: 4).
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/docs/shortcodes/recent/
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - TITLE (string, optional): H2 heading. - LIMIT (integer, optional): Number of items to show (Default: 4). Error
+handler: - livaWarn (global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/docs/shortcodes/recent/ Repo:
+https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
 {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
 
@@ -77,30 +70,22 @@
     >
       {{- /* Optional title rendering. */}}
       {{- with $data.title }}
-        <div
-          class="flex w-full min-w-0 items-center justify-center gap-4 sm:justify-normal"
-        >
-          <div
-            class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"
-          ></div>
+        <div class="flex w-full min-w-0 items-center justify-center gap-4 sm:justify-normal">
+          <div class="bg-out-var dark:bg-out-var-d h-0.5 max-w-1/8 grow rounded-full"></div>
           <h2
             id="recent-heading-{{- $uid -}}"
             class="text-on-sur-var dark:text-on-sur-var-d font-300 min-w-0 text-3xl break-words hyphens-manual"
           >
             {{- . -}}
           </h2>
-          <div
-            class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"
-          ></div>
+          <div class="bg-out-var dark:bg-out-var-d h-0.5 grow rounded-full"></div>
         </div>
       {{- else }}
         <h2 id="recent-heading-{{- $uid -}}" class="sr-only">
           {{- i18n "RecentArticles" | default "Latest Articles" -}}
         </h2>
       {{- end }}
-      <div
-        class="mt-24 flex w-full flex-wrap items-center justify-center gap-25"
-      >
+      <div class="mt-24 flex w-full flex-wrap items-center justify-center gap-25">
         {{- range $actualPages }}
           {{- partial "components/card-post.html" . }}
         {{- end }}

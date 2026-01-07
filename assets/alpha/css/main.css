@@ -1,22 +1,20 @@
-@import "./fonts.css";
-@import "tailwindcss";
-@source "hugo_stats.json";
+@import './fonts.css';
+@import 'tailwindcss';
+@source 'hugo_stats.json';
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* Font Fallback Families */
   --font-sans-fallback:
-    system-ui, ui-sans-serif, Roboto, "Helvetica Neue", "Arial Nova", Arial,
-    sans-serif;
-  --font-serif-fallback:
-    ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    system-ui, ui-sans-serif, Roboto, 'Helvetica Neue', 'Arial Nova', Arial, sans-serif;
+  --font-serif-fallback: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
   --font-mono-fallback:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   /* Font Families */
-  --font-sans: "Noto Sans", var(--font-sans-fallback);
-  --font-serif: "Noto Serif", var(--font-serif-fallback);
-  --font-mono: "JetBrains Mono", var(--font-mono-fallback);
+  --font-sans: 'Noto Sans', var(--font-sans-fallback);
+  --font-serif: 'Noto Serif', var(--font-serif-fallback);
+  --font-mono: 'JetBrains Mono', var(--font-mono-fallback);
   /* Font Weights */
   --font-weight-100: 100;
   --font-weight-200: 200;
@@ -29,54 +27,47 @@
   --font-weight-900: 900;
 
   /* Color Palette seed */
-
-  --color-pri: #1c71d8;
-  --color-pri-sur: #516164;
-  --color-on-pri-sur: #cadbdf;
-  --color-sur: #fff;
-  --color-on-sur: #020b15;
-  --color-on-sur-var: #3d5a7c;
-  --color-sur-var: #f5f9fd;
-  --color-out: #e1dfdd;
-  --color-out-var: #edefef;
-  --color-menu: #303a3c;
-  --color-on-menu: #fff;
-  --color-on-menu-var: #dcdfe0;
-  --color-error: #600004;
-  --color-on-error:;
-  --color-error-sur: #98000a;
-  --color-on-error-sur: #fff;
-
-  --color-pri-d: #aac7ff;
-  --color-pri-sur-d: #afc7cb;
-  --color-on-pri-sur-d: #000e10;
-  --color-sur-d: #1e2729;
-  --color-sur-var-d: #39494c;
-  --color-on-sur-d: #f8f8f8;
-  --color-on-sur-var-d: #dde8ff;
-  --color-out-d: #394a5d;
-  --color-out-var-d: #2f3d40;
-  --color-menu-d: #303a3c;
-  --color-on-menu-d: #fff;
-  --color-on-menu-var-d: #dcdfe0;
+  /** Light theme */
+  --color-pri: oklch(0.5582 0.1762 256.43);
+  --color-pri-sur: oklch(0.4802 0.0202 210.23);
+  --color-on-pri-sur: oklch(0.8798 0.0191 213.42);
+  --color-sur: oklch(1 0 0);
+  --color-on-sur: oklch(0.1447 0.0282 245.33);
+  --color-on-sur-var: oklch(0.4599 0.0657 253.07);
+  --color-sur-var: oklch(0.9802 0.0068 247.89);
+  --color-out: oklch(0.9046 0.0035 67.78);
+  --color-out-var: oklch(0.9506 0.0021 197.12);
+  --color-menu: oklch(0.3401 0.0138 211.1);
+  --color-on-menu: oklch(1 0 0);
+  --color-on-menu-var: oklch(0.9016 0.0035 219.54);
+  --color-error: oklch(0.3075 0.125465 27.3829);
+  --color-on-error: oklch(1 0 0);
+  --color-error-sur: oklch(0.4273 0.1744 27.51);
+  --color-on-error-sur: oklch(1 0 0);
+  /** Dark theme */
+  --color-pri-d: oklch(0.8281 0.0853 263.31);
+  --color-pri-sur-d: oklch(0.8129 0.0266 208.74);
+  --color-on-pri-sur-d: oklch(0.1494 0.0255 204.55);
+  --color-sur-d: oklch(0.2649 0.0132 212.69);
+  --color-sur-var-d: oklch(0.3927 0.0209 210.28);
+  --color-on-sur-d: oklch(0.9791 0 0);
+  --color-on-sur-var-d: oklch(0.9297 0.0334 265.23);
+  --color-out-d: oklch(0.4026 0.0388 251.58);
+  --color-out-var-d: oklch(0.3488 0.019 212.18);
+  --color-menu-d: oklch(0.3401 0.0138 211.1);
+  --color-on-menu-d: oklch(1 0 0);
+  --color-on-menu-var-d: oklch(0.9016 0.0035 219.54);
   /* spacing */
   --spacing-bar: 3.25rem;
   --spacing-header: 10rem;
   --spacing-menu: calc(100dvh - (2 * var(--spacing-bar))); /* Menu container*/
   --spacing-calc-menu: calc(100dvh - var(--spacing-bar)); /* Menu expanded */
   --spacing-footer: 8rem;
-  --spacing-calc-dvh: calc(
-    100dvh - (var(--spacing-header) + var(--spacing-footer))
-  );
+  --spacing-calc-dvh: calc(100dvh - (var(--spacing-header) + var(--spacing-footer)));
   --spacing-story: 70ch;
   --spacing-article: 80ch;
 }
-.b1 {
-  border: 1px solid lime;
-}
-.b2 {
-  border: 1px solid red;
-}
+
 body {
   --alpha-pri: var(--color-pri);
   --alpha-sur: var(--color-sur);
@@ -90,17 +81,17 @@ body {
   --alpha-on-menu-var: var(--color-on-menu-var);
   --alpha-black: var(--color-black);
   font-optical-sizing: auto;
-  font-variation-settings: "wdth" 100; /*Noto Sas: 62.5 - 100*/
+  font-variation-settings: 'wdth' 100; /*Noto Sas: 62.5 - 100*/
   font-feature-settings:
-    "liga" 1,
-    "calt" 1,
-    "zero" 1,
-    "ss01" 1,
-    "ss03" 1,
-    "cv06" 1,
-    "cv11" 1,
-    "cv12" 1,
-    "cv13" 1;
+    'liga' 1,
+    'calt' 1,
+    'zero' 1,
+    'ss01' 1,
+    'ss03' 1,
+    'cv06' 1,
+    'cv11' 1,
+    'cv12' 1,
+    'cv13' 1;
 }
 .dark body {
   --alpha-pri: var(--color-pri-d);
@@ -138,7 +129,7 @@ span.ripple {
   }
 }
 
-[data-alpha="menu-button"] svg {
+[data-alpha='menu-button'] svg {
   fill: var(--alpha-on-sur-var);
 }
 .on-menu svg {
@@ -233,7 +224,7 @@ b {
   ol {
     @apply list-decimal;
   }
-  ul:has(input[type="checkbox"]) {
+  ul:has(input[type='checkbox']) {
     @apply list-none;
     li {
       @apply pl-0;
@@ -266,7 +257,7 @@ b {
     @apply my-8;
   }
   dt {
-    @apply font-500 mb-2 mt-8 after:content-[':'];
+    @apply font-500 mt-8 mb-2 after:content-[':'];
   }
   dd {
     @apply mb-2 ml-4 text-base italic;
@@ -283,12 +274,12 @@ b {
   a.link-icon {
     @apply hover:text-pri dark:hover:text-pri-d hover:decoration-pri dark:hover:decoration-pri-d underline decoration-2 underline-offset-2 after:relative after:-top-0.5 after:left-px after:size-3.5 after:content-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235f6368%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M9%2015l6%20-6%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11%206l.463%20-.536a5%205%200%200%201%207.071%207.072l-.534%20.464%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M13%2018l-.397%20.534a5.068%205.068%200%200%201%20-7.127%200a4.972%204.972%200%200%201%200%20-7.071l.524%20-.463%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')] dark:after:content-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c6d0d1%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M9%2015l6%20-6%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11%206l.463%20-.536a5%205%200%200%201%207.071%207.072l-.534%20.464%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M13%2018l-.397%20.534a5.068%205.068%200%200%201%20-7.127%200a4.972%204.972%200%200%201%200%20-7.071l.524%20-.463%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')];
   }
-  a[target="_blank"] {
+  a[target='_blank'] {
     @apply after:content-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235f6368%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M12%206h-6a2%202%200%200%200%20-2%202v10a2%202%200%200%200%202%202h10a2%202%200%200%200%202%20-2v-6%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11%2013l9%20-9%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M15%204h5v5%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')] dark:after:content-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2213%22%20height%3D%2213%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c6d0d1%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20stroke%3D%22none%22%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M12%206h-6a2%202%200%200%200%20-2%202v10a2%202%200%200%200%202%202h10a2%202%200%200%200%202%20-2v-6%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M11%2013l9%20-9%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M15%204h5v5%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E')];
   }
   /* Remove link icon from footnotes*/
-  a[href^="#fnref"],
-  a[href^="#fn:"] {
+  a[href^='#fnref'],
+  a[href^='#fn:'] {
     @apply after:content-none;
   }
   blockquote {

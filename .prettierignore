@@ -1,0 +1,19 @@
+# Hugo
+public/
+resources/
+
+# Alpha
+alpha.css
+home.webappmanifest.webmanifest
+alpha-contact.js
+alpha-head.js
+alpha-tail.js
+
+# Standard JS 
+node_modules/
+dist/
+build/
+coverage/
+
+# Lock files (auto-generated)
+package-lock.json

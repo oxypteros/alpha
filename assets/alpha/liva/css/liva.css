@@ -3,8 +3,8 @@
 */
 .liva {
   /** Fonts */
-  --liva-mono: "JetBrains Mono", monospace;
-  --liva-sans: "Noto Sans", sans-serif;
+  --liva-mono: 'JetBrains Mono', monospace;
+  --liva-sans: 'Noto Sans', sans-serif;
 
   /** HSL Palette */
   /* Default */
@@ -321,7 +321,7 @@
     color: var(--liva-correct);
   }
   ul li::marker {
-    content: "*";
+    content: '*';
     margin-right: 0.5rem;
     color: var(--liva-correct);
   }
@@ -819,7 +819,7 @@
     color: var(--liva-correct);
   }
   ul li::marker {
-    content: "*";
+    content: '*';
     margin-right: 0.5rem;
     color: var(--liva-correct);
   }
@@ -952,7 +952,7 @@
 }
 
 .liva-update::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -984,7 +984,7 @@
   box-shadow: 0 0 4px var(--liva-error);
 }
 .liva-check-error::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;

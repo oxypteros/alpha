@@ -12,10 +12,9 @@
     </header>
     <div class="liva-card-content liva-card-content-help">
       {{- /* Range the shortcodes defined in the  `data/help/markdown.[lang].toml` file */}}
-      {{ range sort $markdownData "order" "asc"
-      }}
+      {{ range sort $markdownData "order" "asc" }}
         <div class="liva-help-entry">
-          <h3>{{ .title  }}</h3>
+          <h3>{{ .title }}</h3>
           <p class="liva-help-description">{{ .description | markdownify }}</p>
 
           <dl class="liva-help-details">
@@ -43,7 +42,7 @@
                     <span class="liva-mono">
                       {{- range $index, $value := . -}}
                         {{- /* Delimit with comma */}}
-                        {{- if gt $index 0 }}, {{ end -}}
+                        {{- if gt $index 0 }},{{ end -}}
                         <code>{{ $value | markdownify }}</code>
                       {{- end }}</span
                     >.
@@ -58,11 +57,10 @@
                 <code class="liva-mono">{{ . | safeHTML }}</code>
               </dd>
             {{- end }}
-             {{- with  .docLink }}
-            <strong>{{ i18n "LivaHelpDocumentation" | default "Documentation" }}</strong>:
-            <a href="{{ .docLink  }}"
-              >{{ .title }}</a
-            >{{- end }}
+            {{- with  .docLink }}
+              <strong>{{ i18n "LivaHelpDocumentation" | default "Documentation" }}</strong>:
+              <a href="{{ .docLink }}">{{ .title }}</a>
+            {{- end }}
           </dl>
         </div>
       {{- end }}
@@ -71,14 +69,16 @@
       <div class="liva-help-meta">
         <p>
           <strong>{{ i18n "LivaHelpAbout" | default "About" }}:</strong> {{ $data.footer_desc | markdownify }}
+        </p>
+        <div class="liva-help-footnote">
+          <p>
+            <em>{{ i18n "LivaHelpExample" | default "Example" }}:</em>
+            <!-- prettier-ignore -->
+            <code class="liva-mono liva-mono-help">&lbrace;&lbrace;&lt; help TYPE="markdown" &gt;&rbrace;&rbrace;</code>
           </p>
-          <div class="liva-help-footnote">
-            <p>
-          <em>{{ i18n "LivaHelpExample" | default "Example" }}:</em>
-          <!-- prettier-ignore -->
-          <code class="liva-mono liva-mono-help">&lbrace;&lbrace;&lt; help TYPE="markdown" &gt;&rbrace;&rbrace;</code>
-          </p>
-          <a class="liva" href="{{ $data.footer_URL }}">{{ i18n "LivaHelpScDocs" | default "Shortcodes Documentation" }}</a>
+          <a class="liva" href="{{ $data.footer_URL }}"
+            >{{ i18n "LivaHelpScDocs" | default "Shortcodes Documentation" }}</a
+          >
         </div>
       </div>
     </footer>
@@ -88,8 +88,7 @@
   <div class="liva liva liva-card liva-card-error liva-shadow">
     <p>
       <strong>Partial Error: </strong> The 'shortcodes' data passed to
-      <code class="liva-mono">liva/components/help/shortcodes.html</code> was
-      invalid or empty.
+      <code class="liva-mono">liva/components/help/shortcodes.html</code> was invalid or empty.
     </p>
   </div>
 {{ end }}

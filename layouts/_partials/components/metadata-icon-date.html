@@ -1,5 +1,5 @@
 {{- /*
-  Partial: components/metadata-icon-date.html 
+  Partial: components/metadata-icon-date.html
   Purpose: Displays the latest modification date for pages using the `page` or `utility` layouts, with an icon indicating if the content has been updated.
 
   Features:
@@ -38,7 +38,7 @@
     datetime="{{ $modDateMachine }}"
     title="{{- if $isUpdated -}}
       {{ i18n "PublishedOn" . | default "Published on" }} {{ $dateTitle }}.
-      {{ i18n "UpdatedOn" . | default "Updated on"}}
+      {{ i18n "UpdatedOn" . | default "Updated on" }}
       {{ $modDateTitle }}.
     {{- else -}}
       {{ i18n "PublishedOn" . | default "Published on" }} {{ $dateTitle }}.

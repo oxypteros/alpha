@@ -56,14 +56,11 @@
     <div class="liva-card-content-reason">
       <p>
         {{- i18n "LivaScInvParam" $countInvalid | default "Invalid parameter used in the shortcode:" }}
-        <span class="liva-mono liva-mono-error"
-          >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
-        >.
+        <span class="liva-mono liva-mono-error">&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span>.
       </p>
       <p>
         {{- i18n "LivaScParameter" $countInvalid | default "The parameters," }}&nbsp;
-        <span class="liva-mono liva-mono-error">{{ $formattedInvalid }}</span
-        >&nbsp;
+        <span class="liva-mono liva-mono-error">{{ $formattedInvalid }}</span>&nbsp;
         {{ i18n "LivaScNotRecognized" $countInvalid | default "are not recognized." }}
       </p>
     </div>

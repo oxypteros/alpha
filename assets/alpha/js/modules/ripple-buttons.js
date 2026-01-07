@@ -1,23 +1,23 @@
 // assets/alpha/js/modules/ripple-buttons.js
 
 /**
- * @file Adds a Material Design-style ripple effect to buttons and designated 
+ * @file Adds a Material Design-style ripple effect to buttons and designated
  * link elements.
  * @module modules/ripple-buttons
  *
- * @summary Enhances user interaction by providing visual feedback in the form 
+ * @summary Enhances user interaction by providing visual feedback in the form
  * of an expanding ripple effect on buttons and links with the `.btn-link` class.
  *
  * @description
- * This module applies a click-triggered ripple animation to all `<button>` 
+ * This module applies a click-triggered ripple animation to all `<button>`
  * elements and all `<a>` elements with the class `.btn-link`.
  *
  * How it works:
  * 1. When a targeted element is clicked, a `<span>` element (the ripple) is
  *    dynamically created.
- * 2. The ripple's diameter is calculated based on the clicked element's 
+ * 2. The ripple's diameter is calculated based on the clicked element's
  *    dimensions.
- * 3. It's positioned absolutely within the element, centered at the click 
+ * 3. It's positioned absolutely within the element, centered at the click
  *    coordinates.
  * 4. A CSS class (`.ripple`) is added to trigger the animation defined in CSS.
  * 5. Any pre-existing ripple element from a rapid previous click is removed to
@@ -59,15 +59,15 @@ span.ripple {
 }
 */
 
-import { $$ } from "../utils.js";
+import { $$ } from '../utils.js';
 
 export const initRippleButtons = () => {
-  const RIPPLE_CLASS = "ripple";
+  const RIPPLE_CLASS = 'ripple';
   const createRipple = (event) => {
     const button = event.currentTarget;
 
     // Create the ripple element (span)
-    const circle = document.createElement("span");
+    const circle = document.createElement('span');
     const diameter = Math.max(button.clientWidth, button.clientHeight);
     const radius = diameter / 2;
 
@@ -97,18 +97,18 @@ export const initRippleButtons = () => {
     button.appendChild(circle);
 
     // Clean up ripple after animation
-    circle.addEventListener("animationend", () => {
+    circle.addEventListener('animationend', () => {
       circle.remove();
     });
   };
 
   // Add the ripple effect to ALL btns
-  $$("button").forEach((button) => {
-    button.addEventListener("click", createRipple);
+  $$('button').forEach((button) => {
+    button.addEventListener('click', createRipple);
   });
   // Add the ripple effect to ALL links with the "btn-link" class
-  $$("a.btn-link").forEach((link) => {
-    link.addEventListener("click", createRipple);
+  $$('a.btn-link').forEach((link) => {
+    link.addEventListener('click', createRipple);
   });
   //console.log("ripple-buttons.js imported");
 };

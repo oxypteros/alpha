@@ -32,7 +32,7 @@
 
   {{- /* Format values for default use */}}
   {{- $key := printf ($entry.key | default "") -}}
-  
+
   {{- /* Declared vars */}}
   {{- $title := "" -}}
   {{- $reason := "" -}}
@@ -120,9 +120,16 @@
   {{- else if eq $code "liva-fm-172" -}}
     {{- $title = printf "Bad Quality SEO Image" -}}
     {{- $reason = printf "The defined SEO image %q does not meet quality standards." $keyValue -}}
-    {{- $solution =  printf "Recommended dimensions are 1200x630px."  -}}
-
-     {{- /*
+    {{- $solution =  printf "Recommended dimensions are 1200x630px." -}}
+    {{- /*
+      Check for missing thumbnail image
+      Code: liva-fm-181
+    */}}
+  {{- else if eq $code "liva-fm-181" -}}
+    {{- $title = printf "Missing Thumbnail Image" -}}
+    {{- $reason = printf "The thumbnail image %q could not be found." $keyValue -}}
+    {{- $solution =  printf "Place the %q image in the page bundle" $keyValue -}}
+    {{- /*
       Fallback for missing or undefined code
       Code: liva-cfg-000 or undefined
     */}}
@@ -131,6 +138,7 @@
     {{- $reason = printf "Error code missing or undefined." -}}
     {{- $solution =  printf "\"Magic only works when the spell(ing)is real.\"" -}}
   {{- end -}}
+
 
   <!-- prettier-ignore -->
   {{- warnf `

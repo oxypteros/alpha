@@ -5,19 +5,12 @@
 
   Target: Global
 
-  Example: {{< help TYPE="" >}}
+  Example: {{< help TYPE=""
+>}}
 
-  Params:
-  - TYPE (string, optional): Help subject type to show
-  Values: markdown, shortcodes (default)
-
-  Error handler:
-  - livaWarn (global)
-  - LiVa (scoped)
-
-  Docs: https://alpha.oxypteros.com/shortcodes/help
-  Repo: https://github.com/oxypteros/alpha
-*/}}
+Params: - TYPE (string, optional): Help subject type to show Values: markdown, shortcodes (default) Error handler: -
+livaWarn (global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/shortcodes/help Repo:
+https://github.com/oxypteros/alpha */}}
 {{- if  and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
   {{- /* Shortcode rules */}}
   {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
@@ -59,8 +52,7 @@
       {{- else }}
         {{- /* - Error message if the data file is missing */}}
         <div class="liva-error-card">
-          <strong>Help Error:</strong> Data file not found for type
-          '{{ $data.type }}' and language '{{ $lang }}'.
+          <strong>Help Error:</strong> Data file not found for type '{{ $data.type }}' and language '{{ $lang }}'.
           <br />
           Expected at: <code>data/{{ $dataFileKey }}.toml</code>
         </div>
@@ -68,8 +60,7 @@
     {{- else }}
       {{- /* - Error message for missing folder */}}
       <div class="liva-error-card">
-        <strong>Help Error:</strong> The <code>data/help</code> directory seems
-        to be missing.
+        <strong>Help Error:</strong> The <code>data/help</code> directory seems to be missing.
       </div>
     {{- end }}
   {{- end }}

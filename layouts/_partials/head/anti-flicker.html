@@ -1,20 +1,27 @@
 {{- /*
-  Partial: head/anti-flicker.html 
-  Purpose: Injects critical inline JavaScript to initialize the theme color 
+  Partial: head/anti-flicker.html
+  Purpose: Injects critical inline JavaScript to initialize the theme color
   scheme.
 
   Features:
-    - Prevents FOUC by applying the theme (light/dark) before the page fully renders.
-    - Sets the initial theme based on localStorage or system preference.
+  - Prevents FOUC by applying the theme (light/dark) before the page fully renders.
+  - Sets the initial theme based on localStorage or system preference.
 
   CSP Hash (Content Security Policy):
   'sha256-GCliwnol2uG6NxI9oDQBvhpNxqrXZbmVJ/KsjLS6nG4='
 
   !!! CRITICAL ATTENTION !!!
   DO NOT EDIT THE SCRIPT CONTENT IN THIS PARTIAL.
-  IF ANY CHANGES ARE MADE TO THE CONTENT, THE CSP 
+  IF ANY CHANGES ARE MADE TO THE CONTENT, THE CSP
   HASH ABOVE MUST BE RECALCULATED AND UPDATED.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
-<script>!function(){let e="theme"in localStorage,t=window.matchMedia("(prefers-color-scheme: dark)").matches;e||localStorage.setItem("theme",t?"dark":"light"),"dark"===localStorage.theme&&document.documentElement.classList.add("dark")}();</script>
+<script>
+  !(function () {
+    let e = 'theme' in localStorage,
+      t = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    (e || localStorage.setItem('theme', t ? 'dark' : 'light'),
+      'dark' === localStorage.theme && document.documentElement.classList.add('dark'));
+  })();
+</script>

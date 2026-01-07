@@ -1,17 +1,17 @@
 {{- /*
-  Partial: components/utility-bar.html 
+  Partial: components/utility-bar.html
   Purpose: Renders a bar that contains a language switch, search button, and color scheme toggle button
 
   Features:
-    - Multilingual switch.
-    - Search button (Pagefind).
-    - Toggle color scheme button (light/dark)
+  - Multilingual switch.
+  - Search button (Pagefind).
+  - Toggle color scheme button (light/dark)
 
   Dependencies: `partial "components/multilingual.html"`
 
   Conditions for Display:
-    - At least two language blocks must be defined for the language switch (multilingual partial condition) to be rendered.
-    - The `pagefind_enabled` key must be set to `true` in `config/_default/params.toml` for the search button.
+  - At least two language blocks must be defined for the language switch (multilingual partial condition) to be rendered.
+  - The `pagefind_enabled` key must be set to `true` in `config/_default/params.toml` for the search button.
 
   Repo: https://github.com/oxypteros/alpha
 */}}
@@ -22,7 +22,8 @@
       class="group hover:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
       aria-label="{{ i18n "SearchBtn" . | default "Activate search" }}"
       aria-expanded="false"
-      data-alpha="search-button" {{- /* JS Hook: Open search modal */}}
+      data-alpha="search-button"
+      {{- /* JS Hook: Open search modal */}}
     >
       <svg
         class="fill-on-menu-var dark:fill-on-menu-var group-hover:fill-on-menu size-5 transition-colors duration-400"
@@ -41,7 +42,8 @@
     class="group hover:bg-sur/20 flex size-11 shrink-0 flex-col items-center justify-center rounded-full transition-colors duration-400"
     aria-label="{{ i18n "ColorSchemeBtn" . | default "Toggle color scheme" }}"
     aria-pressed="false"
-    data-alpha="theme-button" {{- /* JS Hook: Toggle color scheme */}}
+    data-alpha="theme-button"
+    {{- /* JS Hook: Toggle color scheme */}}
   >
     <svg
       class="fill-on-menu-var dark:fill-on-menu-var group-hover:fill-on-menu size-5 transition-colors duration-400"

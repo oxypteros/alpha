@@ -64,9 +64,7 @@
       {{ i18n "LivaScTheParam" $countInvalid | default "The parameter" }}
       <span class="liva-mono">{{ $formattedInvalid }}</span>
       {{ i18n "LivaScUsedConsole" $countInvalid | default "used in the shortcode" }}
-      <span class="liva-mono"
-        >&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span
-      >
+      <span class="liva-mono">&lbrace;&lbrace;&lt; {{ $scName }} &gt;&rbrace;&rbrace;</span>
       {{ i18n "LivaScNotRecognized" $countInvalid | default "is not recognized." }}
     </p>
     <br />
@@ -95,9 +93,7 @@
   <div class="liva-console-doc">
     {{- with $docURL }}
       <div class="hr hr-left"></div>
-      <a href="{{ $docURL }}"
-        >{{ $scName }} {{ i18n "LivaDoc" . }}</a
-      >
+      <a href="{{ $docURL }}">{{ $scName }} {{ i18n "LivaDoc" . }}</a>
     {{- end }}
     <div class="hr hr-right"></div>
   </div>

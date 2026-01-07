@@ -19,7 +19,7 @@
       integrity="{{ $ytCss.Data.Integrity }}" crossorigin="anonymous"
     {{- end }}
   />
-  
+
   {{- /* Load lite-yt-embed.js. */}}
   {{- $ytJs := resources.Get "alpha/js/lite-yt-embed.js" -}}
   {{- if hugo.IsProduction -}}

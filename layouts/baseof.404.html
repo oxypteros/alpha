@@ -6,11 +6,7 @@
   Repo: https://github.com/oxypteros/alpha
 */}}
 <!doctype html>
-<html
-  lang="{{ site.Language.LanguageCode }}"
-  dir="{{ or site.Language.LanguageDirection `ltr` }}"
-  data-theme="light"
->
+<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}" data-theme="light">
   <head>
     {{- /* No need for index */}}
     <meta name="robots" content="noindex, nofollow" />
@@ -61,18 +57,12 @@
 
     {{- /* Conditional snackbar container for cookie notice */}}
     {{- if eq .Site.Params.noCookies_snackbar true }}
-      <div
-        class="fixed bottom-14 z-40 w-full px-4"
-        data-alpha="snackbar-container"
-      ></div>
+      <div class="fixed bottom-14 z-40 w-full px-4" data-alpha="snackbar-container"></div>
     {{- end }}
 
     {{- /* Conditional container for visitor settings/preferences */}}
     {{- if eq .Site.Params.visitor_settings true }}
-      <div
-        class="fixed top-1/3 z-50 w-full px-4"
-        data-alpha="settings-container"
-      ></div>
+      <div class="fixed top-1/3 z-50 w-full px-4" data-alpha="settings-container"></div>
     {{- end }}
     {{- /* Live region for screen reader announcements */}}
     <div class="sr-only" aria-live="polite" data-alpha="announcer"></div>
