@@ -7,17 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [v1.2.0] — 2026-7-01
+This release focuses on visual refinements for listing pages, enforces strict code consistency, and fix accessibility issues
 
 ### Added
 
-- **List Card Images:** Enhanced the `list` and `section` layouts to support cover images on post cards. This feature utilizes the new hugo image processing pipeline to serve optimized, responsive WebP images with proper aspect ratios, improving visual hierarchy without sacrificing performance.
+- **List Card Images:** Enhanced the `list` layout to support cover images on post cards. This feature utilizes the new hugo image processing pipeline to serve optimized, responsive WebP images with proper aspect ratios, improving visual hierarchy without sacrificing performance.
 
 ### Changed
 
-- **Hugo Compatibility:** Bumped the maximum tested Hugo version to `0.154.2`.
-- **Dependency Updates:** Upgraded Tailwind CSS and related build tools to version `4.1.18`.
+- **Accessibility Compliance:** Increased the color contrast ratios on series navigation links.
+- **Hugo Compatibility:** Bumped the maximum tested Hugo version to `0.154.3`.
 - **Code Styling:** Applied Prettier across the entire codebase. This standardizes formatting for Go templates, HTML, CSS, and JavaScript, ensuring a consistent and maintainable codebase for contributors.
+  
+### Updated
+- **Dependencies:** Upgraded Tailwind CSS and related build tools to version `4.1.18`.
 
 ## [v1.1.2] — 2025-12-04
 
