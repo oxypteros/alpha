@@ -7,7 +7,7 @@
 # Alpha — Hugo Theme
 
 [![Latest Release](https://img.shields.io/github/v/release/oxypteros/alpha?label=Alpha&style=flat&color=5f5f5f)](https://github.com/oxypteros/alpha/releases/latest)
-[![Hugo Version](https://img.shields.io/badge/Hugo-%5E0.148.0-5f5f5f?&style=flat&logoColor=white)](https://github.com/gohugoio/hugo/releases)
+[![Hugo Version](https://img.shields.io/badge/Hugo-%5E0.159.2-5f5f5f?&style=flat&logoColor=white)](https://github.com/gohugoio/hugo/releases)
 [![License](https://img.shields.io/github/license/oxypteros/alpha?label=License&style=flat&color=5f5f5f)](https://github.com/oxypteros/alpha/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/oxypteros/alpha?label=Last%20Commit&style=flat&color=5f5f5f)](https://github.com/oxypteros/alpha/commits/main)
 [![Stars](https://img.shields.io/github/stars/oxypteros/alpha?label=Stars&style=flat&color=5f5f5f)](https://github.com/oxypteros/alpha/stargazers)
@@ -46,7 +46,7 @@ Alpha isn’t just another Hugo theme. It’s built around three core principles
 - **Performance Optimized** — Fast out-of-the-box with lightweight code.
 - **Modern Development** — Optional Tailwind CSS mode for full customization.
 - **Built-in Integrations** — Pagefind search and privacy-friendly GoatCounter analytics.
-- **Multilingual Support** — Ready for content in multiple languages.
+- **Multilingual Support** — Ready for content in multiple languages, including simplified Chinese.
 
 ## Get Started Quickly
 
