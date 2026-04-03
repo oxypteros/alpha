@@ -13,7 +13,7 @@ livaWarn (global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/shortcodes/h
 https://github.com/oxypteros/alpha */}}
 {{- if  and hugo.IsDevelopment (.Site.Params.liva_enabled | default true) }}
   {{- /* Shortcode rules */}}
-  {{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+  {{- $rules := index hugo.Data.shortcodes.rules .Name -}}
 
   {{- /* Vars */}}
   {{- $validInput := "" -}}
@@ -38,9 +38,9 @@ https://github.com/oxypteros/alpha */}}
     {{- $data := $validationResult.data -}}
 
     {{- /* - `data/help/*.[lang].toml files` */}}
-    {{- if site.Data.help }}
+    {{- if hugo.Data.help }}
       {{- $lang := .Site.Language.Lang -}}
-      {{- $helpData := index site.Data.help (printf "%s.%s" $data.type $lang) -}}
+      {{- $helpData := index hugo.Data.help (printf "%s.%s" $data.type $lang) -}}
       {{- $dataFileKey := printf "help/%s.%s" $data.type $lang -}}
       {{/* - Check if the data was actually loaded */}}
       {{- if $helpData }}

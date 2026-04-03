@@ -12,7 +12,7 @@ Params: - STYLE (string, optional): Visual style of the featured article. Values
 handler: - livaWarn (global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/docs/shortcodes/featured Repo:
 https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
-{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+{{- $rules := index hugo.Data.shortcodes.rules .Name -}}
 
 {{- /* Vars */}}
 {{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}

@@ -5,9 +5,9 @@
 
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- partialCached "init-global-data.html" . .Site.Language.Lang }}
+{{- partialCached "init-global-data.html" . site.Language.Lang }}
 <!doctype html>
-<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}" data-theme="light">
+<html lang="{{ site.Language.Locale }}" dir="{{ or site.Language.Direction `ltr` }}" data-theme="light">
   <head>
     {{- /* Main meta tags partial */}}
     {{ partial "head/base.html" . }}

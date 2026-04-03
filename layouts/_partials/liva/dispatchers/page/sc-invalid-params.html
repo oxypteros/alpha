@@ -16,7 +16,7 @@
 {{- $validParams := .validParams -}}
 
 {{- /* Input data from 'data/liva/page/shortcodes.toml' */}}
-{{- $scErrorDefs := site.Data.liva.page.shortcodes -}}
+{{- $scErrorDefs := hugo.Data.liva.page.shortcodes -}}
 
 {{- /* Get shortcode error values from data for page */}}
 {{- $entry := (index $scErrorDefs $code) | default dict -}}

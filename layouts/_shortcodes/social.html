@@ -11,7 +11,7 @@
 Params: - LIMIT (integral, optional): Number of menu item to show Error handler: - livaWarn (global) - LiVa (scoped)
 Docs: https://alpha.oxypteros.com/shortcodes/social Repo: https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
-{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+{{- $rules := index hugo.Data.shortcodes.rules .Name -}}
 
 {{- /* Vars */}}
 {{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}

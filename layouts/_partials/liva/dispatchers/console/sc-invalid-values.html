@@ -17,7 +17,7 @@
 {{- $page := .page }}
 
 {{- /* Input data from 'data/liva/console/shortcodes.toml' */}}
-{{- $scErrorDefs := site.Data.liva.console.shortcodes -}}
+{{- $scErrorDefs := hugo.Data.liva.console.shortcodes -}}
 
 {{- /* Get shortcode error values from data for console */}}
 {{- $entry := (index $scErrorDefs $code) | default dict -}}

@@ -14,7 +14,7 @@ Params: - AUTHOR (string, optional): H2 heading. Fall back to frontmatter author
 filename placed inside '/assets/img/'' Error handler: - livaWarn (global) - LiVa (scoped) Docs:
 https://alpha.oxypteros.com/docs/shortcodes/about Repo: https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
-{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+{{- $rules := index hugo.Data.shortcodes.rules .Name -}}
 
 {{- /* Vars */}}
 {{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
