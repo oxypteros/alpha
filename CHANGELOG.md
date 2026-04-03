@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## UNRELEASED
+## [v1.3.0] — 2026-4-03
+
+This release bring up to date Alpha for the latest Hugo versions (v0.156.0+) while significantly improving multilingual capabilities. Introduces full support for Simplified Chinese alongside a language-aware font system that optimizes typography based on the user's locale.
 
 ### Added
 
