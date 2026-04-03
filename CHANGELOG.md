@@ -7,7 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## UNRELEASED
+
+### Changed
+
+- **Hugo Compatibility:** Updated the supported version range to `0.156.0` – `0.159.2`. This ensures full compatibility with the latest multidimensional content model and performance improvements.
+- **Modernized Language Selector:** Refactored the `multilingual.html` component to use the modern `.Rotate "language"` method. This simplifies the logic for generating language switchers and aligns with current Hugo best practices.
+- **Deprecation Fixes:** Resolved multiple deprecation warnings introduced in recent Hugo versions (v0.156.0 and later):
+  - Migrated all instances of `.Site.Data` and `site.Data` to the new `hugo.Data` global.
+  - Updated language property usage: replaced `.Language.LanguageCode` with `.Language.Locale` and `.Language.LanguageDirection` with `.Language.Direction`.
+  - Migrated `.Site.Languages` usage to the global `site.Languages` function for consistency.
+
+### Updated
+
+- **Dependencies:** Upgraded all npm dependencies to their latest stable versions.
+
 ## [v1.2.0] — 2026-7-01
+
 This release focuses on visual refinements for listing pages, enforces strict code consistency, and fix accessibility issues
 
 ### Added
@@ -19,8 +35,9 @@ This release focuses on visual refinements for listing pages, enforces strict co
 - **Accessibility Compliance:** Increased the color contrast ratios on series navigation links.
 - **Hugo Compatibility:** Bumped the maximum tested Hugo version to `0.154.3`.
 - **Code Styling:** Applied Prettier across the entire codebase. This standardizes formatting for Go templates, HTML, CSS, and JavaScript, ensuring a consistent and maintainable codebase for contributors.
-  
+
 ### Updated
+
 - **Dependencies:** Upgraded Tailwind CSS and related build tools to version `4.1.18`.
 
 ## [v1.1.2] — 2025-12-04
