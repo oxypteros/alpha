@@ -20,3 +20,8 @@
 #  label = "Français"
 #  locale = "fr"
 #  weight = 2
+
+#[zh-cn]
+#  label = "简体中文"
+#  locale = "zh-cn"
+#  weight = 3
