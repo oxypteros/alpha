@@ -1,0 +1,204 @@
+[Homepage]
+other = "首页"
+
+[ToggleMenu]
+other = "打开或关闭主菜单"
+
+[ColorScheme]
+other = "切换配色方案"
+
+[PreRecentLinkText]
+other = "在下文中，看看我们最新的内容："
+
+[PreFeatLinkText]
+other = "重温一篇历久弥新的精选内容，"
+
+[PostFeatLinkText]
+other = "" 
+
+[AllRights]
+other = "保留所有权利。"
+
+[SomeRights]
+other = "保留部分权利。"
+
+[NoRights]
+other ="不保留任何权利。"
+
+[LicensedUnder]
+other = "授权协议："
+
+[Copyright]
+other = "版权所有"
+
+[Published]
+other = "发布："
+
+[LastEdition]
+other = "最后修订："
+
+[PreviousPart]
+other = "上一部分"
+
+[NextPart]
+other = "下一部分"
+
+[RecommendedPosts]
+other = "推荐内容"
+
+[New]
+other = "新"
+
+[NoCookiesSnackBar]
+other = "本站不使用 Cookie，仅收集匿名统计数据。"
+
+[PrivacyPolicy]
+other = "隐私政策"
+
+[PublishedOn]
+other = "发布于"
+
+[UpdatedOn]
+other = "更新于"
+
+[Category]
+other = "分类："
+
+[TaggedAs]
+other = "标签："
+
+[EditOnGithub]
+other = "在 GitHub 上编辑此页"
+
+[AnonymousStats]
+other = "匿名统计"
+
+[CollectedStats]
+other = "我们收集匿名数据以优化功能。"
+
+[PrefetchContent]
+other = "预加载内容"
+
+[PrefetchLinks]
+other = "部分链接已预加载，以提供更流畅的浏览体验。"
+
+[Copy]
+other = "复制"
+
+# Shortcodes
+[AvatarOf]
+other = "%s 的头像"
+
+# 404
+[404FirstLine]
+other = "“这里躺着一个从未存在的页面。”"
+
+[404SecondLine]
+other = "别担心，还有很多内容值得一看。"
+
+[KeepReading]
+other = "继续阅读"
+
+# aria-labels
+[SearchBtn]
+other = "打开搜索"
+
+[ColorSchemeBtn]
+other = "切换配色方案"
+
+[Noother]
+other = "暂无翻译"
+
+[ChangeLanguage]
+other = "切换语言"
+
+[ReadThePost]
+other = "阅读全文"
+
+[PoweredByPagefind]
+other = "由 Pagefind 提供支持"
+
+[WrittenBy]
+other = "作者"
+
+[Close]
+other = "关闭"
+
+[CopyToClipboard]
+other = "复制到剪贴板"
+
+[SettingsBtn]
+other = "打开设置"
+
+[SettingsOpened]
+other = "设置面板已打开"
+
+[SettingsClosed]
+other = "设置面板已关闭"
+
+[TrackingDisabled]
+other = "匿名追踪已关闭"
+
+[TrackingEnabled]
+other = "匿名追踪已开启"
+
+[PrefetchDisabled]
+other = "预加载功能已关闭"
+
+[PrefetchEnabled]
+other = "预加载功能已开启"
+
+[FeaturedArticle]
+other = "精选内容"
+
+[RecommendedArticles]
+other= "推荐内容"
+
+[RecentArticles]
+other= "最新内容"
+
+[CtaHeading]
+other = "接下来阅读什么？"
+
+[NumListHeading]
+other = "内容列表"
+
+[Faq]
+other = "常见问题"
+
+[AboutHeading]
+other = "关于我"
+
+[ErrorHeading]
+other = "错误"
+
+[WarningHeading]
+other = "警告"
+
+[SuccessHeading]
+other = "成功"
+
+[InfoHeading]
+other = "信息"
+
+[SocialHeading]
+other = "社交媒体"
+
+[FollowUsOn]
+other= "关注我们："
+
+[PlayYtVideo]
+other = "播放 YouTube 视频"
+
+[FooterMenu]
+other= "页脚菜单"
+
+# SEO
+[DefaultTaxonomyDescription]
+other = "浏览 %2$s 上所有 %1$s —— 概览全部 %3$s，方便发现相关内容。"
+
+[DefaultTermsDescription]
+other = "探索 %2$s 上与“%1$s”相关的所有页面 —— 发现相关内容与主题。"
+
+[Default404Description]
+other = "在逻辑的烟雾中消失。我们没有隐藏什么——除了更多精彩内容。"
