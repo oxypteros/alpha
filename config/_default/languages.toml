@@ -1,6 +1,6 @@
 # Languages Configuration for the Alpha Theme
-# This file defines the primary language and optional multilingual settings for 
-# the site.
+# This file defines the primary language and optional multilingual settings 
+# for  the site.
 #
 # For multilingual sites, add additional language blocks as shown in the 
 # commented example below.
@@ -11,12 +11,17 @@
 
 # Primary language. Edit for single-langauge site.
 [en]
-  languageName = "English" 
-  languageCode = "en"
+  label = "English" 
+  locale = "en"
   weight = 1 # Lowest number sets the default language
 
 # Uncomment and edit for multilingual
 #[fr]
-#  languageName = "Français"
-#  languageCode = "fr"
+#  label = "Français"
+#  locale = "fr"
 #  weight = 2
+
+#[zh-cn]
+#  label = "简体中文"
+#  locale = "zh-cn"
+#  weight = 3

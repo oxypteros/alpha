@@ -1,0 +1,40 @@
+{{- /*
+  Partial: head/fonts.html
+  Purpose: Conditionally loads font files based on the site language.
+  */
+-}}
+
+{{- /* Determine font file based on language */ -}}
+{{- $fontFile := "alpha/css/fonts.css" -}}
+{{- $fontFamily := "Noto Sans" -}}
+
+{{- if eq site.Language.Lang "zh-cn" -}}
+  {{- $fontFile = "alpha/css/fonts-zh.css" -}}
+  {{- $fontFamily = "Noto Sans SC" -}}
+{{- end -}}
+
+{{- /* Load deault Mono font */ -}}
+{{- $monoFile := "alpha/css/fonts-mono.css" -}}
+
+{{- range (slice $fontFile $monoFile) -}}
+  {{- with resources.Get . -}}
+    {{- $css := . -}}
+    {{- if hugo.IsProduction -}}
+      {{- $css = . | minify | fingerprint -}}
+    {{- end -}}
+    <link
+      rel="stylesheet"
+      href="{{ $css.RelPermalink }}"
+      {{- if hugo.IsProduction }}
+        integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous"
+      {{- end }}
+    />
+  {{- end -}}
+{{- end -}}
+
+{{- /* Set the CSS Variable for Tailwind */ -}}
+<style>
+  :root {
+    --alpha-font-sans: '{{ $fontFamily }}';
+  }
+</style>

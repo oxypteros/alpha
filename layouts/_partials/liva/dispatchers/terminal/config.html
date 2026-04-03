@@ -9,7 +9,7 @@
 {{- $cfgErrors := .configErrors -}}
 
 {{- /* Input data from 'data/liva/console/config.toml' */}}
-{{- $cfgErrorDefs := site.Data.liva.console.config -}}
+{{- $cfgErrorDefs := hugo.Data.liva.console.config -}}
 
 {{- range $cfgErrors -}}
   {{- /*

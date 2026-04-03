@@ -9,7 +9,7 @@
 {{- $mdErrors := . -}}
 
 {{- /* Input data from 'data/liva/console/markdown.toml' */}}
-{{- $mdErrorDefs := site.Data.liva.console.markdown -}}
+{{- $mdErrorDefs := hugo.Data.liva.console.markdown -}}
 
 {{- range $mdErrors }}
   {{- /*

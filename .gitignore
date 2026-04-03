@@ -2,5 +2,3 @@ node_modules/
 public/
 .hugo_build.lock
 hugo_stats.json
-/content/
-/themes/alpha_*

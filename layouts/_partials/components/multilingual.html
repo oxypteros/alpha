@@ -12,15 +12,8 @@
 
   Repo: https://github.com/oxypteros/alpha
 */}}
-{{- if gt (len .Site.Languages) 1 }}
-  {{- $hasTranslations := false }}
-  {{- range .Translations }}
-    {{- if .File }}
-      {{- $hasTranslations = true }}
-    {{- end }}
-  {{- end }}
-
-  {{- if not $hasTranslations }}
+{{- if hugo.IsMultilingual }}
+  {{- if not .IsTranslated }}
     <div class="flex items-center">
       <svg
         class="fill-on-menu-var size-5"
@@ -35,43 +28,43 @@
       </svg>
     </div>
   {{- else }}
-    <details class="relative">
-      <summary
-        class="group flex cursor-pointer items-center gap-2 text-sm"
-        aria-label="{{ i18n "ChangeLanguage" . | default "Change the language" }}"
-      >
-        <svg
-          class="fill-on-menu-var size-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          width="16"
-          height="16"
-          aria-hidden="true"
+    {{- with .Rotate "language" }}
+      <details class="relative">
+        <summary
+          class="group flex cursor-pointer items-center gap-2 text-sm"
+          aria-label="{{ i18n "ChangeLanguage" $ | default "Change the language" }}"
         >
-          <use href="#icon-language"></use>
-        </svg>
-        {{- range .Site.Languages }}
-          {{- if eq . $.Site.Language }}
-            <span class="group-hover:text-on-menu">{{ .LanguageName }}</span>
-          {{- end }}
-        {{- end }}
-      </summary>
-      <div class="absolute top-6 left-0 z-30 w-70">
-        <div
-          class="border-out-var dark:border-out-var-d dark:bg-sur-var-d dark:text-on-sur-d bg-sur text-on-sur flex flex-col gap-2 rounded-md border px-4 py-3 text-sm shadow-lg"
-        >
-          {{- range .Translations }}
-            <a
-              class="hover:text-on-sur-var dark:hover:text-on-sur-var-d decoration-on-sur-var dark:decoration-on-sur-var-d decoration-2 underline-offset-2 hover:underline"
-              href="{{ .Permalink }}"
-              hreflang="{{ .Lang }}"
-            >
-              {{ .Language.LanguageName }}
-            </a>
-          {{- end }}
+          <svg
+            class="fill-on-menu-var size-5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          >
+            <use href="#icon-language"></use>
+          </svg>
+          <span class="group-hover:text-on-menu">{{ $.Language.Label }}</span>
+        </summary>
+        <div class="absolute top-6 left-0 z-30 w-70">
+          <div
+            class="border-out-var dark:border-out-var-d dark:bg-sur-var-d dark:text-on-sur-d bg-sur text-on-sur flex flex-col gap-2 rounded-md border px-4 py-3 text-sm shadow-lg"
+          >
+            {{- range . }}
+              {{- if ne . $.Page }}
+                <a
+                  class="hover:text-on-sur-var dark:hover:text-on-sur-var-d decoration-on-sur-var dark:decoration-on-sur-var-d decoration-2 underline-offset-2 hover:underline"
+                  href="{{ .Permalink }}"
+                  hreflang="{{ .Lang }}"
+                >
+                  {{ .Language.Label }}
+                </a>
+              {{- end }}
+            {{- end }}
+          </div>
         </div>
-      </div>
-    </details>
+      </details>
+    {{- end }}
   {{- end }}
 {{- end -}}

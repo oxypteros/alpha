@@ -9,7 +9,7 @@
 {{- $fmErrors := .frontmatterErrors -}}
 
 {{- /* Input data from 'data/liva/console/frontmatter.toml' */}}
-{{- $fmErrorDefs := site.Data.liva.console.frontmatter -}}
+{{- $fmErrorDefs := hugo.Data.liva.console.frontmatter -}}
 
 {{- range $fmErrors -}}
   {{- /*

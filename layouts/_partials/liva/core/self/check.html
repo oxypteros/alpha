@@ -42,7 +42,7 @@
 {{- end }}
 
 {{- /* Missing page data markdown check */}}
-{{- if not site.Data.liva.page.markdown -}}
+{{- if not hugo.Data.liva.page.markdown -}}
   {{- $livaSelfCheck = false -}}
 
   {{- $code = "liva-file-104" -}}
@@ -53,7 +53,7 @@
 {{- end }}
 
 {{- /* Missing page data config check */}}
-{{- if not site.Data.liva.page.config -}}
+{{- if not hugo.Data.liva.page.config -}}
   {{- $livaSelfCheck = false -}}
 
   {{- $code = "liva-file-105" -}}
@@ -64,7 +64,7 @@
 {{- end }}
 
 {{- /* Missing page data frontmatter check */}}
-{{- if not site.Data.liva.page.frontmatter -}}
+{{- if not hugo.Data.liva.page.frontmatter -}}
   {{- $livaSelfCheck = false -}}
 
   {{- $code = "liva-file-106" -}}
@@ -75,7 +75,7 @@
 {{- end }}
 
 {{- /* Missing console data config check */}}
-{{- if not site.Data.liva.console.config -}}
+{{- if not hugo.Data.liva.console.config -}}
   {{- $livaSelfCheck = false -}}
 
   {{- $code = "liva-file-120" -}}

@@ -23,7 +23,7 @@ optional) : `href` attribute for link 2 - LINK-LABEL (string, optional) : `aria-
 handler: - livaWarn (global) - LiVa (scoped) Docs: https://alpha.oxypteros.com/docs/shortcodes/hero Repo:
 https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
-{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+{{- $rules := index hugo.Data.shortcodes.rules .Name -}}
 
 {{- /* Vars */}}
 {{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}

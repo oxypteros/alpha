@@ -1,4 +1,3 @@
-@import './fonts.css';
 @import 'tailwindcss';
 @source 'hugo_stats.json';
 @custom-variant dark (&:where(.dark, .dark *));
@@ -12,7 +11,7 @@
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
   /* Font Families */
-  --font-sans: 'Noto Sans', var(--font-sans-fallback);
+  --font-sans: var(--alpha-font-sans, 'Noto Sans'), var(--font-sans-fallback);
   --font-serif: 'Noto Serif', var(--font-serif-fallback);
   --font-mono: 'JetBrains Mono', var(--font-mono-fallback);
   /* Font Weights */

@@ -22,13 +22,13 @@
   languages.toml: Missing weight, languageName
   Codes: liva-cfg-112, liva-cfg-113
 */}}
-{{- if gt (len .Site.Languages) 1 -}}
+{{- if hugo.IsMultilingual -}}
   {{- $languageErrors := slice -}}
-  {{- range .Site.Languages -}}
-    {{- $langCode := .LanguageCode -}}
+  {{- range hugo.Sites -}}
+    {{- $langCode := .Language.Locale -}}
 
     {{- /* Check for weight. */}}
-    {{- if lt .Weight 1 -}}
+    {{- if lt .Language.Weight 1 -}}
       {{- $errorObject := dict
         "code"    "liva-cfg-112"
         "lang"    $langCode
@@ -37,7 +37,7 @@
     {{- end -}}
 
     {{- /* Check for languageName */}}
-    {{- if not (strings.TrimSpace .LanguageName) -}}
+    {{- if not (strings.TrimSpace .Language.Label) -}}
       {{- $errorObject := dict
         "code"    "liva-cfg-113"
         "lang"    $langCode

@@ -14,7 +14,7 @@ Params: - TITLE (string, optional): H2 heading. - TYPE (string, optional): Rende
 success, info (default). Error handler: - livaWarn (global) - LiVa (scoped) Docs:
 https://alpha.oxypteros.com/shortcodes/status-card Repo: https://github.com/oxypteros/alpha */}}
 {{- /* Shortcode rules */}}
-{{- $rules := index .Site.Data.shortcodes.rules .Name -}}
+{{- $rules := index hugo.Data.shortcodes.rules .Name -}}
 
 {{- /* Vars */}}
 {{- $livaWarnEnabled := .Site.Params.livaWarn_enabled | default true -}}
