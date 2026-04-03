@@ -12,6 +12,9 @@
     {{- /* Main meta tags partial */}}
     {{ partial "head/base.html" . }}
 
+    {{- /* Conditionally load fonts based on language */}}
+    {{ partialCached "head/fonts.html" . site.Language.Lang }}
+
     {{- /* Anti-flicker inline script */}}
     {{ partialCached "head/anti-flicker.html" . }}
 
