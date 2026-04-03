@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## UNRELEASED
 
+### Added
+
+- **Multilingual Support (Chinese):** Introduced full support for Simplified Chinese (`zh-cn`). This includes specialized typography handling and localized UI elements. _(Note: Initial translations in `zh-cn.toml` were AI-generated and require review by a native speaker.)_
+- **Smart Font Loading System:** Implemented a language-aware font loading mechanism that optimizes performance by only serving necessary character sets:
+  - **Dynamic Character Sets:** Loads `fonts-zh.css` (Noto Sans SC) exclusively for Chinese locales, while defaulting to `fonts.css` (Noto Sans) for Latin-based languages.
+  - **Monospace Consolidation:** Introduced a common `fonts-mono.css` for JetBrains Mono, shared across all languages to reduce redundancy.
+  - **Template Integration:** Utilizes a new `head/fonts.html` partial to dynamically inject CSS variables, allowing Tailwind CSS to automatically adapt the `--font-sans` family based on the active language.
+
 ### Changed
 
 - **Hugo Compatibility:** Updated the supported version range to `0.156.0` – `0.159.2`. This ensures full compatibility with the latest multidimensional content model and performance improvements.
